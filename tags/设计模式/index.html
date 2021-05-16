@@ -188,8 +188,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2018/11/17/algorithm-2018-11-17-singleton/" itemprop="url">
-            <span itemprop="name">单例模式</span>
+          <a class="post-title-link" href="/2018/11/17/algorithm-2018-11-17-factory/" itemprop="url">
+            <span itemprop="name">工厂模式</span>
           </a>
       </div>
 
@@ -208,8 +208,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2018/11/17/algorithm-2018-11-17-factory/" itemprop="url">
-            <span itemprop="name">工厂模式</span>
+          <a class="post-title-link" href="/2018/11/17/algorithm-2018-11-17-singleton/" itemprop="url">
+            <span itemprop="name">单例模式</span>
           </a>
       </div>
 
@@ -310,7 +310,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -323,7 +323,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -404,6 +404,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

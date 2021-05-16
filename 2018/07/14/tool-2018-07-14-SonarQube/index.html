@@ -275,8 +275,8 @@
       <i class="fa fa-chevron-left"></i> 作为一个诗人
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/07/15/tool-2018-07-15-ELK/" rel="next" title="ElasticSearch+Logstash+Kibana">
-      ElasticSearch+Logstash+Kibana <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/15/tool-2018-07-15-Jekyll/" rel="next" title="Jekyll-博客工具">
+      Jekyll-博客工具 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -353,7 +353,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -366,7 +366,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -447,6 +447,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

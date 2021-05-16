@@ -223,7 +223,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>前面讲了如何使用<a href="">Hexo和GitPage搭建博客</a>，开始本篇之前确保上篇的配置都已完成。如安装nodejs、Git环境、Hexo插件等。<br>再次说明一下：在 Hexo 中有两份主要的配置文件，其名称都是 <code>_config.yml</code>。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。<br>将前者称为 站点配置文件， 后者称为 主题配置文件。</p>
+        <p>前面讲了如何使用<a href>Hexo和GitPage搭建博客</a>，开始本篇之前确保上篇的配置都已完成。如安装nodejs、Git环境、Hexo插件等。<br>再次说明一下：在 Hexo 中有两份主要的配置文件，其名称都是 <code>_config.yml</code>。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。<br>将前者称为 站点配置文件， 后者称为 主题配置文件。</p>
 <h2 id="一-Hexo主题"><a href="#一-Hexo主题" class="headerlink" title="一. Hexo主题"></a>一. Hexo主题</h2><p>创建 Hexo 主题非常容易，您只要在 <code>themes</code> 文件夹内，新增一个任意名称的文件夹，并修改 <code>_config.yml</code>内的 <code>theme</code> 设定，即可切换主题。</p>
 <p>Hexo提供了很多种<a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>，可挑选自己喜欢的。</p>
 <p>主题文件说明：<br>（1）<code>_config.yml</code>：主题的配置文件。修改时会自动更新，无需重启服务器。<br>（2）languages：语言文件夹，不同语言文件<br>（3）layout：布局文件夹。用于存放主题的模板文件，决定了网站内容的呈现方式。<br>（3）script：脚本文件夹。在启动时，Hexo 会载入此文件夹内的 JavaScript 文件<br>（4）source：资源文件夹，存放 CSS、JavaScript、images 文件等资源。</p>
@@ -394,7 +394,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -407,7 +407,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -488,6 +488,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

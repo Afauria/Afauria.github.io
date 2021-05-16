@@ -260,7 +260,7 @@
 </ol>
 <h2 id="三-GitPage搭建"><a href="#三-GitPage搭建" class="headerlink" title="三. GitPage搭建"></a>三. GitPage搭建</h2><h3 id="1-Git账号注册"><a href="#1-Git账号注册" class="headerlink" title="1. Git账号注册"></a>1. Git账号注册</h3><p>跳过，就和我们平常注册账号一样</p>
 <h3 id="2-GitPage创建"><a href="#2-GitPage创建" class="headerlink" title="2. GitPage创建"></a>2. GitPage创建</h3><p>创建一个新的仓库，仓库名称使用：用户名.github.io，如图<br><img src="/images/BuildBlog/GitPage01.png" alt="git仓库创建"><br>创建完之后就可以通过 <code>https://moon-lights.github.io/</code> 来访问博客地址了</p>
-<h2 id="四-将GitPage和Hexo联系起来"><a href="#四-将GitPage和Hexo联系起来" class="headerlink" title="四. 将GitPage和Hexo联系起来"></a>四. 将GitPage和Hexo联系起来</h2><h3 id="1-SSH配置"><a href="#1-SSH配置" class="headerlink" title="1. SSH配置"></a>1. SSH配置</h3><p>跳过，在<a href="">另一篇文章</a>里介绍</p>
+<h2 id="四-将GitPage和Hexo联系起来"><a href="#四-将GitPage和Hexo联系起来" class="headerlink" title="四. 将GitPage和Hexo联系起来"></a>四. 将GitPage和Hexo联系起来</h2><h3 id="1-SSH配置"><a href="#1-SSH配置" class="headerlink" title="1. SSH配置"></a>1. SSH配置</h3><p>跳过，在<a href>另一篇文章</a>里介绍</p>
 <h3 id="2-修改站点配置文件"><a href="#2-修改站点配置文件" class="headerlink" title="2. 修改站点配置文件"></a>2. 修改站点配置文件</h3><p>打开根目录的 <code>_config.yml</code> 文件，找到deploy，修改如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">​    type: git</span><br><span class="line">​    repo: git@github.com:moon-lights&#x2F;moon-lights.github.io.git</span><br><span class="line">​    branch: master</span><br></pre></td></tr></table></figure>
 <p>repo地址如下图获取<br><img src="/images/BuildBlog/GitPage02.png" alt="ssh地址拷贝"></p>
@@ -445,7 +445,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -458,7 +458,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -539,6 +539,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

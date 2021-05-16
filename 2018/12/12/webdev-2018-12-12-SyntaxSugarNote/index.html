@@ -234,7 +234,7 @@
 <li><p>(+”1”)把字符串转换成整数</p>
 </li>
 </ul>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h3><p>prototype 属性允许您向对象添加属性和方法</p>
+<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h3><p>prototype 属性允许您向对象添加属性和方法</p>
 <p><strong>注意：</strong> Prototype 是全局属性，适用于所有的Javascript对象。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">employee</span>(<span class="params">name,jobtitle,born</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">this</span>.name=name;</span><br><span class="line">	<span class="built_in">this</span>.jobtitle=jobtitle;</span><br><span class="line">	<span class="built_in">this</span>.born=born;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fred=<span class="keyword">new</span> employee(<span class="string">&quot;Fred Flintstone&quot;</span>,<span class="string">&quot;Caveman&quot;</span>,<span class="number">1970</span>);</span><br><span class="line">employee.prototype.salary=<span class="literal">null</span>;</span><br><span class="line">fred.salary=<span class="number">20000</span>;</span><br><span class="line"><span class="built_in">document</span>.write(fred.salary);</span><br></pre></td></tr></table></figure>
 
@@ -372,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -385,7 +385,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -466,6 +466,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

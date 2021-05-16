@@ -222,8 +222,8 @@
 
       
          <center>
-     <font size=5>青年的楷模 学习的榜样——读《习近平的七年知青岁月》</font><br>
-     <font size=4>团中央书记处常务书记 贺军科</font>
+     <font size="5">青年的楷模 学习的榜样——读《习近平的七年知青岁月》</font><br>
+     <font size="4">团中央书记处常务书记 贺军科</font>
  </center>
 
 <p>​    2013年五四青年节，习近平总书记在同各界优秀青年代表座谈时，讲了一段极有文采、极富人生哲理的话：“青年朋友们，人的一生只有一次青春。现在，青春是用来奋斗的；将来，青春是用来回忆的……青年时代，选择吃苦也就选择了收获，选择奉献也就选择了高尚。青年时期多经历一点摔打、挫折、考验，有利于走好一生的路。要历练宠辱不惊的心理素质，坚定百折不挠的进取意志，保持乐观向上的精神状态，变挫折为动力，用从挫折中吸取的教训启迪人生，使人生获得升华和超越。”</p>
@@ -366,7 +366,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -379,7 +379,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -460,6 +460,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   
