@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Hexo+GitPage搭建博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo+GitPage搭建博客">
+<meta property="og:url" content="http://yoursite.com/2018/10/17/blog-2018-10-17-Hexo-GitPage/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="Hexo+GitPage搭建博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/hexo01.png">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/GitPage01.png">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/GitPage02.png">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/HexoDeployFailed.png">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/HexoDependenciesVersion.png">
+<meta property="article:published_time" content="2018-10-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-16T11:57:04.126Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/BuildBlog/hexo01.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/10/17/blog-2018-10-17-Hexo-GitPage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hexo+GitPage搭建博客 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/17/blog-2018-10-17-Hexo-GitPage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo+GitPage搭建博客
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-17 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-17T00:00:00+08:00">2018-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-16 19:57:04" itemprop="dateModified" datetime="2021-05-16T19:57:04+08:00">2021-05-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/" itemprop="url" rel="index"><span itemprop="name"></span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Hexo+GitPage搭建博客</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一-Hexo简介"><a href="#一-Hexo简介" class="headerlink" title="一. Hexo简介"></a>一. Hexo简介</h2><p>静态网页生成工具，可用于搭建博客。使用 <a target="_blank" rel="noopener" href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，有多种主题供选择。<br><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">中文官方文档</a></p>
+<h3 id="与Jekyll的区别？"><a href="#与Jekyll的区别？" class="headerlink" title="与Jekyll的区别？"></a>与Jekyll的区别？</h3><p>在 Github Page 里用 Jekyll 其实是上传一个工程文件 ，Github 自动生成静态文件，而 Hexo 是先生成好文件再部署的。<br>此外，jekyll基于Ruby，Hexo基于Node</p>
+<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。<br>将前者称为 站点配置文件， 后者称为 主题配置文件。</p>
+<h2 id="二-Hexo使用"><a href="#二-Hexo使用" class="headerlink" title="二. Hexo使用"></a>二. Hexo使用</h2><h3 id="1-安装环境"><a href="#1-安装环境" class="headerlink" title="1. 安装环境"></a>1. 安装环境</h3><p><a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js安装</a><br>安装后打开cmd，输入<code>node -v</code>、<code>npm -v</code>检查是否安装成功（环境变量自动配置好了）<br>等于<code>node --version</code>、<code>npm --version</code><br><a target="_blank" rel="noopener" href="https://git-scm.com/">Git安装</a><br>在电脑上右键出现Git Bash Here、Git GUI Here即表示安装成功。<br>若配置了环境变量，可输入<code>git --version</code>检查是否安装成功</p>
+<p>注意：一般出于安全考虑，只有在Git Bash Here中才能进行Git的相关操作。如果需要在cmd命令行里调用Git，那么就要配置电脑的环境变量Path，或者在安装的时候选择use Git from the Windows Command Prompt。</p>
+<h3 id="2-安装hexo命令行工具"><a href="#2-安装hexo命令行工具" class="headerlink" title="2. 安装hexo命令行工具"></a>2. 安装hexo命令行工具</h3><p>使用<a target="_blank" rel="noopener" href="https://www.npmjs.com.cn/">npm</a>进行安装：终端输入<code>npm install -g hexo-cli</code><br>安装完成后可使用<code>hexo -v</code>或者<code>hexo --version</code>检查是否安装成功<br>注释：-g表示全局安装，不加则将模块下载到当前目录的node_modules中</p>
+<p>如果下载较慢，可以设置<a target="_blank" rel="noopener" href="https://npm.taobao.org/">淘宝国内镜像</a>，又如下几种方式<br>（1）永久使用：</p>
+<blockquote>
+<p>npm config set registry <a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
+</blockquote>
+<p>（2）临时使用：</p>
+<blockquote>
+<p>npm –registry <a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
+</blockquote>
+<p>（3）可保存配置： </p>
+<blockquote>
+<p>编辑.npmrc文件，加入registry = <a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
+</blockquote>
+<p>（4）使用cnpm替代npm命令：</p>
+<blockquote>
+<p>npm install -g cnpm –registry=<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>  cnpm install -g hexo-cli</p>
+</blockquote>
+<p>配置成功后可通过<code>npm config get registry</code>命令验证是否成功</p>
+<h3 id="3-使用hexo"><a href="#3-使用hexo" class="headerlink" title="3. 使用hexo"></a>3. 使用hexo</h3><ol>
+<li>终端进入一个空目录，输入<code>hexo init</code>，在该文件夹下初始化hexo工程，称为站点根目录</li>
+<li>输入<code>npm install</code>安装所需组件，即package.json中配置的库</li>
+<li>输入<code>hexo s</code>或<code>hexo server</code>启动服务</li>
+<li>默认端口为4000，访问 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 即可，也可通过<code>hexo server -p 端口号</code>指定端口号<br>出现下图就成功了，里面已经有一篇文章hello world了<br><img src="/images/BuildBlog/hexo01.png" alt="hexo成功图"></li>
+</ol>
+<h2 id="三-GitPage搭建"><a href="#三-GitPage搭建" class="headerlink" title="三. GitPage搭建"></a>三. GitPage搭建</h2><h3 id="1-Git账号注册"><a href="#1-Git账号注册" class="headerlink" title="1. Git账号注册"></a>1. Git账号注册</h3><p>跳过，就和我们平常注册账号一样</p>
+<h3 id="2-GitPage创建"><a href="#2-GitPage创建" class="headerlink" title="2. GitPage创建"></a>2. GitPage创建</h3><p>创建一个新的仓库，仓库名称使用：用户名.github.io，如图<br><img src="/images/BuildBlog/GitPage01.png" alt="git仓库创建"><br>创建完之后就可以通过 <code>https://moon-lights.github.io/</code> 来访问博客地址了</p>
+<h2 id="四-将GitPage和Hexo联系起来"><a href="#四-将GitPage和Hexo联系起来" class="headerlink" title="四. 将GitPage和Hexo联系起来"></a>四. 将GitPage和Hexo联系起来</h2><h3 id="1-SSH配置"><a href="#1-SSH配置" class="headerlink" title="1. SSH配置"></a>1. SSH配置</h3><p>跳过，在<a href="">另一篇文章</a>里介绍</p>
+<h3 id="2-修改站点配置文件"><a href="#2-修改站点配置文件" class="headerlink" title="2. 修改站点配置文件"></a>2. 修改站点配置文件</h3><p>打开根目录的 <code>_config.yml</code> 文件，找到deploy，修改如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy: </span><br><span class="line">​    type: git</span><br><span class="line">​    repo: git@github.com:moon-lights&#x2F;moon-lights.github.io.git</span><br><span class="line">​    branch: master</span><br></pre></td></tr></table></figure>
+<p>repo地址如下图获取<br><img src="/images/BuildBlog/GitPage02.png" alt="ssh地址拷贝"></p>
+<h3 id="3-安装上传到GitHub的插件"><a href="#3-安装上传到GitHub的插件" class="headerlink" title="3. 安装上传到GitHub的插件"></a>3. 安装上传到GitHub的插件</h3><p>cmd打开终端，进入站点根目录，输入<code>npm install --save hexo-deployer-git</code></p>
+<p>注释：</p>
+<table>
+<thead>
+<tr>
+<th>npm install X</th>
+<th>npm install X –save</th>
+<th>npm install X –save-dev</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>把X包安装到node_modules目录中</td>
+<td>把X包安装到node_modules目录中</td>
+<td>把X包安装到node_modules目录中</td>
+</tr>
+<tr>
+<td>不会修改package.json</td>
+<td>会在package.json的dependencies属性下添加X</td>
+<td>会在package.json的devDependencies属性下添加X</td>
+</tr>
+<tr>
+<td>运行npm install命令时，不会自动安装X</td>
+<td>运行npm install命令时，会自动安装X</td>
+<td>运行npm install命令时，会自动安装X</td>
+</tr>
+<tr>
+<td></td>
+<td>之后运行npm install –production或者注明NODE_ENV变量值为production时，会自动安装X到node_modules目录中</td>
+<td>之后运行npm install –production或者注明NODE_ENV变量值为production时，不会自动安装X到node_modules目录中</td>
+</tr>
+</tbody></table>
+<p>运行时需要用到的包使–save，否则使用–save-dev。</p>
+<h3 id="4-生成静态文件"><a href="#4-生成静态文件" class="headerlink" title="4. 生成静态文件"></a>4. 生成静态文件</h3><p>使用<code>hexo generate</code>命令生成静态文件，简写为<code>hexo g</code><br>此命令会在站点根目录生成public文件夹，即最终推到GitHub的文件。（与jekyll不同，jekyll是将工程推到Github，由GitPage生成静态文件，而这里是先生成静态文件再推到GitHub）</p>
+<h3 id="5-将静态文件推到GitHub上"><a href="#5-将静态文件推到GitHub上" class="headerlink" title="5. 将静态文件推到GitHub上"></a>5. 将静态文件推到GitHub上</h3><p>使用<code>hexo deploy</code>命令推到GitHub上，简写为<code>hexo d</code></p>
+<p>上面两个命令可以合并为<code>hexo generate --deploy</code>或<code>hexo deploy --generate</code><br>当然也可以简写为<code>hexo g -d</code>或<code>hexo d -g</code></p>
+<h3 id="6-访问博客地址"><a href="#6-访问博客地址" class="headerlink" title="6. 访问博客地址"></a>6. 访问博客地址</h3><p>访问刚才的博客地址，可以看到博客页面已经换成了Hexo的默认主题了，满满的成就感~~。</p>
+<h2 id="五-问题"><a href="#五-问题" class="headerlink" title="五. 问题"></a>五. 问题</h2><h3 id="两年后-，更新nodejs，hexo-g-d发布失败。错误如下"><a href="#两年后-，更新nodejs，hexo-g-d发布失败。错误如下" class="headerlink" title="两年后~，更新nodejs，hexo g -d发布失败。错误如下"></a>两年后~，更新nodejs，hexo g -d发布失败。错误如下</h3><p><img src="/images/BuildBlog/HexoDeployFailed.png" alt="Hexo发布失败"></p>
+<p>解决方案：</p>
+<ol>
+<li><p>更新hexo命令行工具：<code>npm install -g hexo-cli</code></p>
+</li>
+<li><p>更新<code>package.json</code>中依赖组件的版本</p>
+<ol>
+<li>使用<code>npm update</code>更新所有依赖组件的版本</li>
+<li>发现hexo从<code>^3.7.0</code>版本变到了<code>^3.9.0</code>，试了一下发布还是不行</li>
+<li><code>package.json</code>中，版本号使用了^，只会更新小版本，不会更新大版本，因此还是版本号还是<code>3.x.x</code></li>
+<li>从<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-starter">hexo工程模板</a>中拷贝最新的<code>package.json</code>，替换原来的版本</li>
+<li>再执行<code>npm install</code>和<code>npm update</code>更新版本到<code>^5.3.0</code>，其他依赖也更新</li>
+</ol>
+</li>
+<li><p>再执行<code>hexo g -d</code>，成功发布</p>
+</li>
+</ol>
+<p><img src="/images/BuildBlog/HexoDependenciesVersion.png" alt="Hexo依赖版本图"></p>
+<h3 id="升级之后菜单跳转404，url带-20"><a href="#升级之后菜单跳转404，url带-20" class="headerlink" title="升级之后菜单跳转404，url带%20"></a>升级之后菜单跳转404，url带%20</h3><p>next menu配置：旧版本<code>链接 ||</code>中间有空格，升级Hexo之后需要删除空格</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/||</span> <span class="string">archive</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">/schedule/||</span> <span class="string">calendar</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">/sitemap.xml||</span> <span class="string">sitemap</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="补充知识点"><a href="#补充知识点" class="headerlink" title="补充知识点"></a>补充知识点</h3><p><strong><a href="../note/2021-4-12-NPM.md">npm依赖包版本说明</a></strong></p>
+<h2 id="六-结束语"><a href="#六-结束语" class="headerlink" title="六. 结束语"></a>六. 结束语</h2><p>下篇介绍下Hexo的一些基本概念、配置和常用命令</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/" rel="tag"><i class="fa fa-tag"></i> </a>
+              <a href="/" rel="tag"><i class="fa fa-tag"></i> </a>
+              <a href="/" rel="tag"><i class="fa fa-tag"></i> </a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/14/android-2018-10-14-HybridSolution/" rel="prev" title="安卓跨平台方案简介">
+      <i class="fa fa-chevron-left"></i> 安卓跨平台方案简介
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/18/blog-2018-10-18-HexoIntro/" rel="next" title="Hexo介绍">
+      Hexo介绍 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-Hexo%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一. Hexo简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8EJekyll%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">与Jekyll的区别？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-Hexo%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">二. Hexo使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-number">2.1.</span> <span class="nav-text">1. 安装环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85hexo%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.</span> <span class="nav-text">2. 安装hexo命令行工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8hexo"><span class="nav-number">2.3.</span> <span class="nav-text">3. 使用hexo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-GitPage%E6%90%AD%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">三. GitPage搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Git%E8%B4%A6%E5%8F%B7%E6%B3%A8%E5%86%8C"><span class="nav-number">3.1.</span> <span class="nav-text">1. Git账号注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-GitPage%E5%88%9B%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">2. GitPage创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B-%E5%B0%86GitPage%E5%92%8CHexo%E8%81%94%E7%B3%BB%E8%B5%B7%E6%9D%A5"><span class="nav-number">4.</span> <span class="nav-text">四. 将GitPage和Hexo联系起来</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-SSH%E9%85%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">1. SSH配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BF%AE%E6%94%B9%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">2. 修改站点配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="nav-number">4.3.</span> <span class="nav-text">3. 安装上传到GitHub的插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%94%9F%E6%88%90%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6"><span class="nav-number">4.4.</span> <span class="nav-text">4. 生成静态文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%8E%A8%E5%88%B0GitHub%E4%B8%8A"><span class="nav-number">4.5.</span> <span class="nav-text">5. 将静态文件推到GitHub上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2%E5%9C%B0%E5%9D%80"><span class="nav-number">4.6.</span> <span class="nav-text">6. 访问博客地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94-%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">五. 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E5%B9%B4%E5%90%8E-%EF%BC%8C%E6%9B%B4%E6%96%B0nodejs%EF%BC%8Chexo-g-d%E5%8F%91%E5%B8%83%E5%A4%B1%E8%B4%A5%E3%80%82%E9%94%99%E8%AF%AF%E5%A6%82%E4%B8%8B"><span class="nav-number">5.1.</span> <span class="nav-text">两年后~，更新nodejs，hexo g -d发布失败。错误如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E4%B9%8B%E5%90%8E%E8%8F%9C%E5%8D%95%E8%B7%B3%E8%BD%AC404%EF%BC%8Curl%E5%B8%A6-20"><span class="nav-number">5.2.</span> <span class="nav-text">升级之后菜单跳转404，url带%20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">补充知识点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD-%E7%BB%93%E6%9D%9F%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">六. 结束语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
