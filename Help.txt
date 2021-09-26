@@ -1,0 +1,9 @@
+Front-matter
+Front-matter 是文件最上方以 --- 分隔的区域，用于指定个别文件的变量
+例如：
+title: Hello World
+date: 2013/7/13 20:46:25
+---
+注意：冒号后面要有空格，否则会报错，或者布局错误
+ERROR Process failed: _posts/2018-07-23-JavaNetBase_Mina.md
+YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 6, column 1:

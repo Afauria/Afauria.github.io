@@ -1,0 +1,262 @@
+---
+layout: post
+title: 名词解释笔记
+date: 2018-10-24
+categories: 笔记
+tags: 
+- 笔记
+description: 名词解释笔记
+---
+
+# 名词解释笔记
+
+## 一. 计算机
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| cli | command-line interface | 命令行界面 | 终端 |
+| CR | Carriage Return | 回车 | 对应ASCII中转义字符\r |
+| LF | Linefeed | 换行 | 对应ASCII中转义字符\n |
+| apt | Advanced Packaging Tool |  | Linux下的一款安装包管理工具 |
+
+### 存储单位
+
+位（bit）是计算机存储的最小单位，字节是计算机处理数据的最小单位，1字节=8位
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| bit | | 位 | 存放一位二进制数，即 0 或 1，最小的存储单位 |
+| B | byte | 字节 | 1B=8bit |
+| KB | Kilobyte | 千字节 | 1KB=1024B |
+| MB | Megabyte | 兆字节 | 1MB=1024KB |
+| GB | Gigabyte | 吉字节 | 1GB=1024MB |
+| TB | Trillionbyte | 太字节 | 1TB=1024GB |
+| PB | Petabyte | 拍字节 | 1PB=1024GB |
+| EB | Exabyte | 艾字节 | 1EB=1024PB |
+| ZB | Zettabyte | 泽字节 | 1ZB=1024EB |
+| YB | Yottabyte | 尧字节 | 1YB=1024ZB |
+| BB | Brontobyte | 珀字节 | 1BB=1024YB |
+| NB | NonaByte | 诺字节 | 1NB=1024BB |
+| DB | DoggaByte | 刀字节 | 1DB=1024NB,计算机中最大的储存单位 |
+
+### 吉利数字
+
+| | |
+| --- | --- |
+| 65536 | 2的16次方 |
+| 65535 | 2的16次方-1:理论上计算机能达到的最大进程数 |
+
+### 网络
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| TLS | Transport Layer Security | 传输层安全 |  |
+| SSL | Secure Sockets Layer | 安全套接层 | tls的前身，最初由netscape开发，被IETF标准化并改名为tls |
+| CA | Certificate Authority |  | 证书颁发机构 |
+| CSR | Cerificate Signing Request |  | 证书请求文件 |
+| crt | Certificate | 证书文件 | 客户端认证的证书 |
+| ssid | Service Set Identifier | 服务集标识 | 用来区分不同的网络。SSID就是一个局域网的名称,无线网络中SSID，是路由器发送的无线信号的名字SSID技术可以将一个无线局域网分为几个需要不同身份验证的子网络，每一个子网络都需要独立的身份验证，只有通过身份验证的用户才可以进入相应的子网络，防止未被授权的用户进入本网络。 |
+| DNS | Domain Name System | 域名系统 | 特网上作为域名和[IP地址](https://baike.so.com/doc/4252723-4455111.html)相互映射的一个[分布式数据库](https://baike.so.com/doc/6591740-6805519.html)，能够使用户更方便的访问[互联网](https://baike.so.com/doc/2011565-2128705.html)，而不用去记住能够被机器直接读取的IP数串。通过[主机](https://baike.so.com/doc/5331327-5566564.html)名，最终得到该主机名对应的IP地址的过程叫做域名解析(或主机名解析)。DNS协议运行在[UDP](https://baike.so.com/doc/5418284-5656447.html)协议之上，使用端口号53。通常 Internet 主机域名的一般结构为:主机名.三级域名.二级域名.顶级域名。 |
+
+### 工具
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| VNC | Virtual Network Console | 虚拟网络控制台 |  |
+| ELK | Elasticsearch+Logstash+Kibana | 三个软件的缩写 | Elasticsearch是个开源分布式搜索引擎，提供搜集、分析、存储数据三大功能。它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。Logstash 主要是用来日志的搜集、分析、过滤日志的工具，支持大量的数据获取方式。一般工作方式为c/s架构，client端安装在需要收集日志的主机上，server端负责将收到的各节点日志进行过滤、修改等操作在一并发往elasticsearch上去。Kibana 也是一个开源和免费的工具，Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助汇总、分析和搜索重要数据日志。 |
+### 协议
+
+| 缩写  | 全称                                 | 翻译                | 解释                                                         |
+| ----- | ------------------------------------ | ------------------- | ------------------------------------------------------------ |
+| TCP   | Transmission Control Protocol        | 传输控制协议        | 传输层协议，有连接，可靠，三次握手建立连接，四次挥手断开连接 |
+| UDP   | User Datagram Protocol               | 用户数据报协议      | 传输层协议，无连接，不可靠                                   |
+| http  | Hyper Text Transport Protocol        | 超文本传输协议      |                                                              |
+| https |                                      | http+ssl            |                                                              |
+| POP3  | Post Office Protocol 3               | 邮局协议的第3个版本 | 规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。 |
+| SMTP  | Simple Mail Transfer Protocol        | 简单邮件传输协议    | 控制邮件的中转方式，属于TCP/IP协议                           |
+| IMAP  | Internet Mail Access Protocol        | 交互式邮件存取协议  | 邮件访问标准协议之一，与POP的不同：开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。 |
+| RTP   | Real-time Transport Protocol         | 实时传输协议        | RTP数据协议                                                  |
+| RTCP  | Real-time Transport Control Protocol | 实时传输控制协议    | RTP控制协议，控制RTP传输                                     |
+| RTSP  | Real Time Streaming Protocol，       | 实时流协议          | 可以发送暂停，播放，停止等请求                               |
+|       |                                      |                     |                                                              |
+
+
+
+### 其他
+
+IETF：国际互联网工程任务组（The Internet Engineering Task Force，简称 IETF）是一个公开性质的大型民间国际团体，汇集了与互联网架构和互联网顺利运作相关的网络设计者、运营者、投资人和研究人员，并欢迎所有对此行业感兴趣的人士参与。
+
+| 缩写 | 全称                      | 翻译         | 解释                                                         |
+| ---- | ------------------------- | ------------ | ------------------------------------------------------------ |
+| ECS  | Elastic Compute Service   | 云服务器     |                                                              |
+| MUA  |                           | 邮件用户代理 | 它是一种应用程序，或者电子邮件客户端程序。通过 MUA 程序，我们可以发送邮件，也可以把接收到的邮件保存在客户端的邮箱中。这两种操作属于不同的两个进程。MUA通过POP（邮局协议）和STMP（简单邮件传输协议）从电子邮件服务器发送或接收消息。 |
+| MTA  |                           | 邮件传送代理 | 是电子邮件服务器的两个独立进程，MUA向电子邮件服务器发送一个电子邮件，MTA会判断这个邮件的地址是否在本服务器上。如果是则通过MDA发送到目的邮箱MUA.如果不是MTA就把这个邮件传送到包含目的邮箱列表的电子邮件服务器。 |
+| MDA  |                           | 邮件分发代理 |                                                              |
+| dsl  | Domain Specified Language | 领域特定语言 |                                                              |
+
+
+
+## 二. 工作
+
+| 缩写 | 全称 | 翻译 |  解释 |
+| --- | --- | --- | --- |
+| OP | Operator | 运维、管理员 | 维护公司的服务器能够正常提供服务，细分的话包括系统部分，网络部分，应用程序部分，数据库部分等。现在市面上主要的OP有三种：网络游戏运维，网站运维，大型项目测试和生产环境运维。 |
+| PM | Product Manager | 产品经理 |负责市场调查并根据用户的需求，确定开发何种产品，选择何种技术、商业模式等，举凡产品从创意到上市，所有相关的研发、调研、生产、编预算、广告、促销活动等等，都由产品经理掌控 |
+| PM | Project Manager | 项目经理 | 对项目实行质量、安全、进度、成本管理的责任保证体系和全面提高项目管理水平设立的重要管理岗位。项目经理是为项目的成功策划和执行负总责的人。 |
+| RD | Research and Development Engineer | 研发工程师 | |
+| FE | Front-End Engineer、Front-End Development | 前端工程师，前端开发 ||
+| QA | Quality Assurance | 质量保证 | 测试 |
+| QC | Quality Control | 质量控制 ||
+| UED | User Experience Design | 用户体验设计||
+| UI设计 | User Interface Design | 用户界面设计 | 对软件的人机交互、操作逻辑、界面美观的整体设计 |
+| KA | Key Account | 重要客户 ||
+| MRD | Market Requirements Document | 市场需求文档 | 市场需求、功能需求 。如市场与竞争对手分析，通过哪些功能来实现商业目的，功能/非功能需求分哪几块，功能的优先级等等|
+| PRD | Product Requirements Document | 产品需求文档 | 需求分析 |
+| FSD | Functional Specifications Document | 功能详细说明 ||
+| PDR | Preliminary Design Review | 初步设计评审 | |
+| OEM | Original Equipment Manufacturer | 原始设备制造商 | OEM生产：定点生产（代工），即委托他人生产 |
+| ODM | Original Design Manufacturer | 原始设计商 ||
+| SSO |  | 单点登录 | 在多个应用系统中，用户只需要登录一次就可以访问所有相互信任的应用系统。它包括可以将这次主要的登录映射到其他应用中用于同一个用户的登录的机制。它是目前比较流行的企业业务整合的解决方案之一。 |
+| BSS | | | 基站子系统 |
+| KBI | Key Behavior Index | 关键行为指标 | 考察各部门及各级员工在一定时间、一定空间和一定职责范围内关键工作行为履行状况的量化指标，是对各部门和各级员工工作行为管理的集中体现。 |
+| KPI | Key Performance Indicators | 关键绩效指标 | 又称主要绩效指标、重要绩效指标、绩效评核指标等，是指衡量一个管理工作成效最重要的指标，是一项数据化管理的工具，必须是客观、可衡量的绩效指标。这个名词往往用于财政、一般行政事务的衡量。是将公司、员工、事务在某时期表现量化与质化的一种指标。可协助将优化组织表现，并规划愿景。 |
+| gdpr | General Data Protection Regulation | 通用数据保护条例 |  |
+
+## 三. 开发
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| AOP | Aspect Oriented Programming | 面向切面编程 | 针对业务处理过程中的切面进行提取，它所面对的是处理过程中的某个步骤或阶段，以获得逻辑过程中各部分之间低耦合性的隔离效果。 |
+| OOP | Object Oriented Programming | 面向对象编程 | 针对业务处理过程的实体及其属性和行为进行抽象封装，以获得更加清晰高效的逻辑单元划分。  |
+| OOD | Object-Oriented Design | 面向对象设计 |  |
+| IoC | Inversion of Control | 控制反转 | |
+| DI| Dependency Injection | 依赖注入 | |
+
+| 名词       |                                                              |
+| ---------- | ------------------------------------------------------------ |
+| 编译型语言 | 使用编译器在程序运行之前编译，一次编译，处处运行，如C，C++   |
+| 解释型语言 | 使用解释器在程序运行时解释，每次运行都要解释，java是解释型语言，将源码编译成.class（字节码文件），但是不是机器码，通过jvm对.class文件进行解释再执行 |
+|            | 都需要翻译，将高级语言翻译成机器语言。                       |
+
+| 名词 | 解释 |
+| --- | --- |
+| 一方库/包 | 本项目或者本工程中的类和方法、接口等 |
+| 二方库/包 | 公司内部的依赖库，公司内部其他项目发布的jar包，如公司项目平台的核心依赖包 |
+| 三方库/包 | 外部的开源库或开源项目贡献的jar， 比如apache、google、Ali等发布的依赖 |
+| A端 |  指开发、管理方 |
+| B端 | Business： 企业用户商家 |
+| C端 | Consumer： 个人用户、消费者 |
+
+| 名词 | 解释                                                         |
+| ---- | ------------------------------------------------------------ |
+| RCT  | React                                                        |
+| i18n | （其来源是英文单词 internationalization的首末字符i和n，18为中间的字符数）是“国际化”的简称。在资讯领域，国际化(i18n)指让产品（出版物，软件，硬件等）无需做大的改变就能够适应不同的语言和地区的需要。对程序来说，在不修改内部代码的情况下，能根据不同语言及地区显示相应的界面。 在全球化的时代，国际化尤为重要，因为产品的潜在用户可能来自世界的各个角落。通常与i18n相关的还有L10n（“本地化”的简称）。 |
+
+| 名词             | 翻译                                   | 解释                                                         |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------ |
+| 安卓开发者工具   | adt，Android Developer Tools           | 为Eclipse IDE开发的插件，使用了sdk工具，用来开发Andorid应用  |
+| 安卓资源打包工具 | aapt，Android Asset Packaging Tool     | 将Android资源文件（res目录下）打包成R.java类(资源索引表)，以及.arsc资源文件（压缩资源文件） |
+| 注解处理器       | apt，Annotation Processing Tool        | 在编译时扫描和处理注解                                       |
+| 软件开发工具包   | SDK，Software Development Kit          | 具备一定功能的应用软件的开发工具的集合                       |
+| 应用程序编程接口 | API，Application Programming Interface | 提供用户编程时的接口，是一些预先定义的函数，提供给开发人员访问一组例程的能力，而无需访问源码。 |
+| 动态链接库       | DLL，Dynamic Link Library              | .dll文件不能直接执行，他们通常由 .exe 在执行时装入，内含有一些资源以及可执行代码等。 |
+
+SDK和API的区别：实际上SDK包含了API的定义，API定义一种能力，一种接口的规范，而SDK可以包含这种能力、包含这种规范。但是SDK又不完完全全只包含API以及API的实现，它是一个软件工具包，它还有很多其他辅助性的功能。
+
+## 四. 数据库
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| DBA | Database Administrator | 数据库管理员 | 负责管理和维护数据库服务器的人。数据库管理员负责全面管理和控制数据库系统 |
+| DQL | Data Query Language | 数据查询语言 | 由SELECT子句，FROM子句，WHERE子句组成的查询块：SELECT <字段名表>FROM <表或视图名>WHERE<查询条件> |
+| DML | Data Manage Language | 数据操纵语言 | 插入：INSERT，更新：UPDATE，删除：DELETE |
+| DDL | Data Define Language | 数据定义语言 | 用来创建数据库中的各种对象-----表、视图、索引、同义词、聚簇等如：CREATE TABLE/VIEW/INDEX/SYN/CLUSTER ，DDL操作是隐性提交的！不能rollback |
+| DCL | Data Control Language | 数据控制语言 | 用来授予或回收访问数据库的某种特权，并控制数据库操纵事务发生的时间及效果，对数据库实行监视，授权：GRANT。回滚：ROLLBACK。提交：COMMIT |
+| CRUD | Create、Retrieve、Update、Delete | 增删改查| |
+
+
+
+注释：  
+(1) 显式提交
+用COMMIT命令直接完成的提交为显式提交。其格式为：
+SQL>COMMIT；
+
+(2) 隐式提交
+用SQL命令间接完成的提交为隐式提交。这些命令是：
+ALTER，AUDIT，COMMENT，CONNECT，CREATE，DISCONNECT，DROP，
+EXIT，GRANT，NOAUDIT，QUIT，REVOKE，RENAME。
+
+(3) 自动提交
+若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，
+系统将自动进行提交，这就是自动提交。其格式为：
+SQL>SET AUTOCOMMIT ON；
+
+## 五. 前端
+
+### 基本
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| HTML | HyperText Markup Language | 超文本标记语言 | |
+| CSS | Cascading Style Sheets | 层叠样式表 | |
+| SPA | Single Page Application | 单页Web应用 | |
+| SSR | Server Side Render | 服务端渲染 | |
+| CSRF | Cross-site request forgery | 跨站请求伪造 | 也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。 |
+
+### XML
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| XML | eXtensible Markup Language | 可扩展标记语言 | |
+| XSL | eXtensible Stylesheet Language | 可扩展样式表语言 | 可描述如何来显示 XML 文档，包括三部分：XSLT、XPath、XSL-FO|
+| XSLT | XSL Transformations | | 用于转换 XML 文档的语言，XSLT 使用 XPath 在 XML 文档中查找信息。 |
+| XPath | | | 通过元素和属性在 XML 文档中导航的语言 |
+| XSL-FO | | | 用于格式化 XML 文档的语言 |
+
+### XML和HTML
+
+| XML | HTML |
+| --- | --- |
+| 被设计为具有自我描述性 |  |
+| 旨在传输信息：被设计用于结构化、传输和存储数据，其焦点是数据的内容 | 旨在显示信息：被设计用来显示数据，其焦点是数据的外观 |
+| 标签没有被预定义。需要自定义标签 | 有预定义标签，如`<a>、<div>`等 |
+
+## 六. 其他
+
+### 网络用语
+
+| 缩写 | 全称 | 翻译 | 解释 |
+| --- | --- | --- | --- |
+| RTFM | Read The Fucking Manual | 滚回去看说明手册 | |
+| STFW | Search The Fucking Web | 滚回去百度 | |
+| ASL | Age、Sex、Location | | 相亲用 |
+| SUX | suck的第三人称单数 | 滥，差劲 | that sux=sb |
+| LMAO | laughing my ass off | 笑死宝宝 | |
+| FTW | for the win | 棒棒哒 | |
+| YOLO | you only live once | 人生只有一次 | |
+| FML | fuck my life | 悲催的人生 | |
+| TL;DR | too long; didn ’ t read | 太长不看 | |
+| TGIF | thank god it's Friday | 天啊，星期五了 | |
+| LB | Like Back | 互粉啊！互粉！| |
+| HMU | Hit Me Up | 妹妹约么 | |
+| BRB | Be right back | 我一定会回来的。 | 同义：BBL=Be back late；BFN=bye bye for now |
+| NSFL | Not Safe For Life | 慎入 | |
+| MTFBWY | May The Force Be With You | 愿原力与你同在 |《星球大战》中的经典台词，有 Good luck 的意思。 |
+| TIL | Today I learnt | 今天我知道了 | |
+
+### 博客
+
+| 缩写 | 全称                                                         | 翻译                     | 解释                                                         |
+| ---- | ------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------ |
+| RSS  | [Really](https://baike.baidu.com/item/Really/16030355) Simple Syndication | 简易信息聚合（聚合内容） | RSS是一种用于共享新闻和其他Web内容的数据交换规范，就是将订户订阅的内容传送给他们的通讯协同格式(Protocol)。是站点用来和其他站点之间共享内容的一种简易方式（也叫聚合内容），在Blog开始盛行的时候得到广泛的应用。 RSS文件（或称做摘要、网络摘要、或频更新，提供到频道）包含了全文或是节录的文字，再加上发用者所订阅之网摘布数据和授权的元数据。网络摘要能够使发行者自动地发布他们的数据，同时也使读者能更够定期更新他们喜欢的网站或是聚合不同网站的网摘。<br>RSS摘要可以借由RSS阅读器、feed reader或是aggregator等网页或以桌面为架构的软件来阅读。标准的XML档式可允许信息在一次发布后通过不同的程序阅览。用户借由将网摘输入RSS阅读器或是用鼠标点取浏览器上指向订阅程序的RSS小图标之URI（非通常称为URL）来订阅网摘。RSS阅读器定期检阅是否有更新，然后下载给监看用户界面。<br>RSS可以是以下三个解释的其中一个：<br>Really Simple Syndication（真正简单的整合） RDF (Resource Deion Framework) Site Summary Rich Site Summary（丰富站点摘要） |
+| Feed |                                                              |                          | Feed就是为满足以某种形式持续得到自己更新的需求而提供的格式标准的信息出口。就是信源。信息发布网站将网站全部或者部分信息整合到一个 RSS 文件中，这个文件就被称之为 feed 。信源中包含的数据都是标准的 XML 格式，不但能直接被其他站点调用，也能在其他的终端和服务中使用。<br>RSS订阅的过程中会用到的“Feed”，便是表示这是用来接收该信息来源更新的接口 |
+
+### 建模/游戏
+
+| 缩写 | 全称                        | 翻译               |
+| ---- | --------------------------- | ------------------ |
+| PBR  | Physicallly-Based Rendering | 基于物理的渲染方式 |
+| PBS  | Physicallly-Based Shader    | 基于物理的着色方式 |
+
+
+
+
+

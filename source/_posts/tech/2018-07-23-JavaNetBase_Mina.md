@@ -1,0 +1,257 @@
+---
+layout: post
+title: 网络编程和Mina入门
+date: 2018-7-23
+description: 网络编程相关知识和Mina网络框架入门
+categories: 技术
+tags: 
+- 技术
+- 网络编程
+---
+
+## 网络编程的一些知识点
+
+1. 首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 
+2. 了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 
+3. 然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 
+
+#### 一些注意的点：
+
+1. TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。
+2. 网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。
+3. 长连接和短连接是相对的：但都是TCP连接
+4. 对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。
+5. HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。
+6. HTTP1.1可以长连接，即客户端和服务端都不调用close方法。
+7. UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。
+
+## Mina入门
+
+### 1. Mina是什么？
+
+Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 
+
+除了mina框架外，还有netty框架。
+
+### 2. 为什么要有Mina？
+
+TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。
+
+但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。
+
+但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。
+
+在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。
+
+### 3. Mina工作流程？
+
+![Mina流程](/images/Mina/mina01.png)
+
+1. IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程
+
+    ```
+    IoAcceptor和IoConnector都实现了IoService接口，其中
+    	IoAcceptor创建服务端口，用于接受连接
+    	IoConnector创建与服务端的连接
+    ```
+
+2. IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现
+
+3. IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。
+
+流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：
+
+1. 首先创建IoService
+2. 添加过滤器/拦截器IoFilterChain
+3. 实现IoHandler对数据进行业务逻辑处理
+
+### 4. 怎么用Mina？ 
+
+首先去[官网]("http://mina.apache.org/downloads-mina.html")下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 
+
+Binaries是jar包，Sources是源码
+
+![导入包](/images/Mina/mina02.png)
+
+#### 编写服务端代码 
+
+```java
+public class MinaServer {
+    public static void main(String[] args) {
+        try {
+  // 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）
+            NioSocketAcceptor acceptor = new NioSocketAcceptor();
+  // 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）
+            acceptor.setHandler(new MinaServerHandler());
+  // 第三步，设置拦截器
+            //设置log拦截器
+            acceptor.getFilterChain().addLast("log", new LoggingFilter());
+            //设定消息编码规则拦截器
+            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory()));
+           //添加socket配置
+            /*设置读取数据缓冲区大小
+            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/
+            acceptor.getSessionConfig().setReadBufferSize(2048);
+            /*指定了什么时候检查空闲 session。
+            第一个参数用于判断session是否闲置的条件
+            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2
+            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/
+            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
+  // 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口
+            acceptor.bind(new InetSocketAddress(2001));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```java
+public class MinaServerHandler extends IoHandlerAdapter {//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现
+    //发生异常回调，可打印异常
+    @Override
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+        System.out.println("服务端捕捉：" + cause);
+    }
+    //接收到消息时回调
+    @Override
+    public void messageReceived(IoSession session, Object message) throws Exception {
+        System.out.println("服务端消息接收：" + message.toString());
+        //收到客户端消息为quit时，关闭该会话
+        if (message.toString().trim().equalsIgnoreCase("quit")) {
+            session.closeNow();
+            return;
+        }
+        //向客户端发送消息，会调用messageSent
+        session.write("回复消息：" + message);
+    }
+    //发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();
+    @Override
+    public void messageSent(IoSession session, Object message) throws Exception {
+        System.out.println("服务端消息发送:" + message.toString());
+    }
+    //连接断开时调用
+    @Override
+    public void sessionClosed(IoSession session) throws Exception {
+        System.out.println("服务端session关闭");
+    }
+    //连接创建时调用
+    @Override
+    public void sessionCreated(IoSession session) throws Exception {
+        System.out.println("服务端session创建");
+    }
+    //连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次
+    @Override
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+        System.out.println("服务端session闲置");
+    }
+
+    //连接成功时回调
+    @Override
+    public void sessionOpened(IoSession session) throws Exception {
+        System.out.println("服务端连接成功");
+    }
+}
+```
+
+#### 编写客户端代码
+
+```java
+public class MinaClient {
+    public static void main(String[] args) {
+  // 第一步，建立一个connecter
+        NioSocketConnector connecter = new NioSocketConnector();
+
+ // 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可
+        connecter.setHandler(new MinaClientHandler());
+
+ // 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议
+        connecter.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory()));
+
+ // 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号
+        ConnectFuture future = connecter.connect(new InetSocketAddress("127.0.0.1", 2001));
+        // 阻塞直到和服务器连接成功
+        future.awaitUninterruptibly();
+
+        //下面代码用于测试，从客户端控制台输入
+        BufferedReader inputReader = null;
+        try {
+            inputReader = new BufferedReader(new InputStreamReader(System.in, "utf-8")); // 从控制台读取的输入内容
+            String s;
+            while (!(s = inputReader.readLine()).equals("exit")) {
+                future.getSession().write("客户端发送消息：" + s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+```java
+public class MinaClientHandler extends IoHandlerAdapter {
+    @Override
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+        System.out.println("客户端异常捕捉");
+    }
+
+    @Override
+    public void messageSent(IoSession session, Object message) throws Exception {
+        System.out.println("客户端消息发送:" + message.toString());
+    }
+
+    @Override
+    public void sessionClosed(IoSession session) throws Exception {
+        System.out.println("客户端session关闭");
+    }
+
+    @Override
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+        System.out.println("客户端session闲置");
+    }
+
+    @Override
+    public void sessionOpened(IoSession session) throws Exception {
+        System.out.println("客户端连接成功");
+    }
+
+    @Override
+    public void messageReceived(IoSession session, Object message) throws Exception {
+        System.out.println("客户端接收消息：" + message.toString());
+
+    }
+}
+```
+
+好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 
+
+
+
+补充：看到Mina中的XXXFuture就说明这个方法是异步执行的
+
+客户端的future.awaitUninterruptibly();相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用future.getSession();等方法时无法返回对象的情况
+
+可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。
+
+```java
+future.addListener(new IoFutureListener<IoFuture>() {//异步执行直到结果返回时回调方法
+            @Override
+            public void operationComplete(IoFuture ioFuture) {
+                
+            }
+});
+```
+
+这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：[mina框架详解](http://tbstone.iteye.com/blog/1976487)
+
+
+
+
+
+## 总结
+
+第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。
+
+下一篇将介绍如何用mina框架进行心跳检测。
+
+以上是我自己的一些理解，如有谬误，恳请各位前辈指出！
