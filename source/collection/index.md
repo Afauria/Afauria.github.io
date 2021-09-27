@@ -2,11 +2,7 @@
 layout: post
 title: 站点和工具收藏
 date: 2021-9-24
-categories: 工具
-tags: 
-- 工具
 description: 整理和收藏好用的站点、在线工具、资源下载、别人家的博客等
-keywords: [工具]
 ---
 <style>
   .item-list {
@@ -217,17 +213,19 @@ keywords: [工具]
 
 收藏别人家好看、有趣的博客主题。借鉴博客设计
 
-| 标题                                          | 描述                                     | 地址 |
-| --------------------------------------------- | ---------------------------------------- | ---- |
-| [云游君的小站](https://www.yunyoujun.cn/)     | 有趣的博客！前端开发、二次元大佬         |      |
-| [卜卜口](https://mouto.org/)                  | 有趣的博客！前端开发，二次元大佬、小工具 |      |
-| [麋鹿鲁哟](https://www.cnblogs.com/miluluyo/) | 好看的博客，前端开发                     |      |
-| [TIMEGG](https://timegg.top/)                 | 有趣的博客，游戏开发者，分享生活、想法   |      |
-| [JEROEN MOLS](https://jeroenmols.com/)        | Google开发专家，一位比利时大叔的博客     |      |
-| [月半兄的小站](https://yueban.github.io/)     | Android开发                              |      |
-| [bugstack虫洞栈](https://bugstack.cn/)        | 后端开发                                 |      |
-| [默默的点滴](https://www.mobibrw.com/)        | 数量庞大，感觉啥都会                     |      |
-| [闫肃的博客](http://yansu.org/index.html)     | 环境部署，生活在湾区的后端开发           |      |
+| 标题                                          | 描述                                                | 地址 |
+| --------------------------------------------- | --------------------------------------------------- | ---- |
+| [GitHub博客](https://github.blog/)            | GitHub博客。包含GitHub的发布信息、介绍、开发者API等 |      |
+| [云游君的小站](https://www.yunyoujun.cn/)     | 有趣的博客！前端开发、二次元大佬                    |      |
+| [卜卜口](https://mouto.org/)                  | 有趣的博客！前端开发，二次元大佬、小工具            |      |
+| [麋鹿鲁哟](https://www.cnblogs.com/miluluyo/) | 好看的博客，前端开发                                |      |
+| [EYHN](https://huaji8.top/)                   | 前端开发、二次元大佬、hexo博客、live2d卡通人物      |      |
+| [TIMEGG](https://timegg.top/)                 | 有趣的博客，游戏开发者，分享生活、想法              |      |
+| [JEROEN MOLS](https://jeroenmols.com/)        | Google开发专家，一位比利时大叔的博客                |      |
+| [月半兄的小站](https://yueban.github.io/)     | Android开发                                         |      |
+| [bugstack虫洞栈](https://bugstack.cn/)        | 后端开发                                            |      |
+| [默默的点滴](https://www.mobibrw.com/)        | 数量庞大，感觉啥都会                                |      |
+| [闫肃的博客](http://yansu.org/index.html)     | 环境部署，生活在湾区的后端开发                      |      |
 
 ## 友链
 
