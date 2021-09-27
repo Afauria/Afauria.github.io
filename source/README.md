@@ -1,9 +1,22 @@
-## 个人博客
+## 关于我
 
-[博客地址](https://afauria.github.io/)
+QQ：410013112
 
-用途：记录个人学习笔记、工具使用、分享技术、收藏文章等
+邮箱：afauria@foxmail.com
 
-使用框架：Hexo+GitPage+NexT
+学海无涯，见啥爱啥
 
-欢迎阅读讨论
+编程动漫小说游戏电视剧手工绘画戏曲等等，坐标广州
+
+[个人简历]()
+
+## 博客平台
+
+使用框架：Hexo+GitPage+NexT。通过 Hexo生成，部署在 [Github](https://github.com/Afauria)，主题使用 [NexT](http://theme-next.iissnan.com/) 。
+
+主要用于记录个人笔记，技术分享、工具使用、收藏站点，以及记录一些杂七杂八的事。
+
+菜鸟上路，如有建议或问题，欢迎讨论。还没有建评论区，可以提Issue
+
+如有侵权，请告知删除。
+

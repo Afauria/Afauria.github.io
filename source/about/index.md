@@ -15,12 +15,15 @@ QQ：410013112
 
 编程动漫小说游戏电视剧手工绘画戏曲等等，坐标广州
 
+[个人简历]()
+
 ## 博客平台
 
-通过 Hexo生成，部署在 [Github](https://github.com/moon-lights/moon-lights.github.io)，主题使用 [NexT](http://theme-next.iissnan.com/) 。
+使用框架：Hexo+GitPage+NexT。通过 Hexo生成，部署在 [Github](https://github.com/Afauria)，主题使用 [NexT](http://theme-next.iissnan.com/) 。
 
-主要用于记录个人笔记，分享技术文章，以及记录杂七杂八的事。
+主要用于记录个人笔记，技术分享、工具使用、收藏站点，以及记录一些杂七杂八的事。
 
-菜鸟上路，如有建议或问题，欢迎讨论。
+菜鸟上路，如有建议或问题，欢迎讨论。还没有建评论区，可以提Issue
 
 如有侵权，请告知删除。
+
