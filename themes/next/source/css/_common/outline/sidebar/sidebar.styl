@@ -1,0 +1,61 @@
+.sidebar {
+  background: url(/images/sidebar_bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  bottom: 0;
+  if (!hexo-config('back2top.sidebar')){
+    box-shadow: inset 0 2px 6px black;
+  }
+  position: fixed;
+  top: 0;
+
+  +tablet-mobile() {
+    if (!hexo-config('sidebar.onmobile')) {
+      display: none;
+    }
+  }
+}
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(22,27,33,0.85);
+}
+.sidebar-inner {
+  color: $grey-dark;
+  padding: $sidebar-padding 10px;
+  text-align: center;
+}
+
+.cc-license {
+  margin-top: 10px;
+  text-align: center;
+
+  .cc-opacity {
+    border-bottom: none;
+    opacity: .7;
+
+    &:hover {
+      opacity: .9;
+    }
+  }
+
+  img {
+    display: inline-block;
+  }
+}
+
+@import 'sidebar-author';
+@import 'sidebar-author-links';
+@import 'sidebar-button';
+@import 'sidebar-blogroll';
+@import 'sidebar-dimmer';
+@import 'sidebar-nav';
+@import 'sidebar-toggle';
+
+@import 'sidebar-toc' if (hexo-config('toc.enable'));
+
+@import 'site-state' if (hexo-config('site_state'));
