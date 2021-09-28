@@ -618,6 +618,23 @@ dispatchMessage-->判断是否是通知消息
     </ul>
   </div>
 
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
       </div>
 
     </div>

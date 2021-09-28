@@ -2702,7 +2702,8 @@ dispatchMessage-->判断是否是通知消息
   <entry>
     <title>NexTConfig</title>
     <url>/2018/10/20/blog-2018-10-20-NexTConfig/</url>
-    <content><![CDATA[<h1 id="NexT配置"><a href="#NexT配置" class="headerlink" title="NexT配置"></a>NexT配置</h1><h2 id="添加Readme-md文件"><a href="#添加Readme-md文件" class="headerlink" title="添加Readme.md文件"></a>添加Readme.md文件</h2><p>在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件<code>_config.yml</code>，将skip_render参数的值设置为<code>skip_render: README.md</code>，跳过渲染该文件</p>
+    <content><![CDATA[<h1 id="博客效果"><a href="#博客效果" class="headerlink" title="博客效果"></a>博客效果</h1><p><img src="/images/BuildBlog/next-effect.png" alt="博客效果"></p>
+<h1 id="NexT配置"><a href="#NexT配置" class="headerlink" title="NexT配置"></a>NexT配置</h1><h2 id="添加Readme-md文件"><a href="#添加Readme-md文件" class="headerlink" title="添加Readme.md文件"></a>添加Readme.md文件</h2><p>在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件<code>_config.yml</code>，将skip_render参数的值设置为<code>skip_render: README.md</code>，跳过渲染该文件</p>
 <h2 id="添加动态背景"><a href="#添加动态背景" class="headerlink" title="添加动态背景"></a>添加动态背景</h2><p>修改主题配置文件 themes/next/_config.yml，不同动态背景，值为true应用：</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">canvas_nest:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">three_waves:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_lines:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_sphere:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Only fit scheme Pisces</span></span><br><span class="line"><span class="attr">canvas_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">size:</span> <span class="number">300</span></span><br><span class="line">  <span class="attr">alpha:</span> <span class="number">0.6</span></span><br><span class="line">  <span class="attr">zIndex:</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
 
@@ -2727,7 +2728,7 @@ dispatchMessage-->判断是否是通知消息
 <p>打开浏览器开发者工具，找到html元素，查看本地和GitPage页面差异，发现两者<code>main.css</code>样式不同，GitPage上搜素框css样式丢失</p>
 <p>解决：<code>hexo clean</code>清除之前的编译结果，<code>hexo g -d</code>重新部署</p>
 </blockquote>
-<h2 id="去掉NexT自带的文章目录序号"><a href="#去掉NexT自带的文章目录序号" class="headerlink" title="去掉NexT自带的文章目录序号"></a>去掉NexT自带的文章目录序号</h2><p>NexT会为文章自动加上目录，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件</p>
+<h2 id="去掉NexT自带的文章目录序号"><a href="#去掉NexT自带的文章目录序号" class="headerlink" title="去掉NexT自带的文章目录序号"></a>去掉NexT自带的文章目录序号</h2><p>NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件</p>
 <p><img src="/images/BuildBlog/config01.png" alt="去掉文章目录序号"></p>
 <h2 id="生成分类、标签和关于页面"><a href="#生成分类、标签和关于页面" class="headerlink" title="生成分类、标签和关于页面"></a>生成分类、标签和关于页面</h2><h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p><code>hexo new page tags</code>：在<code>站点/source/</code>目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: 2018-04-04</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
@@ -2744,17 +2745,29 @@ dispatchMessage-->判断是否是通知消息
 </ol>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">live2d:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">scriptFrom:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">tagMode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">log:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">model:</span></span><br><span class="line">    <span class="attr">use:</span> <span class="string">live2d-widget-model-koharu</span></span><br><span class="line">  <span class="attr">display:</span></span><br><span class="line">    <span class="attr">position:</span> <span class="string">right</span></span><br><span class="line">    <span class="attr">width:</span> <span class="number">250</span></span><br><span class="line">    <span class="attr">height:</span> <span class="number">500</span></span><br><span class="line">  <span class="attr">mobile:</span></span><br><span class="line">    <span class="attr">show:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">scale:</span> <span class="number">0.5</span></span><br><span class="line">  <span class="attr">react:</span></span><br><span class="line">    <span class="attr">opacity:</span> <span class="number">0.7</span></span><br></pre></td></tr></table></figure>
 
-
-
 <h2 id="右上角配置Fork-me-on-GitHub入口"><a href="#右上角配置Fork-me-on-GitHub入口" class="headerlink" title="右上角配置Fork me on GitHub入口"></a>右上角配置Fork me on GitHub入口</h2><ol>
-<li><p>到<a href="http://tholman.com/github-corners/">GitHub Corners</a>或者<a href="https://github.blog/2008-12-19-github-ribbons/">GitHub Ribbons</a>选择喜欢的图标，copy相应的代码</p>
-</li>
-<li><p>将代码粘贴到<code>themes/next/layout/_layout.swig</code>文件中(放在<code>body</code>的内即可)</p>
-</li>
-<li><p>修改<code>href</code>链接为想要跳转的地址，如GitHub主页</p>
-</li>
+<li>到<a href="http://tholman.com/github-corners/">GitHub Corners</a>或者<a href="https://github.blog/2008-12-19-github-ribbons/">GitHub Ribbons</a>选择喜欢的图标，copy相应的代码</li>
+<li>将代码粘贴到<code>themes/next/layout/_layout.swig</code>文件中(放在<code>body</code>的内即可)</li>
+<li>修改<code>href</code>链接为想要跳转的地址，如GitHub主页</li>
 </ol>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a><br><a href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a><br><a href="https://blog.csdn.net/qq_40265501/article/details/80030627">hexo博客添加搜索功能</a></p>
+<h2 id="添加每日一言-今日诗词"><a href="#添加每日一言-今日诗词" class="headerlink" title="添加每日一言/今日诗词"></a>添加每日一言/今日诗词</h2><ol>
+<li>在<strong>layout或者md文档</strong>中添加下面代码。我是将今日诗词添加到了<strong>关于页面</strong>，将每日一言添加到了<code>/themes/next/layout/_partials/sidebar/site_overview.swig</code>中</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--今日诗词--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-wrap&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-left&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-title&quot;</span>&gt;</span>念两句诗<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;poem&quot;</span>&gt;</span>挑选中...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;info&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://sdk.jinrishici.com/v2/browser/jinrishici.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">    jinrishici.load(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span></span><br><span class="line">      poem.innerHTML = result.data.content</span><br><span class="line"><span class="javascript">      info.innerHTML = <span class="string">&#x27;【&#x27;</span> + result.data.origin.dynasty + <span class="string">&#x27;】&#x27;</span> + result.data.origin.author + <span class="string">&#x27;《&#x27;</span> + result.data.origin.title + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--每日一言--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-side&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokoto&quot;</span>&gt;</span>loading...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokotofrom&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">  fetch(<span class="string">&#x27;https://v1.hitokoto.cn&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">response</span> =&gt;</span> response.json())</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span></span><br><span class="line">       	hitokoto.innerHTML = data.hitokoto</span><br><span class="line"><span class="javascript">    	<span class="keyword">if</span>(data.from_who != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">      	  hitokotofrom.innerHTML =<span class="string">&#x27;——&#x27;</span> + data.from_who + <span class="string">&#x27; 《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line"><span class="javascript">      	&#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="javascript">	  hitokotofrom.innerHTML =<span class="string">&#x27;——《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span> </span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="javascript">    .catch(<span class="built_in">console</span>.error) </span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在<code>/themes/next/source/css</code>中添加下面的css样式，也可自行修改样式</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.poem-wrap</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">730px</span>;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">80%</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#797979</span>;</span><br><span class="line">    <span class="attribute">border-top</span>: none;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">80px</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-wrap</span> <span class="selector-class">.poem-title</span> &#123;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">&#x27;Lato&#x27;</span>, <span class="string">&quot;PingFang SC&quot;</span>, <span class="string">&quot;Microsoft YaHei&quot;</span>, sans-serif;</span><br><span class="line">    <span class="attribute">font-weight</span>: bold;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.5</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">20px</span> <span class="number">0</span> <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">letter-spacing</span>: <span class="number">4px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#797979</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.poem-wrap</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">    <span class="attribute">margin</span>: auto;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#797979</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-wrap</span> <span class="selector-tag">p</span><span class="selector-id">#poem</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">25px</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-wrap</span> <span class="selector-tag">p</span><span class="selector-id">#info</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">15px</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.poem-border</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">2px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">27%</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#797979</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-right</span> &#123;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-left</span> &#123;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@media</span> (<span class="attribute">max-width</span>: <span class="number">685px</span>) &#123;</span><br><span class="line">    <span class="selector-class">.poem-border</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">18%</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@media</span> (<span class="attribute">max-width</span>: <span class="number">500px</span>) &#123;</span><br><span class="line">    <span class="selector-class">.poem-wrap</span> &#123;</span><br><span class="line">        <span class="attribute">margin-top</span>: <span class="number">60px</span>;</span><br><span class="line">        <span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">        <span class="attribute">border-top</span>: <span class="number">2px</span> solid <span class="number">#797979</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="selector-class">.poem-wrap</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">20px</span> <span class="number">6px</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="selector-class">.poem-border</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>: none;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.poem-side</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">0px</span>);</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#f5f5f5</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">90%</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0px</span> <span class="number">5%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.poem-side</span> <span class="selector-tag">div</span><span class="selector-id">#hitokoto</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: left;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="selector-class">.poem-side</span> <span class="selector-tag">div</span><span class="selector-id">#hitokotofrom</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ol>
+<li><a href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a></li>
+<li><a href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a></li>
+<li><a href="https://blog.csdn.net/qq_40265501/article/details/80030627">hexo博客添加搜索功能</a></li>
+<li><a href="https://blog.csdn.net/qq_44036990/article/details/105088198">hexo(next)——每日一言、今日诗词</a></li>
+</ol>
 ]]></content>
       <categories>
         <category>工具</category>
@@ -4438,9 +4451,13 @@ end</pre>
 <li>“可是医生，我就是那个小丑啊”</li>
 </ul>
 </li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。《山姆先生》</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
 <li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
 <li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
 </ul>
 </li>
 </ul>
@@ -4452,10 +4469,6 @@ end</pre>
 
 
 
-<h3 id="《灵魂摆渡》"><a href="#《灵魂摆渡》" class="headerlink" title="《灵魂摆渡》"></a>《灵魂摆渡》</h3><ul>
-<li>阿娘说：想吃什么，什么便是良药</li>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
 
 
@@ -4565,11 +4578,32 @@ end</pre>
 </li>
 <li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
 </li>
+<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
+</li>
+<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
+</li>
+<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
+</li>
+<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
+</li>
+<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
+</li>
+<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
+</li>
+<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
+</li>
+<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
+<ul>
+<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
+</ul>
+</li>
+</ul>
+<ul>
 <li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
 </li>
 <li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
 <ol start="2">
-<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br> 3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
+<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
 <li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
 <li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
 <li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
@@ -4577,18 +4611,7 @@ end</pre>
 </li>
 <li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
 </li>
-<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
-</li>
-<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
-</li>
-<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
-</li>
-</ul>
-<p>  对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是rd解问题的时候考虑的远远不是解完该问题就好了</p>
-<ul>
-<li>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会<ul>
-<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
-</ul>
+<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
 </li>
 </ul>
 ]]></content>
@@ -6831,9 +6854,9 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>情话</title>
+    <title>独角戏</title>
     <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
-    <content><![CDATA[<ul>
+    <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
 <li><p>如果有一天我说想你了，不是说这天我想你了，是说这天我憋不住了。</p>
 </li>
 <li><p>听到这音乐，第一个通宵就是在魔法密林刷级</p>
@@ -6841,8 +6864,6 @@ end</pre>
 <li><p>与其说是孤独 不如坦诚的讲自己没有全心全意的与人相处 老友没有再联系 新朋友不去信任 对亲密的人说不出口 只能从陌生人身上寻找慰藉 反正也没有人知道我是谁 去哪里 跑向谁</p>
 </li>
 <li><p>若你身边无爱，祝你卡里有钱。</p>
-</li>
-<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
 </li>
 <li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后地你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也会是。</p>
 </li>
@@ -6922,8 +6943,6 @@ end</pre>
 <li>我见众生皆草木，唯你是青山</li>
 <li>众生见我皆草木，唯你视我如青山</li>
 </ul>
-</li>
-<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
 </li>
 <li><p>你是目前为止我碰到的唯一一个我追不到还会不开心的人，事情还是一样地在重复，我喜欢你的时候，你是一切，我不喜欢你了，你就什么都不是了。以前的我，也许会放大你的缺点来让自己迅速忘记，然而现在的自己已然可以将大部分错误都归到自己身上了。</p>
 </li>
@@ -7034,10 +7053,6 @@ end</pre>
 <li><p>忽然明白了那个叫周幽王的二百五为什么会烽火戏诸侯了，奶奶的，要是你喜欢的女孩会因此对你笑笑，踹翻全世界的事情也不是做不出来。</p>
 </li>
 <li><p>删去成行的字，最后打了个嗯发给你。没关系，不是所有的情绪都要告诉你，比如我的不开心，比如我好想你</p>
-</li>
-<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
-</li>
-<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
 </li>
 <li><p>人平均活到68岁，一共两万四千八百二十天，十九万个小时，三千五百万分钟，差不多二十一亿秒左右，这十秒，你在读这段话，这十秒，你只属于我，陌生人，我爱你。</p>
 </li>

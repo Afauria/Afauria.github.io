@@ -431,8 +431,8 @@
       <i class="fa fa-chevron-left"></i> Hello World
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/04/14/personal-2018-04-14-AsSingler/" rel="next" title="情话">
-      情话 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/04/14/personal-2018-04-14-AsSingler/" rel="next" title="独角戏">
+      独角戏 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -551,6 +551,23 @@
     </ul>
   </div>
 
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
       </div>
 
     </div>
