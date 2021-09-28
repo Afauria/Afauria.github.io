@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Docker for windows+Jenkins+gradle+android项目配置及踩坑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker for windows+Jenkins+gradle配置">
+<meta property="og:url" content="http://yoursite.com/2019/01/14/tool-2019-1-14-Docker-Jenkins/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="Docker for windows+Jenkins+gradle+android项目配置及踩坑">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins01.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins02.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins03.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins04.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins05.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins09.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins08.png">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker07.png">
+<meta property="og:image" content="http://yoursite.com/images/Jenkins/jenkins14.png">
+<meta property="article:published_time" content="2019-01-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.155Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/Jenkins/jenkins01.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/01/14/tool-2019-1-14-Docker-Jenkins/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker for windows+Jenkins+gradle配置 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/tool-2019-1-14-Docker-Jenkins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker for windows+Jenkins+gradle配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-14T00:00:00+08:00">2019-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Docker for windows+Jenkins+gradle+android项目配置及踩坑</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-docker运行jenkins"><a href="#1-docker运行jenkins" class="headerlink" title="1. docker运行jenkins"></a>1. docker运行jenkins</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这里使用的docker是windows版的，路径和linux或mac不一样，坑也更多一点。主要就是因为容器的特性，搞明白了之后大部分的问题都可以解决了，具体总结为下面两个原因：</p>
+<ul>
+<li><strong>使用docker配置jenkins路径有很大的不同，原因是容器内无法访问主机目录，因此需要将主机目录挂载到容器中，Jenkins配置都要使用容器中的目录</strong>，</li>
+<li><strong>容器内的各种环境也是隔离的，相当于一个独立的系统（类似Win10内置的Linux子系统功能）。也就是说需要的环境都得在容器内再安装一遍。也可以使用挂载，将主机的安装路径挂载到容器中，然后容器中再像Linux一样配置环境变量，这样的好处是和主机版本一致，而且不会增加容器大小。</strong><ul>
+<li>如java、python、gradle、android sdk等环境</li>
+</ul>
+</li>
+</ul>
+<p>还有一点要注意的：</p>
+<p><strong>docker容器删掉之后下次再运行，所有的数据都会清空，再创建一个新的容器。因此需要持久化数据</strong>：方法和上面一样，将主机上的目录挂载到docker容器中，对容器目录的读写操作即是对主机的读写，删除容器不会删除主机上的数据，重新创建容器的时候只需要再次挂载主机目录。</p>
+<p>我的主机存储路径是这样的（根据需要自行替换）：</p>
+<ul>
+<li><code>E:\ASproject</code>：存放android项目</li>
+<li><code>D:\Docker\Volume\Jenkins</code>：用于持久化容器</li>
+<li><code>D:\android-sdk-windows</code>：存放安卓sdk</li>
+</ul>
+<h2 id="1-1-docker安装jenkins"><a href="#1-1-docker安装jenkins" class="headerlink" title="1.1. docker安装jenkins"></a>1.1. docker安装jenkins</h2><ul>
+<li><code>docker search jenkins</code>：在docker hub查找jenkins镜像</li>
+</ul>
+<p>搜到的第一个jenkins镜像（Official Jenkins Docker iage）版本太老了，会有很多问题，这里使用jenkins/jenkins镜像。</p>
+<ul>
+<li><code>docker pull jenkins/jenkins</code>：拉取镜像</li>
+<li><code>docker run -d -p 8082:8080 -p 50000:50000 --name myjenkins -v /d/Docker/Volume/Jenkins:/var/jenkins_home -v /e/ASproject:/var/as_project -v /d/android-sdk-windows:/var/android_sdk jenkins/jenkins:lts</code>：运行jenkins，<ul>
+<li><code>-v 主机目录:容器目录</code>：主机目录挂载到容器目录</li>
+<li><code>-p 主机端口:容器端口</code>：容器端口映射到主机端口</li>
+<li><code>-d</code>：后台运行</li>
+<li><code>--name</code>：容器命名，这里命名为<code>myjenkins</code>，可自行替换，后面用到的也替换</li>
+</ul>
+</li>
+<li>浏览器访问<code>localhost:8082</code>：能够访问即成功了</li>
+</ul>
+<p>挂载目录解释：</p>
+<p>Jenkins的很多配置需要设置路径（如jdk、gradle、android sdk、项目workspace等），而容器内无法访问主机的目录，使用主机目录会配置失败，因此需要将主机目录挂载到容器中</p>
+<p><code>-v /d/Docker/Volume/Jenkins:/var/jenkins_home</code>：将主机<code>D:\Docker\Volume\Jenkins</code>挂载到容器的<code>/var/jenkins_home</code>，即访问<code>/var/jenkins_home</code>就是访问主机<code>D:\Docker\Volume\Jenkins</code>。这样做是为了容器持久化，否则删除容器之后所有的配置都会消失。重新运行容器之后只要再次挂载这个目录就能恢复配置。</p>
+<p><code>-v /e/ASproject:/var/as_project</code>：这样做是为了把项目工作区挂载到容器中，不然访问不到安卓的项目，也可以把项目复制到刚才挂载的<code>D:\Docker\Volume\Jenkins</code>这个目录下，让容器能够访问到，不推荐这么做，因为会改变原先项目的路径，而且太大了，所以单独挂载到容器的一个新的目录作为工作区，原先项目路径也不用改变。</p>
+<p><code>-v /d/android-sdk-windows:/var/android_sdk</code>：同样的道理，把本机的sdk挂载到容器的新目录中，不用在容器中再装一次sdk</p>
+<h2 id="1-2-Jenkins初始化"><a href="#1-2-Jenkins初始化" class="headerlink" title="1.2. Jenkins初始化"></a>1.2. Jenkins初始化</h2><h3 id="1-2-1-第一次进入需要初始密码"><a href="#1-2-1-第一次进入需要初始密码" class="headerlink" title="1.2.1. 第一次进入需要初始密码"></a>1.2.1. 第一次进入需要初始密码</h3><ul>
+<li><p>可以直接访问刚才挂载的主机目录：<code>D:\Docker\Volume\Jenkins\secrets\initialAdminPassword</code></p>
+</li>
+<li><p>或者使用命令行</p>
+<ul>
+<li><code>docker exec -it myjenkins /bin/bash</code>进入容器。</li>
+<li><code>cd var/jenkins_home/secrets</code>进入目录</li>
+<li><code>cat initialAdminPassword</code>：查看密码，复制到浏览器</li>
+</ul>
+</li>
+<li><p>设置了用户密码之后这个文件就没了</p>
+</li>
+</ul>
+<h3 id="1-2-2-安装插件"><a href="#1-2-2-安装插件" class="headerlink" title="1.2.2. 安装插件"></a>1.2.2. 安装插件</h3><p>上一步输入密码之后提示安装插件，使用推荐安装，或者自行选择插件</p>
+<p>失败了没关系，进去之后可以到系统管理–插件管理中再安装</p>
+<h3 id="1-2-3-设置用户名、密码"><a href="#1-2-3-设置用户名、密码" class="headerlink" title="1.2.3. 设置用户名、密码"></a>1.2.3. 设置用户名、密码</h3><h2 id="1-3-Jenkins配置"><a href="#1-3-Jenkins配置" class="headerlink" title="1.3. Jenkins配置"></a>1.3. Jenkins配置</h2><h3 id="1-3-1-环境变量配置"><a href="#1-3-1-环境变量配置" class="headerlink" title="1.3.1. 环境变量配置"></a>1.3.1. 环境变量配置</h3><p>进入系统管理–系统设置，如下，这里使用刚才挂载的容器内的路径，不能直接用<code>D:\android-sdk-windows</code></p>
+<p><img src="/images/Jenkins/jenkins01.png" alt="Jenkins环境变量配置"></p>
+<p>注：这个版本的Jenkins镜像好像自带了java环境，因此不用再配置java环境变量，也不用将主机jdk目录挂载到容器内</p>
+<h3 id="1-3-2-全局工具配置"><a href="#1-3-2-全局工具配置" class="headerlink" title="1.3.2. 全局工具配置"></a>1.3.2. 全局工具配置</h3><p>配置gradle路径，将安装的gradle整个拷贝到<code>D:\Docker\Volume\Jenkins</code>中，对应容器中的<code>/var/jenkins_home</code>（当然也可以按照上面的挂载方法，将主机安装的gradle挂载到容器新的目录）,这里配置如下</p>
+<p><img src="/images/Jenkins/jenkins02.png" alt="Jenkins环境变量配置"></p>
+<p>注：</p>
+<ul>
+<li>android studio安装的gradle一般是在<code>C:\Users\XXX\.gradle\wrapper\dists\gradle-4.6-all\bcst21l2brirad8k2ben1letg\gradle-4.6</code>，将这个文件夹复制到容器能够访问到的主机目录即可</li>
+<li>jdk不需要配置，这个版本的jenkins镜像自带了java环境</li>
+</ul>
+<h2 id="1-4-任务配置"><a href="#1-4-任务配置" class="headerlink" title="1.4. 任务配置"></a>1.4. 任务配置</h2><p>任务就是每次执行任务的模板，可以查看执行日志，第几次执行等</p>
+<p>创建任务、填写名字、描述、这些较简单，跳过，这里只讲关键的配置</p>
+<h3 id="1-4-1-工作区配置"><a href="#1-4-1-工作区配置" class="headerlink" title="1.4.1. 工作区配置"></a>1.4.1. 工作区配置</h3><p>点击advanced展开配置</p>
+<p>刚才我们使用<code>-v /e/ASproject:/var/as_project</code>，把主机的android项目目录挂载到了容器的中，因此可以通过容器路径访问主机上的TestProject项目，因此配置如下</p>
+<p><img src="/images/Jenkins/jenkins03.png" alt="Jenkins环境变量配置"></p>
+<h3 id="1-4-2-Build配置"><a href="#1-4-2-Build配置" class="headerlink" title="1.4.2. Build配置"></a>1.4.2. Build配置</h3><p>会在上面配置的工作区上执行脚本，有多种脚本可以执行，如gradle，shell等。可以写一些简单的脚本进行测试，比如打印java版本，查看当前目录文件等。gradle脚本选择刚才在全局工具配置中的名称</p>
+<p><img src="/images/Jenkins/jenkins04.png" alt="Jenkins环境变量配置"></p>
+<p>点开左边的构建历史，查看某次构建，如下</p>
+<p><img src="/images/Jenkins/jenkins05.png" alt="Jenkins环境变量配置"></p>
+<p>注：我们的docker内部是使用linux环境的（也可以切换成windows的），因此能够选择<code>执行shell</code>，而不能选择<code>执行Windows批处理命令</code></p>
+<h3 id="1-4-3-代码远程仓库配置"><a href="#1-4-3-代码远程仓库配置" class="headerlink" title="1.4.3. 代码远程仓库配置"></a>1.4.3. 代码远程仓库配置</h3><p>留坑</p>
+<p>配置ssh访问github：使用docker exec命令进入容器，然后参考linux配置，参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_38139979/article/details/82820972">Linux   ssh访问Github相关配置</a></p>
+<h2 id="1-5-其他"><a href="#1-5-其他" class="headerlink" title="1.5. 其他"></a>1.5. 其他</h2><h3 id="1-5-1-python环境安装"><a href="#1-5-1-python环境安装" class="headerlink" title="1.5.1. python环境安装"></a>1.5.1. python环境安装</h3><p>Job配置的时候可以配置python脚本，也可以配置shell，通过shell命令来执行python脚本。如 <code>python /var/jenkins_home/scripts/***.py</code>。</p>
+<p><strong>注：脚本路径要用容器内路径，不能用主机上的路径</strong></p>
+<p>docker版的jenkins自带了python2的环境，但是没有pip，因此需要再安装pip：</p>
+<ul>
+<li>使用<code>docker exec -it &lt;容器名/容器id&gt; /bin/bash</code>进入容器内，然后就当Linux环境进行安装就可以了</li>
+</ul>
+<p>参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/technologylife/p/5870576.html"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/technologylife/p/5870576.html">Linux 下安装pip</a></a>，输入以下命令（安装的是python2的pip）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> wget https://bootstrap.pypa.io/get-pip.py</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python get-pip.py</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> pip -V　　<span class="comment">#查看pip版本</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>不过这样安装有个问题，就是删除容器之后下次需要再次安装模块</strong>：解决思路应该是把主机上的python安装目录整个挂载到容器中，然后再<code>run</code>的时候通过<code>--env</code>设置环境变量，替换掉jenkins自带的python。<strong>没试过，应该可行。有知道的大佬可以联系我</strong></p>
+<p>保存一下需要安装的模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br><span class="line">pip install gitpython</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-踩坑"><a href="#2-踩坑" class="headerlink" title="2. 踩坑"></a>2. 踩坑</h1><h2 id="2-1-docker-for-windows重启电脑"><a href="#2-1-docker-for-windows重启电脑" class="headerlink" title="2.1. docker for windows重启电脑"></a>2.1. docker for windows重启电脑</h2><p>每次电脑重启，容器显示在运行，但是已经不能用了，执行restart重启容器会报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error response from daemon: Cannot restart container myjenkins: </span><br><span class="line">driver failed programming external connectivity on endpoint myjenkins </span><br><span class="line">(0e1a94a2783d0ff6acc8a8580652692a27bd5dea24bfa2d45d329bb5764bfaa0): </span><br><span class="line">Error starting userland proxy: mkdir /port/tcp:0.0.0.0:8082:tcp:172.26.0.2:8080: input/output error</span><br></pre></td></tr></table></figure>
+
+<p>解决：不知道什么原因，将docker服务整个重启即可</p>
+<h2 id="2-2-gradle配置"><a href="#2-2-gradle配置" class="headerlink" title="2.2. gradle配置"></a>2.2. gradle配置</h2><p>将gradle复制到jenkins容器映射目录（即主机的<code>d:\Docker\Volume\Jenkins</code>），在系统管理–全局工具配置-Gradle中的<code>GRALDE_HOME</code>使用路径<code>/var/jenkins_home/gradle-4.6</code>。gradle-wrapper不知道怎么弄，没成功过</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//gradle路径不正确</span><br><span class="line">Started by user unknown or anonymous</span><br><span class="line">Building in workspace E:\ASproject\FireSecure</span><br><span class="line">[Gradle] - Launching build.</span><br><span class="line">[Gradle] - [ERROR] Can&#x27;t retrieve the Gradle executable.</span><br><span class="line">Build step &#x27;Invoke Gradle script&#x27; marked build as failure</span><br><span class="line">Finished: FAILURE</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-java环境配置"><a href="#2-3-java环境配置" class="headerlink" title="2.3. java环境配置"></a>2.3. java环境配置</h2><p>docker里面有个java环境（docker-java-home），不知道是装docker就有的，还是装jenkins才弄上去的，<br>（猜测应该是jenkins自带的，我看了一下其他容器（nginx）没有java环境。nexus也有一个java环境，路径和jenkins不一样，不过版本一模一样，让我有点怀疑）<br>（网上说需要在系统管理–系统设置里设置Jenkins的JAVA_HOME环境变量，docker版的好像不需要，默认设置了docker-java-home）</p>
+<h2 id="2-4-java-version（注意：不是–）"><a href="#2-4-java-version（注意：不是–）" class="headerlink" title="2.4. java -version（注意：不是–）"></a>2.4. java -version（注意：不是–）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Error: Could not create the Java Virtual Machine.</span><br><span class="line">Error: A fatal exception has occurred. Program will exit.</span><br><span class="line">Build step &#x27;Execute shell&#x27; marked build as failure</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-docker内的容器找不到主机路径，需要Volume挂载"><a href="#2-5-docker内的容器找不到主机路径，需要Volume挂载" class="headerlink" title="2.5. docker内的容器找不到主机路径，需要Volume挂载"></a>2.5. docker内的容器找不到主机路径，需要Volume挂载</h2><p><strong>这个是最常见的，可能会以各种各样的形式出现</strong></p>
+<h3 id="2-5-1-容器访问主机上的工程"><a href="#2-5-1-容器访问主机上的工程" class="headerlink" title="2.5.1. 容器访问主机上的工程"></a>2.5.1. 容器访问主机上的工程</h3><p>默认workspace在容器内的var/jenkins_home路径，上面我们已经通过<code>-v /d/Docker/Volume/Jenkins:/var/jenkins_home</code> 把主机的<code>d:\Docker\Volume\Jenkins</code>挂载到该目录下面了，访问<code>var/jenkins_home</code>就是访问<code>d:\Docker\Volume\Jenkins</code>。</p>
+<p>也就是说需要将Android工程都复制到<code>d:\Docker\Volume\Jenkins</code>里面，然后通过<code>/var/jenkins_home</code>去访问具体的项目。</p>
+<p>这样做的坏处显而易见，主机上的文件和docker容器文件混在一起，结构不清晰（强迫症受不了，目录和命名都要清清楚楚），要删除也不方便（我们要做的是随时可拆卸）。</p>
+<p>解决办法很简单，还是挂载，将工程目录挂载到容器中一个新的目录下，单独存放工程。在run的时候使用<code>-v /e/ASproject:/var/as_project</code>挂载一个新的目录，<code>e:\ASproject</code>是放我的android项目，然后挂载到容器内的<code>/var/as_project</code>，访问<code>/var/as_project</code>就是访问<code>e:\ASproject</code>。</p>
+<p>如果有java工程或者前端工程的话，可以按这种方式再挂载一个新的目录，然后在job里面需要配置Custom Workspace</p>
+<h3 id="2-5-2-容器内Android-Sdk路径"><a href="#2-5-2-容器内Android-Sdk路径" class="headerlink" title="2.5.2. 容器内Android Sdk路径"></a>2.5.2. 容器内Android Sdk路径</h3><p>同理，Android项目的local.properties文件中用来指定sdk路径，一般是主机sdk路径。</p>
+<p>这里也要修改成容器内的路径，否则执行编译的时候会找不到sdk路径，本地开发的时候再调成主机sdk路径。如图</p>
+<p><img src="/images/Jenkins/jenkins09.png" alt="Android Sdk路径"></p>
+<p><strong>注：这里还有一个坑</strong></p>
+<p>执行gradle的upload命令时一直报<code>llvm-rs-cc is missing</code>，在主机上运行没问题，容器中执行就报这个错。找了很久，发现是sdk的build_tools出了问题。</p>
+<p>原因：主机是windows环境，下载的是windows版本的sdk，容器内是linux环境，通过上面的方法挂载主机的sdk，在容器中使用会出错。</p>
+<p>解决办法：下载linux版本的android sdk，sdk比较大，有些文件是通用的，可以不用重复下载（build-tools刚好是不通用的，因此报了上面的错误）</p>
+<p>具体方法可以看这篇文章：<a target="_blank" rel="noopener" href="https://www.kafan.cn/edu/84098914.html">windows和linux下androidSDK</a></p>
+<p>顺便学下linux下安装android sdk：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011974797/article/details/78973012">Linux – 安装配置Android SDK</a></p>
+<h2 id="2-6-Force-GRADLE-USER-HOME-to-use-workspace"><a href="#2-6-Force-GRADLE-USER-HOME-to-use-workspace" class="headerlink" title="2.6. Force GRADLE_USER_HOME to use workspace"></a>2.6. Force GRADLE_USER_HOME to use workspace</h2><p>这个选项是把gradle缓存之类的（就是平时用户目录下的.gradle/下的东西）都放到workspace里，网上说勾上，但这里我不建议勾选，不勾选他会下到<code>/root</code>目录下，所有项目共用（和平时一样）。</p>
+<h2 id="2-7-job左边的workspace里面有一个清扫工作空间，看到一篇文章说"><a href="#2-7-job左边的workspace里面有一个清扫工作空间，看到一篇文章说" class="headerlink" title="2.7. job左边的workspace里面有一个清扫工作空间，看到一篇文章说"></a>2.7. job左边的workspace里面有一个清扫工作空间，看到一篇文章说</h2><p><img src="/images/Jenkins/jenkins08.png" alt="Jenkins成功图"></p>
+<p><strong>这里提醒一下，删除job不会删除项目，但是点击了清理工作空间，整个项目都会被删掉（慎用！！！！！）</strong></p>
+<h2 id="2-8-docker中使用vim，有的容器有（nexus），有的容器没有（nginx、jenkins）"><a href="#2-8-docker中使用vim，有的容器有（nexus），有的容器没有（nginx、jenkins）" class="headerlink" title="2.8. docker中使用vim，有的容器有（nexus），有的容器没有（nginx、jenkins）"></a>2.8. docker中使用vim，有的容器有（nexus），有的容器没有（nginx、jenkins）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">更新来源</span></span><br><span class="line">apt-get update</span><br><span class="line"><span class="meta">#</span><span class="bash">安装vim</span></span><br><span class="line">apt-get install -y vim</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-10-执行compileDebug-stacktrace-出错，改为gradlew-compileDebugJavaWithJavac-stacktrace"><a href="#2-10-执行compileDebug-stacktrace-出错，改为gradlew-compileDebugJavaWithJavac-stacktrace" class="headerlink" title="2.10. 执行compileDebug --stacktrace 出错，改为gradlew compileDebugJavaWithJavac --stacktrace"></a>2.10. 执行<code>compileDebug --stacktrace </code>出错，改为<code>gradlew compileDebugJavaWithJavac --stacktrace</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.execution.TaskSelectionException: Task ‘compileDebug’ is ambiguous in root project ‘NJCitizenCardApp’. Candidates are: ‘compileDebugAidl’, ‘compileDebugAndroidTestAidl’, ‘compileDebugAndroidTestJavaWithJavac’, ‘compileDebugAndroidTestNdk’, ‘compileDebugAndroidTestRend</span><br><span class="line">erscript’, ‘compileDebugAndroidTestShaders’, ‘compileDebugAndroidTestSources’, ‘compileDebugJavaWithJavac’, ‘compileDebugNdk’, ‘compileDebugRenderscript’, ‘compileDebugShaders’, ‘compileDebugSources’, ‘compileDebugUnitTestJavaWithJavac’, ‘compileDebugUnitTestSources’.</span><br><span class="line">at org.gradle.execution.TaskSelector.getSelection(TaskSelector.java:116)</span><br><span class="line">at org.gradle.execution.TaskSelector.getSelection(TaskSelector.java:81)</span><br><span class="line">at org.gradle.execution.commandline.CommandLineTaskParser.parseTasks(CommandLineTaskParser.java:42)</span><br><span class="line">at org.gradle.execution.TaskNameResolvingBuildConfigurationAction.configure(TaskNameResolvingBuildConfigurationAction.java:44)</span><br><span class="line">at org.gradle.execution.DefaultBuildConfigurationActionExecuter.configure(DefaultBuildConfigurationActionExecuter.java:48)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-11-执行build命令的时候出现这个"><a href="#2-11-执行build命令的时候出现这个" class="headerlink" title="2.11. 执行build命令的时候出现这个"></a>2.11. 执行<code>build</code>命令的时候出现这个</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: llvm-rs-cc is missing </span><br><span class="line">at com.android.builder.core.AndroidBuilder.compileAllRenderscriptFiles(AndroidBuilder.java:1194) </span><br><span class="line">at com.android.build.gradle.tasks.RenderscriptCompile.taskAction(RenderscriptCompile.java:</span><br></pre></td></tr></table></figure>
+
+<p>我这里是因为buildToolsVersion（没加）、compileSdkVersion（27）和targetSdkVersion（27）不一致引起的，把buildToolsVersion加上这个问题就消失了。</p>
+<p>然而最后正常之后，又提示：（也就是说白加了，问题不出在这里）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WARNING: The specified Android SDK Build Tools version (27.0.3) is ignored, as it is below the minimum supported version (28.0.3) for Android Gradle Plugin 3.2.1.</span><br><span class="line">Android SDK Build Tools 28.0.3 will be used.</span><br><span class="line">To suppress this warning, remove &quot;buildToolsVersion &#39;27.0.3&#39;&quot; from your build.gradle file, as each version of the Android Gradle Plugin now has a default version of the build tools.</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-12-共用缓存报错（Jenkins执行任务，本地使用IDE也在执行）"><a href="#2-12-共用缓存报错（Jenkins执行任务，本地使用IDE也在执行）" class="headerlink" title="2.12. 共用缓存报错（Jenkins执行任务，本地使用IDE也在执行）"></a>2.12. 共用缓存报错（Jenkins执行任务，本地使用IDE也在执行）</h2><p> 这是因为在跑job的时候，手贱在android studio里面也点了一下。最后搜到是共用缓存被锁住的问题<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53186389/gradle-build-on-gitlab-ci-could-not-create-service-of-type-scriptpluginfactory">参考</a>，再跑一下就好了（不。是换了个错误）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">AILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory().</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> Could not create service of <span class="built_in">type</span> FileHasher using BuildSessionScopeServices.createFileSnapshotter().</span></span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --info or --debug option to get more log output. Run with --scan to get full insights.</span><br><span class="line"></span><br><span class="line">* Exception is:</span><br><span class="line">org.gradle.internal.service.ServiceCreationException: Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory().</span><br><span class="line">	at org.gradle.internal.service.DefaultServiceRegistry$FactoryMethodService.invokeMethod(DefaultServiceRegistry.java:857)</span><br><span class="line">	at org.gradle.internal.service.DefaultServiceRegistry$FactoryService.create(DefaultServiceRegistry.java:808)</span><br><span class="line">	</span><br><span class="line">	........ more</span><br><span class="line">	</span><br><span class="line">Caused by: org.gradle.api.UncheckedIOException: java.io.IOException: Input/output error</span><br><span class="line">	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:57)</span><br><span class="line">	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:40)</span><br><span class="line">	at org.gradle.cache.internal.DefaultFileLockManager.lock(DefaultFileLockManager.java:103)</span><br><span class="line">	at org.gradle.cache.internal.LockOnDemandCrossProcessCacheAccess.incrementLockCount(LockOnDemandCrossProcessCacheAccess.java:105)</span><br><span class="line">	at org.gradle.cache.internal.LockOnDemandCrossProcessCacheAccess.acquireFileLock(LockOnDemandCrossProcessCacheAccess.java:161)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheAccess.onStartWork(DefaultCacheAccess.java:368)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheAccess.useCache(DefaultCacheAccess.java:213)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheAccess.useCache(DefaultCacheAccess.java:203)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheAccess.newCache(DefaultCacheAccess.java:298)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheAccess.newCache(DefaultCacheAccess.java:57)</span><br><span class="line">	at org.gradle.cache.internal.DefaultPersistentDirectoryStore.createCache(DefaultPersistentDirectoryStore.java:148)</span><br><span class="line">	at org.gradle.cache.internal.DefaultCacheFactory$ReferenceTrackingCache.createCache(DefaultCacheFactory.java:177)</span><br><span class="line">	at org.gradle.api.internal.changedetection.state.CrossBuildFileHashCache.createCache(CrossBuildFileHashCache.java:51)</span><br><span class="line">	at org.gradle.api.internal.changedetection.state.CachingFileHasher.&lt;init&gt;(CachingFileHasher.java:44)</span><br><span class="line">	at org.gradle.internal.service.scopes.BuildSessionScopeServices.createFileSnapshotter(BuildSessionScopeServices.java:198)</span><br><span class="line">	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:73)</span><br><span class="line">	at org.gradle.internal.service.ReflectionBasedServiceMethod.invoke(ReflectionBasedServiceMethod.java:35)</span><br><span class="line">	at org.gradle.internal.service.DefaultServiceRegistry$FactoryMethodService.invokeMethod(DefaultServiceRegistry.java:855)</span><br><span class="line">	... 82 more</span><br><span class="line">Caused by: java.io.IOException: Input/output error</span><br><span class="line">	at org.gradle.cache.internal.filelock.LockStateAccess.readState(LockStateAccess.java:69)</span><br><span class="line">	at org.gradle.cache.internal.filelock.LockStateAccess.ensureLockState(LockStateAccess.java:46)</span><br><span class="line">	at org.gradle.cache.internal.filelock.LockFileAccess.ensureLockState(LockFileAccess.java:59)</span><br><span class="line">	at org.gradle.cache.internal.DefaultFileLockManager$DefaultFileLock.lock(DefaultFileLockManager.java:293)</span><br><span class="line">	at org.gradle.cache.internal.DefaultFileLockManager$DefaultFileLock.&lt;init&gt;(DefaultFileLockManager.java:154)</span><br><span class="line">	at org.gradle.cache.internal.DefaultFileLockManager.lock(DefaultFileLockManager.java:100)</span><br><span class="line">	... 97 more</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-13-Docker容器内无法访问主机网络"><a href="#2-13-Docker容器内无法访问主机网络" class="headerlink" title="2.13. Docker容器内无法访问主机网络"></a>2.13. Docker容器内无法访问主机网络</h2><p>背景：执行Jenkins打包aar到maven仓库的时候，提示无法连接到Nexus服务。</p>
+<p>原因：Docker容器内无法访问主机网络</p>
+<p>我运行了Docker的Nexus容器，主机使用<code>localhost:8081</code>访问Nexus服务，Docker的Jenkins容器无法访问<code>localhost</code>地址。（可以使用<code>exec</code>命令进入容器内，在容器中使用curl或者telnet工具尝试访问端口）</p>
+<p>解决办法：</p>
+<ul>
+<li>使用主机IP访问<ul>
+<li>在容器内使用<code>ip addr</code>命令查看ip地址</li>
+<li>在容器外使用<code>ipconfig</code>命令查看ip地址</li>
+</ul>
+</li>
+<li>运行容器的时候可以配置容器网络：默认有三种网络：host、bridge、none，可以使用<code>docker network ls</code>命令查看，可以使用<code>docker network create</code>命令自行创建网络。使用<code>docker run --network 网络名</code>命令配置容器网络<ul>
+<li>容器使用宿主机网络：使用<code>docker run --network host</code>命令。（有坑：这种模式只适用于Linux主机，不适合windows和mac）</li>
+<li>容器以桥接模式连接到宿主机：使用<code>docker run --network bridge</code>命令（不设置的话使用默认的bridge网络）</li>
+</ul>
+</li>
+</ul>
+<p>参考<a target="_blank" rel="noopener" href="https://www.jb51.net/article/149173.htm">Docker容器访问宿主机网络的方法</a></p>
+<p>这里碰到了一个问题，我对网络不太了解，不过经过测试之后得出来了一些结论，有知道的可以联系我。</p>
+<p>我主机总共监听了3个端口：</p>
+<ul>
+<li>使用docker运行了Nexus容器，映射到主机的8081端口，原端口也是8081</li>
+<li>使用docker运行了Jenkins容器，映射到主机的8082端口，原端口是8080</li>
+<li>主机上运行了springboot的服务，监听8083端口</li>
+</ul>
+<p>这里不设置桥接网络，即用默认的Bridge网络，使用<code>docker inspect &lt;容器名&gt;</code>可以查看到Networks的配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//截取其中网关和ip地址</span></span><br><span class="line"><span class="comment">//Jenkins配置如下</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;Gateway&quot;</span>: <span class="string">&quot;172.17.0.1&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.3&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查看Nexus的配置，这个ip是按容器创建顺序自动分配的</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;Gateway&quot;</span>: <span class="string">&quot;172.17.0.1&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.2&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面进入Jenkins容器中使用curl测试下能否访问地址和端口，测试结果如下</p>
+<ul>
+<li>在主机浏览器上使用<code>localhost</code>都能访问这三个端口，没问题。</li>
+<li>主机上访问172.17.0.1:8081，超时，但不是被拒绝了</li>
+<li>Jenkins容器内访问：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>主机:端口</th>
+<th>Jenkins</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>localhost</td>
+<td>三个端口都访问不到</td>
+</tr>
+<tr>
+<td>172.17.0.1:8081（网关+Nexus映射端口）</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>172.17.0.1:8082（网关+Jenkins映射端口）</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>172.17.0.1:8083（网关+主机服务端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.2:8081（NexusIP+Nexus原/映射端口）</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>172.17.0.2:8082（NexusIP+Jenkins映射端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.2:8083（NexusIP+主机服务端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.3:8081（JenkinsIP+Nexus映原/映射端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.3:8082（JenkinsIP+Jenkins映射端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.3:8083（JenkinsIP+主机服务端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>主机动态ip:8081</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>主机动态ip:8082</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>主机动态ip:8083</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>主机动态ip:8080</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.1:8080（网关+Jenkins原端口）</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td>172.17.0.3:8080（JenkinsIP+Jenkins原端口）</td>
+<td>可以</td>
+</tr>
+</tbody></table>
+<p>得出结论如下（对网络不太了解，凭自己感觉得出来结论，有错误的地方可以联系我）：</p>
+<ul>
+<li>docker使用bridge网络，即是一个虚拟的网关：172.17.0.1，或者叫子网？（可以使用<code>docker network create</code>命令自行创建网络），容器在这个子网下创建，会分配到一个虚拟的ip地址</li>
+<li>在子网内的容器互相访问可以使用<code>网关+容器映射端口</code>，或者使用<code>容器的ip+该容器的原端口号</code><ul>
+<li>这里的原端口指的是没有映射过的端口，如Jenkins是8080，Nexus是8081</li>
+<li>Nexus可以使用172.17.0.3:8080访问Jenkins，使用8082则不可以</li>
+</ul>
+</li>
+<li>主机访问容器，直接访问<code>主机IP+容器映射端口</code>。理论上应该是可以通过网关（172.17.0.1）访问到容器内部的，这里只是提示超时了，不知道应该怎么设置。</li>
+</ul>
+<p>按我的理解就是docker给每个容器分配了一个虚拟的网关和虚拟的ip地址。把每个容器看作一台机器，同一个网关下的容器看作一个子网下的机器。（真实的网络我不了解，但是应该能够得出和虚拟的一样的结论）</p>
+<ul>
+<li>容器映射出去的端口到网关那里，因此可以通过<code>网关+容器映射端口</code>访问到容器。同样也映射到了主机那里，可以通过<code>主机ip+容器映射端口</code>访问</li>
+<li>知道容器ip的情况下，可以直接访问容器监听的端口，即<code>容器ip+容器原端口</code>（和主机服务类似，也可以通过localhost访问自己的端口），不能使用映射出去的端口了</li>
+<li>但是容器要访问外部（主机）的话就只有通过主机ip访问（不过这个ip是动态在变的，每次都要换，也可以通过域名，或者设置固定ip）</li>
+</ul>
+<p>win10固定ip设置：</p>
+<ul>
+<li>命令行<code>ipconfig/all</code>查看IPv4、子网掩码、网关、首选DNS、备用DNS。（或者网络和Internet-&gt;状态-&gt;查看网络属性）</li>
+<li>找到IP设置-&gt;IPv4，选择手动，一个个填上去就好了。</li>
+<li>就不放图了</li>
+</ul>
+<h3 id="docker容器内无法访问公网"><a href="#docker容器内无法访问公网" class="headerlink" title="docker容器内无法访问公网"></a>docker容器内无法访问公网</h3><p>Temporary failure in name resolution</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br><span class="line"><span class="meta">#</span><span class="bash">报错</span></span><br><span class="line">ping: www.baidu.com: Temporary failure in name resolution</span><br><span class="line"><span class="meta">#</span><span class="bash">或者：ping: www.bing.com: Name or service not known</span></span><br></pre></td></tr></table></figure>
+
+<p>原因：DNS设置有问题</p>
+<p>解决办法：windows下打开docker设置，如下图，选择固定DNS（具体原因不太懂，自己尝试了这样改就OK了）</p>
+<p><img src="/images/Docker/docker07.png" alt="docker容器访问公网"></p>
+<h2 id="2-14-python编码错误"><a href="#2-14-python编码错误" class="headerlink" title="2.14. python编码错误"></a>2.14. python编码错误</h2><h3 id="2-14-1-编码错误1"><a href="#2-14-1-编码错误1" class="headerlink" title="2.14.1. 编码错误1"></a>2.14.1. 编码错误1</h3><p>背景：http请求返回值中含有中文，在容器内使用命令行运行没报错，使用jenkins job运行就报编码错误。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnicodeEncodeError: &#x27;ascii&#x27; codec can&#x27;t encode characters in position 84-87: ordinal not in range(128)</span><br></pre></td></tr></table></figure>
+
+<p>原因：python默认编码是ascii。</p>
+<p>解决办法：</p>
+<p>（1）加上这三句，设置编码。（本文件有效）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">&#x27;utf8&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>（2）设置python默认编码（全局python环境）,#在Python的Lib\site-packages文件夹下新建一个sitecustomize.py文件，内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">&#x27;utf8&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>（3）使用命令行运行不会报错。。。</p>
+<h3 id="2-14-2-编码错误2"><a href="#2-14-2-编码错误2" class="headerlink" title="2.14.2. 编码错误2"></a>2.14.2. 编码错误2</h3><p>还有一种情况，python文件中出现中文，包括中文注释，运行的时候也会报错（而且使用命令行也会报错）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SyntaxError: Non-ASCII character &#x27;\xe5&#x27; in file E:/CiProject/jenkins_workspace/ci_scripts/util/http_util.py on line 11, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details</span><br></pre></td></tr></table></figure>
+
+<p>原因：python文件默认是以ascii保存的</p>
+<p>解决办法：需要声明文件编码格式，在文件头加上声明，下面几种方式都可以</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=&lt;encoding name&gt;</span></span><br><span class="line">----------------------------------------------------------</span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: &lt;encoding name&gt; -*-</span></span><br><span class="line">-----------------------------------------------------------</span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># vim: set fileencoding=&lt;encoding name&gt; :</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-15-其他Android错误"><a href="#2-15-其他Android错误" class="headerlink" title="2.15. 其他Android错误"></a>2.15. 其他Android错误</h2><p>运行Gradle脚本可能会出现各种各样的Android或者Gradle错误，只能一个个排查了，比如遇到内存不足，sdk版本不对等</p>
+<h2 id="2-16-docker容器时区和宿主机不一致"><a href="#2-16-docker容器时区和宿主机不一致" class="headerlink" title="2.16. docker容器时区和宿主机不一致"></a>2.16. docker容器时区和宿主机不一致</h2><ul>
+<li>docker容器内时区为UTC：国际协调时间，即0时区</li>
+<li>宿主机时区为CST：中国标准时间，即东八区</li>
+</ul>
+<p>解决办法：</p>
+<ol>
+<li><p>启动容器的时候通过挂载共享主机的localtime：<code>docker run --name &lt;name&gt; -v /etc/localtime:/etc/localtime</code></p>
+</li>
+<li><p>将主机的配置文件拷贝到容器中：<code>docker cp /etc/localtime:【容器ID或者NAME】/etc/localtime</code></p>
+</li>
+<li><p>使用<code>docker exec -it &lt;容器名/id&gt; /bin/bash</code>进去容器内部进行修改。（当作一个linux系统即可）</p>
+</li>
+<li><p>创建自定义的Dockerfile，如下。保存后使用docker build生成镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM redis</span><br><span class="line">FROM tomcat</span><br><span class="line">ENV CATALINA_HOME /usr/local/tomcat</span><br><span class="line"><span class="meta">#</span><span class="bash">设置时区</span></span><br><span class="line">RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \</span><br><span class="line">  &amp;&amp; echo &#x27;Asia/Shanghai&#x27; &gt;/etc/timezone \</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>对于Windows版的docker，时区配置不知道在哪，上面的方法不知道有没有用，因为暂时不影响，所以没尝试</strong></p>
+<h2 id="2-17-使用shell执行gradlew命令"><a href="#2-17-使用shell执行gradlew命令" class="headerlink" title="2.17. 使用shell执行gradlew命令"></a>2.17. 使用shell执行gradlew命令</h2><ul>
+<li>使用gradle命令：在容器内下载gradle，并且在<strong>容器内部（不是宿主机）</strong>配置环境变量。（或者直接挂载主机的gradle路径）</li>
+<li>使用gradlew命令：gradlew对gradle进行了封装，并且会自动下载对应版本的gradlew。</li>
+</ul>
+<p><strong>使用gradlew注意：</strong></p>
+<ul>
+<li><p>修改Android工程的.gitignore，下面三行去掉</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/gradle/</span><br><span class="line">/gradlew</span><br><span class="line">/gradlew.bat</span><br></pre></td></tr></table></figure></li>
+<li><p>脚本需要使用<code>./gradlew ***</code>执行，而不是<code>gradlew</code>，因为容器是linux环境，和宿主机（windows）不同</p>
+</li>
+<li><p>会自动下载相应版本到用户目录的<code>.gradle</code>文件夹下</p>
+</li>
+</ul>
+<h2 id="切换task为assembleDebug终于成功打出apk了，折腾了一晚上天快亮了，"><a href="#切换task为assembleDebug终于成功打出apk了，折腾了一晚上天快亮了，" class="headerlink" title="切换task为assembleDebug终于成功打出apk了，折腾了一晚上天快亮了，"></a>切换task为<code>assembleDebug</code>终于成功打出apk了，折腾了一晚上天快亮了，</h2><p><img src="/images/Jenkins/jenkins14.png" alt="Jenkins成功图"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/14/java-2019-1-14-JavaReflection/" rel="prev" title="java反射">
+      <i class="fa fa-chevron-left"></i> java反射
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/14/java-2019-2-14-JavaAnnontation/" rel="next" title="java注解（更新中）">
+      java注解（更新中） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-docker%E8%BF%90%E8%A1%8Cjenkins"><span class="nav-number">1.</span> <span class="nav-text">1. docker运行jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-docker%E5%AE%89%E8%A3%85jenkins"><span class="nav-number">1.2.</span> <span class="nav-text">1.1. docker安装jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Jenkins%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">1.2. Jenkins初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%BF%9B%E5%85%A5%E9%9C%80%E8%A6%81%E5%88%9D%E5%A7%8B%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.2.1. 第一次进入需要初始密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.2.2. 安装插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E3%80%81%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.2.3. 设置用户名、密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Jenkins%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">1.3. Jenkins配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.3.1. 环境变量配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E5%85%A8%E5%B1%80%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.3.2. 全局工具配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.</span> <span class="nav-text">1.4. 任务配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E5%B7%A5%E4%BD%9C%E5%8C%BA%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.4.1. 工作区配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-Build%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.2.</span> <span class="nav-text">1.4.2. Build配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-3-%E4%BB%A3%E7%A0%81%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.3.</span> <span class="nav-text">1.4.3. 代码远程仓库配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%85%B6%E4%BB%96"><span class="nav-number">1.6.</span> <span class="nav-text">1.5. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-python%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">1.6.1.</span> <span class="nav-text">1.5.1. python环境安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%B8%A9%E5%9D%91"><span class="nav-number">2.</span> <span class="nav-text">2. 踩坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-docker-for-windows%E9%87%8D%E5%90%AF%E7%94%B5%E8%84%91"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. docker for windows重启电脑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-gradle%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. gradle配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-java%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. java环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-java-version%EF%BC%88%E6%B3%A8%E6%84%8F%EF%BC%9A%E4%B8%8D%E6%98%AF%E2%80%93%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. java -version（注意：不是–）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-docker%E5%86%85%E7%9A%84%E5%AE%B9%E5%99%A8%E6%89%BE%E4%B8%8D%E5%88%B0%E4%B8%BB%E6%9C%BA%E8%B7%AF%E5%BE%84%EF%BC%8C%E9%9C%80%E8%A6%81Volume%E6%8C%82%E8%BD%BD"><span class="nav-number">2.5.</span> <span class="nav-text">2.5. docker内的容器找不到主机路径，需要Volume挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-%E5%AE%B9%E5%99%A8%E8%AE%BF%E9%97%AE%E4%B8%BB%E6%9C%BA%E4%B8%8A%E7%9A%84%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1. 容器访问主机上的工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-%E5%AE%B9%E5%99%A8%E5%86%85Android-Sdk%E8%B7%AF%E5%BE%84"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2. 容器内Android Sdk路径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-Force-GRADLE-USER-HOME-to-use-workspace"><span class="nav-number">2.6.</span> <span class="nav-text">2.6. Force GRADLE_USER_HOME to use workspace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-job%E5%B7%A6%E8%BE%B9%E7%9A%84workspace%E9%87%8C%E9%9D%A2%E6%9C%89%E4%B8%80%E4%B8%AA%E6%B8%85%E6%89%AB%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%EF%BC%8C%E7%9C%8B%E5%88%B0%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AF%B4"><span class="nav-number">2.7.</span> <span class="nav-text">2.7. job左边的workspace里面有一个清扫工作空间，看到一篇文章说</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-8-docker%E4%B8%AD%E4%BD%BF%E7%94%A8vim%EF%BC%8C%E6%9C%89%E7%9A%84%E5%AE%B9%E5%99%A8%E6%9C%89%EF%BC%88nexus%EF%BC%89%EF%BC%8C%E6%9C%89%E7%9A%84%E5%AE%B9%E5%99%A8%E6%B2%A1%E6%9C%89%EF%BC%88nginx%E3%80%81jenkins%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">2.8. docker中使用vim，有的容器有（nexus），有的容器没有（nginx、jenkins）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-10-%E6%89%A7%E8%A1%8CcompileDebug-stacktrace-%E5%87%BA%E9%94%99%EF%BC%8C%E6%94%B9%E4%B8%BAgradlew-compileDebugJavaWithJavac-stacktrace"><span class="nav-number">2.9.</span> <span class="nav-text">2.10. 执行compileDebug --stacktrace 出错，改为gradlew compileDebugJavaWithJavac --stacktrace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-11-%E6%89%A7%E8%A1%8Cbuild%E5%91%BD%E4%BB%A4%E7%9A%84%E6%97%B6%E5%80%99%E5%87%BA%E7%8E%B0%E8%BF%99%E4%B8%AA"><span class="nav-number">2.10.</span> <span class="nav-text">2.11. 执行build命令的时候出现这个</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-12-%E5%85%B1%E7%94%A8%E7%BC%93%E5%AD%98%E6%8A%A5%E9%94%99%EF%BC%88Jenkins%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%EF%BC%8C%E6%9C%AC%E5%9C%B0%E4%BD%BF%E7%94%A8IDE%E4%B9%9F%E5%9C%A8%E6%89%A7%E8%A1%8C%EF%BC%89"><span class="nav-number">2.11.</span> <span class="nav-text">2.12. 共用缓存报错（Jenkins执行任务，本地使用IDE也在执行）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-13-Docker%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">2.12.</span> <span class="nav-text">2.13. Docker容器内无法访问主机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E5%AE%B9%E5%99%A8%E5%86%85%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%85%AC%E7%BD%91"><span class="nav-number">2.12.1.</span> <span class="nav-text">docker容器内无法访问公网</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-14-python%E7%BC%96%E7%A0%81%E9%94%99%E8%AF%AF"><span class="nav-number">2.13.</span> <span class="nav-text">2.14. python编码错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-14-1-%E7%BC%96%E7%A0%81%E9%94%99%E8%AF%AF1"><span class="nav-number">2.13.1.</span> <span class="nav-text">2.14.1. 编码错误1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-14-2-%E7%BC%96%E7%A0%81%E9%94%99%E8%AF%AF2"><span class="nav-number">2.13.2.</span> <span class="nav-text">2.14.2. 编码错误2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-15-%E5%85%B6%E4%BB%96Android%E9%94%99%E8%AF%AF"><span class="nav-number">2.14.</span> <span class="nav-text">2.15. 其他Android错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-16-docker%E5%AE%B9%E5%99%A8%E6%97%B6%E5%8C%BA%E5%92%8C%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="nav-number">2.15.</span> <span class="nav-text">2.16. docker容器时区和宿主机不一致</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-17-%E4%BD%BF%E7%94%A8shell%E6%89%A7%E8%A1%8Cgradlew%E5%91%BD%E4%BB%A4"><span class="nav-number">2.16.</span> <span class="nav-text">2.17. 使用shell执行gradlew命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%8D%A2task%E4%B8%BAassembleDebug%E7%BB%88%E4%BA%8E%E6%88%90%E5%8A%9F%E6%89%93%E5%87%BAapk%E4%BA%86%EF%BC%8C%E6%8A%98%E8%85%BE%E4%BA%86%E4%B8%80%E6%99%9A%E4%B8%8A%E5%A4%A9%E5%BF%AB%E4%BA%AE%E4%BA%86%EF%BC%8C"><span class="nav-number">2.17.</span> <span class="nav-text">切换task为assembleDebug终于成功打出apk了，折腾了一晚上天快亮了，</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

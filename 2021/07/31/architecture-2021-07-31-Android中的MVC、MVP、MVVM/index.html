@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Android中的MVC、MVP、MVVM模式，对比MVC和MVP，针对容易引起困惑的点做了详细的解读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的MVC、MVP、MVVM">
+<meta property="og:url" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="介绍Android中的MVC、MVP、MVVM模式，对比MVC和MVP，针对容易引起困惑的点做了详细的解读">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E8%A7%A3%E8%AF%BB.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E7%9A%84%E5%85%B6%E4%BB%96%E7%90%86%E8%A7%A31.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E7%9A%84%E5%85%B6%E4%BB%96%E7%90%86%E8%A7%A32.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%9D%97.png">
+<meta property="og:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E7%B1%BB%E5%9B%BE.png">
+<meta property="article:published_time" content="2021-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.040Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E6%A8%A1%E5%BC%8F.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android中的MVC、MVP、MVVM | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android中的MVC、MVP、MVVM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-31T00:00:00+08:00">2021-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84%E5%92%8C%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">架构和设计模式</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">介绍Android中的MVC、MVP、MVVM模式，对比MVC和MVP，针对容易引起困惑的点做了详细的解读</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h1><h2 id="MVC基础"><a href="#MVC基础" class="headerlink" title="MVC基础"></a>MVC基础</h2><p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E6%A8%A1%E5%BC%8F.png"></p>
+<blockquote>
+<p>Tips：箭头可以理解为引用、依赖，也可以理解为调用，因为引用了必然要调用。</p>
+<p>有的MVC模式图包含了虚线和实线：虚线一般表现为临时变量，参数回调，实线表现为成员变量</p>
+</blockquote>
+<ol>
+<li>Model：数据模型，负责数据获取、修改。代码中表现为Model、Repository（对数据进行隔离）、Service（访问网络）、Dao（访问数据库）、Entity等。</li>
+<li>View：视图，负责视图显示和视图控制。代码中表现为Layout+Activity，如findViewById，setText、动画等。</li>
+<li>Controller：控制器，负责所有的行为逻辑。代码中表现为Activity+各种管理类，如网络请求、SP存储、数据库访问、电量信息、网络状态等。除了对Model的调用外，还包含一些逻辑处理，如调用登录接口之前，对账号密码进行合法校验，加密等。</li>
+</ol>
+<p>样例代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> mModel = LoginModel()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">()</span></span> &#123;</span><br><span class="line">      	<span class="comment">//账号密码校验，加密等逻辑</span></span><br><span class="line">        mModel.login(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;password&quot;</span>, <span class="keyword">object</span> : ResultCallback&lt;String?&gt; &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">String</span>?)</span></span> &#123;</span><br><span class="line">                <span class="comment">//回调方式返回数据</span></span><br><span class="line">                onLogin(result)</span><br><span class="line">                <span class="comment">//View直接从Model层获取数据显示</span></span><br><span class="line">                <span class="comment">//setText(mModel.user)</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(errorCode: <span class="type">String</span>?, errorMsg: <span class="type">String</span>?)</span></span> &#123;&#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onLogin</span><span class="params">(name: <span class="type">String</span>?)</span></span> &#123;</span><br><span class="line">        <span class="comment">//runOnUIThread...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> user: String? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(username: <span class="type">String</span>?, password: <span class="type">String</span>?, callback: <span class="type">ResultCallback</span>&lt;<span class="type">String</span>?&gt;)</span></span> &#123;</span><br><span class="line">        <span class="comment">//runOnIOThread...</span></span><br><span class="line">        callback.onSuccess(<span class="string">&quot;Afauria&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ResultCallback</span>&lt;<span class="type">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">T</span>)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(errorCode: <span class="type">String</span>?, errorMsg: <span class="type">String</span>?)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="提问"><a href="#提问" class="headerlink" title="提问"></a>提问</h2><h3 id="何为Model？"><a href="#何为Model？" class="headerlink" title="何为Model？"></a>何为Model？</h3><blockquote>
+<p>Model指数据模型。</p>
+<ul>
+<li>狭义的Model指API接口、数据库、文件存储等数据。</li>
+<li>广义的Model不止是业务数据对象，还包含外部对象，如定位信息、网络状态、电量等。这些都属于Model层数据交互部分。</li>
+</ul>
+<p>因此，在狭义上讲，可以把电量管理、定位管理、网络管理等认为是Controller，命名可能叫<code>LocationManager</code>、<code>NetwrokHelper</code>、<code>BatteryManager</code>…</p>
+<p>在MVC中，View需要对接各种管理器。</p>
+<p>在MVP中，View只关心自己的Presenter，由Presenter对接不同的Model。</p>
+</blockquote>
+<h3 id="何为Controller？"><a href="#何为Controller？" class="headerlink" title="何为Controller？"></a>何为Controller？</h3><ul>
+<li>狭义的Controller：即Controller类</li>
+<li>广义的Controller：Controller不具体指哪一个类，而是指逻辑行为代码，可能是一个类（有的时候命名为Controller、Helper、Manager）、可能是一个方法或者代码块。</li>
+</ul>
+<h3 id="怎么理解View和Model关联？"><a href="#怎么理解View和Model关联？" class="headerlink" title="怎么理解View和Model关联？"></a>怎么理解View和Model关联？</h3><p>Android MVC中Activity既包含了视图、又包含了逻辑，View和Controller没有分离。</p>
+<ul>
+<li>站在Activity类的角度讲，可以说View和Model有交互，也可以说Controller和Model有交互。</li>
+<li>站在代码逻辑上讲，调用Model方法本身也是行为逻辑，因此和Model交互的永远是Controller，不会是View。</li>
+</ul>
+<p>将MVC原本的图改为下图，实际是M&lt;-&gt;V/C：</p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E8%A7%A3%E8%AF%BB.png"></p>
+<p>注：<strong>这里的MVC不是标准的MVC模式，严格来说只能算M&lt;-&gt;V/C</strong>。在传统Web开发中，Model、Controller、View（JSP）是分离的。</p>
+<h2 id="MVC的其他理解"><a href="#MVC的其他理解" class="headerlink" title="MVC的其他理解"></a>MVC的其他理解</h2><p>网上有很多MVC的关系图，箭头关系表示都不一样，到底哪种是正确的呢？</p>
+<ol>
+<li>将Activity中逻辑处理部分抽到Controller中，避免Activity包含逻辑处理，并转发Callback。</li>
+</ol>
+<p>代码见<a target="_blank" rel="noopener" href="https://github.com/Afauria/ArchitectureSample">MVCSample1</a></p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E7%9A%84%E5%85%B6%E4%BB%96%E7%90%86%E8%A7%A31.png"></p>
+<ol start="2">
+<li>将Activity中逻辑处理部分抽到Controller中，View可以直接调用Model获取数据</li>
+</ol>
+<p>代码见<a target="_blank" rel="noopener" href="https://github.com/Afauria/ArchitectureSample">MVCSample2</a></p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVC%E7%9A%84%E5%85%B6%E4%BB%96%E7%90%86%E8%A7%A32.png"></p>
+<p>View调用Model获取数据，包括直接获取、回调获取，此时Activity既是View，又包含了一部分Controller的逻辑，和Model层直接交互</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>MVC有多种理解和实现，核心的点在于将代码划分为Model、View、Controller三个部分，至于三个部分怎么通信耦合、Activity究竟是属于View还是Controller没有严格规定。</li>
+<li>我们一直在说“Activity既包含了视图逻辑，又包含了业务逻辑，导致臃肿”。实际上这只是MVC的其中一种理解，上述两种实现，即使把业务逻辑抽出去，创建一个Controller类，但实际上还是MVC。</li>
+</ol>
+<h1 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h1><h2 id="MVP基础"><a href="#MVP基础" class="headerlink" title="MVP基础"></a>MVP基础</h2><p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E6%A8%A1%E5%BC%8F.png"></p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B.png"></p>
+<p>除了Model之外，Presenter还和其他外部对象交互，只需要保证View不包含逻辑代码</p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%9D%97.png" alt="MVP架构模块"></p>
+<p>以登录业务为例，MVP类图如下</p>
+<p><img src="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/MVP%E7%B1%BB%E5%9B%BE.png"></p>
+<p>样例代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 定义Contract接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">LoginContract</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">IView</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">onLogin</span><span class="params">(name: <span class="type">String</span>?)</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">IPresenter</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(username: <span class="type">String</span>?, password: <span class="type">String</span>?)</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2. Activity、Fragment实现IView接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginActivity</span> : <span class="type">LoginContract.IView &#123;</span></span></span><br><span class="line">    <span class="keyword">var</span> mPresenter: LoginContract.IPresenter = LoginPresenter(<span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">()</span></span> &#123;</span><br><span class="line">        mPresenter.login(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;password&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onLogin</span><span class="params">(name: <span class="type">String</span>?)</span></span> &#123;</span><br><span class="line">        <span class="comment">//runOnUIThread...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. Presenter实现IPresenter接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPresenter</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> mView: LoginContract.IView) : LoginContract.IPresenter &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> mModel = LoginModel()</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(username: <span class="type">String</span>?, password: <span class="type">String</span>?)</span></span> &#123;</span><br><span class="line">        mModel.login(username, password, <span class="keyword">object</span> : ResultCallback&lt;String?&gt; &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">String</span>?)</span></span> &#123;</span><br><span class="line">                mView.onLogin(result)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(errorCode: <span class="type">String</span>?, errorMsg: <span class="type">String</span>?)</span></span> &#123;&#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ResultCallback</span>&lt;<span class="type">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">T</span>)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(errorCode: <span class="type">String</span>?, errorMsg: <span class="type">String</span>?)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginModel</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(username: <span class="type">String</span>?, password: <span class="type">String</span>?, callback: <span class="type">ResultCallback</span>&lt;<span class="type">String</span>?&gt;)</span></span> &#123;</span><br><span class="line">        <span class="comment">//runOnIOThread...</span></span><br><span class="line">        callback.onSuccess(<span class="string">&quot;Afauria&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="MVP改造"><a href="#MVP改造" class="headerlink" title="MVP改造"></a>MVP改造</h2><ol>
+<li>重复代码、公共接口：使用基类+泛型抽取公共接口和实现<ol>
+<li>BasePresenter绑定和释放View、SafeHandler创建和释放等</li>
+<li>BaseView公共进度条、弹窗、getContext等</li>
+</ol>
+</li>
+<li>Presenter直接创建具体Model。<ol>
+<li>替换的时候需要修改Presenter类。</li>
+<li>单元测试中，不方便mock Model。</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>可以通过依赖注入的方式进行解耦，变量初始化放到外部，可以随时替换，方便单元测试。</p>
+<p>代码见<a href>InjectMVP和InjectMVPTest</a></p>
+</blockquote>
+<h2 id="提问-1"><a href="#提问-1" class="headerlink" title="提问"></a>提问</h2><h3 id="MVP如何定义接口？"><a href="#MVP如何定义接口？" class="headerlink" title="MVP如何定义接口？"></a>MVP如何定义接口？</h3><p>最常见的MVP实现是P和V定义接口，Model不抽。</p>
+<p>反过来问，Presenter、View、Model是否可以不定义接口？</p>
+<blockquote>
+<p>可以抽，也可以不抽，看实际需要。不要为了抽接口而抽接口，明确抽接口的目的和意义。</p>
+</blockquote>
+<h3 id="抽接口和抽基类有什么区别？"><a href="#抽接口和抽基类有什么区别？" class="headerlink" title="抽接口和抽基类有什么区别？"></a>抽接口和抽基类有什么区别？</h3><blockquote>
+<p>抽接口目的</p>
+<ol>
+<li>实现多态：替换不同实现</li>
+<li>依赖倒置：Presenter修改实现，View不需要修改。View修改实现，Presenter不需要修改</li>
+<li>代码逻辑清晰，可读性强：都在Contract中</li>
+</ol>
+<p>抽Base类是为了抽取公共逻辑，Base类是后续衍生出来的，不在架构模式定义中</p>
+</blockquote>
+<h3 id="MVP中V层可以是Fragment吗？一个Activity有多个Fragment呢？"><a href="#MVP中V层可以是Fragment吗？一个Activity有多个Fragment呢？" class="headerlink" title="MVP中V层可以是Fragment吗？一个Activity有多个Fragment呢？"></a>MVP中V层可以是Fragment吗？一个Activity有多个Fragment呢？</h3><blockquote>
+<p>可以，每个Fragment实现不同的View接口，对应不同的Presenter。</p>
+</blockquote>
+<h3 id="如果两个Fragment需要用到一个Presenter中的数据该怎么做"><a href="#如果两个Fragment需要用到一个Presenter中的数据该怎么做" class="headerlink" title="如果两个Fragment需要用到一个Presenter中的数据该怎么做"></a>如果两个Fragment需要用到一个Presenter中的数据该怎么做</h3><ol>
+<li>将Activity作为View，对应一个Presenter，Activity拿到数据之后调用Fragment更新</li>
+<li>两个Fragment分别对应两个Presenter，两个Presenter共用一个Model，都从Model中获取数据</li>
+<li>将该功能拆分出来：Activity中创建Presenter2对象，两个Fragment除了依赖自己的Presenter之外，再依赖一个共同的Presenter2</li>
+</ol>
+<h1 id="MVC和MVP对比"><a href="#MVC和MVP对比" class="headerlink" title="MVC和MVP对比"></a>MVC和MVP对比</h1><h3 id="MVC-gt-MVP"><a href="#MVC-gt-MVP" class="headerlink" title="MVC-&gt;MVP?"></a>MVC-&gt;MVP?</h3><p>有的人说MVC中Activity承担Controller的功能，MVP将Controller逻辑抽离出去，Activity只负责视图控制。那么</p>
+<ol>
+<li>把Activity中的逻辑处理抽出去，就是MVP了吗?</li>
+</ol>
+<blockquote>
+<p>上面讲了几种MVC的实现，即使抽出了Controller，还是MVC</p>
+</blockquote>
+<p>有的人会说MVP相比MVC需要定义接口</p>
+<ol start="2">
+<li><p>把Activity中的逻辑处理抽出去，再定义View和Controller的接口，就是MVP了吗？</p>
+<blockquote>
+<p>反过来问，MVP中是否可以不定义View和Presenter接口？</p>
+</blockquote>
+</li>
+</ol>
+<p>有的人会说MVP中View和Model不能直接依赖</p>
+<ol start="3">
+<li>View层定义一个Callback，Controller定义一个Callback，避免View和Model直接耦合，就是MVP了吗？</li>
+</ol>
+<h3 id="MVP和MVC区别"><a href="#MVP和MVC区别" class="headerlink" title="MVP和MVC区别"></a>MVP和MVC区别</h3><ol>
+<li>MVP在MVC的基础上，增加了一些限定规则，使得代码更加的模版化、统一、一致。MVC可以有多种实现，没有太大约束，可以使用工具类、静态方法等抽取逻辑，不和View绑定。</li>
+<li>Controller和Presenter作用不一样<ol>
+<li>Presenter：展示器。Controller：控制器。</li>
+<li>Presenter决定页面的逻辑，包括显示逻辑、事件逻辑。Controller是基于行为的，不和页面绑定，负责处理事件行为。</li>
+<li>View和Presenter一般情况下是一对一。View和Controller是多对多，一个页面可以包含多个控制器，一个控制器可以被多个页面使用。</li>
+</ol>
+</li>
+<li>MVC做到了视图和数据的分离，MVP做到了视图和逻辑的分离，数据和视图的隔离</li>
+</ol>
+<h1 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h1><p>和MVC、MVP差异比较大，这里暂时不讲。</p>
+<p>MVVM核心：数据驱动UI，可观察数据</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 架构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/30/architecture-2021-07-30-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84Clean%E6%9E%B6%E6%9E%84/" rel="prev" title="软件设计中的Clean架构">
+      <i class="fa fa-chevron-left"></i> 软件设计中的Clean架构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/" rel="next" title="CI回首毕业论文">
+      CI回首毕业论文 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MVC"><span class="nav-number">1.</span> <span class="nav-text">MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">MVC基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E9%97%AE"><span class="nav-number">1.2.</span> <span class="nav-text">提问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%95%E4%B8%BAModel%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">何为Model？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%95%E4%B8%BAController%EF%BC%9F"><span class="nav-number">1.2.2.</span> <span class="nav-text">何为Controller？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3View%E5%92%8CModel%E5%85%B3%E8%81%94%EF%BC%9F"><span class="nav-number">1.2.3.</span> <span class="nav-text">怎么理解View和Model关联？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC%E7%9A%84%E5%85%B6%E4%BB%96%E7%90%86%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">MVC的其他理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVP"><span class="nav-number">2.</span> <span class="nav-text">MVP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MVP%E5%9F%BA%E7%A1%80"><span class="nav-number">2.1.</span> <span class="nav-text">MVP基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVP%E6%94%B9%E9%80%A0"><span class="nav-number">2.2.</span> <span class="nav-text">MVP改造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E9%97%AE-1"><span class="nav-number">2.3.</span> <span class="nav-text">提问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E6%8E%A5%E5%8F%A3%EF%BC%9F"><span class="nav-number">2.3.1.</span> <span class="nav-text">MVP如何定义接口？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E5%9F%BA%E7%B1%BB%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">2.3.2.</span> <span class="nav-text">抽接口和抽基类有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP%E4%B8%ADV%E5%B1%82%E5%8F%AF%E4%BB%A5%E6%98%AFFragment%E5%90%97%EF%BC%9F%E4%B8%80%E4%B8%AAActivity%E6%9C%89%E5%A4%9A%E4%B8%AAFragment%E5%91%A2%EF%BC%9F"><span class="nav-number">2.3.3.</span> <span class="nav-text">MVP中V层可以是Fragment吗？一个Activity有多个Fragment呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%B8%A4%E4%B8%AAFragment%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E4%B8%80%E4%B8%AAPresenter%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E8%AF%A5%E6%80%8E%E4%B9%88%E5%81%9A"><span class="nav-number">2.3.4.</span> <span class="nav-text">如果两个Fragment需要用到一个Presenter中的数据该怎么做</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVC%E5%92%8CMVP%E5%AF%B9%E6%AF%94"><span class="nav-number">3.</span> <span class="nav-text">MVC和MVP对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC-gt-MVP"><span class="nav-number">3.0.1.</span> <span class="nav-text">MVC-&gt;MVP?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP%E5%92%8CMVC%E5%8C%BA%E5%88%AB"><span class="nav-number">3.0.2.</span> <span class="nav-text">MVP和MVC区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVVM"><span class="nav-number">4.</span> <span class="nav-text">MVVM</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

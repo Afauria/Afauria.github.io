@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CI回首毕业论文">
+<meta property="og:url" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Android%E7%BB%84%E4%BB%B6%E5%8C%96%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Sub-Module%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Multi-Project%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%97%A9%E6%9C%9F%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8E%A5%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/CI%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A2%84%E6%9C%9F%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E5%92%8C%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%88%E4%BE%8B%E6%95%88%E6%9E%9C.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Git%E5%AD%90%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Win10%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Nexus%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Nexus%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Jenkins%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%B8%BB%E9%A1%B5.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%AA%8C%E8%AF%81Java%E7%8E%AF%E5%A2%83.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEAndroid%E7%8E%AF%E5%A2%83.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEGradle.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E5%AE%89%E8%A3%85pip.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AESSH%E7%99%BB%E9%99%86.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/JenkinsAPI%E5%BD%A2%E5%BC%8F%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9E%84%E5%BB%BA%E7%BB%93%E6%9E%9C%E6%97%A5%E5%BF%97.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E7%AE%B1%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnpm%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFBabel%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnextjs%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%88%9B%E5%BB%BA%E7%BB%84%E4%BB%B6%E9%A1%B5%E9%9D%A2.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%80%9A%E7%9F%A5%E5%BC%B9%E7%AA%97%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%AF%BB%E5%8F%96%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E4%BF%AE%E6%94%B9.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%95%B0%E6%8D%AE%E5%BA%93ER%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AEJob%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6%E5%85%A5%E5%8F%A3.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%80%9A%E7%9F%A5.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%97%A5%E5%BF%97.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E7%BB%84%E4%BB%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/apk%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%89%8D.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BC%80%E5%8F%91%E5%85%B6%E4%BB%96%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%90%8E.jpg">
+<meta property="article:published_time" content="2021-09-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.074Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="持续集成">
+<meta property="article:tag" content="组件化">
+<meta property="article:tag" content="Jenkins">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CI回首毕业论文 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CI回首毕业论文
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-04 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-04T00:00:00+08:00">2021-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。</p>
+<p>时隔两年多再看，当时整体的思想和系统设计还是比较领先的。当然经历了更多的项目，见识过了大团队的CI，也有了更多的感悟，发现一些功能和细节可以更加完善。</p>
+<h1 id="论文内容"><a href="#论文内容" class="headerlink" title="论文内容"></a>论文内容</h1><p><strong>标题</strong>：面向Android项目的持续集成系统的设计与开发</p>
+<p>DESIGN AND IMPLEMENTATION OF CONTINUOUS INTEGRATION SYSTEM FOR ANDROID PROJECT</p>
+<p><strong>摘要</strong>: 本文结合Android组件化架构设计了一套基于Jenkins的持续集成方案，通过自动化构建、集成、打包等一系列环节，规范软件开发流程、缩短迭代周期、及时发现问题、减少发布风险、保证软件质量，能够快速地响应需求变化，随时提供可以运行的软件版本，提高了软件在开发过程中的可见性。</p>
+<p>该系统主要由Web前端、Web后端、Jenkins服务、Maven私有仓库等多个部分组成。其中前端用于进行组件、项目的管理和构建以及日志查看；后端实现了请求响应、数据存储、WebSocket即时推送通知等功能；Jenkins服务提供了统一的开发环境，根据配置和脚本执行构建任务，并推送构建结果到后端和个人邮箱；Maven私有仓库用于存放依赖包。</p>
+<p>本文前半部分介绍了持续集成的相关理论以及项目中所用到的技术，后半部分详细说明了持续集成方案的实施步骤和开发过程，并通过具体项目案例，验证了系统的可行性和意义。</p>
+<p><strong>关键词</strong>：持续集成；敏捷开发；Jenkins；Android组件化</p>
+<p><strong>DESIGN AND IMPLEMENTATION OF CONTINUOUS INTEGRATION SYSTEM FOR ANDROID PROJECT</strong></p>
+<p><strong>Abstract:</strong> This paper desgin a Continuous Integration scheme based on Jenkins which is combined with Android Component-based Architecture. Through a series of links such as build, integrate and package automatically, it can standardize the process of software development, shorten the cycle of iteration, find the problem of project in time, reduce the risk of release and ensure the quality of software. What’s more, it can respond to the change of demand quickly and provide runnable software versions at any time which has improved the visibility of software in the development. </p>
+<p>This system is mainly composed of Web front-end, Web back-end, Jenkins service and Maven repository. The front-end is used to manage and build components or project as well as checking log. The back-end can respond the request from front-end, save data and realize the instant push by WebSocket. Jenkins service provides a unified environment of development and execute the task according to the configuration and scripts. In addition, it can push the result of buildings to the back-end and the mailboxes. The Maven repository is used to store the dependency files. </p>
+<p>The first part of this paper introduces the related theory of Continuous Integration and some technology used in the project. The second part describes the implementation steps and development process of my Continuous Integration scheme in detail. Moreover, it verifies the significance and feasibility of the system through a specific case. </p>
+<p><strong>Keywords:</strong> Continuous Integration；Agile Development；Jenkins；Android Component-Based Architecture</p>
+<h1 id="1-绪论"><a href="#1-绪论" class="headerlink" title="1 绪论"></a>1 绪论</h1><h2 id="1-1-课题背景"><a href="#1-1-课题背景" class="headerlink" title="1.1 课题背景"></a>1.1 课题背景</h2><p>随着互联网的飞速发展、软件架构日益复杂，传统的瀑布式开发、集中式软件测试已不能适应需求频繁变更、快速迭代的要求。如何应对频繁的需求变更，并且在缩短软件开发周期的同时保证产品质量[1]、减少发布风险，成了人们研究的问题。敏捷软件开发模式应运而生。</p>
+<p>敏捷开发的概念源于Kent Beck在90年代初期提出的软件开发思想——极限编程（简称XP[2]），持续集成（简称CI）便是XP中提出的实践。</p>
+<p>2000年，Martin Fowler定义了持续集成：持续集成是一种软件开发实践，项目成员需要频繁对他们的工作进行集成，每天至少集成一次，并且进行自动化测试，这样就能够及时地发现项目缺陷[3]。</p>
+<p>国外团队对持续集成的探索和实践起步较早。相继出现了CruiseControl、Hudson、LuntBuild、QuickBuild和Bamboo，以及近几年发展起来的Jenkins等持续集成工具[4]。</p>
+<p>近几年国内许多团队也开始引入到实际项目开发中，实现了快速迭代，提高了开发效率。如何选择持续集成方案需要根据团队、业务和项目情况等因素综合考虑。</p>
+<h2 id="1-2-研究目标和内容"><a href="#1-2-研究目标和内容" class="headerlink" title="1.2 研究目标和内容"></a>1.2 研究目标和内容</h2><p>本课题在研究持续集成理论的基础上，利用Git（版本控制工具）、Gradle（构建工具）、Maven（构件仓库）、Jenkins（持续集成工具）等多种工具和技术，针对Android组件化项目的架构和存在的问题，实现了一套的持续集成系统。由Web前端、Web后端、Jenkins服务、代码仓库和构件仓库等各部分组成，实现了一条Android项目构建、集成到部署的流水线，用于规范开发流程、减少重复工作、及时发现问题、缩短迭代周期，方便对组件和项目进行管理，提高效率，快速迭代，真正达到敏捷开发。</p>
+<p>本系统预期实现的目标如下：</p>
+<p>（1）减少重复劳动，降低手动维护成本和出错概率，提高效率。</p>
+<p>（2）避免构建环境不一致出现的问题，减少环境部署时间。</p>
+<p>（3）通过版本控制系统统一管理代码。</p>
+<p>（4）通过邮件和前端通知及时反馈问题，并可以通过链接查看和定位问题。</p>
+<p>（5）实现代码质量检查、测试、构建、发布自动化，无需开发者手动执行脚本。</p>
+<p>（6）Jenkins后台执行构建，避免开发者本地编译忙等，耗时费力，且无法保存构建记录，不便于事后追溯。</p>
+<p>（7）能够随时提供可运行的软件供测试团队进行测试。</p>
+<p>（8）项目进度可见可控，降低了沟通成本。</p>
+<p>（9）避免软件最终集成时一次性暴露大量错误，难以定位等问题。</p>
+<p>（10）前端统一对组件、项目进行管理，能够及时收到更新通知，能够查看组件和项目信息、构建历史、责任人等，易于追溯问题，并且可以在这一环节加入权限控制。</p>
+<p>（11）后端实现响应请求、对数据进行存储、验证，与Jenkins服务交互，并实现主动推送等功能。</p>
+<h2 id="1-3-论文结构安排"><a href="#1-3-论文结构安排" class="headerlink" title="1.3 论文结构安排"></a>1.3 论文结构安排</h2><p>第一章：介绍课题背景、研究目标和内容以及论文的结构。</p>
+<p>第二章：对比传统的瀑布式开发模型，针对其问题和不足引出持续集成理论。研究和分析本课题相关技术，包括Android组件化架构和技术，Docker虚拟化技术等。</p>
+<p>第三章：通过对比两种开发模式和流程分析了系统的需求和实现的意义。</p>
+<p>第四章：设计持续集成系统功能和架构以及关键流程，能够进行Android组件和项目的可视化管理，执行Android组件和项目的构建、打包、部署等任务，将构建结果反馈到前端，并且通过邮件通知用户。</p>
+<p>第五章：详细讲述了系统的实施步骤和流程，包括组件化方案设计和实现，Maven私服和Jenkins服务搭建，以及前后端的关键实现等。</p>
+<p>第六章：搭建Android组件化架构，通过具体的项目案例演示了开发流程和系统的使用流程。</p>
+<p>第七章：总结课题内容，提出系统下一步的优化方案。</p>
+<p>致谢和参考文献。</p>
+<h1 id="2-相关理论与技术"><a href="#2-相关理论与技术" class="headerlink" title="2 相关理论与技术"></a>2 相关理论与技术</h1><h2 id="2-1-瀑布式开发和敏捷开发"><a href="#2-1-瀑布式开发和敏捷开发" class="headerlink" title="2.1 瀑布式开发和敏捷开发"></a>2.1 瀑布式开发和敏捷开发</h2><p>传统软件开发流程采用“瀑布式”开发模型[5]，这种模式源于工业生产，它的开发过程包括市场调研、需求分析、产品设计、程序开发、软件测试、成品发布、后期维护等阶段，每个阶段都需要制定明确的目标，并且提供详尽的文档，按照计划一步步执行，步骤清晰明确，可预见性强，能够避免资源的无效投入，保证开发质量。但在这种开发模式下，只有项目初期的想法和建议允许加入开发计划中，在开发过程中不允许加入新的需求。而事实上，随着开发过程逐渐深入、技术架构的日新月异和市场的快速变化，好的想法和建议也会不断涌现[6]。因此，这种开发模式在需要快速产出、占领市场先机和需求不明的情况下基本是不可行的。同时在此期间，项目程序将长期不能运行[7]，需要等到所有分支开发结束后才能进行测试和集成的工作，并且一旦分支偏离主干太远，会造成项目集成困难、问题频发且不容易定位，导致项目发布前混乱紧张的局面甚至延期发布。</p>
+<p>敏捷开发提倡拥抱变化，进行软件迭代开发，将大项目分为一个个子项目，每个子项目都可以独立的运行、测试、集成等，因此软件能够随时地集成使用和交付。敏捷开发借鉴了XP的思想，提出了12条原则[8]，并建立了以下价值观：</p>
+<p>（1）个体和互动高于流程和工具</p>
+<p>（2）可运行的软件高于详尽的文档</p>
+<p>（3）客户合作高于合同谈判</p>
+<p>（4）响应变化高于遵循计划</p>
+<p>相比传统的瀑布开发，敏捷开发模式具有更强地适应性和灵活性，它强调“以人为本、目标导向、客户为先、拥抱变化”，要求快速迭代和及早测试，它的出现影响了团队开发的工作方式，也改变了软件发布的方式。</p>
+<h2 id="2-2-持续集成"><a href="#2-2-持续集成" class="headerlink" title="2.2 持续集成"></a>2.2 持续集成</h2><p>为了验证开发者提交的最新代码能否编译成功，能否通过自动化测试用例，以及是否会影响项目集成等。可以通过频繁地进行集成，可以快速得到反馈，容易知道是哪次提交导致集成失败，易于开发者定位问题。我们将这种方法称为持续集成，也叫作每日构建[9]。</p>
+<p>CI是敏捷开发最为成功的实践之一[10]，它最大的好处在于降低风险，它无法消除问题，但是可以帮助你快速发现问题，及时反馈。通过自动化构建、代码检查、测试和发布流水线[11]，能够减少开发人员手动编译、打包的时间，有效提高软件开发效率、及时发现项目缺陷，降低发布风险，保障软件开发质量，同时对团队所有成员来说整个开发过程可见，能够辅助项目负责人把控项目整体进度，帮助开发者定位问题，还能增强大家对产品的信心。</p>
+<p>持续集成有以下几点原则：</p>
+<p>（1）要求开发者控制好代码提交粒度，及时push，不然就失去了持续构建的意义。</p>
+<p>（2）使用专门的机器进行每日构建。</p>
+<p>（3）优先修复失败构建。</p>
+<p>（4）保证每次构建都通过，能够生成可运行和发布的软件。</p>
+<p>持续集成具体流程如图2-1所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="持续集成开发流程图"> </p>
+<center> 图2-1 持续集成开发流程图[12]</center>
+
+<h2 id="2-3-Android组件化架构和技术"><a href="#2-3-Android组件化架构和技术" class="headerlink" title="2.3 Android组件化架构和技术"></a>2.3 Android组件化架构和技术</h2><p>随着APP业务逐渐复杂，功能不断增加，项目工程会越来越庞大。为了减少代码间的耦合，通过Gradle的Module功能，将项目分成一个个子模块。每个模块能够单独进行开发、编译、打包、调试，可以拆卸和移植，通过依赖的方式进行管理，并且组件间可以相互通信。组件化架构能够很好地实现业务和代码的解耦，还便于控制代码权限。</p>
+<p>Android组件化架构[13]利用了Gradle的这一特性，建议将模块分类进行管理，由上往下进行依赖，分为：</p>
+<p>（1）壳组件：用于将整个项目进行打包，生成可安装的apk文件，即安卓安装包。</p>
+<p>（2）业务组件：根据业务的不同进行划分，实现了完整的业务功能。</p>
+<p>（3）功能组件：封装了一些常用功能，供业务组件使用。如网络、数据库、图片加载、日志、UI等框架。</p>
+<p>（4）基础组件：封装了通用的工具类、基础类和资源等，供其他业务组件使用。</p>
+<p>（5）三方库：一些开源的三方框架，由框架作者进行维护，存放在远程仓库中。</p>
+<p>安卓组件化架构如图2-2。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Android%E7%BB%84%E4%BB%B6%E5%8C%96%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="Android组件化架构图"> </p>
+<center>图2-2 Android组件化架构图</center>
+
+<p>目前流行的组件化方案主要有两种，如下：</p>
+<p>（1）Sub-Module方案：整个项目只有一个工程，所有模块共用一个仓库，或者每个module创建自己的仓库，通过Git的子仓库功能进行管理。缺点是仓库分支复杂，代码耦合度较高，团队协作的时候容易发生冲突，而且每次调试都需要对所有的模块进行编译，耗时费力。</p>
+<p>Sub-Module架构如图2-3所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Sub-Module%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png" alt="Sub-Module组件化模式"> </p>
+<center>图2-3 Sub-Module组件化模式</center>
+
+<p>（2）Multi-Project模式：根据业务拆分工程，每个工程都包含壳模块和业务模块，将业务模块编译打包成aar上传至构件仓库，通过修改壳工程的依赖配置集成项目，通过git仓库的权限管理，可以保证代码不被他人修改查看，并且项目编译的时候不需要编译其他组件。</p>
+<p>Multi-Project架构如图2-4所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Multi-Project%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png" alt="Multi-Project组件化模式"> </p>
+<center>图2-4 Multi-Project组件化模式</center>
+
+<p>两种模式需要根据项目情况选择，主要取决于业务特性、团队规模、组件化细分粒度等条件。对于小型且不需要频繁迭代的团队选择Submodule模式较合适。对于大型团队且迭代频繁的团队选择Multi-Project方案较合适。本毕业设计决定选择第二种方案实现组件化方架构，并针对Multi-Project模式设计软件开发流程、前端交互和数据库结构等。</p>
+<h2 id="2-4-Docker虚拟化技术"><a href="#2-4-Docker虚拟化技术" class="headerlink" title="2.4 Docker虚拟化技术"></a>2.4 Docker虚拟化技术</h2><p>Docker有几个概念[14]：</p>
+<p>（1）Image（镜像）：用于创建Docker容器的模板。</p>
+<p>（2）Container（容器）：是独立运行的一个或一组应用。</p>
+<p>（3）Registry（仓库）：用于保存镜像，类似代码仓库，Docker Hub是官方的镜像仓库，提供了大量的镜像。</p>
+<p>Docker的基本架构如下图2-5：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt="Docker架构图"> </p>
+<center>图2-5 Docker架构图</center>
+
+<p>开发者能够将他们的应用或服务打包成一个镜像，发布到镜像仓库上，用户可以从远程仓库中下载镜像，并且以镜像为模板创建具体的容器来运行软件。Docker使用操作系统虚拟化技术，为应用提供隔离的运行环境，不同容器之间没有任何关联。容器拥有独立的权限管理和资源管理，以及独立的网络环境，相当于一个独立的虚拟机，也就是说所有的程序开发环境都需要在容器内再安装一遍，并且需要配置环境变量。通过容器可移植的特性，可以实现一次构建、处处运行，而不需要针对不同系统重新进行构建和部署。</p>
+<p>与虚拟机相比，它具有更轻量，启动更加快速等特点，并且同一台主机上可以运行多个Docker容器。Docker容器的原理是利用了Linux的命名空间、控制组等特性对容器进行隔离，降低了每个容器的系统开销。</p>
+<p>另外容器删除后，容器内的数据会清空，因此需要使用类似Linux的挂载技术，将主机路径挂载到容器中，容器数据存放在主机目录下，重新创建容器时只需要指定数据挂载目录，即可实现持久化数据。</p>
+<h1 id="3-系统需求分析"><a href="#3-系统需求分析" class="headerlink" title="3 系统需求分析"></a>3 系统需求分析</h1><p>本章将针对项目在接入持续集成平台前后的开发模式进行详细对比，来分析开发这套系统的必要性。</p>
+<p>以Multi-Project组件化方案为例，在接入持续集成平台之前，整体的开发流程如图3-1所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%97%A9%E6%9C%9F%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt="早期项目开发流程图"> </p>
+<center>图3-1 早期项目开发流程图</center>
+
+<p>在上述流程中，存在以下几个缺陷：</p>
+<p>（1）开发者需要手动在代码中定义构件名称并修改组件版本号，随源代码一起提交。可能会存在构件名称或版本命名不统一（包括版本前后命名不统一、不同成员间的不统一），测试版和正式版需要分别构建等，造成构件仓库混乱的问题。且Maven仓库限制除了snapshot的构件以外，其他构件不能拥有两个一样的版本号，因此可能会存在发布失败的情况。</p>
+<p>（2）开发人员手动构建时间长，浪费了大部分开发时间，且开发者们的构建环境不一致，容易出现问题。</p>
+<p>（3）管理员需要和多个开发者沟通、频繁进行重复性操作更新依赖配置，效率低下且容易出错。管理员每天都需要等待项目打包成功，将apk交付测试。</p>
+<p>（4）集成操作复杂，需要各个组件负责人配合，可以合并为一个步骤。</p>
+<p>在接入持续集成平台之后，整体的开发流程如图3-2所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8E%A5%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt="接入系统后项目开发流程图"> </p>
+<center>图3-2 接入系统之后项目开发流程图</center>
+
+<p>相比之前的方式，有了以下几点改进：</p>
+<p>（1）平台可以对组件进行管理，组件创建需要指定代码仓库、分支等，由服务端记录和保存，并可以进行校验，如不允许添加重复组件等。且组件版本号按照一定规则递增，开发者不需要关心，只需要在平台上确认构建。避免了构件仓库混乱的现象。</p>
+<p>（2）构建和集成的任务都在Jenkins服务中执行，减少了开发者编译和构建代码的时间，并且确保了构建环境统一。</p>
+<p>（3）减少了管理员和开发者或者测试团队的沟通成本。所有组件和项目信息和构建历史记录都保存下来，所有人都能够随时查看，方便地定位错误，追溯问题。</p>
+<p>（4）平台操作简便，学习成本低，可以供产品经理或者测试人员共同使用。</p>
+<p>（5）平台可以实现自动化构建、质量检查、测试、集成、打包等功能，减少重复性操作，节约时间。</p>
+<h1 id="4-系统概要设计"><a href="#4-系统概要设计" class="headerlink" title="4 系统概要设计"></a>4 系统概要设计</h1><p>如何合理的管理组件和项目，建立项目组件关联，方便用户使用是本系统要研究的最大的问题。并且需要结合团队和项目情况选择合适的方案，如构建时机选择手动触发、还是git自动触发或者定时触发。只有优化了管理和开发流程，本系统的意义才能真正体现出来。</p>
+<h2 id="4-1-系统功能"><a href="#4-1-系统功能" class="headerlink" title="4.1 系统功能"></a>4.1 系统功能</h2><p>本系统主要分为五个部分：</p>
+<p>（1）Android组件化项目：用于系统功能测试和演示。</p>
+<p>（2）Maven私服：用于存放依赖包，通过Gradle插件可以进行软件包的上传和依赖库管理。</p>
+<p>（3）前端网页：用于提供可视化的操作页面，供项目管理者、开发者、测试人员等使用。可以进行组件和项目的管理、构建，并且可以查看构建日志、应用下载地址等。并且实现表单检查、数据排序、筛选、查找等功能。简单易用，提高了项目开发过程的可见性。</p>
+<p>（4）Web后端：用于响应前端请求，进行数据连接和CRUD操作，调用Jenkins API，接收Jenkins消息等，通过WebSocket实现主动推送。并且需要实现异常拦截、错误处理、日志记录等功能。</p>
+<p>（5）Jenkins服务端：提供统一的构建环境，如git、python、gradle、java等，可以创建或执行后台自动化构建、发布等Job，并且实现版本控制和邮件通知功能。</p>
+<p>由于Docker容器的隔离性，各容器之间系统、网络、端口等都是独立的，导致难以通信，包括宿主机访问容器，容器访问宿主机，容器访问公网，容器之间互相访问等存在问题。因此本系统实现的一个关键点在于系统间各个部分如何通信、连接，相互协作完成整个工作流程，以及如何进行事务控制，保证数据的正确性等。本系统最终采用以下方案：</p>
+<p>（1）前后端使用http协议通信，前端发起http请求，后端进行业务处理，然后对请求进行响应，关闭连接。</p>
+<p>（2）由于某些请求如后台构建，无法立即响应结果，因此需要实现后端主动向前端推送通知的功能。可以通过轮询、长连接、WebSocket实现，本系统采用WebSocket。</p>
+<p>（3）后端与Jenkins之间可以通过http或者RPC协议进行通信，这里选择http，Jenkins服务提供了RESTFul API供后端调用。Jenkins在执行完任务之后可以通过python或者shell脚本发起http请求。</p>
+<p>（4）Jenkins服务通过gradle插件上传应用包到Maven仓库。</p>
+<p>（5）Jenkins服务使用Git工具对Android项目进行版本控制。</p>
+<h2 id="4-2-架构设计"><a href="#4-2-架构设计" class="headerlink" title="4.2 架构设计"></a>4.2 架构设计</h2><p>系统架构设计如图4-1所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/CI%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt="CI系统架构图"> </p>
+<center>图4-1 CI系统架构图</center>
+
+<h2 id="4-3-团队协作开发流程"><a href="#4-3-团队协作开发流程" class="headerlink" title="4.3 团队协作开发流程"></a>4.3 团队协作开发流程</h2><p>接入持续集成系统后大大地能够优化团队android组件化项目的开发流程，减化了开发者和管理员的部分重复性操作，降低了沟通成本，所有的构建都在远程执行，保证了构建环境的一致，并且开发人员不需要忙等。预期工作流程如图4-2所示，流程如下：</p>
+<p>（1）开启新项目时由管理员在平台上创建并配置好项目信息。开发人员创建或更新各自的组件信息。</p>
+<p>（2）开发人员拉取最新代码，进行开发或修复问题，提交代码到远程仓库，之后在平台上点击构建组件。</p>
+<p>（3）管理员更新项目依赖的组件版本，通过邮件或者红点提示知道是否有新版本。</p>
+<p>（4）管理人员在平台上手动点击构建项目，也可以设置定时自动构建，或者git触发构建。项目构建完成后自动上传apk到蒲公英应用托管仓库，并且返回下载地址。</p>
+<p>（5）测试团队可以在平台上点击下载地址，进入下载页面，获取最新的应用包进行测试，并反馈测试结果给开发者。</p>
+<p>（6）循环3-5步，直到项目开发完成，测试通过，管理员可以集成并发布项目。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A2%84%E6%9C%9F%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg" alt="预期团队开发流程"> </p>
+<center>图4-2 预期团队开发流程</center>
+
+<h2 id="4-4-系统内部运行关键流程"><a href="#4-4-系统内部运行关键流程" class="headerlink" title="4.4 系统内部运行关键流程"></a>4.4 系统内部运行关键流程</h2><h3 id="4-4-1-创建组件流程"><a href="#4-4-1-创建组件流程" class="headerlink" title="4.4.1 创建组件流程"></a>4.4.1 创建组件流程</h3><p>创建组件需要填写组件基本信息，限制不允许出现同名组件，同时Jenkins服务端根据配置模板创建相应的Job，创建成功之后数据库会插入组件信息，创建失败则不插入，最后前端根据返回的结果弹出相应提示。具体流程如图4-3所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg" alt="组件创建流程"> </p>
+<center>图4-3 组件创建流程</center>
+
+<h3 id="4-4-2-组件构建流程"><a href="#4-4-2-组件构建流程" class="headerlink" title="4.4.2 组件构建流程"></a>4.4.2 组件构建流程</h3><p>构建组件会在后台执行，前端请求成功之后更新组件状态为正在构建，同时Jenkins服务端开始执行Job，从远程仓库拉取代码，修改版本号，接着对组件源码进行编译和打包，上传aar包到Maven私服，然后提交代码。最后通知后端任务执行结果，后端保存构建记录并将结果发送到前端，前端更新组件信息和构建历史。同时任务执行结果还会以邮件形式通知到用户。具体流程如图4-4所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg" alt="组件构建流程"> </p>
+<center>图4-4 组件构建流程</center>
+
+<h3 id="4-4-3-项目集成流程"><a href="#4-4-3-项目集成流程" class="headerlink" title="4.4.3 项目集成流程"></a>4.4.3 项目集成流程</h3><p>项目集成同样在后台执行，Jenkins Job会更新项目依赖，获取最新依赖包，进行项目编译和打包，将打出来的应用上传到应用托管仓库，并且提交代码。最后通知后端任务执行结果，后端保存记录并将结果发送到前端，前端更新项目信息和构建历史，并且能够链接到应用下载地址。同时任务执行结果会以邮件形式通知到用户。具体流程如图4-5所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B.jpg" alt="项目集成流程"> </p>
+<center>图4-5 项目集成流程</center>
+
+<h1 id="5-系统实现"><a href="#5-系统实现" class="headerlink" title="5 系统实现"></a>5 系统实现</h1><p>整个系统实现步骤和流程如图5-1，首先研究相应的技术，各部分先单独实现和测试，再进行各个部分的联调测试。最终通过案例进行整体的流程测试，优化功能和代码结构。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E5%92%8C%E6%B5%81%E7%A8%8B.jpg" alt="系统实现步骤和流程"> </p>
+<center>图5-1 系统实现步骤和流程</center>
+
+<h2 id="5-1-组件化方案实现"><a href="#5-1-组件化方案实现" class="headerlink" title="5.1 组件化方案实现"></a>5.1 组件化方案实现</h2><p>从GitHub下载了一个开源的Android项目作为演示项目，功能较简单，实现了主页、每日新闻，每日图片等功能[15]。案例效果图如5-2</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%88%E4%BE%8B%E6%95%88%E6%9E%9C.jpg" alt="组件化案例效果"> </p>
+<center>图5-2 组件化案例效果</center>
+
+<p>使用Multi-Project组件化方案对其进行改造，所有组件都包含壳模块，最终拆分为6个工程，分别为：</p>
+<p>（1）壳模块：只包含Android工程中主模块的代码，用于管理依赖包、存放项目构建和打包等配置以及其他一些资源，如apk签名文件，多国语言包等。</p>
+<p>（2）壳组件：不包含业务模块，只作为壳工程，用于打包apk。</p>
+<p>（3）公共组件：属于基础组件，包含基础类、公共类等代码和公共资源，作为底层库供所有业务组件使用。</p>
+<p>（4）主页组件：实现了应用的Home业务，由Home页面可以跳转到新闻页面和图片欣赏页面。</p>
+<p>（5）新闻组件：实现了查看每日新闻业务。</p>
+<p>（6）美女图片组件：实现了图片欣赏业务。</p>
+<h3 id="5-1-1-代码版本控制工具"><a href="#5-1-1-代码版本控制工具" class="headerlink" title="5.1.1 代码版本控制工具"></a>5.1.1 代码版本控制工具</h3><p>本系统使用GitHub作为代码仓库，共建立了6个代码仓库，分别存放上述6个工程。其中壳模块使用Git工具的submodule功能，作为所有组件的子模块，存在于其他5个工程之中。子模块本质也是一个代码仓库，只不过通过submodule将其与其他工程关联起来。</p>
+<p>本方案中壳模块只用于存放依赖配置和部分资源，由管理员或持续集成平台对其进行更新和提交代码，其他组件只能通过壳模块获取最新的配置，并用其进行打包，在其他组件中不建议直接修改壳模块文件，或者向壳模块提交代码，即使修改了也应该只用于本地临时使用，正式使用仍然需要拉取远程仓库的代码覆盖本地配置，可以对该仓库进行代码提交的权限控制。</p>
+<p>Git的sumodule相关配置在.gitmodules文件中，如图5-3所示，声明了子模块的名称，仓库地址，分支等。在工程目录下可以通过git submodule update –remote命令拉取子模块的最新代码，或者进入子模块目录下使用git pull命令拉取代码。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Git%E5%AD%90%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg" alt="Git子模块配置文件"> </p>
+<center>图5-3 Git子模块配置文件</center>
+
+<h3 id="5-1-2-Gradle构建工具"><a href="#5-1-2-Gradle构建工具" class="headerlink" title="5.1.2 Gradle构建工具"></a>5.1.2 Gradle构建工具</h3><p>Gradle是一个类似Ant和Maven的开源项目构建工具，使用Groovy语言的DSL（领域特定语言）来配置项目。提供依赖管理、多工程管理和局部构建功能，并且对脚本和插件支持良好。</p>
+<p>可以通过IDE或者使用Gradle命令行执行构建、打包等Task。此外，Android项目还支持使用Gradle包装命令的方式来构建、打包Android的组件和项目：</p>
+<p>（1）构建组件：使用maven插件配置构件名称、版本等信息。如图5-4所示。然后在工程目录下执行gradlew :组件名:upload，即可自动构建组件，并上传aar包到依赖仓库。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E9%85%8D%E7%BD%AE.jpg" alt="组件打包上传配置"> </p>
+<center>图5-4 组件打包上传配置</center>
+
+<p>（2）打包项目：进行Android项目的相关配置，然后在工程目录下执行gradlew assembleDebug来打包Debug版apk，通过assembleRelease来打包正式版的apk。</p>
+<h2 id="5-2-Docker搭建Maven私服"><a href="#5-2-Docker搭建Maven私服" class="headerlink" title="5.2 Docker搭建Maven私服"></a>5.2 Docker搭建Maven私服</h2><h3 id="5-2-1-Docker安装"><a href="#5-2-1-Docker安装" class="headerlink" title="5.2.1 Docker安装"></a>5.2.1 Docker安装</h3><p>本系统通过Docker部署Maven私有仓库，需要安装Docker，步骤如下：</p>
+<p>首先需要开启Win10虚拟化技术：打开Windows程序和功能-&gt;启用或关闭Windows功能-&gt;选中Hyper-V。如图5-5所示。然后从官网下载Docker for windows并按照提示安装即可。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Win10%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.png" alt="Win10开启虚拟化技术"> </p>
+<center>图5-5 Win10开启虚拟化技术</center>
+
+<p>由于国内下载Docker镜像速度较慢，因此需要配置镜像加速器，这里使用官方中国区镜像地址，配置方式如图5-6所示：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F.jpg" alt="Docker配置国内镜像"> </p>
+<center>图5-6 Docker国内镜像源地址</center>
+
+<h3 id="5-2-2-Nexus服务搭建"><a href="#5-2-2-Nexus服务搭建" class="headerlink" title="5.2.2 Nexus服务搭建"></a>5.2.2 Nexus服务搭建</h3><p>首先通过【docker search nexus】命令查找Nexus镜像，如图5-7可以看到有很多镜像可以选择，这里选择第一个镜像：sonatype/nexus3。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Nexus%E9%95%9C%E5%83%8F.jpg" alt="Docker搜索Nexus镜像"> </p>
+<center>图5-7 Docker搜索Nexus镜像</center>
+
+<p>然后使用【docker run -d -p 8081:8081 –name nexus3 -v /d/Docker/Volume/Nexus3:/nexus-data sonatype/nexus3】命令运行nexus3容器。其中【docker run [OPTIONS] <IMAGE>】命令用来创建并运行容器，如果本地没有镜像，则会从Docker Hub获取。</IMAGE></p>
+<p>运行成功后，可以访问8081端口，出现图5-8页面则表示Nexus服务成功运行。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Nexus%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg" alt="Nexus服务运行结果"> </p>
+<center>图5-8 Nexus服务运行结果</center>
+
+<p>可以使用docker ps命令查看正在运行的容器，如图5-9所示</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8.jpg" alt="Docker查看正在运行的容器"> </p>
+<center>图5-9 Docker查看正在运行的容器</center>
+
+<h2 id="5-3-持续集成服务器搭建"><a href="#5-3-持续集成服务器搭建" class="headerlink" title="5.3 持续集成服务器搭建"></a>5.3 持续集成服务器搭建</h2><h3 id="5-3-1-Jenkins持续集成工具"><a href="#5-3-1-Jenkins持续集成工具" class="headerlink" title="5.3.1 Jenkins持续集成工具"></a>5.3.1 Jenkins持续集成工具</h3><p>Jenkins是一款开源的持续集成工具[16]，具有丰富的插件系统，支持任何类型的构建或集成，并且提供自动化构建、分布式构建、邮件通知等功能。其本质上是一个服务，用户可以通过可视化的Web操作页面配置和执行任务，并且提供了RESTful Api的访问形式，开发者可以通过调用相应的Api来动态的配置任务、执行任务、获取任务信息和构建信息等。</p>
+<h3 id="5-3-2-Jenkins安装与配置"><a href="#5-3-2-Jenkins安装与配置" class="headerlink" title="5.3.2 Jenkins安装与配置"></a>5.3.2 Jenkins安装与配置</h3><p>本系统使用Docker来安装和运行Jenkins。</p>
+<p>（1）首先执行docker search jenkins命令查找Jenkins镜像，如图5-10，这里选择第二个镜像：jenkins/jenkins。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Jenkins%E9%95%9C%E5%83%8F.jpg" alt="Docker搜索Jenkins镜像"> </p>
+<center>图5-10 Docker搜索Jenkins镜像</center>
+
+<p>（2）运行docker pull jenkins/jenkins拉取镜像到本地。</p>
+<p>（3）输入【docker run -p 8082:8080 -d –name myjenkins -v /e/ASproject:/var/as_project -v /d/android-sdk-windows:/var/android_sdk -v /d/Docker/Volume/Jenkins:/var/jenkins_home jenkins/jenkins:lts】命令运行Jenkins容器。</p>
+<p>（4）浏览器访问8082端口，出现页面则表示Jenkins服务启动成功[17]，如图5-11。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg" alt="Jenkins服务运行结果"> </p>
+<center>图5-11 Jenkins服务运行结果</center>
+
+<p>（5）首次启动需要初始化密码，上图所示路径为Jenkins容器中的路径，无法直接通过宿主机访问，需要进入该容器内部访问，使用docker exec命令访问容器，然后进入/var/jenkins_home/secrets/文件夹下查看初始密码。如图5-12所示。输入密码进入下一步。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6.jpg" alt="Jenkins进入容器内部查看文件"> </p>
+<center>图5-12 Jenkins进入容器内部查看文件</center>
+
+<p>（6）根据提示安装插件，创建Jenkins用户，完成之后进入Jenkins主页，如图5-13所示</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%B8%BB%E9%A1%B5.jpg" alt="Jenkins主页"> </p>
+<center>图5-13 Jenkins主页</center>
+
+<p>（7）Jenkins的说明文档采用REST API样式，URL格式如Jenkins资源/api。常用的资源有主机名、Job和Build等。如：localhost:8082/api</p>
+<h3 id="5-3-3-Jenkins容器内部环境搭建"><a href="#5-3-3-Jenkins容器内部环境搭建" class="headerlink" title="5.3.3 Jenkins容器内部环境搭建"></a>5.3.3 Jenkins容器内部环境搭建</h3><p>由于容器与宿主机是完全隔离的，因此容器内无法使用宿主机环境，需要在容器内部重新设置环境变量。在Docker容器中配置环境变量有以下方式：</p>
+<p>（1）由于Docker基于Linux操作系统，因此可以通过【docker exec -it myjenkins /bin/bash】命令开启交互模式终端，进入容器内部，接着使用Linux的方式，如apt或者wget等工具安装软件即可。</p>
+<p>（2）使用挂载的方式，将宿主机已经安装好的软件目录挂载到容器中的某个目录下，接着进入容器内部设置环境变量即可。</p>
+<p>接下来介绍下本系统中Jenkins如何搭建需要的环境：</p>
+<p>（1）Java环境：本版本的镜像自带了Java环境，因此不需要再次安装，可以进入容器内部，执行【java -version】命令查看java版本。如下图5-14所示</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%AA%8C%E8%AF%81Java%E7%8E%AF%E5%A2%83.jpg" alt="Jenkins验证Java环境"> </p>
+<center>图5-14 Jenkins验证java环境</center>
+
+<p>（2）Android环境：上面启动容器的时候已经将宿主机的Android SDK目录挂载到了Jenkins容器中，因此直接配置环境变量即可。在主页-&gt;系统管理-&gt;系统设置-&gt;找到环境变量，如下图5-15配置。注意这里的路径为挂载后容器内的路径。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEAndroid%E7%8E%AF%E5%A2%83.jpg" alt="Jenkins配置Android环境"> </p>
+<center>图5-15 Jenkins配置Android环境</center>
+
+<p>（3）Gradle：同样地，将宿主机Gradle安装文件夹挂载到容器内部，在主页-&gt;系统管理-&gt;全局工具配置-&gt;找到Gradle，如下图5-16配置。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEGradle.jpg" alt="Jenkins配置Gradle"> </p>
+<center>图5-16 Jenkins配置Gradle</center>
+
+<p>（4）Python环境：这个版本的Jenkins镜像自带了Python2的环境，可以进入容器内部，使用【python –v】命令查看Python版本。但是缺少Pip工具，同样地进入容器内，如图5-17完成安装。出现Pip版本号则表示安装成功。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E5%AE%89%E8%A3%85pip.jpg" alt="Jenkins安装pip"> </p>
+<center>图5-17 Jenkins安装pip</center>
+
+<p>（5）Git环境和SSH登录配置：这个版本的Jenkins镜像自带了Git环境，可以进入容器内部，使用git -v命令打印版本信息。GitHub支持以SSH协议访问Git仓库，避免每次输入用户名和密码。</p>
+<p>首先进入容器内部，通过【ssh-keygen -t rsa -C 邮箱】生成密钥对，然后进入~/.ssh目录下，查看公钥信息，如图5-18所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AESSH%E7%99%BB%E9%99%86.jpg" alt="Jenkins配置SSH登录"> </p>
+<center>图5-18 Jenkins配置SSH登录</center>
+
+<p>将公钥拷贝到GitHub设置页面的如下图5-19的位置，然后点击添加。</p>
+<p>![GitHub配置SSH keys](./2021-09-04-CI回首毕业论文/GitHub配置SSH Key.jpg) </p>
+<center>图5-19 GitHub配置SSH keys</center>
+
+<p>最后可以使用<code>ssh -T git@github.com</code>命令验证是否配置成功。</p>
+<h3 id="5-3-4-Jenkins任务配置"><a href="#5-3-4-Jenkins任务配置" class="headerlink" title="5.3.4 Jenkins任务配置"></a>5.3.4 Jenkins任务配置</h3><p>在Jenkins主页点击新建任务-&gt;输入名称-&gt;选择任务类型-&gt;……，这几步较简单，创建完成后任务界面如图5-20所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%A1%B5%E9%9D%A2.jpg" alt="Jenkins任务页面"> </p>
+<center>图5-20 Jenkins任务页面</center>
+
+<p>从左侧Configure项进入任务配置页面，这里只介绍几项关键配置：</p>
+<p>（1）参数和工作区配置：点开General-&gt;Advanced，定义构建任务需要传入的参数，参数可以有多种类型，如下图5-21所示，输入工作区路径，注意这里的路径是Jenkins容器内部路径。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE%E9%A1%B5%E9%9D%A2.jpg" alt="Jenkins任务配置页面"> </p>
+<center>图5-21 Jenkins任务配置页面</center>
+
+<p>（2）脚本配置：即任务执行的具体内容，可以执行多种类型的脚本，或者根据需要安装不同的插件来执行命令。如图5-22所示，</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE.jpg" alt="Jenkins任务脚本配置"> </p>
+<center>图5-22 Jenkins任务脚本配置</center>
+
+<p>（3）Jenkins的任务配置是以xml文件形式保存的，可以通过Jenkins的API接口查看指定任务的配置，如图5-23所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/JenkinsAPI%E5%BD%A2%E5%BC%8F%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE.jpg" alt="JenkinsAPI形式查看配置"> </p>
+<center>图5-23 Jenkins API形式查看配置</center>
+
+<p>（4）在任务界面点击Build With Parameters执行参数化构建-&gt;输入参数值-&gt;点击Build开始构建任务-&gt;点击任务界面左侧构建历史可以查看构建结果。如下图5-24</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9E%84%E5%BB%BA%E7%BB%93%E6%9E%9C%E6%97%A5%E5%BF%97.jpg" alt="Jenkins构建结果日志"> </p>
+<center>图5-24 Jenkins构建结果日志</center>
+
+<h3 id="5-3-5-脚本实现"><a href="#5-3-5-脚本实现" class="headerlink" title="5.3.5 脚本实现"></a>5.3.5 脚本实现</h3><p>Jenkins自动化构建实质上就是定时执行各种任务脚本，如shell脚本、python脚本、gradle等，或者根据需要安装其他插件，本系统主要使用python语言，其中封装了shell命令、gradle命令，git命令等，由python统一运行。</p>
+<h3 id="5-3-6-邮件通知"><a href="#5-3-6-邮件通知" class="headerlink" title="5.3.6 邮件通知"></a>5.3.6 邮件通知</h3><p>由于Jenkins是在后台执行，用户不用在任务执行的时候忙等，但是这样有可能造成用户因为某些原因没有及时查看构建记录或者及时修复失败构建。因此需要加入邮件通知的功能，及时推送构建结果到用户邮箱。</p>
+<p>Jenkins集成了邮件通知功能，完成任务时可发送邮件通知指定用户，但是由于格式固定，不够灵活，因此本系统决定采用Email Extension插件实现邮件发送，配置如下：</p>
+<p>（1）安装插件：在Jenkins主页面点击系统管理-&gt;插件管理-&gt;找到Email Extension Plugin并安装。安装完插件后在系统管理-&gt;系统设置中会显示Extended E-mail Notification配置项。</p>
+<p>（2）邮件全局配置：用于定义邮件模板，邮件发送人等，并开启邮箱服务，邮箱服务可以有多种选择，这里使用腾讯邮箱提供的SMTP服务，如图5-25。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E7%AE%B1%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE.jpg" alt="Jenkins邮箱服务配置"> </p>
+<center>图5-25 Jenkins邮箱服务配置</center>
+
+<p>（3）任务添加邮件通知：配置了邮件模板之后还需要在具体的任务中添加邮箱通知功能。如图5-26所示，在任务配置-&gt;Post Build Actions-&gt;选择Editable Email Notification。出现邮件插件配置项。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE.jpg" alt="Jenkins任务邮件配置"> </p>
+<center>图5-26 Jenkins任务邮件配置</center>
+
+<p>（4）邮件具体配置：如图5-27所示，可以针对具体的任务修改邮件内容。并且提供了邮件触发条件的功能，如Always表示总是发送邮件，Success表示只在任务执行成功的时候才触发邮件通知等。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE2.jpg" alt="Jenkins任务邮件配置2"> </p>
+<center>图5-27 Jenkins任务邮件配置</center>
+
+<p>（5）邮件通知结果：如图5-28为邮件内容，包含组件信息，构建编号，构建状态，构建结果地址等。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%BB%93%E6%9E%9C.jpg" alt="Jenkins邮件通知结果"> </p>
+<center>图5-28 Jenkins邮件通知结果</center>
+
+<h2 id="5-4-前端实现"><a href="#5-4-前端实现" class="headerlink" title="5.4 前端实现"></a>5.4 前端实现</h2><h3 id="5-4-1-Node-js环境安装"><a href="#5-4-1-Node-js环境安装" class="headerlink" title="5.4.1 Node.js环境安装"></a>5.4.1 Node.js环境安装</h3><p>Node提供了模块化功能，可以方便的引入模块，并且可以使得JavaScript能够进行服务端的开发。Node的出现影响着前端开发的模式，促进了前端工程化的发展。本系统使用Node中的Npm的包管理功能进行前端开发。</p>
+<p>首先从官网上下载Node.js并安装，程序会自动设置好环境变量，安装成功后使用【node –v】和【npm –v】命令检查Node和Npm版本。Npm通过模块下的package.json来定义包的属性，包括包名、版本号、作者、依赖包信息等，可以使用【npm install <Module name>】命令安装Node模块。由于国内使用npm的官方镜像下载模块速度比较慢，因此使用其他镜像替代。以淘宝镜像源为例，主要有三种配置方式，本项目采用第三种配置方法，配置方式如下：</Module></p>
+<p>（1）使用【npm config set registry <a target="_blank" rel="noopener" href="http://registry.npm.taobao.org】命令设置镜像,使用npm/">http://registry.npm.taobao.org】命令设置镜像，使用npm</a> config get registry查看镜像。使用本方式可以持久使用，缺点是对当前机器的所有项目起作用。</p>
+<p>（2）使用【npm –registry <a target="_blank" rel="noopener" href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org</a> install <Module name>】安装模块，本方式只适合临时使用，缺点是每次安装模块都需要指定镜像源。</Module></p>
+<p>（3）在工程目录的.npmrc配置文件中写入镜像源地址，添加【registry=<a target="_blank" rel="noopener" href="http://registry.npm.taobao.org】.这样做的好处是只针对当前项目起作用,并且只需要拷贝这份配置文件即可移植到新工程中./">http://registry.npm.taobao.org】。这样做的好处是只针对当前项目起作用，并且只需要拷贝这份配置文件即可移植到新工程中。</a></p>
+<h3 id="5-4-2-前端工程化建立"><a href="#5-4-2-前端工程化建立" class="headerlink" title="5.4.2 前端工程化建立"></a>5.4.2 前端工程化建立</h3><p>随着前后端分离概念的流行，后端工程师不用再关注前端页面，前端工程师的职责越来越重，能做的事情更加多了，随之而来的是前端项目逐渐庞大，需要考虑开发效率和后期维护等问题，因此，势必走上前端工程化的道路。前端工程化简单的讲就是把复杂不可控的项目变成简单可控的流程，从而提供开发效率，降低风险，是软件工程化在Web前端开发实践中的应用。具体到实践则包含技术框架选型、应用脚手架、代码版本控制、UI组件化、代码质量检查、代码编译、应用构建、打包发布等流程。由此也产生了各种框架和工具。</p>
+<p>本系统前端使用Next.js服务端渲染框架搭建，基于React框架，使用Redux框架实现React状态管理，使用TypeScript和Sass等预处理语言替代JS和CSS，UI框架主要使用蚂蚁金服的AntDesign，使用axios框架进行网络请求，WebSocket则利用socket.io框架实现。</p>
+<p>本系统脚手架工具使用create-next-app，其中提供了Next.js+AntDesign方案。具体步骤如下：</p>
+<p>（1）执行【npm install -g create-next-app】命令安装脚手架。</p>
+<p>（2）执行【create-next-app next-ant-app】初始化工程。</p>
+<p>（3）在package.json文件中配置依赖库、npm脚本、应用名、版本等信息，如图5-29所示，并运行【npm install】命令安装依赖库。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnpm%E9%85%8D%E7%BD%AE.png" alt="前端npm配置"> </p>
+<center>图5-29 前端npm配置</center>
+
+<p>（4）在.babelrc添加babel配置，如图5-30所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFBabel%E9%85%8D%E7%BD%AE.png" alt="前端Babel配置"> </p>
+<center>图5-30 前端babel插件配置</center>
+
+<p>（5）在next.config.js文件中配置TypeScript、Sass处理以及图片、CSS资源等打包，如图5-31所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnextjs%E9%85%8D%E7%BD%AE.jpg" alt="前端nextjs配置"> </p>
+<center>图5-31 前端next.js配置</center>
+
+<p>（6）工程目录划分如图5-32。其中components目录可以存放ui组件，layouts存放公共布局，lib封装了http请求方法，pages存放页面代码，static存放静态资源，styles存放公共样式，utils存放工具类。.babelrc用于配置babel插件，tsconfig.json用于配置TypeScript处理等。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95.jpg" alt="前端工程目录"> </p>
+<center>图5-32 前端工程目录</center>
+
+<p>（7）配置完毕后执行npm run dev运行服务，默认端口号为3000，可以在浏览器上访问3000端口打开前端页面。</p>
+<h3 id="5-4-3-前端部分页面展示"><a href="#5-4-3-前端部分页面展示" class="headerlink" title="5.4.3 前端部分页面展示"></a>5.4.3 前端部分页面展示</h3><p>前端页面布局主要分为侧边栏，右侧分为顶部导航、Breadcrumbs、内容、页脚。交互方面主要实现了全局消息提示、通知弹窗、确认弹窗以及表单对话框等。</p>
+<p>（1）组件管理页面，实现了分页和排序功能，超过十条数据自动分页。请求成功后，顶部出现消息提示交互。效果如图5-33。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.jpg" alt="组件管理页面"> </p>
+<center>图5-33 组件管理页面</center>
+
+<p>（2）表单对话框，实现了表单验证功能。效果如图5-34。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%88%9B%E5%BB%BA%E7%BB%84%E4%BB%B6%E9%A1%B5%E9%9D%A2.png" alt="创建组件页面"> </p>
+<center>图5-34 创建组件页面</center>
+
+<p>（3）构建历史页面，使用表格控件，倒序显示。效果如图5-35。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E9%A1%B5%E9%9D%A2.jpg" alt="构建历史页面"> </p>
+<center>图5-35 构建历史页面</center>
+
+<p>（4）项目详情页面，实现了下拉框联想功能，即根据条件自动更新下拉框选项。效果如图5-36。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.jpg" alt="项目详情页面"> </p>
+<center>图5-36 项目详情页面</center>
+
+<p>（1）交互效果：通知弹窗和确认弹窗如图5-37所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%80%9A%E7%9F%A5%E5%BC%B9%E7%AA%97%E6%95%88%E6%9E%9C.png" alt="通知弹窗效果"> </p>
+<center>图5-37 通知和确认弹窗效果</center>
+
+<h2 id="5-5-后端实现"><a href="#5-5-后端实现" class="headerlink" title="5.5 后端实现"></a>5.5 后端实现</h2><h3 id="5-5-1-后端架构"><a href="#5-5-1-后端架构" class="headerlink" title="5.5.1 后端架构"></a>5.5.1 后端架构</h3><p>本系统采用前后端分离方式开发，后端只负责提供接口数据，不涉及View层，基于Springboot和Mybatis框架实现，共分为三层：</p>
+<p>（1）Controller层（控制层）：负责接收前端请求，并调用相应的业务模块执行逻辑。同时可以在这一层对数据进行拆装，转换为前端和业务层需要的数据。</p>
+<p>（2）Service层（业务层）：实现业务模块逻辑，包括任务执行，调度，事务控制和异常处理等。还负责调用Dao层操作数据。对外只暴露业务接口。</p>
+<p>（3）Dao层（数据操作层）：实现数据库操作，在xml文件中定义数据库操作语句，通过mybatis框架解析和执行。</p>
+<p>架构图如5-38所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt="后端架构图"> </p>
+<center>图5-38 Web后端架构图</center>
+
+<h3 id="5-5-2-功能实现概述"><a href="#5-5-2-功能实现概述" class="headerlink" title="5.5.2 功能实现概述"></a>5.5.2 功能实现概述</h3><p>（1）组件管理业务：包含组件、组件构建记录、Jenkins组件任务的CRUD功能，以及组件构建和Jenkins组件任务的执行。</p>
+<p>（2）项目管理业务：包含项目、项目构建记录、Jenkins项目任务的CRUD功能，以及项目构建、集成和Jenkins项目任务的执行。</p>
+<p>（3）跨域问题解决：由于浏览器的同源策略限制导致不同源的前端页面请求服务端会被拒绝，也就是跨域问题，为了解决这一问题，需要服务端指定允许访问的源。建立CorsConfig.java文件，配置如图5-39所示</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.jpg" alt="跨域问题处理"> </p>
+<center>图5-39 跨域问题处理</center>
+
+<p>（4）全局异常处理：通过Springboot提供的@ControllerAdvice注解开启全局异常捕获，通过@ExceptionHandler注解捕获特定异常。如图5-40所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.jpg" alt="全局异常处理"> </p>
+<center>图5-40全局异常处理</center>
+
+<p>（5）正则匹配修改：Jenkins任务配置是以xml文件形式保存的，创建任务时需要上传配置，为了针对不同组件配置Job，需要修改模板配置文件，这里使用正则表达式修改文件，部分关键代码如图5-41和图5-42所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%AF%BB%E5%8F%96%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg" alt="读取模板配置文件"> </p>
+<center>图5-41读取模板配置文件</center>
+
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E4%BF%AE%E6%94%B9.jpg" alt="正则匹配修改"> </p>
+<center>图5-42 正则匹配修改</center>
+
+<h3 id="5-5-3-数据库设计"><a href="#5-5-3-数据库设计" class="headerlink" title="5.5.3 数据库设计"></a>5.5.3 数据库设计</h3><p>本系统使用MySQL进行数据存储，共有4个实体集，组件、项目、组件构建记录、项目构建记录。其中，一个组件或者项目可以有多条构建记录，每次构建都是一个版本，项目依赖组件的某个版本，一个项目依赖多个组件的某个版本，一个组件的某个版本可以被多个项目依赖。</p>
+<p>（1）数据库实体关系图（ER图）设计如图5-43：</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%95%B0%E6%8D%AE%E5%BA%93ER%E5%9B%BE.jpg" alt="数据库ER图"> </p>
+<center>图5-43 数据库ER图</center>
+
+<p>（2）数据库关系模型如下：</p>
+<p> 组件（组件id，组件名称，仓库地址，分支，目录，当前版本，构建状态，组件描述，创建时间，最近操作时间）</p>
+<p>组件构建记录（组件构建id，组件id，组件名称，构建序号，构建状态，构建版本，构建信息，构建时间）</p>
+<p>项目（项目id，项目名称，仓库地址，分支，当前版本，构建状态，集成状态，项目描述，创建时间，最近操作时间）</p>
+<p>项目构建记录（项目构建id，项目id，项目名称，类型构建状态，构建序号，apk下载地址，构建信息，构建时间）</p>
+<p>项目组件关系（id，项目id，组件构建id，关联类型）</p>
+<p>（3）数据库表设计如下：</p>
+<p>表1 组件表</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>t_module</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列名</td>
+<td>数据类型</td>
+<td>空/非空</td>
+<td>备注</td>
+<td>中文名称</td>
+</tr>
+<tr>
+<td>module_id</td>
+<td>int</td>
+<td>非空</td>
+<td>自增主键</td>
+<td>组件id</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td>唯一</td>
+<td>组件名称</td>
+</tr>
+<tr>
+<td>repo</td>
+<td>varchar(70)</td>
+<td>非空</td>
+<td></td>
+<td>仓库地址</td>
+</tr>
+<tr>
+<td>branch</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td></td>
+<td>分支</td>
+</tr>
+<tr>
+<td>catalog</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td></td>
+<td>目录</td>
+</tr>
+<tr>
+<td>cur_version</td>
+<td>varchar(10)</td>
+<td></td>
+<td></td>
+<td>当前版本</td>
+</tr>
+<tr>
+<td>build_status</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>构建状态</td>
+</tr>
+<tr>
+<td>descr</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td>组件描述</td>
+</tr>
+<tr>
+<td>gmt_create</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>gmt_update</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>最近操作时间</td>
+</tr>
+</tbody></table>
+<p>表2 组件构建记录表</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>t_module_build</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列名</td>
+<td>数据类型</td>
+<td>空/非空</td>
+<td>约束条件</td>
+<td>中文名称</td>
+</tr>
+<tr>
+<td>module_build_id</td>
+<td>int</td>
+<td>非空</td>
+<td>自增主键</td>
+<td>组件构建id</td>
+</tr>
+<tr>
+<td>module_id</td>
+<td>int</td>
+<td>非空</td>
+<td>外键</td>
+<td>组件id</td>
+</tr>
+<tr>
+<td>module_name</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td></td>
+<td>组件名称</td>
+</tr>
+<tr>
+<td>build_num</td>
+<td>int</td>
+<td>非空</td>
+<td></td>
+<td>构建number</td>
+</tr>
+<tr>
+<td>build_status</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>构建状态</td>
+</tr>
+<tr>
+<td>version</td>
+<td>varchar(10)</td>
+<td>非空</td>
+<td></td>
+<td>构建版本</td>
+</tr>
+<tr>
+<td>message</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td>构建信息</td>
+</tr>
+<tr>
+<td>gmt_create</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>构建时间</td>
+</tr>
+</tbody></table>
+<p>表3 项目表</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>t_project</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列名</td>
+<td>数据类型</td>
+<td>空/非空</td>
+<td>约束条件</td>
+<td>中文名称</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td>int</td>
+<td>非空</td>
+<td>自增主键</td>
+<td>项目id</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td>唯一</td>
+<td>项目名称</td>
+</tr>
+<tr>
+<td>repo</td>
+<td>varchar(70)</td>
+<td>非空</td>
+<td></td>
+<td>仓库地址</td>
+</tr>
+<tr>
+<td>branch</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td></td>
+<td>分支</td>
+</tr>
+<tr>
+<td>cur_version</td>
+<td>varchar(10)</td>
+<td></td>
+<td></td>
+<td>当前版本</td>
+</tr>
+<tr>
+<td>build_status</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>构建状态</td>
+</tr>
+<tr>
+<td>integrate_status</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>集成状态</td>
+</tr>
+<tr>
+<td>descr</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td>项目描述</td>
+</tr>
+<tr>
+<td>gmt_create</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>gmt_update</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>最近操作时间</td>
+</tr>
+</tbody></table>
+<p>表4 项目构建记录表</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>t_project_build</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列名</td>
+<td>数据类型</td>
+<td>空/非空</td>
+<td>约束条件</td>
+<td>中文名称</td>
+</tr>
+<tr>
+<td>project_build_id</td>
+<td>int</td>
+<td>非空</td>
+<td>自增主键</td>
+<td>项目构建id</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td>int</td>
+<td>非空</td>
+<td>外键</td>
+<td>项目id</td>
+</tr>
+<tr>
+<td>project_name</td>
+<td>varchar(30)</td>
+<td>非空</td>
+<td></td>
+<td>项目名称</td>
+</tr>
+<tr>
+<td>build_num</td>
+<td>int</td>
+<td></td>
+<td></td>
+<td>构建number</td>
+</tr>
+<tr>
+<td>build_status</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>构建状态</td>
+</tr>
+<tr>
+<td>type</td>
+<td>int(1)</td>
+<td></td>
+<td>默认为1</td>
+<td>类型</td>
+</tr>
+<tr>
+<td>download_url</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td>Apk下载地址</td>
+</tr>
+<tr>
+<td>message</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td>构建信息</td>
+</tr>
+<tr>
+<td>gmt_create</td>
+<td>timestamp</td>
+<td></td>
+<td>默认，自动更新</td>
+<td>构建时间</td>
+</tr>
+</tbody></table>
+<p>表5 项目组件关系表</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>t_project_module</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列名</td>
+<td>数据类型</td>
+<td>空/非空</td>
+<td>约束条件</td>
+<td>中文名称</td>
+</tr>
+<tr>
+<td>id</td>
+<td>int</td>
+<td>非空</td>
+<td>自增主键</td>
+<td>关联关系id</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td>int</td>
+<td>非空</td>
+<td>外键</td>
+<td>项目id</td>
+</tr>
+<tr>
+<td>module_build_id</td>
+<td>int</td>
+<td>非空</td>
+<td>外键</td>
+<td>组件构建id</td>
+</tr>
+<tr>
+<td>type</td>
+<td>int</td>
+<td></td>
+<td></td>
+<td>关联类型</td>
+</tr>
+</tbody></table>
+<h1 id="6-案例测试和演示"><a href="#6-案例测试和演示" class="headerlink" title="6 案例测试和演示"></a>6 案例测试和演示</h1><p>本章将以5.1节中实现的Android组件化项目作为案例，演示实际项目是如何结合本系统进行开发的。</p>
+<p>（1）首先在平台项目管理中创建项目，输入项目基本信息，如图6-1。输入为空或项目已存在会出现错误提示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA.jpg" alt="项目创建"> </p>
+<center>图6-1 项目创建</center>
+
+<p>创建完成之后可以看到Jenkins页面成功创建了一个项目Job，如图6-2。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AEJob%E5%88%9B%E5%BB%BA.jpg" alt="项目Job创建"> </p>
+<center>图6-2 项目Job创建</center>
+
+<p>进入项目详情查看，项目组件为空，如图6-3。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85.jpg" alt="项目详情"> </p>
+<center>图6-3 项目详情</center>
+
+<p>进入项目构建历史查看，构建记录为空，如图6-4。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg" alt="项目构建历史"> </p>
+<center>图6-4 项目构建历史</center>
+
+<p>（2）在平台组件管理中创建组件，输入组件的基本信息，如图6-5。同样地，可以看到Jenkins页面成功创建了一个组件Job。组件构建历史为空。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA.jpg" alt="组件创建"> </p>
+<center>图6-5 组件创建</center>
+
+<p>（3）在组件的指定分支上开发完成，提交了代码之后，在平台组件管理中点击构建组件，第一次构建需要输入起始版本号，如图6-6，后面版本号会自动生成，不需要再次输入。开始构建之后，前端显示正在构建，Jenkins会在远程、后台执行该任务，不会影响开发者，可以查看构建进度，如图6-7和图6-8。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA.jpg" alt="组件构建"> </p>
+<center>图6-6 组件构建</center>
+
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6%E5%85%A5%E5%8F%A3.jpg" alt="组件构建进度入口"> </p>
+<center>图6-7 组件构建进度入口</center>
+
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6.jpg" alt="组件构建进度"> </p>
+<center>图6-8 组件构建进度</center>
+
+<p>（3）构建完成后前端会收到通知，如图6-9。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%80%9A%E7%9F%A5.jpg" alt="组件构建通知"> </p>
+<center>图6-9 组件构建通知</center>
+
+<p>可以查看构建历史和构建日志。如图6-10和图6-11。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg" alt="组件构建历史"> </p>
+<center>图6-10 组件构建历史</center>
+
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%97%A5%E5%BF%97.jpg" alt="组件构建日志"> </p>
+<center>图6-11 组件构建日志</center>
+
+<p>能够看到日志显示构建成功，并且发送构建结果的邮件到了配置的邮箱。如图6-12。可以点击超链接查看具体日志。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5.jpg" alt="组件构建邮件通知"> </p>
+<center>图6-12 组件构建邮件通知</center>
+
+<p>（4）依次构建好其他几个组件后，在项目详情页面中可以添加项目组件，只能搜索到构建成功的组件版本，且一个项目只能有一个同名组件，保存成功后会弹出提示，如图6-13。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E7%BB%84%E4%BB%B6.jpg" alt="添加项目组件"> </p>
+<center>图6-13 添加项目组件</center>
+
+<p>（5）配置完毕之后点击项目构建，即和组件构建一样开始后台执行Job，可以在Jenkins后台查看构建进度等。构建完成之后同样会收到消息通知和邮件通知，内容有所区别。可以查看项目构建历史。如图6-14。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.jpg" alt="项目构建历史记录"> </p>
+<center>图6-14 项目构建历史记录</center>
+
+<p>能够看到出现了安装包地址，跳转到apk下载地址，供用户下载最新应用，如图6-15。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/apk%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.jpg" alt="apk下载地址"> </p>
+<center>图6-15 apk下载地址</center>
+
+<p>（6）至此完成了一次集成，根据持续集成的定义，每天都要进行构建，通过平台简化了一系列重复繁琐的操作，实现了远程构建，提高了效率，能够及时暴露和反馈问题，增强项目开发过程的可见性，并且能够随时随地提供可以运行的软件。安装并运行应用，效果如图6-16所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%89%8D.jpg" alt="应用效果前"> </p>
+<center>图6-16 应用效果前</center>
+
+<p>（7）假设提出了测试bug或者新增了需求，如要求在首页新增一个入口，跳转到其他页面。首页组件的开发者实现了该功能，并且将源码推送到远程仓库。如图6-17。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BC%80%E5%8F%91%E5%85%B6%E4%BB%96%E9%A1%B5%E9%9D%A2.jpg" alt="开发其他页面"> </p>
+<center>图6-17 开发其他页面</center>
+
+<p>按照上述流程在平台上构建首页组件，修改项目依赖组件版本，进行集成，即可打出新的apk包，供其他角色进行验收测试等。同样地进行下载和安装。运行效果如图6-18所示。</p>
+<p><img src="/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%90%8E.jpg" alt="应用效果后"> </p>
+<center>图6-18 应用效果后</center>
+
+<p>（8）循环上述步骤，直到应用开发完成，进行项目最终集成和发布应用。通过案例可以看到持续集成与瀑布式开发流程的明显区别，在开发过程中可以不断提出新建议或者问题，开发者可以快速实现，并且提交测试，而不用分阶段完成任务，等到最终集成之后才进行测试，这也就是敏捷的来源。</p>
+<h1 id="7-总结与展望"><a href="#7-总结与展望" class="headerlink" title="7 总结与展望"></a>7 总结与展望</h1><p>通过平台可视化界面对组件化项目进行管理和构建，可以减少重复、耗时的操作，降低沟通成本，大大地提高了开发效率，增强了开发过程的可见性和可控性，开发者不需要手动的构建、测试、发布等。通过每日构建和频繁集成能够及时发现项目缺陷，降低发布风险，提高软件质量，快速迭代软件产品。</p>
+<p>本文提出和设计了一套持续集成方案，并实现了一套简易版的持续集成生态。目前已实现基本功能，各端联调通信，能够正常走完所有流程，需要在使用过程中通过实际大量的数据和测试暴露问题，改进方案。目前本系统还有一些可以优化的点，如下：</p>
+<p>（1）加入用户管理系统和用户权限系统：项目和组件可以有各自的负责人，负责人拥有所有的权限，对其他成员只保持可见权限，提高系统的安全性，减少风险，团队成员各司其职。同时平台的每次操作都会记录用户，便于事后追溯问题。</p>
+<p>（2）前端优化数据筛选、搜索、排序等功能：目前只实现了部分功能，由于数据量较少，因此功能暂时用处不大，当数据量大的时候，这些用户友好功能就能体现出相应的价值。丰富反馈机制如红点提示等，报错标红等UI效果。</p>
+<p>（3）Jenkins添加静态代码质量检查任务：可以在构建之前执行检查任务，执行完成之后会生成检查报告，展示到平台，提醒开发者优化代码，并且可是设置分数低于合格值构建不通过。</p>
+<p>（4）Jenkins添加自动化测试任务：可以在项目构建完毕之后执行自动化测试任务，执行完后生成测试日志，一定程度上减少手动重复测试，避免测试人员反复测试同一个问题并且提交。</p>
+<p>（5）优化组件管理和项目管理的流程：如通过平台直接创建项目分支，不需要手动创建分支，项目集成之后自动打TAG、优化版本变化流程等。</p>
+<p>（6）增加看板功能：即类似jira等敏捷开发工具，产品或测试人员可以通过平台针对某个开发者发布问题或者任务，把项目的进度、个人完成率、超时完成等数据统计显示在看板上，开发者完成任务或者修复问题之后在平台上修改状态，测试人员测试通过之后关闭问题，形成一个闭环。看板数据还可以作为绩效管理等的有力依据。</p>
+<p>新的感悟：</p>
+<ol>
+<li>根据项目类型配置不同Jenkins任务模板</li>
+<li>应用可以发布到构件仓库，不需要上传蒲公英</li>
+<li>应用配置管理或者配置分发</li>
+<li>版本号不写死在代码里面，生成提交：可以通过gradle读取外部变量</li>
+<li>系统组件化：将系统构建作为项目，组件可能是应用、配置等</li>
+</ol>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1]Paul M D,Steve Matyas,Andrew Glover.持续集成：软件质量改进和降低风险之道[M].王海鹏译.北京：电子工业出版社，2013.</p>
+<p>[2]Kent Beck,Cynthia Andres. Extreme Programming Explained: Embrace Change[M].</p>
+<p>[3]Fowler M. Continuous Integration[EB/OL]. <a target="_blank" rel="noopener" href="https://martinfowler.com/articles/continuousIntegration.html,2006-5-1/2018-12-20">https://martinfowler.com/articles/continuousIntegration.html,2006-5-1/2018-12-20</a>.</p>
+<p>[4]<a target="_blank" rel="noopener" href="http://yuanjian.cnki.com.cn/Search/Result?author=%E6%9C%B1%E7%BA%A2">朱红</a>,<a target="_blank" rel="noopener" href="http://yuanjian.cnki.com.cn/Search/Result?author=%E4%BB%87%E6%B6%A6%E9%B9%A4">仇润鹤</a>.基于Jenkins的移动通信业务自动化测试平台的设计与测试[J].科技与创新，2016,(7).</p>
+<p>[5]陈松乔,任胜兵,王国军.现代软件工程[M].北方交通大学出版社，2002-11-13.</p>
+<p>[6]张力文.基于Jenkins的项目持续集成方案研究与实现[D].西南交通大学，2017.</p>
+<p>[7]Jez Humble,David Farley.持续交付：发布可靠软件的系统方法.乔梁译[M].北京：人民邮电出版社，2011.</p>
+<p>[8]Kent Beck,Fowler M,et al. Manifesto for Agile Software Development [EB/OL]. <a target="_blank" rel="noopener" href="http://agilemanifesto.org/,2001/2018-12-30">http://agilemanifesto.org/,2001/2018-12-30</a>.</p>
+<p>[9]inter_peng.持续集成（Continuous Integration）基本概念与实践[EB/OL]. <a target="_blank" rel="noopener" href="https://blog.csdn.net/inter_peng/article/details/53131831%EF%BC%8C2016-11-11/2019-5-5">https://blog.csdn.net/inter_peng/article/details/53131831，2016-11-11/2019-5-5</a>.</p>
+<p>[10]王宁.基于Jenkins的持续集成系统的设计与实现[D].北京邮电大学，2014.</p>
+<p>[11]Swartout P. Continuous Deliver and DevOps-A Quickstart Guide[M]. Birmingham:Packt Publishing Ltd，2014:3.</p>
+<p>[12]Ekaterina Novoseltseva. <a target="_blank" rel="noopener" href="https://apiumtech.com/blog/top-benefits-of-continuous-integration-2/">Top benefits of continuous integration</a>[EB/OL]. <a target="_blank" rel="noopener" href="https://apiumtech.com/blog/top-benefits-of-continuous-integration-2/%EF%BC%8C2015-12-28/2018-11-22">https://apiumtech.com/blog/top-benefits-of-continuous-integration-2/，2015-12-28/2018-11-22</a>.</p>
+<p>[13]曾家乐.Android组件化架构[M].电子工业出版社，2018-03-01.</p>
+<p>[14] runoob.Docker架构[EB/OL]. <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-architecture.html%EF%BC%8C2019-5-5">https://www.runoob.com/docker/docker-architecture.html，2019-5-5</a>.</p>
+<p>[15]guiying712.Android组件化方案[EB/OL]. <a target="_blank" rel="noopener" href="https://blog.csdn.net/guiying712/article/details/55213884%EF%BC%8C2017-2-15/2019-5-5">https://blog.csdn.net/guiying712/article/details/55213884，2017-2-15/2019-5-5</a>.</p>
+<p>[16]Jonhn Ferguson Smart. Jenkins:The Definitive Guide[M]. O’REILLY,2011.</p>
+<p>[17]dnsliu.基于Jenkins实现Android项目的持续集成[EB/OL].<a target="_blank" rel="noopener" href="https://blog.csdn.net/dnsliu/article/details/81019086%EF%BC%8C2018-7-12/2019-5-5">https://blog.csdn.net/dnsliu/article/details/81019086，2018-7-12/2019-5-5</a>.</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+              <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 持续集成</a>
+              <a href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 组件化</a>
+              <a href="/tags/Jenkins/" rel="tag"><i class="fa fa-tag"></i> Jenkins</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/" rel="prev" title="Android中的MVC、MVP、MVVM">
+      <i class="fa fa-chevron-left"></i> Android中的MVC、MVP、MVVM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/13/note-2021-09-13-UML/" rel="next" title="UML-统一建模语言">
+      UML-统一建模语言 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">论文内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%BB%AA%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">1 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%AF%BE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-number">3.1.</span> <span class="nav-text">1.1 课题背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%A0%94%E7%A9%B6%E7%9B%AE%E6%A0%87%E5%92%8C%E5%86%85%E5%AE%B9"><span class="nav-number">3.2.</span> <span class="nav-text">1.2 研究目标和内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%AE%BA%E6%96%87%E7%BB%93%E6%9E%84%E5%AE%89%E6%8E%92"><span class="nav-number">3.3.</span> <span class="nav-text">1.3 论文结构安排</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%9B%B8%E5%85%B3%E7%90%86%E8%AE%BA%E4%B8%8E%E6%8A%80%E6%9C%AF"><span class="nav-number">4.</span> <span class="nav-text">2 相关理论与技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%80%91%E5%B8%83%E5%BC%8F%E5%BC%80%E5%8F%91%E5%92%8C%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 瀑布式开发和敏捷开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90"><span class="nav-number">4.2.</span> <span class="nav-text">2.2 持续集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Android%E7%BB%84%E4%BB%B6%E5%8C%96%E6%9E%B6%E6%9E%84%E5%92%8C%E6%8A%80%E6%9C%AF"><span class="nav-number">4.3.</span> <span class="nav-text">2.3 Android组件化架构和技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-Docker%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF"><span class="nav-number">4.4.</span> <span class="nav-text">2.4 Docker虚拟化技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%B3%BB%E7%BB%9F%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">5.</span> <span class="nav-text">3 系统需求分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%A6%81%E8%AE%BE%E8%AE%A1"><span class="nav-number">6.</span> <span class="nav-text">4 系统概要设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD"><span class="nav-number">6.1.</span> <span class="nav-text">4.1 系统功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">6.2.</span> <span class="nav-text">4.2 架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">6.3.</span> <span class="nav-text">4.3 团队协作开发流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E7%B3%BB%E7%BB%9F%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E5%85%B3%E9%94%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">6.4.</span> <span class="nav-text">4.4 系统内部运行关键流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-1-%E5%88%9B%E5%BB%BA%E7%BB%84%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">6.4.1.</span> <span class="nav-text">4.4.1 创建组件流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-2-%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">6.4.2.</span> <span class="nav-text">4.4.2 组件构建流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-3-%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B"><span class="nav-number">6.4.3.</span> <span class="nav-text">4.4.3 项目集成流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.</span> <span class="nav-text">5 系统实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E7%BB%84%E4%BB%B6%E5%8C%96%E6%96%B9%E6%A1%88%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.1.</span> <span class="nav-text">5.1 组件化方案实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-1-%E4%BB%A3%E7%A0%81%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7"><span class="nav-number">7.1.1.</span> <span class="nav-text">5.1.1 代码版本控制工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-2-Gradle%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">7.1.2.</span> <span class="nav-text">5.1.2 Gradle构建工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-Docker%E6%90%AD%E5%BB%BAMaven%E7%A7%81%E6%9C%8D"><span class="nav-number">7.2.</span> <span class="nav-text">5.2 Docker搭建Maven私服</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-1-Docker%E5%AE%89%E8%A3%85"><span class="nav-number">7.2.1.</span> <span class="nav-text">5.2.1 Docker安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-2-Nexus%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA"><span class="nav-number">7.2.2.</span> <span class="nav-text">5.2.2 Nexus服务搭建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="nav-number">7.3.</span> <span class="nav-text">5.3 持续集成服务器搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-1-Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%B7%A5%E5%85%B7"><span class="nav-number">7.3.1.</span> <span class="nav-text">5.3.1 Jenkins持续集成工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-2-Jenkins%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">7.3.2.</span> <span class="nav-text">5.3.2 Jenkins安装与配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-3-Jenkins%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">7.3.3.</span> <span class="nav-text">5.3.3 Jenkins容器内部环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-4-Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="nav-number">7.3.4.</span> <span class="nav-text">5.3.4 Jenkins任务配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-5-%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.3.5.</span> <span class="nav-text">5.3.5 脚本实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-6-%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5"><span class="nav-number">7.3.6.</span> <span class="nav-text">5.3.6 邮件通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.4.</span> <span class="nav-text">5.4 前端实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-1-Node-js%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">7.4.1.</span> <span class="nav-text">5.4.1 Node.js环境安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-2-%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%BB%BA%E7%AB%8B"><span class="nav-number">7.4.2.</span> <span class="nav-text">5.4.2 前端工程化建立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-3-%E5%89%8D%E7%AB%AF%E9%83%A8%E5%88%86%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA"><span class="nav-number">7.4.3.</span> <span class="nav-text">5.4.3 前端部分页面展示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-%E5%90%8E%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.5.</span> <span class="nav-text">5.5 后端实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-1-%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84"><span class="nav-number">7.5.1.</span> <span class="nav-text">5.5.1 后端架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-2-%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E6%A6%82%E8%BF%B0"><span class="nav-number">7.5.2.</span> <span class="nav-text">5.5.2 功能实现概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-3-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">7.5.3.</span> <span class="nav-text">5.5.3 数据库设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%A1%88%E4%BE%8B%E6%B5%8B%E8%AF%95%E5%92%8C%E6%BC%94%E7%A4%BA"><span class="nav-number">8.</span> <span class="nav-text">6 案例测试和演示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="nav-number">9.</span> <span class="nav-text">7 总结与展望</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">10.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

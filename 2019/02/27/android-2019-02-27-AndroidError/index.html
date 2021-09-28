@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Android异常和常见异常解决方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java异常和Android常见异常解决方案（更新中，占坑）">
+<meta property="og:url" content="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="Android异常和常见异常解决方案">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/AndroidError/error01.png">
+<meta property="og:image" content="http://yoursite.com/images/AndroidError/error02.png">
+<meta property="article:published_time" content="2019-02-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.030Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/AndroidError/error01.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java异常和Android常见异常解决方案（更新中，占坑） | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java异常和Android常见异常解决方案（更新中，占坑）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-27 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-27T00:00:00+08:00">2019-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Android异常和常见异常解决方案</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="1-1-error和exception有什么区别"><a href="#1-1-error和exception有什么区别" class="headerlink" title="1.1. error和exception有什么区别"></a>1.1. error和exception有什么区别</h2><ul>
+<li>error表示系统级的错误，是java运行环境内部错误或者硬件问题，不能指望程序来处理这样的问题，除了退出运行外别无选择，它是Java虚拟机抛出的。<ul>
+<li>如OutOfMemoryError（内存溢出）、NoClassDefFoundError（类定义错误）</li>
+</ul>
+</li>
+<li>exception 表示程序需要捕捉、需要处理的异常，是由与程序设计的不完善而出现的问题，程序必须处理的问题</li>
+</ul>
+<h2 id="1-2-运行时异常和一般异常"><a href="#1-2-运行时异常和一般异常" class="headerlink" title="1.2. 运行时异常和一般异常"></a>1.2. 运行时异常和一般异常</h2><ul>
+<li>一般异常（CheckedException）主要是指IO异常、SQL异常等。对于这种异常，JVM要求我们必须对其进行try-catch处理，否则编译器会报错。</li>
+<li><strong>运行时异常（RuntimeException）我们一般不处理</strong>，当出现这类异常的时候程序会由虚拟机接管。比如，我们从来没有去处理过NullPointerException。</li>
+</ul>
+<blockquote>
+<ol>
+<li>出现运行时异常的时候，程序会将异常一直向上抛，直到遇到处理代码，如果没有catch块进行处理，到了最上层，如果是多线程就有Thread.run()抛出，如果不是多线程那么就由main.run()抛出。抛出之后，如果是线程，那么该线程也就终止了，如果是主程序，那么该程序也就终止了。</li>
+<li>其实运行时异常的也是继承自Exception，也可以用catch块捕获，只是我们一般不处理，也就是说，如果不对运行时异常进行catch处理，那么结果会导致当前线程终止</li>
+<li>如果不想终止，那么我们就必须捕获所有可能出现的运行时异常。如果程序中出现了异常数据，但是它不影响下面的程序执行，那么我们就该在catch块里面将异常数据舍弃，然后记录日志。如果，它影响到了下面的程序运行，那么还是程序退出比较好些。</li>
+</ol>
+</blockquote>
+<p>关键字：</p>
+<blockquote>
+<ol>
+<li>try：用来指定一块预防所有异常的程序。后面需要跟catch或者finally</li>
+<li>catch：紧跟在try后面，用来捕获异常。可以try-finally不加catch</li>
+<li>throw：用来明确的抛出一个异常</li>
+<li>throws：用来标明一个成员函数可能抛出的各种异常</li>
+<li>finally：确保一段代码无论发生什么异常都会被执行的一段代码。可以try-catch不加finally</li>
+</ol>
+</blockquote>
+<p><em>try中return了也会执行finally</em></p>
+<p>java7新特性：</p>
+<ol>
+<li>可以捕获多个异常</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span>(IOException | SQLException | Exception ex)&#123;</span><br><span class="line">     logger.error(ex);</span><br><span class="line">     <span class="keyword">throw</span> <span class="keyword">new</span> MyException(ex.getMessage());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>try-with-resources：finally常用来关闭资源（如IO读写），使用新特性可以不用手动关闭（老师上课的时候建议我们还是手动维护）</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在try子句中能创建一个资源对象，当程序的执行完try-catch之后，运行环境自动关闭资源。</span></span><br><span class="line"><span class="keyword">try</span> (MyResource mr = <span class="keyword">new</span> MyResource()) &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;MyResource created in try-with-resources&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h1><h2 id="1-1-内存不足，无法启动虚拟机"><a href="#1-1-内存不足，无法启动虚拟机" class="headerlink" title="1.1. 内存不足，无法启动虚拟机"></a>1.1. 内存不足，无法启动虚拟机</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">Could not reserve enough space <span class="keyword">for</span> 1572864KB object heap</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/AndroidError/error01.png" alt="内存不足"></p>
+<p>解决方案：</p>
+<blockquote>
+<ol>
+<li>修改<code>gradle.properties</code>文件，将虚拟机内存改小</li>
+<li>关掉部分无用的进程，腾出空间</li>
+</ol>
+</blockquote>
+<p>附上查看系统内存方法：</p>
+<blockquote>
+<ol>
+<li>打开任务管理器-&gt;性能-&gt;内存。或者任务管理器-&gt;性能-&gt;资源监视器-&gt;内存</li>
+<li>使用命令行</li>
+</ol>
+</blockquote>
+<p>补充：Java工程可能也会遇到类似的错误，也可以通过设置虚拟机参数解决</p>
+<p>Java虚拟机监控命令/工具：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lemon-pomelo/p/9285840.html">Java虚拟机–常用Java命令(一)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xmzJava/p/8524949.html">Java虚拟机监控命令</a></li>
+</ul>
+<p>Android查看内存、CPU、电量等信息：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyingcode/p/6113368.html">Android 通过adb shell命令查看内存，CPU，启动时间，电量等信息</a></li>
+</ul>
+<h2 id="1-2-sdk版本不正确"><a href="#1-2-sdk版本不正确" class="headerlink" title="1.2. sdk版本不正确"></a>1.2. sdk版本不正确</h2><p><img src="/images/AndroidError/error02.png" alt="sdk版本"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &#x27;:girls:compileReleaseRenderscript&#x27;.</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> llvm-rs-cc is missing</span></span><br></pre></td></tr></table></figure>
+
+<p>解决方案：修改build.gradle中的版本号为下载过的sdk版本</p>
+<h2 id="1-3-Dialog-amp-AlertDialog，WindowManager不能正确使用"><a href="#1-3-Dialog-amp-AlertDialog，WindowManager不能正确使用" class="headerlink" title="1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用"></a>1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">20715 android.view.WindowManager<span class="variable">$BadTokenException</span></span></span><br><span class="line">Unable to add window -- token android.os.BinderProxy@caaa709 is not valid; is your activity running?</span><br></pre></td></tr></table></figure>
+
+<p>分析：该异常表示不能添加窗口，通常是所要依附的view已经不存在导致的。</p>
+<p>常见场景：</p>
+<blockquote>
+<ol>
+<li>上一个页面没有destroy的时候，之前的Activity已经接收到了广播。如果此时之前的Activity进行UI层面的操作处理，就会造成crash。UI层面的刷新，一定要注意时机，建议使用set_result来代替广播的形式进行刷新操作，避免使用广播的方式，代码不直观且容易出错。</li>
+<li>Dialog在Actitivty退出后弹出。在Dialog调用show方法进行显示时，必须要有一个Activity作为窗口的载体，如果Activity被销毁，那么导致Dialog的窗口载体找不到。建议在Dialog调用show方法之前先判断Activity是否已经被销毁。</li>
+<li>Service&amp;Application弹出对话框或WindowManager添加view时，没有设置window type为TYPE_SYSTEM_ALERT。需要在调用dialog.show()方法前添加dialog.getWindow().SetType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)。</li>
+<li>6.0的系统上, (非定制 rom 行为)若没有给予悬浮窗权限, 会弹出该问题, 可以通过Settings.canDrawOverlays来判断是否有该权限.</li>
+<li>某些不稳定的MIUI系统bug引起的权限问题，系统把Toast也当成了系统级弹窗，android6.0的系统Dialog弹窗需要用户手动授权，若果app没有加入SYSTEM_ALERT_WINDOW权限就会报这个错。需要加入给app加系统Dialog弹窗权限，并动态申请权限，不满足第一条会出现没权限闪退，不满足第二条会出现没有Toast的情况。</li>
+</ol>
+</blockquote>
+<h2 id="1-4-Context启动Activity"><a href="#1-4-Context启动Activity" class="headerlink" title="1.4. Context启动Activity"></a>1.4. Context启动Activity</h2><p>在 Android P 中，无法通过非 Activity 的 Context（如 Service）启动 Activity，除非在 Intent 中添加 FLAG_ACTIVITY_NEW_TASK，否则该 Activity 不会启动，并抛异常。</p>
+<p>解决方案：启动 Activity 的地方判断Context是否<code>instanceof Activity</code></p>
+<h2 id="1-5-参数不匹配"><a href="#1-5-参数不匹配" class="headerlink" title="1.5. 参数不匹配"></a>1.5. 参数不匹配</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">50220 java.lang.IllegalArgumentException</span></span><br><span class="line">Unknown color</span><br></pre></td></tr></table></figure>
+
+<p>传入了不正确的参数导致。</p>
+<p>常见场景：</p>
+<blockquote>
+<ol>
+<li>Activity、Service状态异常；</li>
+<li>非法URL；</li>
+<li>UI线程操作。</li>
+<li>Fragment中嵌套了子Fragment，Fragment被销毁，而内部Fragment未被销毁，所以导致再次加载时重复，在onDestroyView() 中将内部Fragment销毁即可</li>
+<li>在请求网络的回调中使用了Glide.into(view),view已经被销毁会导致该错误</li>
+</ol>
+</blockquote>
+<h2 id="1-6-空指针异常（NPE）"><a href="#1-6-空指针异常（NPE）" class="headerlink" title="1.6. 空指针异常（NPE）"></a>1.6. 空指针异常（NPE）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">2002 java.lang.NullPointerException</span></span><br><span class="line">SimpleDraweeView was not initialized!</span><br></pre></td></tr></table></figure>
+
+<p>空指针最为常见，也最容易规避，使用的时候一定要进行<code>null check</code>或者<code>try-catch</code>，采取不信任原则。</p>
+<p>解决方案：</p>
+<blockquote>
+<ol>
+<li>方法形参要判空后才使用；</li>
+<li>全局变量容易被系统回收或者更改，使用全局变量前建议判空；</li>
+<li>第三方接口的调用，对返回值进行判空。</li>
+<li>请注意线程安全</li>
+</ol>
+</blockquote>
+<h2 id="1-7-数组存储异常"><a href="#1-7-数组存储异常" class="headerlink" title="1.7. 数组存储异常"></a>1.7. 数组存储异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">28916 java.lang.ArrayStoreException</span></span><br><span class="line">source[0] of type com.google.android.gms.internal.zzcek cannot be stored in destination array of type com.google.android.gms.common.api.internal.BasePendingResult[]</span><br></pre></td></tr></table></figure>
+
+<p>当向数组中存放非数组声明类型对象时抛出</p>
+<p>解决方案：</p>
+<blockquote>
+<ol>
+<li>进行类型判断</li>
+<li>重新声明数组类型</li>
+</ol>
+</blockquote>
+<h2 id="1-8-Bitmap异常"><a href="#1-8-Bitmap异常" class="headerlink" title="1.8. Bitmap异常"></a>1.8. Bitmap异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4230 java.lang.RuntimeException</span></span><br><span class="line">Canvas: trying to use a recycled bitmap android.graphics.Bitmap@1d515bf2</span><br><span class="line"></span><br><span class="line">android.graphics.Canvas.throwIfCannotDraw(Canvas.java:1282)</span><br></pre></td></tr></table></figure>
+
+<p>画布尝试去使用一个已回收的位图对象，建议解除一切与Bitmap的绑定。通常由于bitmap比较占用内存，为避免oom习惯使用bitmap.recycle()来回收，当再次使用这个被回收的bitmap时就会产生发生异常。</p>
+<p>解决方案：</p>
+<blockquote>
+<ol>
+<li>在使用前先判断bitmap是否被回收；</li>
+<li>在不确定图片是否还有其他引用时，不要调用recycle()。</li>
+</ol>
+</blockquote>
+<p>RuntimeException（运行时异常），是所有Java虚拟机正常操作期间可以被抛出的异常的父类。通常需要关注cause by以下部分的堆栈。</p>
+<h2 id="1-9-找不到指定方法"><a href="#1-9-找不到指定方法" class="headerlink" title="1.9. 找不到指定方法"></a>1.9. 找不到指定方法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">13623 java.lang.NoSuchMethodError</span></span><br><span class="line">no non-static method &quot;Lcom/**/**/**;.&lt;init&gt;(Ljava/lang/String;Ljava/l</span><br></pre></td></tr></table></figure>
+
+<p>该异常表示找不到指定方法。主要是由于Android系统和Rom厂商定制化导致的碎片化问题，很难根治，建议做好机型适配，解决top机型问题：</p>
+<blockquote>
+<ol>
+<li>如果是机型相关问题，则看下是否添加了该崩溃机型cpu架构的so库；</li>
+<li>如果是系统API方法，使用时要注意API Level，如果设置的target version过高，调用低于设置版本的API方法将会报错。</li>
+<li>setBackground方法在API &gt;= 16才生效</li>
+</ol>
+</blockquote>
+<h2 id="1-10-安全异常、权限异常"><a href="#1-10-安全异常、权限异常" class="headerlink" title="1.10. 安全异常、权限异常"></a>1.10. 安全异常、权限异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4523 java.lang.SecurityException</span></span><br><span class="line">Client must have ACCESS_FINE_LOCATION permission to request PRIORITY_HIGH_ACCURACY locations.</span><br><span class="line"></span><br><span class="line">com.google.android.gms.internal.zzeu.zzb(Unknown Source:10)</span><br></pre></td></tr></table></figure>
+
+<p>权限异常或者称为安全异常，由安全管理器抛出，用于指示违反安全情况的异常，通常由于没有获取对应的权限。</p>
+<p>解决方案：</p>
+<blockquote>
+<ol>
+<li>android6.0以下需要在manifest中声明相应的权限；</li>
+<li>android6.0及以上，在使用时需要动态申请权限。</li>
+</ol>
+</blockquote>
+<h2 id="1-11-不支持的操作"><a href="#1-11-不支持的操作" class="headerlink" title="1.11. 不支持的操作"></a>1.11. 不支持的操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">11210 java.lang.UnsupportedOperationException</span></span><br><span class="line">Failed to resolve attribute at index 13: TypedValue&#123;t=0x2/d=0x7f040210 a=3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常见场景：xml中</p>
+<blockquote>
+<ol>
+<li>Android 4.x及以下的设备使用Android 5.0 以后MaterialDesign设计引入的colorPrimary等属性造成的异常；</li>
+<li>有些基于Android原生系统再次开发的系统、Rom不支持Start、End，简易更改为Left、Right（例如，layout_alignParentStart和layout_alignParentEnd属性）；<br>总体来说就是，该属性在某些奇葩设备下不兼容，尽量使用兼容的属性。</li>
+<li>还有一种情况是build目录下的文件没有清除干净，导致失败的。</li>
+</ol>
+</blockquote>
+<h2 id="1-12-内存溢出"><a href="#1-12-内存溢出" class="headerlink" title="1.12. 内存溢出"></a>1.12. 内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#17553 java.lang.OutOfMemoryError</span><br><span class="line">pthread_create (1040KB stack) failed: Out of memory</span><br><span class="line">com.facebook.imagepipeline.core.PriorityThreadFactory1.run(PriorityThreadFactory.java:<span class="number">43</span>)</span><br></pre></td></tr></table></figure>
+
+<p>该异常表示内存不足导致线程创建失败。pthread_create默认创建的线程是非detached的。如果使用不当，确实会造成内存泄漏。</p>
+<p>预防方案：</p>
+<blockquote>
+<ol>
+<li>创建detached的线程；</li>
+<li>线程的start_routine结束之前detached；</li>
+<li>主线程中使用pthread_join。</li>
+</ol>
+</blockquote>
+<h2 id="1-13-迭代器异常"><a href="#1-13-迭代器异常" class="headerlink" title="1.13. 迭代器异常"></a>1.13. 迭代器异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">7707 java.util.ConcurrentModificationException</span></span><br></pre></td></tr></table></figure>
+
+<p>该异常表示迭代器迭代过程中，迭代的对象发生了改变，如数据项增加或删除。由于迭代对象不是线程安全，在迭代的过程中，会检查modCount是否和初始modCount即expectedModCount一致，如果不一致，则认为数据有变化，迭代终止并抛出异常。</p>
+<p>常见场景：两个线程同时对集合进行操作，线程1对集合进行遍历，而线程2对集合进行增加、删除操作。</p>
+<p>解决方案：多线程访问时要增加同步锁，或者建议使用线程安全的集合：</p>
+<blockquote>
+<ol>
+<li>使用ConcurrentHashMap替换HashMap，CopyOnWriteArrayList替换ArrayList；</li>
+<li>或者使用使用Vector替换ArrayList，Vector是线程安全的。Vector的缺点：大量数据操作时，由于线程安全，性能比ArrayList低.</li>
+</ol>
+</blockquote>
+<h2 id="1-14-通知异常"><a href="#1-14-通知异常" class="headerlink" title="1.14. 通知异常"></a>1.14. 通知异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android.app.RemoteServiceException</span><br><span class="line">Context.startForegroundService() did not then call Service.startForeground()</span><br><span class="line"></span><br><span class="line">android.app.ActivityThreadH.handleMessage(ActivityThread.java:1768)</span><br></pre></td></tr></table></figure>
+
+<p>该异常表示从Package发布通知时存在异常，主要出现在通知栏更新。</p>
+<p>使用通知需要注意以下几点：</p>
+<blockquote>
+<ol>
+<li>每次更新时都需要实例化Notification；</li>
+<li>设置Notification的ContentView之后记得设置ContentIntent；</li>
+<li>如果使用了RemoteViews时，需要保证包名的正确性；</li>
+<li>注意各个系统版本对于Notification使用方法的差异性。</li>
+</ol>
+</blockquote>
+<h2 id="1-15-Native方法没找到"><a href="#1-15-Native方法没找到" class="headerlink" title="1.15. Native方法没找到"></a>1.15. Native方法没找到</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.UnsatisfiedLinkError</span><br><span class="line">Native method not found: com.tutk.IOTC.AVAPIs.avInitialize:(I)I</span><br></pre></td></tr></table></figure>
+
+<p>该异常表示native方法没有找到。报这个错误通常是so库加载失败，或者找不到准备执行的JNI方法，可能是因为method的signature或命名有误，建议使用javah命令行来生成JNI头文件来避免这个问题。</p>
+<h2 id="1-16-状态异常"><a href="#1-16-状态异常" class="headerlink" title="1.16. 状态异常"></a>1.16. 状态异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">37812 java.lang.IllegalStateException</span></span><br></pre></td></tr></table></figure>
+
+<p>常见类型</p>
+<blockquote>
+<p><code>IllegalStateException: Can not perform this action after onSaveInstanceState：</code></p>
+<p>onSaveInstanceState方法是在该Activity即将被销毁前调用，来保存Activity数据的，如果在保存完状态后<br>再给它添加Fragment就会出错。解决办法就是把commit（）方法替换成 commitAllowingStateLoss()</p>
+</blockquote>
+<blockquote>
+<p> <code>java.lang.IllegalStateException：Cannot   forward   a   response   that   is   already   committed  IllegalStateException：response already commited  IllegalStateException：getOutputStream() has already been called for this request</code></p>
+<p><a target="_blank" rel="noopener" href="http://my.oschina.net/guhai2004/blog/187041">参考java.lang.IllegalStateException异常产生的原因及解决办法</a></p>
+<p>该异常表示，当前对客户端的响应已经结束，不能在响应已经结束（或说消亡）后再向客户端（实际上是缓冲区）输出任何内容。</p>
+<p>具体分析：首先解释下flush()，我们知道在使用读写流的时候数据先被读入内存这个缓冲区中， 然后再写入文件，但是当数据读完时不代表数据已经写入文件完毕，因为可能还有一部分仍未写入文件而留在内存中，这时调用flush()方法就会把缓冲区的数据强行清空输出，因此flush()的作用就是保证缓存清空输出。response是服务端对客户端请求的一个响应，其中封装了响应头、状态码、内容等，服务端在把response提交到客户端之前，会向缓冲区内写入响应头和状态码，然后将所有内容flush。这就标志着该次响应已经committed(提交)。对于当前页面中已经committed(提交)的response，就不能再使用这个response向缓冲区写任何东西（注：同一个页面中的response.XXX()是同一个response的不同方法，只要其中一个已经导致了committed，那么其它类似方式的调用都会导致 IllegalStateException异常）。</p>
+<p>注：能够导致响应已经committed的操作包括：forward, redirect, flushBuffer。</p>
+</blockquote>
+<blockquote>
+<p><code>java.lang.IllegalStateException: Illegal State: Row/Object is no longer valid to operate on. Was it deleted?</code><a target="_blank" rel="noopener" href="https://github.com/realm/realm-java/issues/1206">参考realm</a></p>
+<p>realmObject对象在其他线程已被删除，在这个线程中使用的时候抛出的异常。</p>
+</blockquote>
+<blockquote>
+<p><code>java.lang.IllegalStateException Can&#39;t change tag of fragment d&#123;e183845 #0 d&#123;e183845&#125;&#125;: was d&#123;e183845&#125; now d&#123;e183845 #0 d&#123;e183845&#125;&#125;</code></p>
+<p>显示fragment的代码中使用了：fragment.show(getSupportFragmentManager, fragment.toString());<br>而这里是因为两次toString()结果不同，导致不同的tag指向的是同一个fragment。<br>获取fragment的tag的正确方法应该是使用其提供的fragment.getTag()方法。</p>
+</blockquote>
+<blockquote>
+<p><code>java.lang.IllegalStateException Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 37 path .data</code></p>
+<p>该异常是由于服务器错误返回的JSON字符串和服务器正常下时返回的JSON字符串结构不同,导致利用Gson解析的时候报了一个异常:本该去解析集合却强制去解析对象所致.</p>
+<p>解决方案：在使用Gson解析JSON时try cash一下,不报错按照正常逻辑继续解析,报异常则处理为请求失败逻辑即可.</p>
+</blockquote>
+<h2 id="1-17-Fresco图片加载"><a href="#1-17-Fresco图片加载" class="headerlink" title="1.17. Fresco图片加载"></a>1.17. Fresco图片加载</h2><p>使用FrescoManager 的时候默认使用的是可轻易被回收的bitmap，如果不在当前页面使用可能会被回收报错。如果报这个错，可以使用FrescoManager.load(String url, ImageView view, boolean canBeRecycled), 传入false，或者直接使用Fresco的SimpleDraweeView,这个是官方推荐的做法</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/14/android-2019-02-14-Review/" rel="prev" title="面试复习知识点记录(更新中)">
+      <i class="fa fa-chevron-left"></i> 面试复习知识点记录(更新中)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/01/android-2019-03-01-AndroidTools/" rel="next" title="Android工具使用常见问题（占坑）">
+      Android工具使用常见问题（占坑） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%BC%82%E5%B8%B8"><span class="nav-number">1.</span> <span class="nav-text">Java异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-error%E5%92%8Cexception%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. error和exception有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%80%E8%88%AC%E5%BC%82%E5%B8%B8"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 运行时异常和一般异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8"><span class="nav-number">2.</span> <span class="nav-text">常见异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1.1. 内存不足，无法启动虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-sdk%E7%89%88%E6%9C%AC%E4%B8%8D%E6%AD%A3%E7%A1%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1.2. sdk版本不正确</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Dialog-amp-AlertDialog%EF%BC%8CWindowManager%E4%B8%8D%E8%83%BD%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-Context%E5%90%AF%E5%8A%A8Activity"><span class="nav-number">2.4.</span> <span class="nav-text">1.4. Context启动Activity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%8F%82%E6%95%B0%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">2.5.</span> <span class="nav-text">1.5. 参数不匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E7%A9%BA%E6%8C%87%E9%92%88%E5%BC%82%E5%B8%B8%EF%BC%88NPE%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">1.6. 空指针异常（NPE）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">2.7.</span> <span class="nav-text">1.7. 数组存储异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-Bitmap%E5%BC%82%E5%B8%B8"><span class="nav-number">2.8.</span> <span class="nav-text">1.8. Bitmap异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-%E6%89%BE%E4%B8%8D%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.9.</span> <span class="nav-text">1.9. 找不到指定方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10-%E5%AE%89%E5%85%A8%E5%BC%82%E5%B8%B8%E3%80%81%E6%9D%83%E9%99%90%E5%BC%82%E5%B8%B8"><span class="nav-number">2.10.</span> <span class="nav-text">1.10. 安全异常、权限异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-11-%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.11.</span> <span class="nav-text">1.11. 不支持的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-12-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.12.</span> <span class="nav-text">1.12. 内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-13-%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">2.13.</span> <span class="nav-text">1.13. 迭代器异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-14-%E9%80%9A%E7%9F%A5%E5%BC%82%E5%B8%B8"><span class="nav-number">2.14.</span> <span class="nav-text">1.14. 通知异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-15-Native%E6%96%B9%E6%B3%95%E6%B2%A1%E6%89%BE%E5%88%B0"><span class="nav-number">2.15.</span> <span class="nav-text">1.15. Native方法没找到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-16-%E7%8A%B6%E6%80%81%E5%BC%82%E5%B8%B8"><span class="nav-number">2.16.</span> <span class="nav-text">1.16. 状态异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-17-Fresco%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.17.</span> <span class="nav-text">1.17. Fresco图片加载</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

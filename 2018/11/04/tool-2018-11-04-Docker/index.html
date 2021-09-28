@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Docker 是一个开源的应用容器引擎,基于 Go 语言 并遵从Apache2.0协议开源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/04/tool-2018-11-04-Docker/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="Docker 是一个开源的应用容器引擎,基于 Go 语言 并遵从Apache2.0协议开源。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker01.png">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker03.png">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker04.png">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker05.png">
+<meta property="og:image" content="http://yoursite.com/images/Docker/docker06.png">
+<meta property="article:published_time" content="2018-11-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.154Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/Docker/docker01.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/11/04/tool-2018-11-04-Docker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker笔记 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/04/tool-2018-11-04-Docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-04T00:00:00+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Docker 是一个开源的应用容器引擎,基于 Go 语言 并遵从Apache2.0协议开源。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-docker介绍："><a href="#1-docker介绍：" class="headerlink" title="1. docker介绍："></a>1. docker介绍：</h2><h3 id="1-1-docker架构："><a href="#1-1-docker架构：" class="headerlink" title="1.1 docker架构："></a>1.1 docker架构：</h3><p><img src="/images/Docker/docker01.png" alt="docker架构图"></p>
+<h3 id="1-2-docker概念"><a href="#1-2-docker概念" class="headerlink" title="1.2 docker概念"></a>1.2 docker概念</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>镜像(Images)</td>
+<td>Docker 镜像是用于创建 Docker 容器的模板。</td>
+</tr>
+<tr>
+<td>容器(Container)</td>
+<td>容器是独立运行的一个或一组应用。</td>
+</tr>
+<tr>
+<td>客户端(Client)</td>
+<td>Docker 客户端通过命令行或者其他工具使用 Docker API 与 Docker 的守护进程通信。</td>
+</tr>
+<tr>
+<td>主机(Host)</td>
+<td>一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。</td>
+</tr>
+<tr>
+<td>镜像仓库(Repository)</td>
+<td>用来存储具体的镜像，可以理解为代码控制中的代码仓库。通过tag区分版本号</td>
+</tr>
+<tr>
+<td>注册服务器（Registry）</td>
+<td>用于管理镜像仓库，起到的是服务器的作用。默认是官方的Docker Hub，可以搭建私有服务器</td>
+</tr>
+</tbody></table>
+<p>镜像资源分为两类：</p>
+<p>官方提供的，名称不带前缀，如：<code>hello-world</code></p>
+<p>docker用户创建并维护的,名称带用户名前缀，如：<code>username/hello-world</code></p>
+<p>镜像名完整组成：<br><code>registryhost/username/repository:tag</code>即<br><code>服务主机/用户名/仓库名:版本号</code><br>registryhost不填，则默认为DockerHub<br>username不填，则表示docker官方提供的镜像<br>tag不填，则默认为latest</p>
+<h2 id="2-下载安装"><a href="#2-下载安装" class="headerlink" title="2. 下载安装"></a>2. 下载安装</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a target="_blank" rel="noopener" href="https://www.docker.com/get-started">官网</a>下载安装，按提示一步步完成，国内下载速度慢的话可以使用迅雷。</p>
+<h4 id="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"><a href="#注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客" class="headerlink" title="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"></a>注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，<a target="_blank" rel="noopener" href="https://blog.csdn.net/stemq/article/details/53150939">参考博客</a></h4><ul>
+<li>windows上安装的docker其实本质上还是借助与windows平台的hyper-v技术来创建一个linux虚拟机，你执行的所有命令其实都是在这个虚拟机里执行的，所以所有pull到本地的image都会在虚拟机的Virtual hard disks目录的文件中，这个文件就是虚拟硬盘文件。如果要想改变路径只需要在hyper-v管理器里设置就可以了。默认的安装路径是C:\Users\Public\Documents\Hyper-V\Virtual hard disks下。</li>
+<li>将默认C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx的文件拷贝到想要改变的路径</li>
+<li>控制面板-&gt;管理工具-&gt;Hyper-V管理器-&gt;右键设置-&gt;硬盘驱动器-&gt;虚拟硬盘输入为想要保存的路径</li>
+</ul>
+<p><img src="/images/Docker/docker03.png" alt="docker修改镜像路径"></p>
+<p><img src="/images/Docker/docker04.png" alt="docker修改镜像路径"></p>
+<ul>
+<li>我试了一下发现重启之后又恢复成原来的路径，解决如下</li>
+</ul>
+<p><img src="/images/Docker/docker05.png" alt="docker修改镜像路径"></p>
+<p><img src="/images/Docker/docker06.png" alt="docker修改镜像路径"></p>
+<h3 id="镜像服务器设置"><a href="#镜像服务器设置" class="headerlink" title="镜像服务器设置"></a>镜像服务器设置</h3><p>Perferences… -&gt; Daemon -&gt; Registry mirrors配置</p>
+<p>windows：在setting -&gt; Daemon -&gt; Registry mirrors中配置</p>
+<p>镜像地址：<br>网易加速器：<a target="_blank" rel="noopener" href="http://hub-mirror.c.163.com/">http://hub-mirror.c.163.com</a>  </p>
+<p>官方中国加速器：<a target="_blank" rel="noopener" href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></p>
+<p>ustc的镜像：<a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></p>
+<p>daocloud：<a target="_blank" rel="noopener" href="https://www.daocloud.io/mirror#accelerator-doc%EF%BC%88%E6%B3%A8%E5%86%8C%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89">https://www.daocloud.io/mirror#accelerator-doc（注册后使用）</a></p>
+<h2 id="3-常用命令"><a href="#3-常用命令" class="headerlink" title="3. 常用命令"></a>3. 常用命令</h2><p>可视化工具：<a target="_blank" rel="noopener" href="https://kitematic.com/">Kitematic</a></p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
+<li>容器生命周期管理 — docker [run|start|stop| restart|kill|rm|pause|unpause]  </li>
+<li>容器操作运维 — docker [ps|inspect|top|attach|events|logs|wait|export|port]  </li>
+<li>容器rootfs命令 — docker [commit|cp|diff]  </li>
+<li>镜像仓库 — docker [login|pull|push|search]  </li>
+<li>本地镜像管理 — docker [images|rmi|tag|build|history|save|import]  </li>
+<li>其他命令 — docker [info|version]</li>
+</ul>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>CONTAINER:：可以是容器名也可以是容器id<br>REPOSITORY：仓库名<br>REGISTRYHOST：服务主机地址<br>IMAGE：镜像名<br>TAG：版本号，不填则默认为latest</p>
+<h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><ul>
+<li><code>docker</code>：查看docker帮助</li>
+<li><code>docker &lt;COMMAND&gt; --help</code>：查看具体命令帮助</li>
+<li><code>docker -v</code>，<code>docker --version</code>：查看docker版本</li>
+<li><code>docker info</code>：查看docker系统信息</li>
+<li><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>:获取容器/镜像的元数据。<br>常用OPTIONS：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><ul>
+<li><code>docker login -u 用户名 -p 密码</code>: 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
+<li><code>docker logout </code>: 登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
+<li><code>docker search 镜像名</code>：从Docker Hub查找镜像</li>
+<li><code>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</code>： 从镜像仓库中拉取或者更新指定镜像</li>
+<li><code>docker push [OPTIONS] NAME[:TAG]</code>：将本地的镜像上传到镜像仓库,要先登陆到镜像仓库</li>
+</ul>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><ul>
+<li><p><code>docker container ls</code>或<code>docker ps</code>：列出运行的容器，加-a或–all可列出所有容器</p>
+</li>
+<li><p>`docker create [OPTIONS] 镜像名：创建新容器，但不启动</p>
+</li>
+<li><p><code>docker run [OPTIONS] 镜像名</code>：创建新容器并运行<br>会从本地查找镜像，若不存在，则从默认公共镜像源(DockerHub)下载<br>常用OPTIONS： </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-p: 端口映射，格式为：主机(宿主)端口:容器端口  </span><br><span class="line">-d: 后台运行容器，并返回容器ID，不加-d会显示日志</span><br><span class="line">--name：为容器指定名称</span><br><span class="line">······</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>docker start [OPTIONS] CONTAINER [CONTAINER...]</code>：启动一个或多个已经被停止的容器</p>
+</li>
+<li><p><code>docker stop [OPTIONS] CONTAINER [CONTAINER...]</code>：停止一个或多个运行中的容器</p>
+</li>
+<li><p><code>docker restart [OPTIONS] CONTAINER [CONTAINER...]</code>：重启一个或多个容器</p>
+</li>
+<li><p><code>docker kill [OPTIONS] CONTAINER [CONTAINER...]</code>：杀掉一个或多个运行中的容器</p>
+</li>
+<li><p><code>docker rm [OPTIONS] CONTAINER [CONTAINER...]</code>：删除一个或多少容器</p>
+</li>
+<li><p><code>docker logs [OPTIONS] CONTAINER</code>：获取容器的日志</p>
+</li>
+<li><p><code>docker top [OPTIONS] CONTAINER [ps OPTIONS]</code>：查看容器中运行的进程信息，支持 ps 命令参数。</p>
+<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4></li>
+<li><p><code>docker images</code>：列出本地镜像</p>
+</li>
+<li><p><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>：获取容器/镜像的元数据<br>常用OPTIONS：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><code>docker build [OPTIONS] PATH | URL | -</code>：根据Dockerfile构建镜像<br>常用OPTIONS:：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- -t，--tag : 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。</span><br><span class="line">- -f : 指定Dockerfile路径</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</code>：从容器创建一个新的镜像</p>
+<p>常用OPTIONS：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-a :提交的镜像作者；</span><br><span class="line">-c :使用Dockerfile指令来创建镜像；</span><br><span class="line">-m :提交时的说明文字；</span><br><span class="line">-p :在commit时，将容器暂停。</span><br></pre></td></tr></table></figure></li>
+<li><p><code>docker tag [OPTIONS] IMAGE[:TAG][REGISTRYHOST/][USERNAME/]NAME[:TAG]</code>：修改镜像的所属仓库</p>
+</li>
+<li><p><code>docker rmi [OPTIONS] IMAGE [IMAGE...]</code>：删除一个或多个本地镜像</p>
+<p>OPTIONS说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-f :强制删除；</span><br><span class="line">--no-prune :不移除该镜像的过程镜像，默认移除；</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-把镜像上传到Docker-Hub"><a href="#4-把镜像上传到Docker-Hub" class="headerlink" title="4. 把镜像上传到Docker Hub"></a>4. 把镜像上传到Docker Hub</h2><h3 id="1-注册docker账号"><a href="#1-注册docker账号" class="headerlink" title="1. 注册docker账号"></a>1. 注册docker账号</h3><p><a href="(https://hub.docker.com/)">DockerHub</a></p>
+<p>（1）输入DockerId（即用户名，英文小写和数字），邮箱，密码<br>（2）邮箱验证</p>
+<h3 id="2-在hub上创建仓库"><a href="#2-在hub上创建仓库" class="headerlink" title="2. 在hub上创建仓库"></a>2. 在hub上创建仓库</h3><p>Create Repository，起名，如hello-world，<br>则路径为username/hello-word</p>
+<h3 id="3-下载镜像"><a href="#3-下载镜像" class="headerlink" title="3. 下载镜像"></a>3. 下载镜像</h3><p>搜索镜像：<code>docker search hello-world</code></p>
+<p>拉取镜像：<code>docker pull hello-world</code></p>
+<h3 id="4-运行容器"><a href="#4-运行容器" class="headerlink" title="4.运行容器"></a>4.运行容器</h3><p>创建新容器并运行：<code>docker run --name my-hello-world -d hello-world</code></p>
+<p>注：</p>
+<ul>
+<li>加<code>-d</code>返回容器id</li>
+<li>加<code>--name</code>命名为’my-hello-world’</li>
+</ul>
+<h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><p><code>docker ps</code>，<code>docker container ls</code>：可以看到容器id，容器名称等信息。</p>
+<h3 id="5-创建镜像"><a href="#5-创建镜像" class="headerlink" title="5. 创建镜像"></a>5. 创建镜像</h3><h4 id="基于Dockerfile构建新镜像"><a href="#基于Dockerfile构建新镜像" class="headerlink" title="基于Dockerfile构建新镜像"></a>基于Dockerfile构建新镜像</h4><p>待补充</p>
+<h4 id="使用commit从容器创建镜像"><a href="#使用commit从容器创建镜像" class="headerlink" title="使用commit从容器创建镜像"></a>使用commit从容器创建镜像</h4><p><code>docker commit -p 容器id/容器名 my-hello-world:v1</code></p>
+<h4 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h4><p>查看本地镜像：<code>docker images</code><br>看看镜像仓库是否存在</p>
+<p>可以修改镜像的所属仓库：<br><code>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</code></p>
+<h3 id="6-登录docker账号"><a href="#6-登录docker账号" class="headerlink" title="6. 登录docker账号"></a>6. 登录docker账号</h3><p>输入<code>docker login</code>，接着输入用户名和密码<br>或者在docker图形界面登录</p>
+<h3 id="7-本地镜像上传到镜像仓库"><a href="#7-本地镜像上传到镜像仓库" class="headerlink" title="7. 本地镜像上传到镜像仓库"></a>7. 本地镜像上传到镜像仓库</h3><p><code>docker push username/my-hello-world:v1</code><br>上传成功后可以到hub上查看是否创建成功</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
+<li><p>遇到一个问题：原先我在windows上用的终端时Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
+<p>这是由于终端和linux不一样，网上有很多解决办法，说的有点多，弄了一会没弄好就没耐心了，正好我觉得Git Bash不太好用了，如复制粘贴快捷键（一点都不快捷，笔记本的键盘可能会好点）是<code>Ctrl+ins</code>和<code>Shift+ins</code>，且命令提示也不是很友好，于是趁此机会换了cmder命令行工具，顺便学习了一下，结果很满意，想看的可以移步<a target="_blank" rel="noopener" href="https://moon-lights.github.io/2018/12/14/tool-2018-12-14-Cmder/">这里</a>。</p>
+</li>
+</ul>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wherein/p/6862911.html">Docker 如何把镜像上传到docker hub</a><br><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1593010515480468898&wfr=spider&for=pc">Docker新手入门之四：Docker镜像和仓库的基本使用</a></p>
+<p>相关教程：<br><a target="_blank" rel="noopener" href="http://www.runoob.com/docker/docker-command-manual.html">Docker 命令大全</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/02/reader-2017-10-01-PartyArticleStudy/" rel="prev" title="青年的楷模 学习的榜样——读《习近平的七年知青岁月》">
+      <i class="fa fa-chevron-left"></i> 青年的楷模 学习的榜样——读《习近平的七年知青岁月》
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/17/architecture-2018-11-17-factory/" rel="next" title="工厂模式">
+      工厂模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-docker%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1. docker介绍：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-docker%E6%9E%B6%E6%9E%84%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 docker架构：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-docker%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 docker概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">2. 下载安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%EF%BC%9Awindows%E4%B8%8B%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E5%9C%A8C%E7%9B%98%EF%BC%8C%E9%95%9C%E5%83%8F%E5%A4%9A%E7%9A%84%E8%AF%9D%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%AF%BC%E8%87%B4C%E7%9B%98%E8%B6%8A%E6%9D%A5%E8%B6%8A%E5%A4%A7%EF%BC%8C%E5%8F%AF%E4%BB%A5%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E5%AD%98%E5%82%A8%E8%B7%AF%E5%BE%84%EF%BC%8C%E5%8F%82%E8%80%83%E5%8D%9A%E5%AE%A2"><span class="nav-number">2.1.1.</span> <span class="nav-text">注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">镜像服务器设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">3. 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%93%E5%BA%93"><span class="nav-number">3.2.2.</span> <span class="nav-text">仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8"><span class="nav-number">3.2.3.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%9C%E5%83%8F"><span class="nav-number">3.2.4.</span> <span class="nav-text">镜像</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%8A%8A%E9%95%9C%E5%83%8F%E4%B8%8A%E4%BC%A0%E5%88%B0Docker-Hub"><span class="nav-number">4.</span> <span class="nav-text">4. 把镜像上传到Docker Hub</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B3%A8%E5%86%8Cdocker%E8%B4%A6%E5%8F%B7"><span class="nav-number">4.1.</span> <span class="nav-text">1. 注册docker账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8hub%E4%B8%8A%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="nav-number">4.2.</span> <span class="nav-text">2. 在hub上创建仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8B%E8%BD%BD%E9%95%9C%E5%83%8F"><span class="nav-number">4.3.</span> <span class="nav-text">3. 下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8"><span class="nav-number">4.4.</span> <span class="nav-text">4.运行容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">查看容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-number">4.5.</span> <span class="nav-text">5. 创建镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EDockerfile%E6%9E%84%E5%BB%BA%E6%96%B0%E9%95%9C%E5%83%8F"><span class="nav-number">4.5.1.</span> <span class="nav-text">基于Dockerfile构建新镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8commit%E4%BB%8E%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-number">4.5.2.</span> <span class="nav-text">使用commit从容器创建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E9%95%9C%E5%83%8F"><span class="nav-number">4.5.3.</span> <span class="nav-text">查看镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%99%BB%E5%BD%95docker%E8%B4%A6%E5%8F%B7"><span class="nav-number">4.6.</span> <span class="nav-text">6. 登录docker账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="nav-number">4.7.</span> <span class="nav-text">7. 本地镜像上传到镜像仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">5.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

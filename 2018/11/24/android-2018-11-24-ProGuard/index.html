@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ProGuard是一个压缩、优化和混淆Java字节码文件的免费的工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓ProGuard混淆">
+<meta property="og:url" content="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="ProGuard是一个压缩、优化和混淆Java字节码文件的免费的工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-27T01:44:09.029Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="进阶">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>安卓ProGuard混淆 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安卓ProGuard混淆
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-24 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-24T00:00:00+08:00">2018-11-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">ProGuard是一个压缩、优化和混淆Java字节码文件的免费的工具</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>ProGuard是一个压缩、优化和混淆Java<a target="_blank" rel="noopener" href="https://baike.so.com/doc/6261423-6474843.html">字节码</a>文件的开源工具，它可以删除无用的类、字段、方法和属性。可以删除没用的注释，最大限度地优化字节码文件。它还可以使用<a target="_blank" rel="noopener" href="https://baike.so.com/doc/1649095-1743070.html">简短</a>的无意义的名称来重命名已经存在的类、字段、方法和属性。常常用于Android开发用于混淆最终的项目，增加项目被反编译的难度。</p>
+<h2 id="二、作用"><a href="#二、作用" class="headerlink" title="二、作用"></a>二、作用</h2><ul>
+<li>压缩: 移除无效的类、属性、方法等</li>
+<li>优化: 优化字节码，并删除未使用的结构</li>
+<li>混淆: 将类名、属性名、方法名混淆为难以读懂的字母，比如a,b,c</li>
+</ul>
+<h2 id="三、混淆注意事项"><a href="#三、混淆注意事项" class="headerlink" title="三、混淆注意事项"></a>三、混淆注意事项</h2><h3 id="1、不能混淆"><a href="#1、不能混淆" class="headerlink" title="1、不能混淆"></a>1、不能混淆</h3><ul>
+<li>在AndroidManifest中配置的类，比如四大组件</li>
+<li>JNI调用的方法</li>
+<li>用了反射的类</li>
+<li>WebView中JavaScript调用的方法</li>
+<li>Layout文件引用到的自定义View</li>
+<li>一些引入的第三方库（一般都会有混淆说明的）</li>
+<li>Parcelable 的子类和 Creator 静态成员变量不混淆，否则会产生 Android.os.BadParcelableException 异常</li>
+<li>使用了枚举要保证枚举不被混淆 </li>
+</ul>
+<blockquote>
+<p>因为混淆之后，类名会变成a,b,c这，通过包名+类名就找不到该类了，会出现ClassNotFoundException异常。</p>
+</blockquote>
+<h3 id="2、保留java-bean"><a href="#2、保留java-bean" class="headerlink" title="2、保留java bean"></a>2、保留java bean</h3><p>使用了 Gson 之类的工具要使 JavaBean 类即实体类不被混淆，混淆后属性名改变，变成了没有意思的名称，json转换就会出错</p>
+<h3 id="3、注解不能混淆"><a href="#3、注解不能混淆" class="headerlink" title="3、注解不能混淆"></a>3、注解不能混淆</h3><p>注解在Android平台中使用的越来越多,常用的有ButterKnife和Otto。很多场景下注解被用作在运行时反射确定一些元素的特征.</p>
+<p>为了保证注解正常工作,我们不应该对注解进行混淆.Android工程默认的混淆配置已经包含了下面保留注解的配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes *Annotation*</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、-Crash信息处理"><a href="#4、-Crash信息处理" class="headerlink" title="4、 Crash信息处理"></a>4、 Crash信息处理</h3><p>代码混淆的时候记得加上在混淆文件里面记得加上这句： </p>
+<p>keep住源文件以及行号 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes SourceFile,LineNumberTable</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、ProGuard用法和选项"><a href="#四、ProGuard用法和选项" class="headerlink" title="四、ProGuard用法和选项"></a>四、ProGuard用法和选项</h2><h3 id="保留选项："><a href="#保留选项：" class="headerlink" title="保留选项："></a>保留选项：</h3><p><strong>注意选项的命名规律：-keep* 用于防止目标被移除或者重命名、-keep*names则仅仅用于防止重命名。</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-keep</td>
+<td>-keep [,modifier,…] class_spec 作为入口点保留的类、类成员。对于库，所有公共成员都需要保留</td>
+</tr>
+<tr>
+<td>-keepclassmembers</td>
+<td>-keepclassmembers [,modifier,…] class_spec  指定要保留的类成员，如果它们所属的类被保留的话</td>
+</tr>
+<tr>
+<td>-keepclasseswithmembers</td>
+<td>-keepclasseswithmembers [,modifier,…] class_spec 指定需要保留的类，如果其成员符合条件</td>
+</tr>
+<tr>
+<td>-keepnames class_spec</td>
+<td>等价于-keep,allowshrinking class_spec 指定其名称需要保留的类和类成员，如果在压缩阶段这些类没有被删除的话。该选项仅用于混淆阶段</td>
+</tr>
+<tr>
+<td>-keepclassmembernames</td>
+<td>-keepclassmembernames class_spec 指定名称要保留的类成员，如果在压缩阶段这些类没有被删除的话。该选项仅用于混淆阶段</td>
+</tr>
+<tr>
+<td>-keepclasseswithmembernames</td>
+<td>-keepclasseswithmembernames class_spec 指定要保留的类和类成员，如果所有指定的类成员在经历了压缩阶段还存在</td>
+</tr>
+<tr>
+<td>-printseeds [filename]</td>
+<td>打印所有匹配-keep的类和类成员，默认打印到标准输出</td>
+</tr>
+</tbody></table>
+<p>-keep选项支持添加限定符，格式为： -keep,限定符 ，限定符包括：</p>
+<table>
+<thead>
+<tr>
+<th>限定符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>includedescriptorclasses</td>
+<td>方法、字段的类型描述符中的任何类，跟随被keep的方法/字段一并保留，通常用于保留Native方法的名字时，防止Native方法参数的名字被修改，以保证和Native库兼容</td>
+</tr>
+<tr>
+<td>allowshrinking</td>
+<td>指定是否入口点可以被压缩</td>
+</tr>
+<tr>
+<td>allowoptimization</td>
+<td>指定是否入口点可以被优化</td>
+</tr>
+<tr>
+<td>allowobfuscation</td>
+<td>指定是否入口点可以被混淆</td>
+</tr>
+</tbody></table>
+<p>压缩选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-dontoptimize</td>
+<td>不进行优化。默认情况下优化启用，所有方法都在字节码级别进行优化</td>
+</tr>
+<tr>
+<td>-optimizations opt_filter</td>
+<td>在更细粒度上控制进行哪些优化</td>
+</tr>
+<tr>
+<td>-optimizationpasses n</td>
+<td>优化的步骤数，默认1步，如果发现没有可优化的，后续步骤自动省略</td>
+</tr>
+<tr>
+<td>-assumenosideeffects class_spec</td>
+<td>指定不具有副作用（不改变任何状态信息）的方法规格，如果这些方法的返回值没有被使用，那么这样的调用会清除</td>
+</tr>
+<tr>
+<td>-allowaccessmodification</td>
+<td>是否允许放宽类、类成员的访问限定符。这可能有利于优化，例如对getter()进行内联，需要相应字段成为public的</td>
+</tr>
+<tr>
+<td>-mergeinterfacesaggressively</td>
+<td>允许接口合并，甚至在实现类没有实现所有接口方法的情况下</td>
+</tr>
+</tbody></table>
+<p>混淆选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-dontobfuscate</td>
+<td>是否进行混淆，默认是。除了匹配-keep系列选项的类、类成员的名字将被随机的改为短名。为了方便调试而保留的内部属性，例如源代码名称、变量名、行号，都将被移除</td>
+</tr>
+<tr>
+<td>-printmapping [filename]</td>
+<td>打印混淆前后类名、类成员名的对照</td>
+</tr>
+<tr>
+<td>-applymapping filename</td>
+<td>指定一个先前生成的混淆名对照表，本次依照该对照继续混淆，不在表中的成员生成新的名字</td>
+</tr>
+<tr>
+<td>-obfuscationdictionary filename</td>
+<td>指定存放有效混淆后变量名的文件</td>
+</tr>
+<tr>
+<td>-overloadaggressively</td>
+<td>混淆时支持激进的重载，允许多个字段、方法使用重复的名字，只要参数和返回值不同</td>
+</tr>
+<tr>
+<td>-useuniqueclassmembernames</td>
+<td>让不同名的类成员具有不同的混淆后的名称，让同名的类成员混淆后的名称依旧相同</td>
+</tr>
+<tr>
+<td>-dontusemixedcaseclassnames</td>
+<td>混淆后，不使用混合大小写的类名</td>
+</tr>
+<tr>
+<td>-keeppackagenames [pkg_filter]</td>
+<td>指定不混淆的包的过滤器，过滤器支持* **和前导的!</td>
+</tr>
+<tr>
+<td>-flattenpackagehierarchy [pkg_name]</td>
+<td>对所有被重命名的包进行重新打包，如果不指定参数值，则打包到根目录</td>
+</tr>
+<tr>
+<td>-repackageclasses [pkg_name]</td>
+<td>对所有被重命名的类进行重新打包，如果不指定参数值，则打包到根目录</td>
+</tr>
+<tr>
+<td>-keepattributes [attr_filter]</td>
+<td>指定需要保留的所有可选属性，参数值是逗号分隔的，所有JVM或ProGuard支持的属性值。支持使用? * ** !。在处理库的时候，至少应该保留Exceptions, InnerClasses, Signature属性，如果程序依赖于注解，则应该保留</td>
+</tr>
+<tr>
+<td>-keepparameternames</td>
+<td>保留方法参数的名称和类型。该选项实质上保留了一个修剪（trim）后的LocalVariableTable、LocalVariableTypeTable这两个调试属性，在处理库时可能使用。注意，方法局部变量的名称依旧会混淆</td>
+</tr>
+<tr>
+<td>-renamesourcefileattribute [string]</td>
+<td>设置SourceFile、SourceDir 属性为指定的常量值</td>
+</tr>
+<tr>
+<td>-adaptclassstrings [class_filter]</td>
+<td>代表了类名的字符串常量值，是否也被混淆（与目标类的名字保持一致）。如果不指定参数值，所有代表类名的字符串常量都被混淆</td>
+</tr>
+<tr>
+<td>-adaptresourcefilenames [file_filter]</td>
+<td>是否重命名资源文件，如果其文件名反映了一个被混淆的类的名字</td>
+</tr>
+<tr>
+<td>-adaptresourcefilecontents [file_filter]</td>
+<td>是否修改资源文件中的类名，如果对应的类的名字已经被混淆。ProGuard使用平台默认字符集读取文件，如果需要改变这一行为，需要设置LANG环境变量或者JVM系统属性file.encoding</td>
+</tr>
+</tbody></table>
+<p>预校验选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-dontpreverify</td>
+<td>指定不进行字节码预校验，对于Java6+默认开启</td>
+</tr>
+<tr>
+<td>-microedition</td>
+<td>只是目标类文件将在JME平台上运行</td>
+</tr>
+</tbody></table>
+<p>一般选项</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-verbose</td>
+<td>在处理时打印冗长的信息</td>
+</tr>
+<tr>
+<td>-dontnote [class_filter]</td>
+<td>不打印配置选项中，与正则式匹配的类相关的错误或者疏忽</td>
+</tr>
+<tr>
+<td>-dontwarn [class_filter]</td>
+<td>不打印配置选项中，与正则式匹配的类相关的重要错误，例如unresolved references</td>
+</tr>
+<tr>
+<td>-ignorewarnings</td>
+<td>忽略所有警告，强制进行处理。这可能很危险</td>
+</tr>
+<tr>
+<td>-printconfiguration [filename]</td>
+<td>打印解析后的配置信息到目标文件</td>
+</tr>
+<tr>
+<td>-dump [filename]</td>
+<td>打印处理后的类文件的内部结构</td>
+</tr>
+</tbody></table>
+<p>通配符匹配规则</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>？</td>
+<td>匹配单个字符</td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配类名中的任何部分，但不包含额外的包名</td>
+</tr>
+<tr>
+<td>**</td>
+<td>匹配类名中的任何部分，并且可以包含额外的包名</td>
+</tr>
+<tr>
+<td>%</td>
+<td>匹配任何基础类型的类型名</td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配任意类型名 ,包含基础类型/非基础类型</td>
+</tr>
+<tr>
+<td>…</td>
+<td>匹配任意数量、任意类型的参数</td>
+</tr>
+<tr>
+<td><init></init></td>
+<td>匹配任何构造器</td>
+</tr>
+<tr>
+<td><fields></fields></td>
+<td>匹配任何字段名</td>
+</tr>
+<tr>
+<td><methods></methods></td>
+<td>匹配任何方法</td>
+</tr>
+<tr>
+<td>*(当用在类内部时)</td>
+<td>匹配任何字段和方法</td>
+</tr>
+<tr>
+<td>$</td>
+<td>指内部类</td>
+</tr>
+</tbody></table>
+<h2 id="五、一些规则"><a href="#五、一些规则" class="headerlink" title="五、一些规则"></a>五、一些规则</h2><h3 id="两个常用的混淆命令，"><a href="#两个常用的混淆命令，" class="headerlink" title="两个常用的混淆命令，"></a>两个常用的混淆命令，</h3><p>注意一颗星表示只是保持该包下的类名，而子包下的类名还是会被混淆；两颗星表示把本包和所含子包下的类名都保持；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-keep <span class="class"><span class="keyword">class</span> <span class="title">cn</span>.<span class="title">hadcn</span>.<span class="title">test</span>.** </span></span><br><span class="line"><span class="class">-<span class="title">keep</span> <span class="title">class</span> <span class="title">cn</span>.<span class="title">hadcn</span>.<span class="title">test</span>.*</span></span><br></pre></td></tr></table></figure>
+
+<p>用以上方法保持类后，你会发现类名虽然未混淆，但里面的具体方法和变量命名还是变了，这时如果既想保持类名，又想保持里面的内容不被混淆，我们就需要以下方法了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keep <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">example</span>.<span class="title">bean</span>.** </span>&#123; *; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在此基础上，我们也可以使用Java的基本规则来保护特定类不被混淆，比如我们可以用extend，implement等这些Java规则。如下例子就避免所有继承Activity的类被混淆</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保留我们使用的四大组件，自定义的Application等等这些类不被混淆</span></span><br><span class="line"><span class="comment"># 因为这些子类都有可能被外部调用</span></span><br><span class="line">-keep public class * extends android.app.Activity</span><br><span class="line">-keep public class * extends android.app.Appliction</span><br><span class="line">-keep public class * extends android.app.Service</span><br><span class="line">-keep public class * extends android.content.BroadcastReceiver</span><br><span class="line">-keep public class * extends android.content.ContentProvider</span><br><span class="line">-keep public class * extends android.app.backup.BackupAgentHelper</span><br><span class="line">-keep public class * extends android.preference.Preference</span><br><span class="line">-keep public class * extends android.view.View</span><br><span class="line">-keep public class com.android.vending.licensing.ILicensingService</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 混淆后，不使用混合大小写的类名</span></span><br><span class="line">-dontusemixedcaseclassnames</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定需要保留的所有可选属性</span></span><br><span class="line"><span class="comment"># 更多 参考。https://www.guardsquare.com/en/proguard/manual/attributes</span></span><br><span class="line">-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打包到根目录</span></span><br><span class="line">-repackageclasses <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许放宽类、类成员的访问限定符。</span></span><br><span class="line">-allowaccessmodification</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印解析后的配置信息到目标文件</span></span><br><span class="line">-printconfiguration proguard_test.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 优化的步骤数</span></span><br><span class="line">-optimizationpasses 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在处理时打印冗长的信息</span></span><br><span class="line">-verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不跳过依赖库中的非public类，4.5+默认值</span></span><br><span class="line">-dontskipnonpubliclibraryclasses</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不跳过包可见的依赖库类成员（字段、方法）</span></span><br><span class="line">-dontskipnonpubliclibraryclassmembers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留native方法的规格，以便能与native库链接</span></span><br><span class="line">-keepclasseswithmembernames class * &#123;</span><br><span class="line">    native &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># keep setters in Views so that animations can still work</span></span><br><span class="line">-keepclassmembers public class * extends android.view.View &#123;</span><br><span class="line">   void <span class="built_in">set</span>*(***);</span><br><span class="line">   *** get*();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># We want to keep methods in Activity that could be used in the XML attribute onClick</span></span><br><span class="line">-keepclassmembers class * extends android.app.Activity &#123;</span><br><span class="line">   public void *(android.view.View);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations</span></span><br><span class="line">-keepclassmembers enum * &#123;</span><br><span class="line">    public static **[] values();</span><br><span class="line">    public static ** valueOf(java.lang.String);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除输出的日志</span></span><br><span class="line"></span><br><span class="line">-assumenosideeffects class com.tuya.smart.android.common.utils.L &#123;</span><br><span class="line"></span><br><span class="line">public static *** d(...);</span><br><span class="line"></span><br><span class="line">public static *** v(...);</span><br><span class="line"></span><br><span class="line">public static *** i(...);</span><br><span class="line"></span><br><span class="line">public static *** e(...);</span><br><span class="line"></span><br><span class="line">public static *** w(...);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留Parcelable序列化类不被混淆</span></span><br><span class="line">-keepclassmembers class * implements android.os.Parcelable &#123;</span><br><span class="line">  public static final android.os.Parcelable<span class="variable">$Creator</span> CREATOR;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes Exceptions,InnerClasses,...  </span><br><span class="line">-keep class [packagename].A&#123;*;&#125;  </span><br><span class="line">-keep class [packagename].A$* &#123;*;&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>其中 A$* 表示所有A的内部类都保留下来，也可以如下使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes Exceptions,InnerClasses,...  </span><br><span class="line">-keep class com.xxx.A&#123; *; &#125;  </span><br><span class="line">-keep class com.xxx.A<span class="variable">$B</span> &#123; *; &#125;  </span><br><span class="line">-keep class com.xxx.A<span class="variable">$C</span> &#123; *; &#125;  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/shrink-code.html?hl=zh-cn">压缩代码和资源</a></li>
+<li><a target="_blank" rel="noopener" href="https://stuff.mit.edu/afs/sipb/project/android/sdk/android-sdk-linux/tools/proguard/docs/index.html#manual/introduction.html">ProGuard</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.guardsquare.com/en/proguard/manual/usage#classspecification">ProGuard manual</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.gmem.cc/proguard-study-note">ProGuard学习笔记</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/%E8%BF%9B%E9%98%B6/" rel="tag"><i class="fa fa-tag"></i> 进阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" rel="prev" title="MacBook使用笔记">
+      <i class="fa fa-chevron-left"></i> MacBook使用笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/04/android-2018-12-04-LintTools/" rel="next" title="Android Lint工具和自定义Lint规则">
+      Android Lint工具和自定义Lint规则 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">二、作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B7%B7%E6%B7%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">三、混淆注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.1.</span> <span class="nav-text">1、不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%BF%9D%E7%95%99java-bean"><span class="nav-number">3.2.</span> <span class="nav-text">2、保留java bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%B3%A8%E8%A7%A3%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.3.</span> <span class="nav-text">3、注解不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81-Crash%E4%BF%A1%E6%81%AF%E5%A4%84%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">4、 Crash信息处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81ProGuard%E7%94%A8%E6%B3%95%E5%92%8C%E9%80%89%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">四、ProGuard用法和选项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">保留选项：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%B8%80%E4%BA%9B%E8%A7%84%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">五、一些规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B7%B7%E6%B7%86%E5%91%BD%E4%BB%A4%EF%BC%8C"><span class="nav-number">5.1.</span> <span class="nav-text">两个常用的混淆命令，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">内部类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

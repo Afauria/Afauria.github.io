@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="NexT高级配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NexTConfig">
+<meta property="og:url" content="http://yoursite.com/2018/10/20/blog-2018-10-20-NexTConfig/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="NexT高级配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/BuildBlog/config01.png">
+<meta property="article:published_time" content="2018-10-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-28T01:44:12.126Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/BuildBlog/config01.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/10/20/blog-2018-10-20-NexTConfig/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>NexTConfig | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/blog-2018-10-20-NexTConfig/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NexTConfig
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-20T00:00:00+08:00">2018-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-28 09:44:12" itemprop="dateModified" datetime="2021-09-28T09:44:12+08:00">2021-09-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">NexT高级配置</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="NexT配置"><a href="#NexT配置" class="headerlink" title="NexT配置"></a>NexT配置</h1><h2 id="添加Readme-md文件"><a href="#添加Readme-md文件" class="headerlink" title="添加Readme.md文件"></a>添加Readme.md文件</h2><p>在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件<code>_config.yml</code>，将skip_render参数的值设置为<code>skip_render: README.md</code>，跳过渲染该文件</p>
+<h2 id="添加动态背景"><a href="#添加动态背景" class="headerlink" title="添加动态背景"></a>添加动态背景</h2><p>修改主题配置文件 themes/next/_config.yml，不同动态背景，值为true应用：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">canvas_nest:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">three_waves:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_lines:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_sphere:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Only fit scheme Pisces</span></span><br><span class="line"><span class="attr">canvas_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">size:</span> <span class="number">300</span></span><br><span class="line">  <span class="attr">alpha:</span> <span class="number">0.6</span></span><br><span class="line">  <span class="attr">zIndex:</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="修改文章底部的带-号的标签"><a href="#修改文章底部的带-号的标签" class="headerlink" title="修改文章底部的带#号的标签"></a>修改文章底部的带#号的标签</h2><p>修改模板/themes/next/layout/_macro/post.swig，搜索 rel=”tag”&gt;#，将 # 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h2 id="设置网站的图标Favicon"><a href="#设置网站的图标Favicon" class="headerlink" title="设置网站的图标Favicon"></a>设置网站的图标Favicon</h2><p>在<a target="_blank" rel="noopener" href="http://www.easyicon.net/">EasyIcon</a>中找一张（32*32）的ico图标,或者去别的网站下载或者制作，并将图标名称改为favicon.ico，然后把图标放在/themes/next/source/images里，并且修改主题配置文件：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">favicon:</span> </span><br><span class="line">	<span class="attr">small:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="attr">medion:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="comment">#apple_touch_icon: /images/apple-touch-icon-next.png</span></span><br><span class="line">	<span class="comment">#safari_pinned_tab: /images/logo.svg</span></span><br><span class="line">  	<span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  	<span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><p>NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia,Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search,原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。</p>
+<p>安装插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd hexo</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<p>修改站点配置文件：</p>
+<blockquote>
+<p>search:<br>path: search.xml<br>field: post<br>format: html<br>limit: 10000</p>
+</blockquote>
+<p>修改NexT主题配置文件：</p>
+<blockquote>
+<p>local_search:<br>​    enable: true</p>
+</blockquote>
+<p>踩坑：启用搜索功能之后，使用<code>hexo serve</code>运行正常，点击按钮弹出搜索框，发布到GitPage，搜索框直接显示到搜索按钮旁边了。</p>
+<blockquote>
+<p>打开浏览器开发者工具，找到html元素，查看本地和GitPage页面差异，发现两者<code>main.css</code>样式不同，GitPage上搜素框css样式丢失</p>
+<p>解决：<code>hexo clean</code>清除之前的编译结果，<code>hexo g -d</code>重新部署</p>
+</blockquote>
+<h2 id="去掉NexT自带的文章目录序号"><a href="#去掉NexT自带的文章目录序号" class="headerlink" title="去掉NexT自带的文章目录序号"></a>去掉NexT自带的文章目录序号</h2><p>NexT会为文章自动加上目录，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件</p>
+<p><img src="/images/BuildBlog/config01.png" alt="去掉文章目录序号"></p>
+<h2 id="生成分类、标签和关于页面"><a href="#生成分类、标签和关于页面" class="headerlink" title="生成分类、标签和关于页面"></a>生成分类、标签和关于页面</h2><h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p><code>hexo new page tags</code>：在<code>站点/source/</code>目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: 2018-04-04</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>同理，将tags换成categories即可</p>
+<h3 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h3><p>同理，自行编辑文章内容，不需要加type</p>
+<p>注：主题配置文件的menu需要将tags和categories的注释去掉</p>
+<h2 id="修改样式"><a href="#修改样式" class="headerlink" title="修改样式"></a>修改样式</h2><p>可以修改next主题下的layout和source中的布局和css样式，定制主题</p>
+<h2 id="站点地图sitemap"><a href="#站点地图sitemap" class="headerlink" title="站点地图sitemap"></a>站点地图sitemap</h2><p>为了让博文被google或百度检索，需要使用hexo的sitemap功能。</p>
+<p>见<a target="_blank" rel="noopener" href="https://eericzeng.github.io/2019/07/14/hexo%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9sitemap%E7%9A%84%E4%BD%BF%E7%94%A8/">hexo博客站点sitemap的使用</a></p>
+<h2 id="配置Live2d卡通人物"><a href="#配置Live2d卡通人物" class="headerlink" title="配置Live2d卡通人物"></a>配置Live2d卡通人物</h2><ol>
+<li>安装<code>npm install --save hexo-helper-live2d</code>，具体配置见官网说明<a target="_blank" rel="noopener" href="https://github.com/EYHN/hexo-helper-live2d">hexo-helper-live2d</a></li>
+<li>安装动画model，如<code>npm install live2d-widget-model-koharu</code>，可以到<a target="_blank" rel="noopener" href="https://github.com/xiazeyu/live2d-widget-models">live2d-widget-models</a>挑选自己喜欢的model，效果见<a target="_blank" rel="noopener" href="https://huaji8.top/post/live2d-plugin-2.0/">hexo live2d插件 2.0 !</a></li>
+<li>将下述配置拷贝到根目录<code>_config.yml</code>中，不能拷到主题配置中，否则不生效。</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">live2d:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">scriptFrom:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">tagMode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">log:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">model:</span></span><br><span class="line">    <span class="attr">use:</span> <span class="string">live2d-widget-model-koharu</span></span><br><span class="line">  <span class="attr">display:</span></span><br><span class="line">    <span class="attr">position:</span> <span class="string">right</span></span><br><span class="line">    <span class="attr">width:</span> <span class="number">250</span></span><br><span class="line">    <span class="attr">height:</span> <span class="number">500</span></span><br><span class="line">  <span class="attr">mobile:</span></span><br><span class="line">    <span class="attr">show:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">scale:</span> <span class="number">0.5</span></span><br><span class="line">  <span class="attr">react:</span></span><br><span class="line">    <span class="attr">opacity:</span> <span class="number">0.7</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="右上角配置Fork-me-on-GitHub入口"><a href="#右上角配置Fork-me-on-GitHub入口" class="headerlink" title="右上角配置Fork me on GitHub入口"></a>右上角配置Fork me on GitHub入口</h2><ol>
+<li><p>到<a target="_blank" rel="noopener" href="http://tholman.com/github-corners/">GitHub Corners</a>或者<a target="_blank" rel="noopener" href="https://github.blog/2008-12-19-github-ribbons/">GitHub Ribbons</a>选择喜欢的图标，copy相应的代码</p>
+</li>
+<li><p>将代码粘贴到<code>themes/next/layout/_layout.swig</code>文件中(放在<code>body</code>的内即可)</p>
+</li>
+<li><p>修改<code>href</code>链接为想要跳转的地址，如GitHub主页</p>
+</li>
+</ol>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a><br><a target="_blank" rel="noopener" href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40265501/article/details/80030627">hexo博客添加搜索功能</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"><i class="fa fa-tag"></i> 博客</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/19/blog-2018-10-19-HexoTheme-NexT/" rel="prev" title="Hexo更换主题：NexT">
+      <i class="fa fa-chevron-left"></i> Hexo更换主题：NexT
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/24/note-2018-10-24-WordInterpretNote/" rel="next" title="名词解释笔记">
+      名词解释笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">NexT配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Readme-md%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">添加Readme.md文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8A%A8%E6%80%81%E8%83%8C%E6%99%AF"><span class="nav-number">1.2.</span> <span class="nav-text">添加动态背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E7%9A%84%E5%B8%A6-%E5%8F%B7%E7%9A%84%E6%A0%87%E7%AD%BE"><span class="nav-number">1.3.</span> <span class="nav-text">修改文章底部的带#号的标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E6%A0%87Favicon"><span class="nav-number">1.4.</span> <span class="nav-text">设置网站的图标Favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD"><span class="nav-number">1.5.</span> <span class="nav-text">添加搜索功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E6%8E%89NexT%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95%E5%BA%8F%E5%8F%B7"><span class="nav-number">1.6.</span> <span class="nav-text">去掉NexT自带的文章目录序号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%88%86%E7%B1%BB%E3%80%81%E6%A0%87%E7%AD%BE%E5%92%8C%E5%85%B3%E4%BA%8E%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.7.</span> <span class="nav-text">生成分类、标签和关于页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-number">1.7.1.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.7.2.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.7.3.</span> <span class="nav-text">关于</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F"><span class="nav-number">1.8.</span> <span class="nav-text">修改样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%99%E7%82%B9%E5%9C%B0%E5%9B%BEsitemap"><span class="nav-number">1.9.</span> <span class="nav-text">站点地图sitemap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AELive2d%E5%8D%A1%E9%80%9A%E4%BA%BA%E7%89%A9"><span class="nav-number">1.10.</span> <span class="nav-text">配置Live2d卡通人物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E4%B8%8A%E8%A7%92%E9%85%8D%E7%BD%AEFork-me-on-GitHub%E5%85%A5%E5%8F%A3"><span class="nav-number">1.11.</span> <span class="nav-text">右上角配置Fork me on GitHub入口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">2.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/Afauria" title="WeChat → Afauria"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/410013112" title="QQ → 410013112"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
