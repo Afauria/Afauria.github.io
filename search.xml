@@ -2779,6 +2779,156 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>java基础笔记（占坑）</title>
+    <url>/2018/12/21/java-2018-12-21-JavaBasic/</url>
+    <content><![CDATA[<h1 id="1-知识点"><a href="#1-知识点" class="headerlink" title="1. 知识点"></a>1. 知识点</h1><h2 id="1-1-重写和重载"><a href="#1-1-重写和重载" class="headerlink" title="1.1. 重写和重载"></a>1.1. 重写和重载</h2><ul>
+<li>重写：子类对父类方法重新定义，具有相同的方法名，参数，返回类型，若是重写了方法，则要使用父类方法需要使用super，子类访问权限不能比父类严格，子类抛出异常范围不能比父类大（RuntimeException除外）</li>
+<li>重载：参数个数、类型不同，返回值可以不同</li>
+</ul>
+<h2 id="1-2-数组定义"><a href="#1-2-数组定义" class="headerlink" title="1.2. 数组定义"></a>1.2. 数组定义</h2><ul>
+<li>定义一维数组时，必须显式指明数组的长度； </li>
+<li>定义多维数组时，其一维数组的长度必须首先指明，其他维数组长度可以稍后指定； </li>
+<li>采用给定值初始化数组时，不必指明长度； <code>int[] a = &#123;1, 2, 3&#125;</code></li>
+<li>“[]” 是数组运算符的意思，在声明一个数组时，数组运算符可以放在数据类型与变量之间，也可以放在变量之后。</li>
+</ul>
+<p>二维数组声明可以如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> []b[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> [][]c = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="comment">//多维数组可以先声明第一维长度，后面的长度可以稍后声明</span></span><br><span class="line"><span class="keyword">int</span> d[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]【】;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-四种引用"><a href="#1-3-四种引用" class="headerlink" title="1.3. 四种引用"></a>1.3. 四种引用</h2><ul>
+<li>强引用：普通的引用</li>
+<li>软引用：内存不足时被回收</li>
+<li>弱引用：除了弱引用外没有其他的引用则会被回收</li>
+<li>虚引用：相当于没有引用，要与引用队列配合使用<ul>
+<li>可以进行重要对象回收监听，进行日志统计</li>
+<li>系统gc监听：因为虚引用每次GC都会被回收，那么我们就可以通过虚引用来判断gc的频率，如果频率过大，内存使用可能存在问题，才导致了系统gc频繁调用</li>
+</ul>
+</li>
+</ul>
+<p>引用队列：引用的对象将要被JVM回收时，会将其加入到引用队列中。通过引用队列可以了解JVM垃圾回收情况。</p>
+<h1 id="2-细节"><a href="#2-细节" class="headerlink" title="2. 细节"></a>2. 细节</h1><h2 id="2-1-amp-amp-和-amp-的区别"><a href="#2-1-amp-amp-和-amp-的区别" class="headerlink" title="2.1. &amp;&amp;和&amp;的区别"></a>2.1. &amp;&amp;和&amp;的区别</h2><ul>
+<li>&amp;&amp;：短路与，即前面的表达式能确定结果就不执行后面的表达式，可以用来代替简单的if语句</li>
+<li>&amp;：不短路与，前后表达式都需要执行</li>
+</ul>
+<h2 id="2-2-接口可以继承多个接口"><a href="#2-2-接口可以继承多个接口" class="headerlink" title="2.2. 接口可以继承多个接口"></a>2.2. 接口可以继承多个接口</h2><ul>
+<li>类只能继承一个类，但可以实现多个接口</li>
+<li>接口不可以实现接口，但可以继承多个接口（不用实现） A extends B,C</li>
+</ul>
+<h2 id="2-3-equals和"><a href="#2-3-equals和" class="headerlink" title="2.3. equals和=="></a>2.3. equals和==</h2><p>==判断是否是同一个对象（对于非基本类型）</p>
+<p>equals判断的是内容是否相同，可以通过重写对象的equals方法来自定义比较规则</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例</span></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line">System.out.println(a.equals(b));<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-String常量池"><a href="#2-3-String常量池" class="headerlink" title="2.3. String常量池"></a>2.3. String常量池</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">System.out.println(a==b);<span class="comment">//true：同一个对象。</span></span><br><span class="line"><span class="comment">//使用双引号创建的是字符串常量，存储在常量池中</span></span><br><span class="line"><span class="comment">//创建常量对象的时候会先判断常量池中是否已经存在，如果存在则直接引用</span></span><br><span class="line"></span><br><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line"><span class="comment">//使用new String创建对象，存放在堆中，两个引用不相等</span></span><br><span class="line"><span class="comment">//实际上是将常量池中的123复制到了堆中，如果常量池没有，会先再常量池中创建，如下</span></span><br><span class="line"></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line"><span class="comment">//实际上创建了两个对象，一个在常量池，一个在堆中</span></span><br><span class="line"><span class="comment">//如果前面常量池已经有该字符串，则只创建一个对象。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-继承时构造方法"><a href="#2-4-继承时构造方法" class="headerlink" title="2.4. 继承时构造方法"></a>2.4. 继承时构造方法</h2><ul>
+<li>子类构造方法总是先调用父类的构造方法，如果没有显式指明调用父类哪个构造方法，则默认调用无参构造方法</li>
+<li>若父类没有无参构造方法，子类需要在自己的构造函数中显式调用父类的构造函数<code>super(arg);</code>，并且一定要在第一行调用。若不调用，编译器会报错</li>
+</ul>
+<h2 id="2-5-继承时初始化顺序"><a href="#2-5-继承时初始化顺序" class="headerlink" title="2.5. 继承时初始化顺序"></a>2.5. 继承时初始化顺序</h2><ul>
+<li>父类的静态变量</li>
+<li>父类静态代码块</li>
+<li>子类的静态变量</li>
+<li>子类的静态代码块</li>
+<li>父类的普通变量</li>
+<li>父类普通代码块</li>
+<li>父类无参构造函数</li>
+<li>子类的普通变量</li>
+<li>子类普通代码块</li>
+<li>子类无参构造函数</li>
+</ul>
+<h2 id="2-6-自动装箱-拆箱"><a href="#2-6-自动装箱-拆箱" class="headerlink" title="2.6. 自动装箱/拆箱"></a>2.6. 自动装箱/拆箱</h2><p>装箱：将8个基本类型转换成对应的包装类型。拆箱则反过来</p>
+<h3 id="2-6-1-基本数据类型和包装类"><a href="#2-6-1-基本数据类型和包装类" class="headerlink" title="2.6.1. 基本数据类型和包装类"></a>2.6.1. 基本数据类型和包装类</h3><p>在Java语言中，<code>new</code>一个对象是存储在堆里的，我们通过栈中的引用来使用这些对象；所以，对象本身来说是比较消耗资源的。对于经常用到的类型，如int等，如果我们每次使用这种变量的时候都需要new一个Java对象的话，就会比较笨重。</p>
+<p>Java是一种面向对象语言，很多地方都需要使用对象而不是基本数据类型。比如，在集合类中，我们是无法将int 、double等类型放进去的。因为集合的容器要求元素是Object类型。为了让基本类型也具有对象的特征，就出现了包装类型，它相当于将基本类型“包装起来”，使得它具有了对象的性质，并且为其添加了属性和方法，丰富了基本类型的操作。</p>
+<table>
+<thead>
+<tr>
+<th>基本数据类型（内置类型）</th>
+<th>对应的包装类型</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>byte</td>
+<td>Byte</td>
+<td>1个字节</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean</td>
+<td>1个字节或4个字节</td>
+</tr>
+<tr>
+<td>char</td>
+<td>Character</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+<td>4个字节</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+<td>8个字节</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double</td>
+<td>8字节</td>
+</tr>
+</tbody></table>
+<p>实际上，Java中还存在另外一种基本类型<code>void</code>，它也有对应的包装类<code>java.lang.Void</code>，不过我们无法直接对它们进行操作。</p>
+<p><strong>补充：数据超出范围，溢出不会抛异常，也没有任何提示。</strong></p>
+<p>boolean类型占1或4个字节：理论上只需要1bit空间，但是计算机处理数据的最小单位是1个字节，实际存储的空间是：用1个字节的最低位存储，其他7位用0填补</p>
+<p>位（bit）是计算机存储的最小单位，字节是计算机处理数据的最小单位，1字节=8位</p>
+<blockquote>
+<p>《Java虚拟机规范》一书中的描述：“虽然定义了boolean这种数据类型，但是只对它提供了非常有限的支持。在Java虚拟机中没有任何供boolean值专用的字节码指令，Java语言表达式所操作的boolean值，在编译之后都使用Java虚拟机中的int数据类型来代替，而boolean数组将会被编码成Java虚拟机的byte数组，每个元素boolean元素占8位”。这样我们可以得出boolean类型占了单独使用是4个字节，在数组中又是1个字节。</p>
+<p>使用int的原因是，对于当下32位的处理器（CPU）来说，一次处理数据是32位（这里不是指的是32/64位系统，而是指CPU硬件层面），具有高效存取的特点。</p>
+</blockquote>
+<h3 id="2-6-2-自动装箱、拆箱"><a href="#2-6-2-自动装箱、拆箱" class="headerlink" title="2.6.2. 自动装箱、拆箱"></a>2.6.2. 自动装箱、拆箱</h3><ul>
+<li>在Java SE5之前，装箱：<code>Integer i = new Integer(10);</code></li>
+<li>在Java SE5中，提供了自动装箱、拆箱功能</li>
+</ul>
+<p>自动装箱、拆箱原理：通过包装类的valueOf()和xxxValue();方法实现</p>
+<p>举例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Integer i =<span class="number">10</span>;  <span class="comment">//自动装箱</span></span><br><span class="line"><span class="keyword">int</span> b= i;     <span class="comment">//自动拆箱</span></span><br></pre></td></tr></table></figure>
+
+<p>将上述代码反编译后得到</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[]args)</span></span>&#123;</span><br><span class="line">    Integer integer=Integer.valueOf(<span class="number">1</span>); <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">int</span> i=integer.intValue(); <span class="comment">//拆箱</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-6-3-常见场景"><a href="#2-6-3-常见场景" class="headerlink" title="2.6.3 常见场景"></a>2.6.3 常见场景</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//基本数据类型放入集合类</span></span><br><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">50</span>; i ++)&#123;</span><br><span class="line">    li.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//包装类型与基本数据类型比较</span></span><br><span class="line"><span class="comment">//理论上==是比较对象地址，这里实现了拆箱</span></span><br><span class="line">Integer a=<span class="number">1</span>;</span><br><span class="line">System.out.println(a==<span class="number">1</span>?<span class="string">&quot;等于&quot;</span>:<span class="string">&quot;不等于&quot;</span>);<span class="comment">//等于</span></span><br><span class="line">Boolean bool=<span class="keyword">false</span>;</span><br><span class="line">System.out.println(bool?<span class="string">&quot;真&quot;</span>:<span class="string">&quot;假&quot;</span>);<span class="comment">//真</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//包装类型的运算</span></span><br><span class="line">Integer i = <span class="number">10</span>;</span><br><span class="line">Integer j = <span class="number">20</span>;</span><br><span class="line">System.out.println(i+j);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//三目运算符使用，当第二，第三位操作数分别为基本类型和对象时，其中的对象就会拆箱为基本类型进行操作。</span></span><br><span class="line"><span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">Integer i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> k = flag ? i : j;<span class="comment">//这里对i进行拆箱，如果是null，会发生NPE，拆箱：i.intValue();</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//函数参数和返回值</span></span><br><span class="line"><span class="comment">//自动拆箱</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum1</span><span class="params">(Integer num)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//自动装箱</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">getNum2</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://blog.csdn.net/wufaliang003/article/details/82347077">什么是Java中的自动拆装箱</a></p>
+<p><a href="https://www.jianshu.com/p/2f663dc820d0">你真的知道Java中boolean类型占用多少个字节吗？</a></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>javaweb基础概念笔记</title>
     <url>/2018/10/10/java-2018-10-10-JavaWebBasicNote/</url>
     <content><![CDATA[<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><h3 id="java对象"><a href="#java对象" class="headerlink" title="java对象"></a>java对象</h3><p>POJO（Plain Ordinary Java Object，简单Java对象）</p>
@@ -3009,147 +3159,28 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>java基础笔记（占坑）</title>
-    <url>/2018/12/21/java-2018-12-21-JavaBasic/</url>
-    <content><![CDATA[<h1 id="1-知识点"><a href="#1-知识点" class="headerlink" title="1. 知识点"></a>1. 知识点</h1><h2 id="1-1-重写和重载"><a href="#1-1-重写和重载" class="headerlink" title="1.1. 重写和重载"></a>1.1. 重写和重载</h2><ul>
-<li>重写：子类对父类方法重新定义，具有相同的方法名，参数，返回类型，若是重写了方法，则要使用父类方法需要使用super，子类访问权限不能比父类严格，子类抛出异常范围不能比父类大（RuntimeException除外）</li>
-<li>重载：参数个数、类型不同，返回值可以不同</li>
-</ul>
-<h2 id="1-2-数组定义"><a href="#1-2-数组定义" class="headerlink" title="1.2. 数组定义"></a>1.2. 数组定义</h2><ul>
-<li>定义一维数组时，必须显式指明数组的长度； </li>
-<li>定义多维数组时，其一维数组的长度必须首先指明，其他维数组长度可以稍后指定； </li>
-<li>采用给定值初始化数组时，不必指明长度； <code>int[] a = &#123;1, 2, 3&#125;</code></li>
-<li>“[]” 是数组运算符的意思，在声明一个数组时，数组运算符可以放在数据类型与变量之间，也可以放在变量之后。</li>
-</ul>
-<p>二维数组声明可以如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> []b[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> [][]c = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="comment">//多维数组可以先声明第一维长度，后面的长度可以稍后声明</span></span><br><span class="line"><span class="keyword">int</span> d[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]【】;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-3-四种引用"><a href="#1-3-四种引用" class="headerlink" title="1.3. 四种引用"></a>1.3. 四种引用</h2><ul>
-<li>强引用：普通的引用</li>
-<li>软引用：内存不足时被回收</li>
-<li>弱引用：除了弱引用外没有其他的引用则会被回收</li>
-<li>虚引用：相当于没有引用，要与引用队列配合使用<ul>
-<li>可以进行重要对象回收监听，进行日志统计</li>
-<li>系统gc监听：因为虚引用每次GC都会被回收，那么我们就可以通过虚引用来判断gc的频率，如果频率过大，内存使用可能存在问题，才导致了系统gc频繁调用</li>
-</ul>
-</li>
-</ul>
-<p>引用队列：引用的对象将要被JVM回收时，会将其加入到引用队列中。通过引用队列可以了解JVM垃圾回收情况。</p>
-<h1 id="2-细节"><a href="#2-细节" class="headerlink" title="2. 细节"></a>2. 细节</h1><h2 id="2-1-amp-amp-和-amp-的区别"><a href="#2-1-amp-amp-和-amp-的区别" class="headerlink" title="2.1. &amp;&amp;和&amp;的区别"></a>2.1. &amp;&amp;和&amp;的区别</h2><ul>
-<li>&amp;&amp;：短路与，即前面的表达式能确定结果就不执行后面的表达式，可以用来代替简单的if语句</li>
-<li>&amp;：不短路与，前后表达式都需要执行</li>
-</ul>
-<h2 id="2-2-接口可以继承多个接口"><a href="#2-2-接口可以继承多个接口" class="headerlink" title="2.2. 接口可以继承多个接口"></a>2.2. 接口可以继承多个接口</h2><ul>
-<li>类只能继承一个类，但可以实现多个接口</li>
-<li>接口不可以实现接口，但可以继承多个接口（不用实现） A extends B,C</li>
-</ul>
-<h2 id="2-3-equals和"><a href="#2-3-equals和" class="headerlink" title="2.3. equals和=="></a>2.3. equals和==</h2><p>==判断是否是同一个对象（对于非基本类型）</p>
-<p>equals判断的是内容是否相同，可以通过重写对象的equals方法来自定义比较规则</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例</span></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line">System.out.println(a.equals(b));<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-String常量池"><a href="#2-3-String常量池" class="headerlink" title="2.3. String常量池"></a>2.3. String常量池</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">System.out.println(a==b);<span class="comment">//true：同一个对象。</span></span><br><span class="line"><span class="comment">//使用双引号创建的是字符串常量，存储在常量池中</span></span><br><span class="line"><span class="comment">//创建常量对象的时候会先判断常量池中是否已经存在，如果存在则直接引用</span></span><br><span class="line"></span><br><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line"><span class="comment">//使用new String创建对象，存放在堆中，两个引用不相等</span></span><br><span class="line"><span class="comment">//实际上是将常量池中的123复制到了堆中，如果常量池没有，会先再常量池中创建，如下</span></span><br><span class="line"></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line"><span class="comment">//实际上创建了两个对象，一个在常量池，一个在堆中</span></span><br><span class="line"><span class="comment">//如果前面常量池已经有该字符串，则只创建一个对象。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-4-继承时构造方法"><a href="#2-4-继承时构造方法" class="headerlink" title="2.4. 继承时构造方法"></a>2.4. 继承时构造方法</h2><ul>
-<li>子类构造方法总是先调用父类的构造方法，如果没有显式指明调用父类哪个构造方法，则默认调用无参构造方法</li>
-<li>若父类没有无参构造方法，子类需要在自己的构造函数中显式调用父类的构造函数<code>super(arg);</code>，并且一定要在第一行调用。若不调用，编译器会报错</li>
-</ul>
-<h2 id="2-5-继承时初始化顺序"><a href="#2-5-继承时初始化顺序" class="headerlink" title="2.5. 继承时初始化顺序"></a>2.5. 继承时初始化顺序</h2><ul>
-<li>父类的静态变量</li>
-<li>父类静态代码块</li>
-<li>子类的静态变量</li>
-<li>子类的静态代码块</li>
-<li>父类的普通变量</li>
-<li>父类普通代码块</li>
-<li>父类无参构造函数</li>
-<li>子类的普通变量</li>
-<li>子类普通代码块</li>
-<li>子类无参构造函数</li>
-</ul>
-<h2 id="2-6-自动装箱-拆箱"><a href="#2-6-自动装箱-拆箱" class="headerlink" title="2.6. 自动装箱/拆箱"></a>2.6. 自动装箱/拆箱</h2><p>装箱：将8个基本类型转换成对应的包装类型。拆箱则反过来</p>
-<h3 id="2-6-1-基本数据类型和包装类"><a href="#2-6-1-基本数据类型和包装类" class="headerlink" title="2.6.1. 基本数据类型和包装类"></a>2.6.1. 基本数据类型和包装类</h3><p>在Java语言中，<code>new</code>一个对象是存储在堆里的，我们通过栈中的引用来使用这些对象；所以，对象本身来说是比较消耗资源的。对于经常用到的类型，如int等，如果我们每次使用这种变量的时候都需要new一个Java对象的话，就会比较笨重。</p>
-<p>Java是一种面向对象语言，很多地方都需要使用对象而不是基本数据类型。比如，在集合类中，我们是无法将int 、double等类型放进去的。因为集合的容器要求元素是Object类型。为了让基本类型也具有对象的特征，就出现了包装类型，它相当于将基本类型“包装起来”，使得它具有了对象的性质，并且为其添加了属性和方法，丰富了基本类型的操作。</p>
-<table>
-<thead>
-<tr>
-<th>基本数据类型（内置类型）</th>
-<th>对应的包装类型</th>
-<th>大小</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>byte</td>
-<td>Byte</td>
-<td>1个字节</td>
-</tr>
-<tr>
-<td>boolean</td>
-<td>Boolean</td>
-<td>1个字节或4个字节</td>
-</tr>
-<tr>
-<td>char</td>
-<td>Character</td>
-<td>4字节</td>
-</tr>
-<tr>
-<td>short</td>
-<td>Short</td>
-<td>2个字节</td>
-</tr>
-<tr>
-<td>int</td>
-<td>Integer</td>
-<td>4个字节</td>
-</tr>
-<tr>
-<td>long</td>
-<td>Long</td>
-<td>8个字节</td>
-</tr>
-<tr>
-<td>float</td>
-<td>Float</td>
-<td>4字节</td>
-</tr>
-<tr>
-<td>double</td>
-<td>Double</td>
-<td>8字节</td>
-</tr>
-</tbody></table>
-<p>实际上，Java中还存在另外一种基本类型<code>void</code>，它也有对应的包装类<code>java.lang.Void</code>，不过我们无法直接对它们进行操作。</p>
-<p><strong>补充：数据超出范围，溢出不会抛异常，也没有任何提示。</strong></p>
-<p>boolean类型占1或4个字节：理论上只需要1bit空间，但是计算机处理数据的最小单位是1个字节，实际存储的空间是：用1个字节的最低位存储，其他7位用0填补</p>
-<p>位（bit）是计算机存储的最小单位，字节是计算机处理数据的最小单位，1字节=8位</p>
+    <title>java注解（更新中）</title>
+    <url>/2019/02/14/java-2019-2-14-JavaAnnontation/</url>
+    <content><![CDATA[<h2 id="1-1-注解的分类"><a href="#1-1-注解的分类" class="headerlink" title="1.1. 注解的分类"></a>1.1. 注解的分类</h2><p>按运行机制分：通过@Retention注解进行分类</p>
 <blockquote>
-<p>《Java虚拟机规范》一书中的描述：“虽然定义了boolean这种数据类型，但是只对它提供了非常有限的支持。在Java虚拟机中没有任何供boolean值专用的字节码指令，Java语言表达式所操作的boolean值，在编译之后都使用Java虚拟机中的int数据类型来代替，而boolean数组将会被编码成Java虚拟机的byte数组，每个元素boolean元素占8位”。这样我们可以得出boolean类型占了单独使用是4个字节，在数组中又是1个字节。</p>
-<p>使用int的原因是，对于当下32位的处理器（CPU）来说，一次处理数据是32位（这里不是指的是32/64位系统，而是指CPU硬件层面），具有高效存取的特点。</p>
-</blockquote>
-<h3 id="2-6-2-自动装箱、拆箱"><a href="#2-6-2-自动装箱、拆箱" class="headerlink" title="2.6.2. 自动装箱、拆箱"></a>2.6.2. 自动装箱、拆箱</h3><ul>
-<li>在Java SE5之前，装箱：<code>Integer i = new Integer(10);</code></li>
-<li>在Java SE5中，提供了自动装箱、拆箱功能</li>
+<ul>
+<li>源码注解：只在源码中存在。RetentionPolicy.SOURCE</li>
+<li>编译时注解：在class中依然存在，RetentionPolicy.CLASS。如@Deprecated。</li>
+<li>运行时注解：运行阶段起作用，RetentionPolicy.RUNTIME。如@Autowired。</li>
 </ul>
-<p>自动装箱、拆箱原理：通过包装类的valueOf()和xxxValue();方法实现</p>
-<p>举例：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Integer i =<span class="number">10</span>;  <span class="comment">//自动装箱</span></span><br><span class="line"><span class="keyword">int</span> b= i;     <span class="comment">//自动拆箱</span></span><br></pre></td></tr></table></figure>
-
-<p>将上述代码反编译后得到</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[]args)</span></span>&#123;</span><br><span class="line">    Integer integer=Integer.valueOf(<span class="number">1</span>); <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">int</span> i=integer.intValue(); <span class="comment">//拆箱</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-6-3-常见场景"><a href="#2-6-3-常见场景" class="headerlink" title="2.6.3 常见场景"></a>2.6.3 常见场景</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//基本数据类型放入集合类</span></span><br><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">50</span>; i ++)&#123;</span><br><span class="line">    li.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//包装类型与基本数据类型比较</span></span><br><span class="line"><span class="comment">//理论上==是比较对象地址，这里实现了拆箱</span></span><br><span class="line">Integer a=<span class="number">1</span>;</span><br><span class="line">System.out.println(a==<span class="number">1</span>?<span class="string">&quot;等于&quot;</span>:<span class="string">&quot;不等于&quot;</span>);<span class="comment">//等于</span></span><br><span class="line">Boolean bool=<span class="keyword">false</span>;</span><br><span class="line">System.out.println(bool?<span class="string">&quot;真&quot;</span>:<span class="string">&quot;假&quot;</span>);<span class="comment">//真</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//包装类型的运算</span></span><br><span class="line">Integer i = <span class="number">10</span>;</span><br><span class="line">Integer j = <span class="number">20</span>;</span><br><span class="line">System.out.println(i+j);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//三目运算符使用，当第二，第三位操作数分别为基本类型和对象时，其中的对象就会拆箱为基本类型进行操作。</span></span><br><span class="line"><span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">Integer i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> k = flag ? i : j;<span class="comment">//这里对i进行拆箱，如果是null，会发生NPE，拆箱：i.intValue();</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//函数参数和返回值</span></span><br><span class="line"><span class="comment">//自动拆箱</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum1</span><span class="params">(Integer num)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//自动装箱</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">getNum2</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://blog.csdn.net/wufaliang003/article/details/82347077">什么是Java中的自动拆装箱</a></p>
-<p><a href="https://www.jianshu.com/p/2f663dc820d0">你真的知道Java中boolean类型占用多少个字节吗？</a></p>
+</blockquote>
+<p>按来源分：</p>
+<blockquote>
+<ul>
+<li>JDK自带注解，内置注解：如@Override ，@Deprecated 等</li>
+<li>三方注解：如Hibernate，Struts，ButterKnife，ARouter等</li>
+<li>自定义注解</li>
+</ul>
+</blockquote>
+<blockquote>
+<p> 元注解：注解的注解</p>
+<p>普通注解：用于注解类、变量、方法，参数等</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -3178,37 +3209,6 @@ dispatchMessage-->判断是否是通知消息
 <p>Method：类中的方法对象</p>
 <p>Modifier</p>
 <h1 id="4-代码实现"><a href="#4-代码实现" class="headerlink" title="4. 代码实现"></a>4. 代码实现</h1>]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java注解（更新中）</title>
-    <url>/2019/02/14/java-2019-2-14-JavaAnnontation/</url>
-    <content><![CDATA[<h2 id="1-1-注解的分类"><a href="#1-1-注解的分类" class="headerlink" title="1.1. 注解的分类"></a>1.1. 注解的分类</h2><p>按运行机制分：通过@Retention注解进行分类</p>
-<blockquote>
-<ul>
-<li>源码注解：只在源码中存在。RetentionPolicy.SOURCE</li>
-<li>编译时注解：在class中依然存在，RetentionPolicy.CLASS。如@Deprecated。</li>
-<li>运行时注解：运行阶段起作用，RetentionPolicy.RUNTIME。如@Autowired。</li>
-</ul>
-</blockquote>
-<p>按来源分：</p>
-<blockquote>
-<ul>
-<li>JDK自带注解，内置注解：如@Override ，@Deprecated 等</li>
-<li>三方注解：如Hibernate，Struts，ButterKnife，ARouter等</li>
-<li>自定义注解</li>
-</ul>
-</blockquote>
-<blockquote>
-<p> 元注解：注解的注解</p>
-<p>普通注解：用于注解类、变量、方法，参数等</p>
-</blockquote>
-]]></content>
       <categories>
         <category>Java</category>
       </categories>
@@ -3499,37 +3499,6 @@ judge3--Y-->执行拒绝策略</pre>
       </tags>
   </entry>
   <entry>
-    <title>MacBook使用笔记</title>
-    <url>/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="环境变量不生效"><a href="#环境变量不生效" class="headerlink" title="环境变量不生效"></a>环境变量不生效</h2><p>在<code>~/.bash_profile</code>中配好环境变量后每次重启终端需要执行<code>source ~/.bash_profile</code>才生效</p>
-<p>原因：使用zsh插件，加载的是<code>~/.zshrc</code>文件，<code>~/.zshrc</code>中没有定义任务环境变量</p>
-<blockquote>
-<p>在<code>~/.zshrc</code>文件后加上<code>source ~/.bash_profile</code></p>
-</blockquote>
-<h2 id="Mac空间不足，升级系统失败"><a href="#Mac空间不足，升级系统失败" class="headerlink" title="Mac空间不足，升级系统失败"></a>Mac空间不足，升级系统失败</h2><p>Mac电脑空间不足，导致升级系统失败，且无法用U盘升回旧版本。没有用<code>Time Machine</code>备份系统</p>
-<p>（搞了半天，差点以为回不来了，公司的IT都说要抹盘了。）</p>
-<blockquote>
-<ol>
-<li>开机按住<code>Option</code>或<code>Command+R</code>进入恢复模式</li>
-<li>打开终端（发现可以打开终端，一般来说已经可以为所欲为）</li>
-<li>进入磁盘路径：输入<code>cd /Volume/xxx</code>（一般是<code>/Volume/Machine HD-数据/User</code>，如果有空格需要转义）</li>
-<li>用<code>rm</code>命令删除不需要的文件，再进行升级</li>
-<li>如果需要拷贝重要文件出来<ol>
-<li>可以插上U盘，<code>cp 电脑路径 /Volume/U盘名称/路径</code></li>
-<li>可以将电脑和另一个电脑连上同一个局域网，用<code>scp</code>命令拷贝文件。</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Github访问不稳定解决</title>
     <url>/2021/04/12/note-2021-04-12-GithubConnection/</url>
     <content><![CDATA[<h3 id="访问慢的原因"><a href="#访问慢的原因" class="headerlink" title="访问慢的原因"></a>访问慢的原因</h3><p>DNS解析耗时。</p>
@@ -3565,6 +3534,74 @@ judge3--Y-->执行拒绝策略</pre>
 <p>附：查询ip地址的网站：<a href="https://www.ipaddress.com/">ipaddress网站</a>、<a href="http://tool.chinaz.com/dns">站长工具</a></p>
 <h3 id="GitPage博客无法访问"><a href="#GitPage博客无法访问" class="headerlink" title="GitPage博客无法访问"></a>GitPage博客无法访问</h3><p>同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。</p>
 <p>困扰已久的问题，一直以为是需要翻墙vpn，原来是DNS服务器限制。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NPM笔记</title>
+    <url>/2021/04/12/note-2021-04-12-NPM/</url>
+    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
+<ol>
+<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
+<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
+</ul>
+</li>
+<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
+<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
+<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
+</ul>
+</li>
+<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
+<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
+<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
+<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
+</ul>
+</li>
+<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
+<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
+<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
+<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MacBook使用笔记</title>
+    <url>/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="环境变量不生效"><a href="#环境变量不生效" class="headerlink" title="环境变量不生效"></a>环境变量不生效</h2><p>在<code>~/.bash_profile</code>中配好环境变量后每次重启终端需要执行<code>source ~/.bash_profile</code>才生效</p>
+<p>原因：使用zsh插件，加载的是<code>~/.zshrc</code>文件，<code>~/.zshrc</code>中没有定义任务环境变量</p>
+<blockquote>
+<p>在<code>~/.zshrc</code>文件后加上<code>source ~/.bash_profile</code></p>
+</blockquote>
+<h2 id="Mac空间不足，升级系统失败"><a href="#Mac空间不足，升级系统失败" class="headerlink" title="Mac空间不足，升级系统失败"></a>Mac空间不足，升级系统失败</h2><p>Mac电脑空间不足，导致升级系统失败，且无法用U盘升回旧版本。没有用<code>Time Machine</code>备份系统</p>
+<p>（搞了半天，差点以为回不来了，公司的IT都说要抹盘了。）</p>
+<blockquote>
+<ol>
+<li>开机按住<code>Option</code>或<code>Command+R</code>进入恢复模式</li>
+<li>打开终端（发现可以打开终端，一般来说已经可以为所欲为）</li>
+<li>进入磁盘路径：输入<code>cd /Volume/xxx</code>（一般是<code>/Volume/Machine HD-数据/User</code>，如果有空格需要转义）</li>
+<li>用<code>rm</code>命令删除不需要的文件，再进行升级</li>
+<li>如果需要拷贝重要文件出来<ol>
+<li>可以插上U盘，<code>cp 电脑路径 /Volume/U盘名称/路径</code></li>
+<li>可以将电脑和另一个电脑连上同一个局域网，用<code>scp</code>命令拷贝文件。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -4139,43 +4176,6 @@ end</pre>
       </categories>
       <tags>
         <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NPM笔记</title>
-    <url>/2021/04/12/note-2021-04-12-NPM/</url>
-    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
-<ol>
-<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
-<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
-</ul>
-</li>
-<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
-<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
-<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
-</ul>
-</li>
-<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
-<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
-<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
-<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
-</ul>
-</li>
-<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
-<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
-<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
-<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -4779,6 +4779,28 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>静态代码分析平台SonarQube</title>
+    <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
+    <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>作为一个代码分析平台，Sonar由以下三个部分组成：</p>
+<ol>
+<li>数据库：存放配置信息和分析结果信息；</li>
+<li>一个Web服务器：建立工程，在线浏览分析结果，配置分析规则；</li>
+<li>客户端、分析端：执行源代码分析；</li>
+</ol>
+<p>服务端和客户端有多种搭配方式<br>sonarqube + sonar-runner<br>/sonar-scanner<br>sonarqube + maven<br>sonarqube + IDE     如：IntelliJ、android studio、eclipse</p>
+<p>sonar的命令行分析端软件有两种分别是Runner和Scanner，官网文档中写的是Scanner，但Runner和它安装、使用都基本一致。</p>
+<p>客户端分析代码后将结果显示在服务端（浏览器），也可以存到数据库中，服务端可以部署在本地部署到远程<br>本地默认端口为localhost:9000</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;在SonarQube平台创建工程，设置ProjectName和ProjectKey</span><br><span class="line"></span><br><span class="line">&gt;在本地需要扫描的工程目录下创建sonar-project.properties，内容如下：</span><br><span class="line">&gt;sonar.projectKey&#x3D;project_key </span><br><span class="line">&gt;sonar.projectName&#x3D;project_name </span><br><span class="line">&gt;sonar.projectVersion&#x3D;1.0 </span><br><span class="line">&gt;sonar.sources&#x3D;.&#x2F; </span><br><span class="line">&gt;sonar.language&#x3D;py &#x2F;&#x2F;需要扫描哪种语言的代码，如python:py，java:java</span><br><span class="line">&gt;sonar.sourceEncoding&#x3D;UTF-8 </span><br><span class="line">&gt;sonar.host.url&#x3D;http:&#x2F;&#x2F;your_host:your_port&#x2F;[your_prefix] </span><br><span class="line"></span><br><span class="line">&gt;执行sonar-scanner -X 命令，结果会上传到SonarQube平台</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>电影</title>
     <url>/2020/11/20/reader-2020-11-20-Movie/</url>
     <content><![CDATA[<h1 id="爱丽丝漫游奇境记"><a href="#爱丽丝漫游奇境记" class="headerlink" title="爱丽丝漫游奇境记"></a>爱丽丝漫游奇境记</h1><p>红桃皇后其实是个长得头特别大，人特别丑，完全得不到老爸老妈优秀遗传的长女，天天忍受长得漂亮得尽人心的做作妹妹，得不到人爱的可怜姑娘。 　　<br>　　她乖戾的性格下，其实就只是一个可爱傻女孩善良率直的心。<br>　　说她善良。你看爱丽丝说她因为长太高大被人当成怪人的时候，马上引来她的同情。别人不欢迎你，我欢迎。她身边的宠臣,一个两个不是这个鼻子长歪了,就是那个肚子特别大。<br>　　她就是同情和她自身一样，因为某样东西特别大（头），而遭到他人歧视的人。<br>　　她统治了wonderland，也没有将她做作妹妹怎样。<br>　　她亲爱的美丽妹妹还是有座开满鲜花的美丽宫殿以及一群忠心的白色骑士。<br>　　而她妹妹重获政权之后，却要把她流放到一个没有人烟的地方，而且不允许任何人和她说话。这对害怕孤独的红桃皇后来说，比杀了她更致命。 　　<br>　　可怕比可爱更强。<br>　　可以的情况下，谁想变成可怕的那个？<br>　　人人都喜欢不是更好吗？<br>　　可是万一你像红桃皇后那样顶着一个会被嘲笑，不具好感的头怎么办？ 　　<br>　　所以我觉得红桃皇后才真正像一个皇后，而白皇后充其量是个无能公主而已。<br>　　她坚强有魄力。<br>　　她心里的无助和害怕也只讲给骑士听而已。当然遗憾的是，这是个无情的迎合的家伙。<br>　　红桃皇后对外有多么坚强啊，以至于那么地讨人厌。<br>　　请看白皇后，遇到困难，只是指望一个外来者爱丽丝帮她砍掉恶龙。<br>　　明明自己有能力而不行动，以一个誓言为借口。<br>　　谁又想去杀生？<br>　　爱丽丝也已说过，自己坚决不杀生。<br>　　捂着鼻子取药材。<br>　　明明自己调药的时候，拿着死人油脂调得轻柔而快乐。<br>　　这样装模作样而伪善皇后，我一点都不喜欢。<br>　　相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍到他的头。真实而可爱多了。 　　<br>　　有天生的美丽，和优雅善良的举止少精弱精 ，自然更讨人喜欢。妹妹是这样获得国土大部分人的支持的。<br>　　而红桃皇后呢?<br>　　后面我发现效忠她的都是些满脸凶相的可怕怪兽之后,就想,也是,同类人才能理解同类人的寂寞。<br>　　其实这种人才特别容易为对向他们和善的人感动，甚至赴汤蹈火。<br>　　你看那只掌管钥匙的恶兽，只是因为爱丽丝还给了他眼睛。<br>　　也就甘心成为了她的坐骑。 　　<br>　　这些看似的恶人，其实就是缺乏爱的孩子而已。<br>　　内心异常的善良。<br>　　最怕别人欺骗她，背叛她，所以只好以一脸凶恶来保护自己。 　　<br>　　不过，童话是童话，红桃皇后扮演恶人，自然要输的。 </p>
@@ -4788,6 +4810,361 @@ end</pre>
       </categories>
       <tags>
         <tag>电影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch+Logstash+Kibana</title>
+    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
+    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
+<li>Elasticsearch：后台分布式存储以及全文检索</li>
+<li>Logstash: 日志加工、“搬运工” </li>
+<li>Kibana：数据可视化展示。</li>
+</ol>
+<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
+<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
+<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li><p>Cluster ：集群。</p>
+<p>多个搜索服务器的集合</p>
+</li>
+<li><p>Node：节点。</p>
+<p>组成集群的单个服务器</p>
+</li>
+<li><p>Shard：分片。</p>
+<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
+<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
+</li>
+<li><p>Replia：副本。</p>
+<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+</li>
+</ul>
+<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/images/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
+<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
+<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
+<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cmder——Windows下好用的命令行工具</title>
+    <url>/2018/12/14/tool-2018-12-14-Cmder/</url>
+    <content><![CDATA[<h2 id="Cmder"><a href="#Cmder" class="headerlink" title="Cmder"></a>Cmder</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Cmder是windows下的命令行工具，支持大部分Linux命令，使用方便，可以替代原来的cmd，并且界面美观简洁，相比PowerShell、cmd不忍直视。</p>
+<p>先上效果图</p>
+<p><img src="/images/cmder/cmder.png"></p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>直接去<a href="http://cmder.net/">官网</a>下载，解压即可</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ol>
+<li><p>配置环境变量</p>
+<p>把解压后的目录加到系统环境变量，然后使用<code>win +R</code>，输入<code>cmder</code>，即可快捷打开cmder</p>
+</li>
+<li><p>加入右键菜单（类似git bash）：打开命令行工具输入<code>cmder /register all</code></p>
+<p>如果遇到拒绝访问，如下，可以通过”右键，以管理员方式运行”</p>
+<p><img src="/images/cmder/cmder01.png"></p>
+</li>
+<li><p>添加语言环境，否则会出现中文乱码</p>
+<p>在Settings -&gt;Startup -&gt; Environment中添加一行：<code>set LC_ALL=zh_CN.UTF-8</code>，注意后面的分号</p>
+</li>
+</ol>
+<p><img src="/images/cmder/cmder02.png"></p>
+<ol start="4">
+<li><p>修改命令提示符号</p>
+<p>cmder默认提示符号是λ，可以改成$：打开cmder安装目录下的\vendor\clink.lua文件，搜索<code>$&#123;lamb&#125;</code>改成想要的符号，如下</p>
+<p><img src="/images/cmder/cmder03.png"></p>
+</li>
+<li><p>设置命令别名</p>
+<p>cmder原生不支持如<strong>ll</strong> 等命令，可以通过设置别名来实现</p>
+<p>打开cmder安装目录下的\config\user-aliases.cmd文件，加入下面设置，也可以自定义</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">l&#x3D;ls --show-control-chars -F --color $*</span><br><span class="line">la&#x3D;ls -aF --show-control-chars -F --color $*</span><br><span class="line">ll&#x3D;ls -alF --show-control-chars -F --color $*</span><br></pre></td></tr></table></figure>
+
+<p>​    使用<code>&amp;</code>连接执行多条命令，<code>$1、$2、$*</code>表示命令后面添加的参数。</p>
+<p>可以通过命令别名设置快速进入常用文件夹，如<code>project = e: &amp; cd MyProject\$*</code>，输入<code>project</code>则切换到e盘，并进入<code>MyProject</code>目录，输入<code>project subproject\hhh</code>则表示进入<code>e:\MyProject\subproject\hhh</code></p>
+<ol>
+<li><p>指定命令执行环境</p>
+<p><img src="/images/cmder/cmder04.png"></p>
+</li>
+<li><p>快捷键</p>
+<p><code>Ctrl+U</code>：清除当前行</p>
+<p><code>Ctrl+L</code>：清屏</p>
+<p><code>Ctrl+T</code>：新建标签页</p>
+<p><code>Ctrl+W</code>：关闭标签页</p>
+<p><code>鼠标右键</code>：粘贴</p>
+<p><code>Ctrl+鼠标滚轮</code>：放大缩小字体</p>
+</li>
+</ol>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a href="https://blog.csdn.net/mynamepg/article/details/81233120">推荐一款超好用的工具cmder</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker笔记</title>
+    <url>/2018/11/04/tool-2018-11-04-Docker/</url>
+    <content><![CDATA[<h2 id="1-docker介绍："><a href="#1-docker介绍：" class="headerlink" title="1. docker介绍："></a>1. docker介绍：</h2><h3 id="1-1-docker架构："><a href="#1-1-docker架构：" class="headerlink" title="1.1 docker架构："></a>1.1 docker架构：</h3><p><img src="/images/Docker/docker01.png" alt="docker架构图"></p>
+<h3 id="1-2-docker概念"><a href="#1-2-docker概念" class="headerlink" title="1.2 docker概念"></a>1.2 docker概念</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>镜像(Images)</td>
+<td>Docker 镜像是用于创建 Docker 容器的模板。</td>
+</tr>
+<tr>
+<td>容器(Container)</td>
+<td>容器是独立运行的一个或一组应用。</td>
+</tr>
+<tr>
+<td>客户端(Client)</td>
+<td>Docker 客户端通过命令行或者其他工具使用 Docker API 与 Docker 的守护进程通信。</td>
+</tr>
+<tr>
+<td>主机(Host)</td>
+<td>一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。</td>
+</tr>
+<tr>
+<td>镜像仓库(Repository)</td>
+<td>用来存储具体的镜像，可以理解为代码控制中的代码仓库。通过tag区分版本号</td>
+</tr>
+<tr>
+<td>注册服务器（Registry）</td>
+<td>用于管理镜像仓库，起到的是服务器的作用。默认是官方的Docker Hub，可以搭建私有服务器</td>
+</tr>
+</tbody></table>
+<p>镜像资源分为两类：</p>
+<p>官方提供的，名称不带前缀，如：<code>hello-world</code></p>
+<p>docker用户创建并维护的,名称带用户名前缀，如：<code>username/hello-world</code></p>
+<p>镜像名完整组成：<br><code>registryhost/username/repository:tag</code>即<br><code>服务主机/用户名/仓库名:版本号</code><br>registryhost不填，则默认为DockerHub<br>username不填，则表示docker官方提供的镜像<br>tag不填，则默认为latest</p>
+<h2 id="2-下载安装"><a href="#2-下载安装" class="headerlink" title="2. 下载安装"></a>2. 下载安装</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://www.docker.com/get-started">官网</a>下载安装，按提示一步步完成，国内下载速度慢的话可以使用迅雷。</p>
+<h4 id="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"><a href="#注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客" class="headerlink" title="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"></a>注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，<a href="https://blog.csdn.net/stemq/article/details/53150939">参考博客</a></h4><ul>
+<li>windows上安装的docker其实本质上还是借助与windows平台的hyper-v技术来创建一个linux虚拟机，你执行的所有命令其实都是在这个虚拟机里执行的，所以所有pull到本地的image都会在虚拟机的Virtual hard disks目录的文件中，这个文件就是虚拟硬盘文件。如果要想改变路径只需要在hyper-v管理器里设置就可以了。默认的安装路径是C:\Users\Public\Documents\Hyper-V\Virtual hard disks下。</li>
+<li>将默认C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx的文件拷贝到想要改变的路径</li>
+<li>控制面板-&gt;管理工具-&gt;Hyper-V管理器-&gt;右键设置-&gt;硬盘驱动器-&gt;虚拟硬盘输入为想要保存的路径</li>
+</ul>
+<p><img src="/images/Docker/docker03.png" alt="docker修改镜像路径"></p>
+<p><img src="/images/Docker/docker04.png" alt="docker修改镜像路径"></p>
+<ul>
+<li>我试了一下发现重启之后又恢复成原来的路径，解决如下</li>
+</ul>
+<p><img src="/images/Docker/docker05.png" alt="docker修改镜像路径"></p>
+<p><img src="/images/Docker/docker06.png" alt="docker修改镜像路径"></p>
+<h3 id="镜像服务器设置"><a href="#镜像服务器设置" class="headerlink" title="镜像服务器设置"></a>镜像服务器设置</h3><p>Perferences… -&gt; Daemon -&gt; Registry mirrors配置</p>
+<p>windows：在setting -&gt; Daemon -&gt; Registry mirrors中配置</p>
+<p>镜像地址：<br>网易加速器：<a href="http://hub-mirror.c.163.com/">http://hub-mirror.c.163.com</a>  </p>
+<p>官方中国加速器：<a href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></p>
+<p>ustc的镜像：<a href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></p>
+<p>daocloud：<a href="https://www.daocloud.io/mirror#accelerator-doc%EF%BC%88%E6%B3%A8%E5%86%8C%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89">https://www.daocloud.io/mirror#accelerator-doc（注册后使用）</a></p>
+<h2 id="3-常用命令"><a href="#3-常用命令" class="headerlink" title="3. 常用命令"></a>3. 常用命令</h2><p>可视化工具：<a href="https://kitematic.com/">Kitematic</a></p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
+<li>容器生命周期管理 — docker [run|start|stop| restart|kill|rm|pause|unpause]  </li>
+<li>容器操作运维 — docker [ps|inspect|top|attach|events|logs|wait|export|port]  </li>
+<li>容器rootfs命令 — docker [commit|cp|diff]  </li>
+<li>镜像仓库 — docker [login|pull|push|search]  </li>
+<li>本地镜像管理 — docker [images|rmi|tag|build|history|save|import]  </li>
+<li>其他命令 — docker [info|version]</li>
+</ul>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>CONTAINER:：可以是容器名也可以是容器id<br>REPOSITORY：仓库名<br>REGISTRYHOST：服务主机地址<br>IMAGE：镜像名<br>TAG：版本号，不填则默认为latest</p>
+<h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><ul>
+<li><code>docker</code>：查看docker帮助</li>
+<li><code>docker &lt;COMMAND&gt; --help</code>：查看具体命令帮助</li>
+<li><code>docker -v</code>，<code>docker --version</code>：查看docker版本</li>
+<li><code>docker info</code>：查看docker系统信息</li>
+<li><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>:获取容器/镜像的元数据。<br>常用OPTIONS：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><ul>
+<li><code>docker login -u 用户名 -p 密码</code>: 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
+<li><code>docker logout </code>: 登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
+<li><code>docker search 镜像名</code>：从Docker Hub查找镜像</li>
+<li><code>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</code>： 从镜像仓库中拉取或者更新指定镜像</li>
+<li><code>docker push [OPTIONS] NAME[:TAG]</code>：将本地的镜像上传到镜像仓库,要先登陆到镜像仓库</li>
+</ul>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><ul>
+<li><p><code>docker container ls</code>或<code>docker ps</code>：列出运行的容器，加-a或–all可列出所有容器</p>
+</li>
+<li><p>`docker create [OPTIONS] 镜像名：创建新容器，但不启动</p>
+</li>
+<li><p><code>docker run [OPTIONS] 镜像名</code>：创建新容器并运行<br>会从本地查找镜像，若不存在，则从默认公共镜像源(DockerHub)下载<br>常用OPTIONS： </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-p: 端口映射，格式为：主机(宿主)端口:容器端口  </span><br><span class="line">-d: 后台运行容器，并返回容器ID，不加-d会显示日志</span><br><span class="line">--name：为容器指定名称</span><br><span class="line">······</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>docker start [OPTIONS] CONTAINER [CONTAINER...]</code>：启动一个或多个已经被停止的容器</p>
+</li>
+<li><p><code>docker stop [OPTIONS] CONTAINER [CONTAINER...]</code>：停止一个或多个运行中的容器</p>
+</li>
+<li><p><code>docker restart [OPTIONS] CONTAINER [CONTAINER...]</code>：重启一个或多个容器</p>
+</li>
+<li><p><code>docker kill [OPTIONS] CONTAINER [CONTAINER...]</code>：杀掉一个或多个运行中的容器</p>
+</li>
+<li><p><code>docker rm [OPTIONS] CONTAINER [CONTAINER...]</code>：删除一个或多少容器</p>
+</li>
+<li><p><code>docker logs [OPTIONS] CONTAINER</code>：获取容器的日志</p>
+</li>
+<li><p><code>docker top [OPTIONS] CONTAINER [ps OPTIONS]</code>：查看容器中运行的进程信息，支持 ps 命令参数。</p>
+<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4></li>
+<li><p><code>docker images</code>：列出本地镜像</p>
+</li>
+<li><p><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>：获取容器/镜像的元数据<br>常用OPTIONS：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><code>docker build [OPTIONS] PATH | URL | -</code>：根据Dockerfile构建镜像<br>常用OPTIONS:：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- -t，--tag : 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。</span><br><span class="line">- -f : 指定Dockerfile路径</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</code>：从容器创建一个新的镜像</p>
+<p>常用OPTIONS：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-a :提交的镜像作者；</span><br><span class="line">-c :使用Dockerfile指令来创建镜像；</span><br><span class="line">-m :提交时的说明文字；</span><br><span class="line">-p :在commit时，将容器暂停。</span><br></pre></td></tr></table></figure></li>
+<li><p><code>docker tag [OPTIONS] IMAGE[:TAG][REGISTRYHOST/][USERNAME/]NAME[:TAG]</code>：修改镜像的所属仓库</p>
+</li>
+<li><p><code>docker rmi [OPTIONS] IMAGE [IMAGE...]</code>：删除一个或多个本地镜像</p>
+<p>OPTIONS说明：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :强制删除；</span><br><span class="line">--no-prune :不移除该镜像的过程镜像，默认移除；</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-把镜像上传到Docker-Hub"><a href="#4-把镜像上传到Docker-Hub" class="headerlink" title="4. 把镜像上传到Docker Hub"></a>4. 把镜像上传到Docker Hub</h2><h3 id="1-注册docker账号"><a href="#1-注册docker账号" class="headerlink" title="1. 注册docker账号"></a>1. 注册docker账号</h3><p><a href="(https://hub.docker.com/)">DockerHub</a></p>
+<p>（1）输入DockerId（即用户名，英文小写和数字），邮箱，密码<br>（2）邮箱验证</p>
+<h3 id="2-在hub上创建仓库"><a href="#2-在hub上创建仓库" class="headerlink" title="2. 在hub上创建仓库"></a>2. 在hub上创建仓库</h3><p>Create Repository，起名，如hello-world，<br>则路径为username/hello-word</p>
+<h3 id="3-下载镜像"><a href="#3-下载镜像" class="headerlink" title="3. 下载镜像"></a>3. 下载镜像</h3><p>搜索镜像：<code>docker search hello-world</code></p>
+<p>拉取镜像：<code>docker pull hello-world</code></p>
+<h3 id="4-运行容器"><a href="#4-运行容器" class="headerlink" title="4.运行容器"></a>4.运行容器</h3><p>创建新容器并运行：<code>docker run --name my-hello-world -d hello-world</code></p>
+<p>注：</p>
+<ul>
+<li>加<code>-d</code>返回容器id</li>
+<li>加<code>--name</code>命名为’my-hello-world’</li>
+</ul>
+<h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><p><code>docker ps</code>，<code>docker container ls</code>：可以看到容器id，容器名称等信息。</p>
+<h3 id="5-创建镜像"><a href="#5-创建镜像" class="headerlink" title="5. 创建镜像"></a>5. 创建镜像</h3><h4 id="基于Dockerfile构建新镜像"><a href="#基于Dockerfile构建新镜像" class="headerlink" title="基于Dockerfile构建新镜像"></a>基于Dockerfile构建新镜像</h4><p>待补充</p>
+<h4 id="使用commit从容器创建镜像"><a href="#使用commit从容器创建镜像" class="headerlink" title="使用commit从容器创建镜像"></a>使用commit从容器创建镜像</h4><p><code>docker commit -p 容器id/容器名 my-hello-world:v1</code></p>
+<h4 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h4><p>查看本地镜像：<code>docker images</code><br>看看镜像仓库是否存在</p>
+<p>可以修改镜像的所属仓库：<br><code>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</code></p>
+<h3 id="6-登录docker账号"><a href="#6-登录docker账号" class="headerlink" title="6. 登录docker账号"></a>6. 登录docker账号</h3><p>输入<code>docker login</code>，接着输入用户名和密码<br>或者在docker图形界面登录</p>
+<h3 id="7-本地镜像上传到镜像仓库"><a href="#7-本地镜像上传到镜像仓库" class="headerlink" title="7. 本地镜像上传到镜像仓库"></a>7. 本地镜像上传到镜像仓库</h3><p><code>docker push username/my-hello-world:v1</code><br>上传成功后可以到hub上查看是否创建成功</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
+<li><p>遇到一个问题：原先我在windows上用的终端时Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
+<p>这是由于终端和linux不一样，网上有很多解决办法，说的有点多，弄了一会没弄好就没耐心了，正好我觉得Git Bash不太好用了，如复制粘贴快捷键（一点都不快捷，笔记本的键盘可能会好点）是<code>Ctrl+ins</code>和<code>Shift+ins</code>，且命令提示也不是很友好，于是趁此机会换了cmder命令行工具，顺便学习了一下，结果很满意，想看的可以移步<a href="https://moon-lights.github.io/2018/12/14/tool-2018-12-14-Cmder/">这里</a>。</p>
+</li>
+</ul>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.cnblogs.com/wherein/p/6862911.html">Docker 如何把镜像上传到docker hub</a><br><a href="https://baijiahao.baidu.com/s?id=1593010515480468898&wfr=spider&for=pc">Docker新手入门之四：Docker镜像和仓库的基本使用</a></p>
+<p>相关教程：<br><a href="http://www.runoob.com/docker/docker-command-manual.html">Docker 命令大全</a></p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown生成目录结构树</title>
+    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
+    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
+<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
+<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
+<blockquote>
+<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
+<p>npm帮我们创建了两个cmd文件</p>
+</blockquote>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络编程和Mina入门</title>
+    <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
+    <content><![CDATA[<h2 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h2><ol>
+<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
+<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
+<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
+</ol>
+<h4 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h4><ol>
+<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
+<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
+<li>长连接和短连接是相对的：但都是TCP连接</li>
+<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
+<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
+<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
+<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
+</ol>
+<h2 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h2><h3 id="1-Mina是什么？"><a href="#1-Mina是什么？" class="headerlink" title="1. Mina是什么？"></a>1. Mina是什么？</h3><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
+<p>除了mina框架外，还有netty框架。</p>
+<h3 id="2-为什么要有Mina？"><a href="#2-为什么要有Mina？" class="headerlink" title="2. 为什么要有Mina？"></a>2. 为什么要有Mina？</h3><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
+<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
+<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
+<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
+<h3 id="3-Mina工作流程？"><a href="#3-Mina工作流程？" class="headerlink" title="3. Mina工作流程？"></a>3. Mina工作流程？</h3><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
+<ol>
+<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
+<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
+</li>
+<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
+</li>
+</ol>
+<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
+<ol>
+<li>首先创建IoService</li>
+<li>添加过滤器/拦截器IoFilterChain</li>
+<li>实现IoHandler对数据进行业务逻辑处理</li>
+</ol>
+<h3 id="4-怎么用Mina？"><a href="#4-怎么用Mina？" class="headerlink" title="4. 怎么用Mina？"></a>4. 怎么用Mina？</h3><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
+<p>Binaries是jar包，Sources是源码</p>
+<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
+<h4 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">  <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">  <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">  <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
+<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
+<p>客户端的future.awaitUninterruptibly();相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用future.getSession();等方法时无法返回对象的情况</p>
+<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
+<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
+<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+        <tag>网络编程</tag>
       </tags>
   </entry>
   <entry>
@@ -4901,74 +5278,6 @@ end</pre>
       </categories>
       <tags>
         <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
-    <content><![CDATA[<h2 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h2><ol>
-<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
-<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
-<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
-</ol>
-<h4 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h4><ol>
-<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
-<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
-<li>长连接和短连接是相对的：但都是TCP连接</li>
-<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
-<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
-<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
-<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
-</ol>
-<h2 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h2><h3 id="1-Mina是什么？"><a href="#1-Mina是什么？" class="headerlink" title="1. Mina是什么？"></a>1. Mina是什么？</h3><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
-<p>除了mina框架外，还有netty框架。</p>
-<h3 id="2-为什么要有Mina？"><a href="#2-为什么要有Mina？" class="headerlink" title="2. 为什么要有Mina？"></a>2. 为什么要有Mina？</h3><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
-<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
-<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
-<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h3 id="3-Mina工作流程？"><a href="#3-Mina工作流程？" class="headerlink" title="3. Mina工作流程？"></a>3. Mina工作流程？</h3><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
-<ol>
-<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
-<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
-</li>
-<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
-</li>
-</ol>
-<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
-<ol>
-<li>首先创建IoService</li>
-<li>添加过滤器/拦截器IoFilterChain</li>
-<li>实现IoHandler对数据进行业务逻辑处理</li>
-</ol>
-<h3 id="4-怎么用Mina？"><a href="#4-怎么用Mina？" class="headerlink" title="4. 怎么用Mina？"></a>4. 怎么用Mina？</h3><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
-<p>Binaries是jar包，Sources是源码</p>
-<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
-<h4 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">  <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">  <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">  <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
-<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
-<p>客户端的future.awaitUninterruptibly();相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用future.getSession();等方法时无法返回对象的情况</p>
-<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
-<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
-<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
       </tags>
   </entry>
   <entry>
@@ -5188,312 +5497,45 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>静态代码分析平台SonarQube</title>
-    <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
-    <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
-<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>作为一个代码分析平台，Sonar由以下三个部分组成：</p>
-<ol>
-<li>数据库：存放配置信息和分析结果信息；</li>
-<li>一个Web服务器：建立工程，在线浏览分析结果，配置分析规则；</li>
-<li>客户端、分析端：执行源代码分析；</li>
-</ol>
-<p>服务端和客户端有多种搭配方式<br>sonarqube + sonar-runner<br>/sonar-scanner<br>sonarqube + maven<br>sonarqube + IDE     如：IntelliJ、android studio、eclipse</p>
-<p>sonar的命令行分析端软件有两种分别是Runner和Scanner，官网文档中写的是Scanner，但Runner和它安装、使用都基本一致。</p>
-<p>客户端分析代码后将结果显示在服务端（浏览器），也可以存到数据库中，服务端可以部署在本地部署到远程<br>本地默认端口为localhost:9000</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;在SonarQube平台创建工程，设置ProjectName和ProjectKey</span><br><span class="line"></span><br><span class="line">&gt;在本地需要扫描的工程目录下创建sonar-project.properties，内容如下：</span><br><span class="line">&gt;sonar.projectKey&#x3D;project_key </span><br><span class="line">&gt;sonar.projectName&#x3D;project_name </span><br><span class="line">&gt;sonar.projectVersion&#x3D;1.0 </span><br><span class="line">&gt;sonar.sources&#x3D;.&#x2F; </span><br><span class="line">&gt;sonar.language&#x3D;py &#x2F;&#x2F;需要扫描哪种语言的代码，如python:py，java:java</span><br><span class="line">&gt;sonar.sourceEncoding&#x3D;UTF-8 </span><br><span class="line">&gt;sonar.host.url&#x3D;http:&#x2F;&#x2F;your_host:your_port&#x2F;[your_prefix] </span><br><span class="line"></span><br><span class="line">&gt;执行sonar-scanner -X 命令，结果会上传到SonarQube平台</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ElasticSearch+Logstash+Kibana</title>
-    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
-    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
-<li>Elasticsearch：后台分布式存储以及全文检索</li>
-<li>Logstash: 日志加工、“搬运工” </li>
-<li>Kibana：数据可视化展示。</li>
-</ol>
-<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
-<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
-<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
-<li><p>Cluster ：集群。</p>
-<p>多个搜索服务器的集合</p>
+    <title>js或ts语法笔记</title>
+    <url>/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</url>
+    <content><![CDATA[<h2 id="javascript"><a href="#javascript" class="headerlink" title="javascript"></a>javascript</h2><ul>
+<li><p><code>==</code>和<code>===</code></p>
+<ul>
+<li>==会自动转换类型比较</li>
+<li>===严格比较，类型需要相同</li>
+<li>!=和!==同理</li>
+</ul>
 </li>
-<li><p>Node：节点。</p>
-<p>组成集群的单个服务器</p>
+<li><p><code>success?.() </code>相当于<code>success &amp;&amp; success()</code>，判断不为空再执行</p>
 </li>
-<li><p>Shard：分片。</p>
-<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
-<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
-</li>
-<li><p>Replia：副本。</p>
-<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+<li><p>(+”1”)把字符串转换成整数</p>
 </li>
 </ul>
-<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/images/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
-<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
-<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
-<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h3><p>prototype 属性允许您向对象添加属性和方法</p>
+<p><strong>注意：</strong> Prototype 是全局属性，适用于所有的Javascript对象。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">employee</span>(<span class="params">name,jobtitle,born</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">this</span>.name=name;</span><br><span class="line">	<span class="built_in">this</span>.jobtitle=jobtitle;</span><br><span class="line">	<span class="built_in">this</span>.born=born;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fred=<span class="keyword">new</span> employee(<span class="string">&quot;Fred Flintstone&quot;</span>,<span class="string">&quot;Caveman&quot;</span>,<span class="number">1970</span>);</span><br><span class="line">employee.prototype.salary=<span class="literal">null</span>;</span><br><span class="line">fred.salary=<span class="number">20000</span>;</span><br><span class="line"><span class="built_in">document</span>.write(fred.salary);</span><br></pre></td></tr></table></figure>
+
+<p>给employee函数添加了salary属性，可以.出来</p>
+<h3 id="argument"><a href="#argument" class="headerlink" title="argument"></a>argument</h3><p>在函数代码中，使用特殊对象 arguments，开发者无需明确指出参数名，就能访问它们。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function howManyArgs() &#123;</span><br><span class="line">  alert(arguments.length);</span><br><span class="line">&#125;</span><br><span class="line">howManyArgs(&quot;string&quot;, 45);    &#x2F;&#x2F;2</span><br><span class="line">howManyArgs();    &#x2F;&#x2F;0</span><br><span class="line">howManyArgs(12);    &#x2F;&#x2F;1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意：与其他程序设计语言不同，ECMAScript 不会验证传递给函数的参数个数是否等于函数定义的参数个数。开发者定义的函数都可以接受任意个数的参数（根据 Netscape 的文档，最多可接受 255 个），而不会引发任何错误。任何遗漏的参数都会以 undefined 传递给函数，多余的函数将忽略。</p>
+<h3 id="pipeline写法"><a href="#pipeline写法" class="headerlink" title="pipeline写法"></a>pipeline写法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data </span><br><span class="line">|&gt; fnx</span><br><span class="line">|&gt; fny</span><br><span class="line">|&gt; fnz</span><br></pre></td></tr></table></figure>
+
+<p>相当于fnz(fny(fnx(data)))，pipeline写法</p>
+<h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h3><h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><h3 id="函数柯里化"><a href="#函数柯里化" class="headerlink" title="函数柯里化"></a>函数柯里化</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line"> <span class="keyword">var</span> func=<span class="function"><span class="keyword">function</span>(<span class="params">c</span>)</span>&#123;&#125;</span><br><span class="line"> <span class="keyword">return</span> func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>connect（a,b）=func（c）</p>
+<p>connect(mapStateToProps,mapDispatchToProps)(MainPage)</p>
+<p>实际上是这样func(c)(MainPage);</p>
+<p>MainPage是赋值给里面的c，而不是对应a，b</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>前端</category>
       </categories>
       <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker笔记</title>
-    <url>/2018/11/04/tool-2018-11-04-Docker/</url>
-    <content><![CDATA[<h2 id="1-docker介绍："><a href="#1-docker介绍：" class="headerlink" title="1. docker介绍："></a>1. docker介绍：</h2><h3 id="1-1-docker架构："><a href="#1-1-docker架构：" class="headerlink" title="1.1 docker架构："></a>1.1 docker架构：</h3><p><img src="/images/Docker/docker01.png" alt="docker架构图"></p>
-<h3 id="1-2-docker概念"><a href="#1-2-docker概念" class="headerlink" title="1.2 docker概念"></a>1.2 docker概念</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>镜像(Images)</td>
-<td>Docker 镜像是用于创建 Docker 容器的模板。</td>
-</tr>
-<tr>
-<td>容器(Container)</td>
-<td>容器是独立运行的一个或一组应用。</td>
-</tr>
-<tr>
-<td>客户端(Client)</td>
-<td>Docker 客户端通过命令行或者其他工具使用 Docker API 与 Docker 的守护进程通信。</td>
-</tr>
-<tr>
-<td>主机(Host)</td>
-<td>一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。</td>
-</tr>
-<tr>
-<td>镜像仓库(Repository)</td>
-<td>用来存储具体的镜像，可以理解为代码控制中的代码仓库。通过tag区分版本号</td>
-</tr>
-<tr>
-<td>注册服务器（Registry）</td>
-<td>用于管理镜像仓库，起到的是服务器的作用。默认是官方的Docker Hub，可以搭建私有服务器</td>
-</tr>
-</tbody></table>
-<p>镜像资源分为两类：</p>
-<p>官方提供的，名称不带前缀，如：<code>hello-world</code></p>
-<p>docker用户创建并维护的,名称带用户名前缀，如：<code>username/hello-world</code></p>
-<p>镜像名完整组成：<br><code>registryhost/username/repository:tag</code>即<br><code>服务主机/用户名/仓库名:版本号</code><br>registryhost不填，则默认为DockerHub<br>username不填，则表示docker官方提供的镜像<br>tag不填，则默认为latest</p>
-<h2 id="2-下载安装"><a href="#2-下载安装" class="headerlink" title="2. 下载安装"></a>2. 下载安装</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://www.docker.com/get-started">官网</a>下载安装，按提示一步步完成，国内下载速度慢的话可以使用迅雷。</p>
-<h4 id="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"><a href="#注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客" class="headerlink" title="注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，参考博客"></a>注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，<a href="https://blog.csdn.net/stemq/article/details/53150939">参考博客</a></h4><ul>
-<li>windows上安装的docker其实本质上还是借助与windows平台的hyper-v技术来创建一个linux虚拟机，你执行的所有命令其实都是在这个虚拟机里执行的，所以所有pull到本地的image都会在虚拟机的Virtual hard disks目录的文件中，这个文件就是虚拟硬盘文件。如果要想改变路径只需要在hyper-v管理器里设置就可以了。默认的安装路径是C:\Users\Public\Documents\Hyper-V\Virtual hard disks下。</li>
-<li>将默认C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx的文件拷贝到想要改变的路径</li>
-<li>控制面板-&gt;管理工具-&gt;Hyper-V管理器-&gt;右键设置-&gt;硬盘驱动器-&gt;虚拟硬盘输入为想要保存的路径</li>
-</ul>
-<p><img src="/images/Docker/docker03.png" alt="docker修改镜像路径"></p>
-<p><img src="/images/Docker/docker04.png" alt="docker修改镜像路径"></p>
-<ul>
-<li>我试了一下发现重启之后又恢复成原来的路径，解决如下</li>
-</ul>
-<p><img src="/images/Docker/docker05.png" alt="docker修改镜像路径"></p>
-<p><img src="/images/Docker/docker06.png" alt="docker修改镜像路径"></p>
-<h3 id="镜像服务器设置"><a href="#镜像服务器设置" class="headerlink" title="镜像服务器设置"></a>镜像服务器设置</h3><p>Perferences… -&gt; Daemon -&gt; Registry mirrors配置</p>
-<p>windows：在setting -&gt; Daemon -&gt; Registry mirrors中配置</p>
-<p>镜像地址：<br>网易加速器：<a href="http://hub-mirror.c.163.com/">http://hub-mirror.c.163.com</a>  </p>
-<p>官方中国加速器：<a href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></p>
-<p>ustc的镜像：<a href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></p>
-<p>daocloud：<a href="https://www.daocloud.io/mirror#accelerator-doc%EF%BC%88%E6%B3%A8%E5%86%8C%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89">https://www.daocloud.io/mirror#accelerator-doc（注册后使用）</a></p>
-<h2 id="3-常用命令"><a href="#3-常用命令" class="headerlink" title="3. 常用命令"></a>3. 常用命令</h2><p>可视化工具：<a href="https://kitematic.com/">Kitematic</a></p>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
-<li>容器生命周期管理 — docker [run|start|stop| restart|kill|rm|pause|unpause]  </li>
-<li>容器操作运维 — docker [ps|inspect|top|attach|events|logs|wait|export|port]  </li>
-<li>容器rootfs命令 — docker [commit|cp|diff]  </li>
-<li>镜像仓库 — docker [login|pull|push|search]  </li>
-<li>本地镜像管理 — docker [images|rmi|tag|build|history|save|import]  </li>
-<li>其他命令 — docker [info|version]</li>
-</ul>
-<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>CONTAINER:：可以是容器名也可以是容器id<br>REPOSITORY：仓库名<br>REGISTRYHOST：服务主机地址<br>IMAGE：镜像名<br>TAG：版本号，不填则默认为latest</p>
-<h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><ul>
-<li><code>docker</code>：查看docker帮助</li>
-<li><code>docker &lt;COMMAND&gt; --help</code>：查看具体命令帮助</li>
-<li><code>docker -v</code>，<code>docker --version</code>：查看docker版本</li>
-<li><code>docker info</code>：查看docker系统信息</li>
-<li><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>:获取容器/镜像的元数据。<br>常用OPTIONS：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><ul>
-<li><code>docker login -u 用户名 -p 密码</code>: 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
-<li><code>docker logout </code>: 登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</li>
-<li><code>docker search 镜像名</code>：从Docker Hub查找镜像</li>
-<li><code>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</code>： 从镜像仓库中拉取或者更新指定镜像</li>
-<li><code>docker push [OPTIONS] NAME[:TAG]</code>：将本地的镜像上传到镜像仓库,要先登陆到镜像仓库</li>
-</ul>
-<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><ul>
-<li><p><code>docker container ls</code>或<code>docker ps</code>：列出运行的容器，加-a或–all可列出所有容器</p>
-</li>
-<li><p>`docker create [OPTIONS] 镜像名：创建新容器，但不启动</p>
-</li>
-<li><p><code>docker run [OPTIONS] 镜像名</code>：创建新容器并运行<br>会从本地查找镜像，若不存在，则从默认公共镜像源(DockerHub)下载<br>常用OPTIONS： </p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-p: 端口映射，格式为：主机(宿主)端口:容器端口  </span><br><span class="line">-d: 后台运行容器，并返回容器ID，不加-d会显示日志</span><br><span class="line">--name：为容器指定名称</span><br><span class="line">······</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>docker start [OPTIONS] CONTAINER [CONTAINER...]</code>：启动一个或多个已经被停止的容器</p>
-</li>
-<li><p><code>docker stop [OPTIONS] CONTAINER [CONTAINER...]</code>：停止一个或多个运行中的容器</p>
-</li>
-<li><p><code>docker restart [OPTIONS] CONTAINER [CONTAINER...]</code>：重启一个或多个容器</p>
-</li>
-<li><p><code>docker kill [OPTIONS] CONTAINER [CONTAINER...]</code>：杀掉一个或多个运行中的容器</p>
-</li>
-<li><p><code>docker rm [OPTIONS] CONTAINER [CONTAINER...]</code>：删除一个或多少容器</p>
-</li>
-<li><p><code>docker logs [OPTIONS] CONTAINER</code>：获取容器的日志</p>
-</li>
-<li><p><code>docker top [OPTIONS] CONTAINER [ps OPTIONS]</code>：查看容器中运行的进程信息，支持 ps 命令参数。</p>
-<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4></li>
-<li><p><code>docker images</code>：列出本地镜像</p>
-</li>
-<li><p><code>docker inspect [OPTIONS] NAME|ID [NAME|ID...]</code>：获取容器/镜像的元数据<br>常用OPTIONS：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :指定返回值的模板文件。</span><br><span class="line">-s :显示总的文件大小。</span><br><span class="line">--type :为指定类型返回JSON。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><code>docker build [OPTIONS] PATH | URL | -</code>：根据Dockerfile构建镜像<br>常用OPTIONS:：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- -t，--tag : 镜像的名字及标签，通常 name:tag 或者 name 格式；可以在一次构建中为一个镜像设置多个标签。</span><br><span class="line">- -f : 指定Dockerfile路径</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</code>：从容器创建一个新的镜像</p>
-<p>常用OPTIONS：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-a :提交的镜像作者；</span><br><span class="line">-c :使用Dockerfile指令来创建镜像；</span><br><span class="line">-m :提交时的说明文字；</span><br><span class="line">-p :在commit时，将容器暂停。</span><br></pre></td></tr></table></figure></li>
-<li><p><code>docker tag [OPTIONS] IMAGE[:TAG][REGISTRYHOST/][USERNAME/]NAME[:TAG]</code>：修改镜像的所属仓库</p>
-</li>
-<li><p><code>docker rmi [OPTIONS] IMAGE [IMAGE...]</code>：删除一个或多个本地镜像</p>
-<p>OPTIONS说明：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :强制删除；</span><br><span class="line">--no-prune :不移除该镜像的过程镜像，默认移除；</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="4-把镜像上传到Docker-Hub"><a href="#4-把镜像上传到Docker-Hub" class="headerlink" title="4. 把镜像上传到Docker Hub"></a>4. 把镜像上传到Docker Hub</h2><h3 id="1-注册docker账号"><a href="#1-注册docker账号" class="headerlink" title="1. 注册docker账号"></a>1. 注册docker账号</h3><p><a href="(https://hub.docker.com/)">DockerHub</a></p>
-<p>（1）输入DockerId（即用户名，英文小写和数字），邮箱，密码<br>（2）邮箱验证</p>
-<h3 id="2-在hub上创建仓库"><a href="#2-在hub上创建仓库" class="headerlink" title="2. 在hub上创建仓库"></a>2. 在hub上创建仓库</h3><p>Create Repository，起名，如hello-world，<br>则路径为username/hello-word</p>
-<h3 id="3-下载镜像"><a href="#3-下载镜像" class="headerlink" title="3. 下载镜像"></a>3. 下载镜像</h3><p>搜索镜像：<code>docker search hello-world</code></p>
-<p>拉取镜像：<code>docker pull hello-world</code></p>
-<h3 id="4-运行容器"><a href="#4-运行容器" class="headerlink" title="4.运行容器"></a>4.运行容器</h3><p>创建新容器并运行：<code>docker run --name my-hello-world -d hello-world</code></p>
-<p>注：</p>
-<ul>
-<li>加<code>-d</code>返回容器id</li>
-<li>加<code>--name</code>命名为’my-hello-world’</li>
-</ul>
-<h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><p><code>docker ps</code>，<code>docker container ls</code>：可以看到容器id，容器名称等信息。</p>
-<h3 id="5-创建镜像"><a href="#5-创建镜像" class="headerlink" title="5. 创建镜像"></a>5. 创建镜像</h3><h4 id="基于Dockerfile构建新镜像"><a href="#基于Dockerfile构建新镜像" class="headerlink" title="基于Dockerfile构建新镜像"></a>基于Dockerfile构建新镜像</h4><p>待补充</p>
-<h4 id="使用commit从容器创建镜像"><a href="#使用commit从容器创建镜像" class="headerlink" title="使用commit从容器创建镜像"></a>使用commit从容器创建镜像</h4><p><code>docker commit -p 容器id/容器名 my-hello-world:v1</code></p>
-<h4 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h4><p>查看本地镜像：<code>docker images</code><br>看看镜像仓库是否存在</p>
-<p>可以修改镜像的所属仓库：<br><code>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</code></p>
-<h3 id="6-登录docker账号"><a href="#6-登录docker账号" class="headerlink" title="6. 登录docker账号"></a>6. 登录docker账号</h3><p>输入<code>docker login</code>，接着输入用户名和密码<br>或者在docker图形界面登录</p>
-<h3 id="7-本地镜像上传到镜像仓库"><a href="#7-本地镜像上传到镜像仓库" class="headerlink" title="7. 本地镜像上传到镜像仓库"></a>7. 本地镜像上传到镜像仓库</h3><p><code>docker push username/my-hello-world:v1</code><br>上传成功后可以到hub上查看是否创建成功</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><ul>
-<li><p>遇到一个问题：原先我在windows上用的终端时Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
-<p>这是由于终端和linux不一样，网上有很多解决办法，说的有点多，弄了一会没弄好就没耐心了，正好我觉得Git Bash不太好用了，如复制粘贴快捷键（一点都不快捷，笔记本的键盘可能会好点）是<code>Ctrl+ins</code>和<code>Shift+ins</code>，且命令提示也不是很友好，于是趁此机会换了cmder命令行工具，顺便学习了一下，结果很满意，想看的可以移步<a href="https://moon-lights.github.io/2018/12/14/tool-2018-12-14-Cmder/">这里</a>。</p>
-</li>
-</ul>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.cnblogs.com/wherein/p/6862911.html">Docker 如何把镜像上传到docker hub</a><br><a href="https://baijiahao.baidu.com/s?id=1593010515480468898&wfr=spider&for=pc">Docker新手入门之四：Docker镜像和仓库的基本使用</a></p>
-<p>相关教程：<br><a href="http://www.runoob.com/docker/docker-command-manual.html">Docker 命令大全</a></p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Cmder——Windows下好用的命令行工具</title>
-    <url>/2018/12/14/tool-2018-12-14-Cmder/</url>
-    <content><![CDATA[<h2 id="Cmder"><a href="#Cmder" class="headerlink" title="Cmder"></a>Cmder</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Cmder是windows下的命令行工具，支持大部分Linux命令，使用方便，可以替代原来的cmd，并且界面美观简洁，相比PowerShell、cmd不忍直视。</p>
-<p>先上效果图</p>
-<p><img src="/images/cmder/cmder.png"></p>
-<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>直接去<a href="http://cmder.net/">官网</a>下载，解压即可</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ol>
-<li><p>配置环境变量</p>
-<p>把解压后的目录加到系统环境变量，然后使用<code>win +R</code>，输入<code>cmder</code>，即可快捷打开cmder</p>
-</li>
-<li><p>加入右键菜单（类似git bash）：打开命令行工具输入<code>cmder /register all</code></p>
-<p>如果遇到拒绝访问，如下，可以通过”右键，以管理员方式运行”</p>
-<p><img src="/images/cmder/cmder01.png"></p>
-</li>
-<li><p>添加语言环境，否则会出现中文乱码</p>
-<p>在Settings -&gt;Startup -&gt; Environment中添加一行：<code>set LC_ALL=zh_CN.UTF-8</code>，注意后面的分号</p>
-</li>
-</ol>
-<p><img src="/images/cmder/cmder02.png"></p>
-<ol start="4">
-<li><p>修改命令提示符号</p>
-<p>cmder默认提示符号是λ，可以改成$：打开cmder安装目录下的\vendor\clink.lua文件，搜索<code>$&#123;lamb&#125;</code>改成想要的符号，如下</p>
-<p><img src="/images/cmder/cmder03.png"></p>
-</li>
-<li><p>设置命令别名</p>
-<p>cmder原生不支持如<strong>ll</strong> 等命令，可以通过设置别名来实现</p>
-<p>打开cmder安装目录下的\config\user-aliases.cmd文件，加入下面设置，也可以自定义</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">l&#x3D;ls --show-control-chars -F --color $*</span><br><span class="line">la&#x3D;ls -aF --show-control-chars -F --color $*</span><br><span class="line">ll&#x3D;ls -alF --show-control-chars -F --color $*</span><br></pre></td></tr></table></figure>
-
-<p>​    使用<code>&amp;</code>连接执行多条命令，<code>$1、$2、$*</code>表示命令后面添加的参数。</p>
-<p>可以通过命令别名设置快速进入常用文件夹，如<code>project = e: &amp; cd MyProject\$*</code>，输入<code>project</code>则切换到e盘，并进入<code>MyProject</code>目录，输入<code>project subproject\hhh</code>则表示进入<code>e:\MyProject\subproject\hhh</code></p>
-<ol>
-<li><p>指定命令执行环境</p>
-<p><img src="/images/cmder/cmder04.png"></p>
-</li>
-<li><p>快捷键</p>
-<p><code>Ctrl+U</code>：清除当前行</p>
-<p><code>Ctrl+L</code>：清屏</p>
-<p><code>Ctrl+T</code>：新建标签页</p>
-<p><code>Ctrl+W</code>：关闭标签页</p>
-<p><code>鼠标右键</code>：粘贴</p>
-<p><code>Ctrl+鼠标滚轮</code>：放大缩小字体</p>
-</li>
-</ol>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a href="https://blog.csdn.net/mynamepg/article/details/81233120">推荐一款超好用的工具cmder</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown生成目录结构树</title>
-    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
-    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
-<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
-<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
-<blockquote>
-<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
-<p>npm帮我们创建了两个cmd文件</p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
+        <tag>前端</tag>
       </tags>
   </entry>
   <entry>
@@ -5599,48 +5641,6 @@ end</pre>
       <tags>
         <tag>前端</tag>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>js或ts语法笔记</title>
-    <url>/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</url>
-    <content><![CDATA[<h2 id="javascript"><a href="#javascript" class="headerlink" title="javascript"></a>javascript</h2><ul>
-<li><p><code>==</code>和<code>===</code></p>
-<ul>
-<li>==会自动转换类型比较</li>
-<li>===严格比较，类型需要相同</li>
-<li>!=和!==同理</li>
-</ul>
-</li>
-<li><p><code>success?.() </code>相当于<code>success &amp;&amp; success()</code>，判断不为空再执行</p>
-</li>
-<li><p>(+”1”)把字符串转换成整数</p>
-</li>
-</ul>
-<h3 id><a href="#" class="headerlink" title></a></h3><h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h3><p>prototype 属性允许您向对象添加属性和方法</p>
-<p><strong>注意：</strong> Prototype 是全局属性，适用于所有的Javascript对象。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">employee</span>(<span class="params">name,jobtitle,born</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">this</span>.name=name;</span><br><span class="line">	<span class="built_in">this</span>.jobtitle=jobtitle;</span><br><span class="line">	<span class="built_in">this</span>.born=born;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fred=<span class="keyword">new</span> employee(<span class="string">&quot;Fred Flintstone&quot;</span>,<span class="string">&quot;Caveman&quot;</span>,<span class="number">1970</span>);</span><br><span class="line">employee.prototype.salary=<span class="literal">null</span>;</span><br><span class="line">fred.salary=<span class="number">20000</span>;</span><br><span class="line"><span class="built_in">document</span>.write(fred.salary);</span><br></pre></td></tr></table></figure>
-
-<p>给employee函数添加了salary属性，可以.出来</p>
-<h3 id="argument"><a href="#argument" class="headerlink" title="argument"></a>argument</h3><p>在函数代码中，使用特殊对象 arguments，开发者无需明确指出参数名，就能访问它们。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function howManyArgs() &#123;</span><br><span class="line">  alert(arguments.length);</span><br><span class="line">&#125;</span><br><span class="line">howManyArgs(&quot;string&quot;, 45);    &#x2F;&#x2F;2</span><br><span class="line">howManyArgs();    &#x2F;&#x2F;0</span><br><span class="line">howManyArgs(12);    &#x2F;&#x2F;1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>注意：与其他程序设计语言不同，ECMAScript 不会验证传递给函数的参数个数是否等于函数定义的参数个数。开发者定义的函数都可以接受任意个数的参数（根据 Netscape 的文档，最多可接受 255 个），而不会引发任何错误。任何遗漏的参数都会以 undefined 传递给函数，多余的函数将忽略。</p>
-<h3 id="pipeline写法"><a href="#pipeline写法" class="headerlink" title="pipeline写法"></a>pipeline写法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data </span><br><span class="line">|&gt; fnx</span><br><span class="line">|&gt; fny</span><br><span class="line">|&gt; fnz</span><br></pre></td></tr></table></figure>
-
-<p>相当于fnz(fny(fnx(data)))，pipeline写法</p>
-<h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h3><h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><h3 id="函数柯里化"><a href="#函数柯里化" class="headerlink" title="函数柯里化"></a>函数柯里化</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line"> <span class="keyword">var</span> func=<span class="function"><span class="keyword">function</span>(<span class="params">c</span>)</span>&#123;&#125;</span><br><span class="line"> <span class="keyword">return</span> func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>connect（a,b）=func（c）</p>
-<p>connect(mapStateToProps,mapDispatchToProps)(MainPage)</p>
-<p>实际上是这样func(c)(MainPage);</p>
-<p>MainPage是赋值给里面的c，而不是对应a，b</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
       </tags>
   </entry>
   <entry>

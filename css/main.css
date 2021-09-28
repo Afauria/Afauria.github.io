@@ -1129,7 +1129,7 @@ pre .javascript .function {
 }
 .sidebar-inner {
   color: #999;
-  padding: 18px 10px;
+  padding: 18px 0px;
   text-align: center;
 }
 .cc-license {
@@ -1181,7 +1181,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffbe24;
+  background: #65ffff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2533,4 +2533,84 @@ hr {
 }
 .sub-menu .menu-item {
   display: inline-block;
+}
+.poem-wrap {
+  position: relative;
+  width: 730px;
+  max-width: 80%;
+  border: 2px solid #797979;
+  border-top: none;
+  text-align: center;
+  margin: 80px auto;
+}
+.poem-wrap .poem-title {
+  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 20px 0 15px;
+  font-size: 30px;
+  position: relative;
+  margin-top: -20px;
+  display: inline-block;
+  letter-spacing: 4px;
+  color: #797979;
+}
+.poem-wrap p {
+  width: 70%;
+  margin: auto;
+  line-height: 30px;
+  color: #797979;
+}
+.poem-wrap p#poem {
+  font-size: 25px;
+}
+.poem-wrap p#info {
+  font-size: 15px;
+  margin: 15px auto;
+}
+.poem-border {
+  position: absolute;
+  height: 2px;
+  width: 27%;
+  background-color: #797979;
+}
+.poem-right {
+  right: 0;
+}
+.poem-left {
+  left: 0;
+}
+@media (max-width: 685px) {
+  .poem-border {
+    width: 18%;
+  }
+}
+@media (max-width: 500px) {
+  .poem-wrap {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    border-top: 2px solid #797979;
+  }
+  .poem-wrap h1 {
+    margin: 20px 6px;
+  }
+  .poem-border {
+    display: none;
+  }
+}
+.poem-side {
+  transform: translateX(0px);
+  color: #f5f5f5;
+  bottom: 100px;
+  position: absolute;
+  width: 90%;
+  margin: 0px 5%;
+}
+.poem-side div#hitokoto {
+  font-size: 15px;
+  text-align: left;
+}
+.poem-side div#hitokotofrom {
+  font-size: 12px;
+  text-align: right;
 }
