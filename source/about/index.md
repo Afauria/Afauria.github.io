@@ -4,6 +4,20 @@ title: 丘山月夜
 date: 2018-04-14
 description: 个人简介
 ---
+<div class="poem-wrap">
+  <div class="poem-border poem-left"></div>
+  <div class="poem-border poem-right"></div>
+  <div class="poem-title">念两句诗</div>
+  <p id="poem">挑选中...</p>
+	<p id="info"></p>
+  <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+  <script defer>
+    jinrishici.load(function(result) {
+      poem.innerHTML = result.data.content
+      info.innerHTML = '【' + result.data.origin.dynasty + '】' + result.data.origin.author + '《' + result.data.origin.title + '》'
+  });
+  </script>
+</div>
 
 # 关于我
 

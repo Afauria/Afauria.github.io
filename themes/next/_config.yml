@@ -179,8 +179,8 @@ site_state: true
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
   # GitHub: https://github.com/Afauria || fab fa-github
-  WeChat: Afauria || fab fa-weixin
-  QQ: 410013112 || fab fa-qq
+  WeChat: https://afauria.github.io/images/wechat_channel.jpg || fab fa-weixin
+  QQ: https://afauria.github.io/images/qq_channel.jpg || fab fa-qq
   E-Mail: mailto:afauria@foxmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Google: https://plus.google.com/yourname || fab fa-google
