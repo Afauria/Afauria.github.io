@@ -213,13 +213,14 @@ class LoginModel {
 
 > 可以抽，也可以不抽，看实际需要。不要为了抽接口而抽接口，明确抽接口的目的和意义。
 
-### 抽接口和抽基类有什么区别？
+### 为什么抽接口，抽接口和抽基类有什么区别？
 
 > 抽接口目的
 >
 > 1. 实现多态：替换不同实现
-> 2. 依赖倒置：Presenter修改实现，View不需要修改。View修改实现，Presenter不需要修改
-> 3. 代码逻辑清晰，可读性强：都在Contract中
+> 2. 屏蔽实现细节，迪米特法则
+> 3. 依赖倒置：Presenter修改实现，View不需要修改。View修改实现，Presenter不需要修改
+> 4. 代码逻辑清晰，可读性强：都在Contract中
 >
 > 抽Base类是为了抽取公共逻辑，Base类是后续衍生出来的，不在架构模式定义中
 
@@ -235,7 +236,7 @@ class LoginModel {
 
 # MVC和MVP对比
 
-### MVC->MVP?
+## MVC->MVP?
 
 有的人说MVC中Activity承担Controller的功能，MVP将Controller逻辑抽离出去，Activity只负责视图控制。那么
 
@@ -253,7 +254,7 @@ class LoginModel {
 
 3. View层定义一个Callback，Controller定义一个Callback，避免View和Model直接耦合，就是MVP了吗？
 
-### MVP和MVC区别
+## MVP和MVC区别
 
 1. MVP在MVC的基础上，增加了一些限定规则，使得代码更加的模版化、统一、一致。MVC可以有多种实现，没有太大约束，可以使用工具类、静态方法等抽取逻辑，不和View绑定。
 2. Controller和Presenter作用不一样
