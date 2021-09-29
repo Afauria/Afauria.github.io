@@ -1364,10 +1364,11 @@ dispatchMessage-->判断是否是通知消息
 <blockquote>
 <p>可以抽，也可以不抽，看实际需要。不要为了抽接口而抽接口，明确抽接口的目的和意义。</p>
 </blockquote>
-<h3 id="抽接口和抽基类有什么区别？"><a href="#抽接口和抽基类有什么区别？" class="headerlink" title="抽接口和抽基类有什么区别？"></a>抽接口和抽基类有什么区别？</h3><blockquote>
+<h3 id="为什么抽接口，抽接口和抽基类有什么区别？"><a href="#为什么抽接口，抽接口和抽基类有什么区别？" class="headerlink" title="为什么抽接口，抽接口和抽基类有什么区别？"></a>为什么抽接口，抽接口和抽基类有什么区别？</h3><blockquote>
 <p>抽接口目的</p>
 <ol>
 <li>实现多态：替换不同实现</li>
+<li>屏蔽实现细节，迪米特法则</li>
 <li>依赖倒置：Presenter修改实现，View不需要修改。View修改实现，Presenter不需要修改</li>
 <li>代码逻辑清晰，可读性强：都在Contract中</li>
 </ol>
@@ -1381,7 +1382,7 @@ dispatchMessage-->判断是否是通知消息
 <li>两个Fragment分别对应两个Presenter，两个Presenter共用一个Model，都从Model中获取数据</li>
 <li>将该功能拆分出来：Activity中创建Presenter2对象，两个Fragment除了依赖自己的Presenter之外，再依赖一个共同的Presenter2</li>
 </ol>
-<h1 id="MVC和MVP对比"><a href="#MVC和MVP对比" class="headerlink" title="MVC和MVP对比"></a>MVC和MVP对比</h1><h3 id="MVC-gt-MVP"><a href="#MVC-gt-MVP" class="headerlink" title="MVC-&gt;MVP?"></a>MVC-&gt;MVP?</h3><p>有的人说MVC中Activity承担Controller的功能，MVP将Controller逻辑抽离出去，Activity只负责视图控制。那么</p>
+<h1 id="MVC和MVP对比"><a href="#MVC和MVP对比" class="headerlink" title="MVC和MVP对比"></a>MVC和MVP对比</h1><h2 id="MVC-gt-MVP"><a href="#MVC-gt-MVP" class="headerlink" title="MVC-&gt;MVP?"></a>MVC-&gt;MVP?</h2><p>有的人说MVC中Activity承担Controller的功能，MVP将Controller逻辑抽离出去，Activity只负责视图控制。那么</p>
 <ol>
 <li>把Activity中的逻辑处理抽出去，就是MVP了吗?</li>
 </ol>
@@ -1400,7 +1401,7 @@ dispatchMessage-->判断是否是通知消息
 <ol start="3">
 <li>View层定义一个Callback，Controller定义一个Callback，避免View和Model直接耦合，就是MVP了吗？</li>
 </ol>
-<h3 id="MVP和MVC区别"><a href="#MVP和MVC区别" class="headerlink" title="MVP和MVC区别"></a>MVP和MVC区别</h3><ol>
+<h2 id="MVP和MVC区别"><a href="#MVP和MVC区别" class="headerlink" title="MVP和MVC区别"></a>MVP和MVC区别</h2><ol>
 <li>MVP在MVC的基础上，增加了一些限定规则，使得代码更加的模版化、统一、一致。MVC可以有多种实现，没有太大约束，可以使用工具类、静态方法等抽取逻辑，不和View绑定。</li>
 <li>Controller和Presenter作用不一样<ol>
 <li>Presenter：展示器。Controller：控制器。</li>
