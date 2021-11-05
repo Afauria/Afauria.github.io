@@ -22,19 +22,19 @@
 
   <meta name="description" content="ProGuard是一个压缩、优化和混淆Java字节码文件的免费的工具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓ProGuard混淆">
-<meta property="og:url" content="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/index.html">
+<meta property="og:title" content="安卓混淆">
+<meta property="og:url" content="http://yoursite.com/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/index.html">
 <meta property="og:site_name" content="Akiyama&#39;s Blog">
 <meta property="og:description" content="ProGuard是一个压缩、优化和混淆Java字节码文件的免费的工具">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-11-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.029Z">
+<meta property="article:modified_time" content="2021-11-05T13:02:25.323Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="进阶">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/">
+<link rel="canonical" href="http://yoursite.com/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/">
 
 
 <script id="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>安卓ProGuard混淆 | Akiyama's Blog</title>
+  <title>安卓混淆 | Akiyama's Blog</title>
   
 
 
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/android-2018-11-24-ProGuard/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -214,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          安卓ProGuard混淆
+          安卓混淆
         </h1>
 
         <div class="post-meta">
@@ -231,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2021-11-05 21:02:25" itemprop="dateModified" datetime="2021-11-05T21:02:25+08:00">2021-11-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,13 +255,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>ProGuard是一个压缩、优化和混淆Java<a target="_blank" rel="noopener" href="https://baike.so.com/doc/6261423-6474843.html">字节码</a>文件的开源工具，它可以删除无用的类、字段、方法和属性。可以删除没用的注释，最大限度地优化字节码文件。它还可以使用<a target="_blank" rel="noopener" href="https://baike.so.com/doc/1649095-1743070.html">简短</a>的无意义的名称来重命名已经存在的类、字段、方法和属性。常常用于Android开发用于混淆最终的项目，增加项目被反编译的难度。</p>
-<h2 id="二、作用"><a href="#二、作用" class="headerlink" title="二、作用"></a>二、作用</h2><ul>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>ProGuard是一个压缩、优化和混淆Java<a target="_blank" rel="noopener" href="https://baike.so.com/doc/6261423-6474843.html">字节码</a>文件的开源工具，它可以删除无用的类、字段、方法和属性。可以删除没用的注释，最大限度地优化字节码文件。它还可以使用<a target="_blank" rel="noopener" href="https://baike.so.com/doc/1649095-1743070.html">简短</a>的无意义的名称来重命名已经存在的类、字段、方法和属性。常常用于Android开发用于混淆最终的项目，增加项目被反编译的难度。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
 <li>压缩: 移除无效的类、属性、方法等</li>
 <li>优化: 优化字节码，并删除未使用的结构</li>
 <li>混淆: 将类名、属性名、方法名混淆为难以读懂的字母，比如a,b,c</li>
 </ul>
-<h2 id="三、混淆注意事项"><a href="#三、混淆注意事项" class="headerlink" title="三、混淆注意事项"></a>三、混淆注意事项</h2><h3 id="1、不能混淆"><a href="#1、不能混淆" class="headerlink" title="1、不能混淆"></a>1、不能混淆</h3><ul>
+<h2 id="混淆注意事项"><a href="#混淆注意事项" class="headerlink" title="混淆注意事项"></a>混淆注意事项</h2><h3 id="不能混淆"><a href="#不能混淆" class="headerlink" title="不能混淆"></a>不能混淆</h3><ul>
 <li>在AndroidManifest中配置的类，比如四大组件</li>
 <li>JNI调用的方法</li>
 <li>用了反射的类</li>
@@ -274,16 +274,16 @@
 <blockquote>
 <p>因为混淆之后，类名会变成a,b,c这，通过包名+类名就找不到该类了，会出现ClassNotFoundException异常。</p>
 </blockquote>
-<h3 id="2、保留java-bean"><a href="#2、保留java-bean" class="headerlink" title="2、保留java bean"></a>2、保留java bean</h3><p>使用了 Gson 之类的工具要使 JavaBean 类即实体类不被混淆，混淆后属性名改变，变成了没有意思的名称，json转换就会出错</p>
-<h3 id="3、注解不能混淆"><a href="#3、注解不能混淆" class="headerlink" title="3、注解不能混淆"></a>3、注解不能混淆</h3><p>注解在Android平台中使用的越来越多,常用的有ButterKnife和Otto。很多场景下注解被用作在运行时反射确定一些元素的特征.</p>
+<h3 id="保留java-bean"><a href="#保留java-bean" class="headerlink" title="保留java bean"></a>保留java bean</h3><p>使用了 Gson 之类的工具要使 JavaBean 类即实体类不被混淆，混淆后属性名改变，变成了没有意思的名称，json转换就会出错</p>
+<h3 id="注解不能混淆"><a href="#注解不能混淆" class="headerlink" title="注解不能混淆"></a>注解不能混淆</h3><p>注解在Android平台中使用的越来越多,常用的有ButterKnife和Otto。很多场景下注解被用作在运行时反射确定一些元素的特征.</p>
 <p>为了保证注解正常工作,我们不应该对注解进行混淆.Android工程默认的混淆配置已经包含了下面保留注解的配置</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes *Annotation*</span><br></pre></td></tr></table></figure>
 
-<h3 id="4、-Crash信息处理"><a href="#4、-Crash信息处理" class="headerlink" title="4、 Crash信息处理"></a>4、 Crash信息处理</h3><p>代码混淆的时候记得加上在混淆文件里面记得加上这句： </p>
+<h3 id="Crash信息处理"><a href="#Crash信息处理" class="headerlink" title="Crash信息处理"></a>Crash信息处理</h3><p>代码混淆的时候记得加上在混淆文件里面记得加上这句： </p>
 <p>keep住源文件以及行号 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes SourceFile,LineNumberTable</span><br></pre></td></tr></table></figure>
 
-<h2 id="四、ProGuard用法和选项"><a href="#四、ProGuard用法和选项" class="headerlink" title="四、ProGuard用法和选项"></a>四、ProGuard用法和选项</h2><h3 id="保留选项："><a href="#保留选项：" class="headerlink" title="保留选项："></a>保留选项：</h3><p><strong>注意选项的命名规律：-keep* 用于防止目标被移除或者重命名、-keep*names则仅仅用于防止重命名。</strong></p>
+<h2 id="ProGuard用法和选项"><a href="#ProGuard用法和选项" class="headerlink" title="ProGuard用法和选项"></a>ProGuard用法和选项</h2><h3 id="保留选项："><a href="#保留选项：" class="headerlink" title="保留选项："></a>保留选项：</h3><p><strong>注意选项的命名规律：-keep* 用于防止目标被移除或者重命名、-keep*names则仅仅用于防止重命名。</strong></p>
 <table>
 <thead>
 <tr>
@@ -554,7 +554,7 @@
 <td>指内部类</td>
 </tr>
 </tbody></table>
-<h2 id="五、一些规则"><a href="#五、一些规则" class="headerlink" title="五、一些规则"></a>五、一些规则</h2><h3 id="两个常用的混淆命令，"><a href="#两个常用的混淆命令，" class="headerlink" title="两个常用的混淆命令，"></a>两个常用的混淆命令，</h3><p>注意一颗星表示只是保持该包下的类名，而子包下的类名还是会被混淆；两颗星表示把本包和所含子包下的类名都保持；</p>
+<h2 id="一些规则"><a href="#一些规则" class="headerlink" title="一些规则"></a>一些规则</h2><h3 id="两个常用的混淆命令，"><a href="#两个常用的混淆命令，" class="headerlink" title="两个常用的混淆命令，"></a>两个常用的混淆命令，</h3><p>注意一颗星表示只是保持该包下的类名，而子包下的类名还是会被混淆；两颗星表示把本包和所含子包下的类名都保持；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-keep <span class="class"><span class="keyword">class</span> <span class="title">cn</span>.<span class="title">hadcn</span>.<span class="title">test</span>.** </span></span><br><span class="line"><span class="class">-<span class="title">keep</span> <span class="title">class</span> <span class="title">cn</span>.<span class="title">hadcn</span>.<span class="title">test</span>.*</span></span><br></pre></td></tr></table></figure>
 
 <p>用以上方法保持类后，你会发现类名虽然未混淆，但里面的具体方法和变量命名还是变了，这时如果既想保持类名，又想保持里面的内容不被混淆，我们就需要以下方法了</p>
@@ -685,7 +685,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">二、作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B7%B7%E6%B7%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">三、混淆注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.1.</span> <span class="nav-text">1、不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%BF%9D%E7%95%99java-bean"><span class="nav-number">3.2.</span> <span class="nav-text">2、保留java bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%B3%A8%E8%A7%A3%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.3.</span> <span class="nav-text">3、注解不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81-Crash%E4%BF%A1%E6%81%AF%E5%A4%84%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">4、 Crash信息处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81ProGuard%E7%94%A8%E6%B3%95%E5%92%8C%E9%80%89%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">四、ProGuard用法和选项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">保留选项：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%B8%80%E4%BA%9B%E8%A7%84%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">五、一些规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B7%B7%E6%B7%86%E5%91%BD%E4%BB%A4%EF%BC%8C"><span class="nav-number">5.1.</span> <span class="nav-text">两个常用的混淆命令，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">内部类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">混淆注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.1.</span> <span class="nav-text">不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E7%95%99java-bean"><span class="nav-number">3.2.</span> <span class="nav-text">保留java bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E4%B8%8D%E8%83%BD%E6%B7%B7%E6%B7%86"><span class="nav-number">3.3.</span> <span class="nav-text">注解不能混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Crash%E4%BF%A1%E6%81%AF%E5%A4%84%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">Crash信息处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ProGuard%E7%94%A8%E6%B3%95%E5%92%8C%E9%80%89%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">ProGuard用法和选项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">保留选项：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E8%A7%84%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">一些规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B7%B7%E6%B7%86%E5%91%BD%E4%BB%A4%EF%BC%8C"><span class="nav-number">5.1.</span> <span class="nav-text">两个常用的混淆命令，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">内部类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -708,7 +708,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
