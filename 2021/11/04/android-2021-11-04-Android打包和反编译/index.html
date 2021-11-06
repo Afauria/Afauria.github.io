@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://yoursite.com/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/Java和Android编译各类文件格式转换.png">
 <meta property="og:image" content="http://yoursite.com/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/dex%E4%BC%98%E5%8C%96.png">
 <meta property="article:published_time" content="2021-11-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-05T13:05:17.179Z">
+<meta property="article:modified_time" content="2021-11-06T04:12:11.708Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-05 21:05:17" itemprop="dateModified" datetime="2021-11-05T21:05:17+08:00">2021-11-05</time>
+                <time title="修改时间：2021-11-06 12:12:11" itemprop="dateModified" datetime="2021-11-06T12:12:11+08:00">2021-11-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +268,7 @@
 <li><strong>res</strong>：资源文件夹。会被映射到<code>R.java</code>中，通过资源id访问</li>
 <li><strong>assets</strong>：资源文件夹。不会被映射到<code>R.java</code>中，需要使用AssetManager访问</li>
 </ul>
-<p>简单build流程：</p>
+<p>构建安装流程：</p>
 <img src="/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/apk简单打包流程.png" style="zoom:100%;">
 
 <h2 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h2><img src="/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/apk打包流程.png" style="zoom:100%;">
@@ -317,6 +317,7 @@
 <td align="left">${ANDROID_SDK_HOME}/tools/zipalign</td>
 </tr>
 </tbody></table>
+<p>class转dex命令：<code>dx --dex output=生成的dex文件 class文件路径</code></p>
 <p>注：zipalign使用时机取决于签名工具：</p>
 <blockquote>
 <ul>
@@ -324,35 +325,37 @@
 <li>如果使用 <code>jarsigner</code>，只能在为 APK 文件签名<strong>之后</strong>执行 zipalign。</li>
 </ul>
 </blockquote>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ol>
-<li>class转dex：<code>dx --dex output=生成的dex文件 class文件路径</code></li>
-<li><code>jarsigner</code>签名：<code>jarsigner [-verbose -keystore &lt;keystore文件&gt; -signedjar &lt;输出文件名称&gt; -storepass &lt;口令&gt;] &lt;jar-file&gt; &lt;alias&gt;</code></li>
-<li>生成系统签名keystore文件<ol>
+<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><ol>
+<li>生成keystore文件：<code>keytool -genkey -alias &lt;别名&gt; -keyalg &lt;加密算法，如RSA&gt; -validity &lt;有效天数&gt; -keystore &lt;输出文件&gt;</code></li>
+<li>生成系统签名keystore文件：系统应用需要使用系统签名，拥有更高的权限</li>
 <li>获取Android源码签名文件：<code>platform.pk8 </code>和<code> platform.x509.pem</code>，位于`release/android/n-cn/build/target/product/security/``</li>
 <li><code>openssl pkcs8 -in &lt;platform.pk8&gt; -inform DER -outform PEM -out shared.priv.pem -nocrypt</code></li>
 <li><code>openssl pkcs12 -export -in &lt;platform.x509.pem&gt; -inkey shared.priv.pem -out shared.pk12 -name &lt;platform&gt;</code></li>
 <li>``keytool -importkeystore -deststorepass <password> -destkeypass <password> -destkeystore &lt;keystore文件名称&gt; -srckeystore shared.pk12 -srcstoretype PKCS12 -srcstorepass <password> -alias &lt;keystore别名&gt;`</password></password></password></li>
+<li><code>jarsigner</code>签名：<code>jarsigner [-verbose -keystore &lt;keystore文件&gt; -signedjar &lt;输出文件名称&gt; -storepass &lt;口令&gt;] &lt;jar-file&gt; &lt;alias&gt;</code></li>
 </ol>
-</li>
-</ol>
-<h1 id="Android打包过程混淆、压缩、优化"><a href="#Android打包过程混淆、压缩、优化" class="headerlink" title="Android打包过程混淆、压缩、优化"></a>Android打包过程混淆、压缩、优化</h1><p>参考<a href="/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/">另一篇文章</a></p>
+<h1 id="混淆、压缩、优化"><a href="#混淆、压缩、优化" class="headerlink" title="混淆、压缩、优化"></a>混淆、压缩、优化</h1><p>参考<a href="/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/">另一篇文章</a></p>
 <h1 id="Android反编译"><a href="#Android反编译" class="headerlink" title="Android反编译"></a>Android反编译</h1><h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://ibotpeaches.github.io/Apktool/"><code>apktool</code></a>：编译和反编译apk，从apk中提取图片和布局资源<ul>
-<li>反编译：<code>apktool d -o &lt;output_dir&gt; test.apk</code></li>
+<li>反编译：<code>apktool d -o &lt;output_dir&gt; test.apk</code>，得到资源文件和smali文件、或者dex文件</li>
 <li>编译：<code>apktool b -o &lt;output.apk&gt; &lt;input_dir&gt;</code></li>
 </ul>
 </li>
-<li><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/dex2jar/"><code>dex2jar</code></a>：将可运行文件classes.dex反编译为jar源码文件<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/pxb1988/dex2jar"><code>dex2jar</code></a>：将可运行文件classes.dex反编译为jar源码文件<ul>
 <li><code>d2j-dex2jar classes.dex</code>得到<code>classes-dex2jar.jar</code>文件</li>
 </ul>
 </li>
 <li><a target="_blank" rel="noopener" href="http://java-decompiler.github.io/"><code>jd-gui</code></a>：查看jar源码文件</li>
 </ul>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><pre class="mermaid">graph LR
-apk--apktool-->smali和dex--dex2jar-->jar-->使用jd-gui查看代码</pre>
+apk--apktool-->dex文件--dex2jar-->jar文件-->使用jd-gui查看java源代码
+apk--apktool-->smali文件-->对照java源代码修改smali汇编代码-->打包-->重签名
+apk--apktool-->资源文件-->修改资源文件-->打包</pre>
 
 <p>其他工具：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Jermic/Android-Crack-Tool">CrackTool可视化工具</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/skylot/jadx">jadx</a>：反编译dex、aar、aab、apk、资源等，包括可视化和命令行方式</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Jermic/Android-Crack-Tool">CrackTool</a>：反编译、签名、可视化工具</p>
+<p><a href>jbe</a>：字节码编辑器，用于查看和修改java类文件</p>
 <h2 id="各类文件说明和转换"><a href="#各类文件说明和转换" class="headerlink" title="各类文件说明和转换"></a>各类文件说明和转换</h2><h3 id="安装前"><a href="#安装前" class="headerlink" title="安装前"></a>安装前</h3><ol>
 <li>jar文件：Java归档文件，以zip格式构建，包含java和一些元数与资源文件</li>
 <li>apk文件：安卓应用安装包，本质是一个压缩包，可以将后缀名改为zip直接解压，解压缩后会得到dex文件、资源文件、so文件等</li>
@@ -381,6 +384,224 @@ apk--apktool-->smali和dex--dex2jar-->jar-->使用jd-gui查看代码</pre>
 <p>JVM上的可执行文件是class文件，DVM上的可执行文件是odex，ART上的可执行文件是oat文件(odex)。</p>
 </blockquote>
 <p><img src="/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/dex%E4%BC%98%E5%8C%96.png" alt="dex优化图片"></p>
+<h1 id="防破解"><a href="#防破解" class="headerlink" title="防破解"></a>防破解</h1><ol>
+<li>混淆</li>
+<li>加固：加密dex和so，先运行壳dex代码，通过壳dex代码自定义DexClassLoader解析加密后的dex运行</li>
+<li>敏感计算、数据、不要放客户端</li>
+<li>不要在代码中直接使用字符串，通过资源获取</li>
+<li>签名校验：运行时在代码中对应用签名进行校验</li>
+<li>…</li>
+</ol>
+<h1 id="应用安全CheckList"><a href="#应用安全CheckList" class="headerlink" title="应用安全CheckList"></a>应用安全CheckList</h1><p>引自：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4ff48b761ff6">Android应用加固原理</a></p>
+<table>
+<thead>
+<tr>
+<th>风险名称</th>
+<th align="center">风险</th>
+<th align="right">解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>App防止反编译</td>
+<td align="center">被反编译的暴露客户端逻辑，加密算法，密钥，等等</td>
+<td align="right">加固</td>
+</tr>
+<tr>
+<td>java层代码源代码反编译风险</td>
+<td align="center">被反编译的暴露客户端逻辑，加密算法，密钥，等等</td>
+<td align="right">加固 ，混淆</td>
+</tr>
+<tr>
+<td>so文件破解风险</td>
+<td align="center">导致核心代码泄漏。</td>
+<td align="right">so文件加固</td>
+</tr>
+<tr>
+<td>篡改和二次打包风险</td>
+<td align="center">修改文件资源等，二次打包的添加病毒，广告，或者窃取支付密码，拦截短信等</td>
+<td align="right">资源文件混淆和校验签名的hash值</td>
+</tr>
+<tr>
+<td>资源文件泄露风险</td>
+<td align="center">获取图片，js文件等文件，通过植入病毒，钓鱼页面获取用户敏感信息</td>
+<td align="right">资源混淆，加固等等</td>
+</tr>
+<tr>
+<td>应用签名未交验风险</td>
+<td align="center">反编译或者二次打包，添加病毒代码，恶意代码，上传盗版App</td>
+<td align="right">对App进行签名证书校验</td>
+</tr>
+<tr>
+<td>代码为混淆风险</td>
+<td align="center">业务逻辑暴露，加密算法，账号信息等等。</td>
+<td align="right">混淆（中文混淆）</td>
+</tr>
+<tr>
+<td>webview明文存储密码风险</td>
+<td align="center">用户使用webview默认存储密码到databases/webview.db root的手机可以产看webview数据库，获取用户敏感信息</td>
+<td align="right">关闭webview存储密码功能</td>
+</tr>
+<tr>
+<td>明文数字证书风险</td>
+<td align="center">APK使用的数字证书用来校验服务器的合法性，保证数据的保密性和完成性 明文存储的证书被篡改造成数据被获取等</td>
+<td align="right">客户端校验服务器域名和数字证书等</td>
+</tr>
+<tr>
+<td>调试日志函数调用风险</td>
+<td align="center">日志信息里面含有用户敏感信息等</td>
+<td align="right">关闭调试日志函数，删除打印的日志信息</td>
+</tr>
+<tr>
+<td>AES/DES加密方法不安全使用风险</td>
+<td align="center">在使用AES/DES加密使用了ECB或者OFB工作模式，加密数据被选择明文攻击破解等</td>
+<td align="right">使用CBC和CFB工作模式等</td>
+</tr>
+<tr>
+<td>RSA加密算法不安全风险</td>
+<td align="center">密数据被选择明文攻击破解和中间人攻击等导致用户敏感信息泄露</td>
+<td align="right">密码不要太短，使用正确的工作模式</td>
+</tr>
+<tr>
+<td>密钥硬编码风险</td>
+<td align="center">用户使用加密算法的密钥设置成一个固定值导致密钥泄漏</td>
+<td align="right">动态生成加密密钥或者将密钥进程分段存储等</td>
+</tr>
+<tr>
+<td>动态调试攻击风险</td>
+<td align="center">攻击者使用GDB，IDA调试追踪目标程序，获取用户敏感信息等</td>
+<td align="right">在so文件里面实现对调试进程的监听</td>
+</tr>
+<tr>
+<td>应用数据任意备份风险</td>
+<td align="center">AndroidMainfest中allowBackup=true 攻击者可以使用adb命令对APP应用数据进行备份造成用户数据泄露</td>
+<td align="right">allowBackup=false</td>
+</tr>
+<tr>
+<td>全局可读写内部文件风险。</td>
+<td align="center">实现不同软件之间数据共享，设置内部文件全局可读写造成其他应用也可以读取或者修改文件等</td>
+<td align="right">（1）.使用MODE_PRIVATE模式创建内部存储文件（2）.加密存储敏感数据3.避免在文件中存储明文和敏感信息</td>
+</tr>
+<tr>
+<td>SharedPrefs全局可读写内部文件风险。</td>
+<td align="center">被其他应用读取或者修改文件等</td>
+<td align="right">使用正确的权限</td>
+</tr>
+<tr>
+<td>Internal Storage数据全局可读写风险</td>
+<td align="center">当设置MODE_WORLD_READBLE或者设置android:sharedUserId导致敏感信息被其他应用程序读取等</td>
+<td align="right">设置正确的模式等</td>
+</tr>
+<tr>
+<td>getDir数据全局可读写风险</td>
+<td align="center">当设置MODE_WORLD_READBLE或者设置android:sharedUserId导致敏感信息被其他应用程序读取等</td>
+<td align="right">设置正确的模式等</td>
+</tr>
+<tr>
+<td>java层动态调试风险</td>
+<td align="center">AndroidManifest中调试的标记可以使用jdb进行调试，窃取用户敏感信息。</td>
+<td align="right">android：debuggable=“false”</td>
+</tr>
+<tr>
+<td>内网测试信息残留风险</td>
+<td align="center">通过测试的Url，测试账号等对正式服务器进行攻击等</td>
+<td align="right">讲测试内网的日志清除，或者测试服务器和生产服务器不要使用同一个</td>
+</tr>
+<tr>
+<td>随机数不安全使用风险</td>
+<td align="center">在使用SecureRandom类来生成随机数，其实并不是随机，导致使用的随机数和加密算法被破解。</td>
+<td align="right">（1）不使用setSeed方法（2）使用/dev/urandom或者/dev/random来初始化伪随机数生成器</td>
+</tr>
+<tr>
+<td>Http传输数据风险</td>
+<td align="center">未加密的数据被第三方获取，造成数据泄露</td>
+<td align="right">使用Hpps</td>
+</tr>
+<tr>
+<td>Htpps未校验服务器证书风险，Https未校验主机名风险，Https允许任意主机名风险</td>
+<td align="center">客户端没有对服务器进行身份完整性校验，造成中间人攻击</td>
+<td align="right">（1）.在X509TrustManager中的checkServerTrusted方法对服务器进行校验（2）.判断证书是否过期（3）.使用HostnameVerifier类检查证书中的主机名与使用证书的主机名是否一致</td>
+</tr>
+<tr>
+<td>webview绕过证书校验风险</td>
+<td align="center">webview使用https协议加密的url没有校验服务器导致中间人攻击</td>
+<td align="right">校验服务器证书时候正确</td>
+</tr>
+<tr>
+<td>界面劫持风险</td>
+<td align="center">用户输入密码的时候被一个假冒的页面遮挡获取用户信息等</td>
+<td align="right">（1）.使用第三方专业防界面劫持SDK（2）.校验当前是否是自己的页面</td>
+</tr>
+<tr>
+<td>输入监听风险</td>
+<td align="center">用户输入的信息被监听或者按键位置被监听造成用户信息泄露等</td>
+<td align="right">自定义键盘</td>
+</tr>
+<tr>
+<td>截屏攻击风险</td>
+<td align="center">对APP运行中的界面进行截图或者录制来获取用户信息</td>
+<td align="right">添加属性getWindow().setFlags(FLAG_SECURE)不让用户截图和录屏</td>
+</tr>
+<tr>
+<td>动态注册Receiver风险</td>
+<td align="center">当动态注册Receiver默认生命周期是可以导出的可以被任意应用访问</td>
+<td align="right">使用带权限检验的registerReceiver API进行动态广播的注册</td>
+</tr>
+<tr>
+<td>Content Provider数据泄露风险</td>
+<td align="center">权限设置不当导致用户信息</td>
+<td align="right">正确的使用权限</td>
+</tr>
+<tr>
+<td>Service ，Activity，Broadcast,content provider组件导出风险</td>
+<td align="center">Activity被第三方应用访问导致被任意应用恶意调用</td>
+<td align="right">自定义权限</td>
+</tr>
+<tr>
+<td>PendingIntent错误使用Intent风险</td>
+<td align="center">使用PendingIntent的时候，如果使用了一个空Intent，会导致恶意用户劫持修改Intent的内容</td>
+<td align="right">禁止使用一个空Intent去构造PendingIntent</td>
+</tr>
+<tr>
+<td>Intent组件隐式调用风险</td>
+<td align="center">使用隐式Intent没有对接收端进行限制导致敏感信息被劫持</td>
+<td align="right">1.对接收端进行限制 2.建议使用显示调用方式发送Intent</td>
+</tr>
+<tr>
+<td>Intent Scheme URL攻击风险</td>
+<td align="center">webview恶意调用App</td>
+<td align="right">对Intent做安全限制</td>
+</tr>
+<tr>
+<td>Fragment注入攻击风险</td>
+<td align="center">出的PreferenceActivity的子类中，没有加入isValidFragment方法，进行fragment名的合法性校验，攻击者可能会绕过限制，访问未授权的界面</td>
+<td align="right">（1）.如果应用的Activity组件不必要导出，或者组件配置了intent filter标签，建议显示设置组件的“android:exported”属性为false（2）.重写isValidFragment方法，验证fragment来源的正确性</td>
+</tr>
+<tr>
+<td>webview远程代码执行风险</td>
+<td align="center">风险：WebView.addJavascriptInterface方法注册可供JavaScript调用的Java对象，通过反射调用其他java类等</td>
+<td align="right">建议不使用addJavascriptInterface接口，对于Android API Level为17或者以上的Android系统，Google规定允许被调用的函数，必须在Java的远程方法上面声明一个@JavascriptInterface注解</td>
+</tr>
+<tr>
+<td>zip文件解压目录遍历风险</td>
+<td align="center">Java代码在解压ZIP文件时，会使用到ZipEntry类的getName()方法，如果ZIP文件中包含“../”的字符串，该方法返回值里面原样返回，如果没有过滤掉getName()返回值中的“../”字符串，继续解压缩操作，就会在其他目录中创建解压的文件</td>
+<td align="right">（1）. 对重要的ZIP压缩包文件进行数字签名校验，校验通过才进行解压。 （2）. 检查Zip压缩包中使用ZipEntry.getName()获取的文件名中是否包含”../”或者”..”，检查”../”的时候不必进行URI Decode（以防通过URI编码”..%2F”来进行绕过），测试发现ZipEntry.getName()对于Zip包中有“..%2F”的文件路径不会进行处理。</td>
+</tr>
+<tr>
+<td>Root设备运行风险</td>
+<td align="center">已经root的手机通过获取应用的敏感信息等</td>
+<td align="right">检测是否是root的手机禁止应用启动</td>
+</tr>
+<tr>
+<td>模拟器运行风险</td>
+<td align="center">刷单，模拟虚拟位置等</td>
+<td align="right">禁止在虚拟器上运行</td>
+</tr>
+<tr>
+<td>从sdcard加载Dex和so风险</td>
+<td align="center">未对Dex和So文件进行安全，完整性及校验，导致被替换，造成用户敏感信息泄露</td>
+<td align="right">（1）.放在APP的私有目录    （2）.对文件进行完成性校验。</td>
+</tr>
+</tbody></table>
 
     </div>
 
@@ -485,7 +706,7 @@ apk--apktool-->smali和dex--dex2jar-->jar-->使用jd-gui查看代码</pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E6%89%93%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">Android打包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">APK文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">打包流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E"><span class="nav-number">1.3.</span> <span class="nav-text">工具说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">常用命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E6%89%93%E5%8C%85%E8%BF%87%E7%A8%8B%E6%B7%B7%E6%B7%86%E3%80%81%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">Android打包过程混淆、压缩、优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">Android反编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%B1%BB%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%E5%92%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">各类文件说明和转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D"><span class="nav-number">3.3.1.</span> <span class="nav-text">安装前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%90%8E"><span class="nav-number">3.3.2.</span> <span class="nav-text">安装后</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E6%89%93%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">Android打包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APK%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">APK文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">打包流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E"><span class="nav-number">1.3.</span> <span class="nav-text">工具说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%BE%E5%90%8D"><span class="nav-number">1.4.</span> <span class="nav-text">签名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E3%80%81%E5%8E%8B%E7%BC%A9%E3%80%81%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">混淆、压缩、优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">Android反编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%B1%BB%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%E5%92%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">各类文件说明和转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D"><span class="nav-number">3.3.1.</span> <span class="nav-text">安装前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%90%8E"><span class="nav-number">3.3.2.</span> <span class="nav-text">安装后</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B2%E7%A0%B4%E8%A7%A3"><span class="nav-number">4.</span> <span class="nav-text">防破解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8CheckList"><span class="nav-number">5.</span> <span class="nav-text">应用安全CheckList</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
