@@ -1,3 +1,4 @@
+
 # 关于我
 
 学海无涯，见啥爱啥
@@ -12,6 +13,12 @@ QQ：410013112
 
 邮箱：afauria@foxmail.com
 
+微信：Afauria
+
+# 知识体系
+
+将一些基础知识和体系逐步整理到GitBook中，不发布在博客里面：[GitBook-Learner](/GitBook-Learner/)
+
 # 博客平台
 
 使用框架：Hexo+GitPage+NexT。通过 Hexo生成，部署在 [Github](https://github.com/Afauria)，主题使用 [NexT](http://theme-next.iissnan.com/) 。
@@ -23,3 +30,4 @@ QQ：410013112
 如果喜欢我的博客，可以在GitHub上点赞哦！
 
 如有侵权，请告知删除。
+
