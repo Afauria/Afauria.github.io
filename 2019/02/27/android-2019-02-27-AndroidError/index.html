@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="Akiyama&#39;s Blog">
 <meta property="og:description" content="Android异常和常见异常解决方案">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/images/AndroidError/error01.png">
-<meta property="og:image" content="http://yoursite.com/images/AndroidError/error02.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/error01.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/error02.png">
 <meta property="article:published_time" content="2019-02-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.030Z">
+<meta property="article:modified_time" content="2021-11-09T02:32:49.884Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/AndroidError/error01.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/error01.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/02/27/android-2019-02-27-AndroidError/">
 
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2021-11-09 10:32:49" itemprop="dateModified" datetime="2021-11-09T10:32:49+08:00">2021-11-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,14 +258,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="1-1-error和exception有什么区别"><a href="#1-1-error和exception有什么区别" class="headerlink" title="1.1. error和exception有什么区别"></a>1.1. error和exception有什么区别</h2><ul>
+        <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="error和exception有什么区别"><a href="#error和exception有什么区别" class="headerlink" title="error和exception有什么区别"></a>error和exception有什么区别</h2><ul>
 <li>error表示系统级的错误，是java运行环境内部错误或者硬件问题，不能指望程序来处理这样的问题，除了退出运行外别无选择，它是Java虚拟机抛出的。<ul>
 <li>如OutOfMemoryError（内存溢出）、NoClassDefFoundError（类定义错误）</li>
 </ul>
 </li>
 <li>exception 表示程序需要捕捉、需要处理的异常，是由与程序设计的不完善而出现的问题，程序必须处理的问题</li>
 </ul>
-<h2 id="1-2-运行时异常和一般异常"><a href="#1-2-运行时异常和一般异常" class="headerlink" title="1.2. 运行时异常和一般异常"></a>1.2. 运行时异常和一般异常</h2><ul>
+<h2 id="运行时异常和一般异常"><a href="#运行时异常和一般异常" class="headerlink" title="运行时异常和一般异常"></a>运行时异常和一般异常</h2><ul>
 <li>一般异常（CheckedException）主要是指IO异常、SQL异常等。对于这种异常，JVM要求我们必须对其进行try-catch处理，否则编译器会报错。</li>
 <li><strong>运行时异常（RuntimeException）我们一般不处理</strong>，当出现这类异常的时候程序会由虚拟机接管。比如，我们从来没有去处理过NullPointerException。</li>
 </ul>
@@ -300,9 +300,9 @@
 
 
 
-<h1 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h1><h2 id="1-1-内存不足，无法启动虚拟机"><a href="#1-1-内存不足，无法启动虚拟机" class="headerlink" title="1.1. 内存不足，无法启动虚拟机"></a>1.1. 内存不足，无法启动虚拟机</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">Could not reserve enough space <span class="keyword">for</span> 1572864KB object heap</span><br></pre></td></tr></table></figure>
+<h1 id="常见编译错误"><a href="#常见编译错误" class="headerlink" title="常见编译错误"></a>常见编译错误</h1><h2 id="内存不足，无法启动虚拟机"><a href="#内存不足，无法启动虚拟机" class="headerlink" title="内存不足，无法启动虚拟机"></a>内存不足，无法启动虚拟机</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">Could not reserve enough space <span class="keyword">for</span> 1572864KB object heap</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/AndroidError/error01.png" alt="内存不足"></p>
+<p><img src="/2019/02/27/android-2019-02-27-AndroidError/error01.png" alt="内存不足"></p>
 <p>解决方案：</p>
 <blockquote>
 <ol>
@@ -327,11 +327,15 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyingcode/p/6113368.html">Android 通过adb shell命令查看内存，CPU，启动时间，电量等信息</a></li>
 </ul>
-<h2 id="1-2-sdk版本不正确"><a href="#1-2-sdk版本不正确" class="headerlink" title="1.2. sdk版本不正确"></a>1.2. sdk版本不正确</h2><p><img src="/images/AndroidError/error02.png" alt="sdk版本"></p>
+<h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p><code>java.lang.OutOfMemoryError: Metaspace</code></p>
+<blockquote>
+<p>有可能是电脑内存不足，重启电脑</p>
+</blockquote>
+<h2 id="sdk版本不正确"><a href="#sdk版本不正确" class="headerlink" title="sdk版本不正确"></a>sdk版本不正确</h2><p><img src="/2019/02/27/android-2019-02-27-AndroidError/error02.png" alt="sdk版本"></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &#x27;:girls:compileReleaseRenderscript&#x27;.</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> llvm-rs-cc is missing</span></span><br></pre></td></tr></table></figure>
 
 <p>解决方案：修改build.gradle中的版本号为下载过的sdk版本</p>
-<h2 id="1-3-Dialog-amp-AlertDialog，WindowManager不能正确使用"><a href="#1-3-Dialog-amp-AlertDialog，WindowManager不能正确使用" class="headerlink" title="1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用"></a>1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">20715 android.view.WindowManager<span class="variable">$BadTokenException</span></span></span><br><span class="line">Unable to add window -- token android.os.BinderProxy@caaa709 is not valid; is your activity running?</span><br></pre></td></tr></table></figure>
+<h1 id="常见运行异常"><a href="#常见运行异常" class="headerlink" title="常见运行异常"></a>常见运行异常</h1><h2 id="Dialog-amp-AlertDialog，WindowManager不能正确使用"><a href="#Dialog-amp-AlertDialog，WindowManager不能正确使用" class="headerlink" title="Dialog&amp;AlertDialog，WindowManager不能正确使用"></a>Dialog&amp;AlertDialog，WindowManager不能正确使用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">20715 android.view.WindowManager<span class="variable">$BadTokenException</span></span></span><br><span class="line">Unable to add window -- token android.os.BinderProxy@caaa709 is not valid; is your activity running?</span><br></pre></td></tr></table></figure>
 
 <p>分析：该异常表示不能添加窗口，通常是所要依附的view已经不存在导致的。</p>
 <p>常见场景：</p>
@@ -344,9 +348,9 @@
 <li>某些不稳定的MIUI系统bug引起的权限问题，系统把Toast也当成了系统级弹窗，android6.0的系统Dialog弹窗需要用户手动授权，若果app没有加入SYSTEM_ALERT_WINDOW权限就会报这个错。需要加入给app加系统Dialog弹窗权限，并动态申请权限，不满足第一条会出现没权限闪退，不满足第二条会出现没有Toast的情况。</li>
 </ol>
 </blockquote>
-<h2 id="1-4-Context启动Activity"><a href="#1-4-Context启动Activity" class="headerlink" title="1.4. Context启动Activity"></a>1.4. Context启动Activity</h2><p>在 Android P 中，无法通过非 Activity 的 Context（如 Service）启动 Activity，除非在 Intent 中添加 FLAG_ACTIVITY_NEW_TASK，否则该 Activity 不会启动，并抛异常。</p>
+<h2 id="Context启动Activity"><a href="#Context启动Activity" class="headerlink" title="Context启动Activity"></a>Context启动Activity</h2><p>在 Android P 中，无法通过非 Activity 的 Context（如 Service）启动 Activity，除非在 Intent 中添加 FLAG_ACTIVITY_NEW_TASK，否则该 Activity 不会启动，并抛异常。</p>
 <p>解决方案：启动 Activity 的地方判断Context是否<code>instanceof Activity</code></p>
-<h2 id="1-5-参数不匹配"><a href="#1-5-参数不匹配" class="headerlink" title="1.5. 参数不匹配"></a>1.5. 参数不匹配</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">50220 java.lang.IllegalArgumentException</span></span><br><span class="line">Unknown color</span><br></pre></td></tr></table></figure>
+<h2 id="参数不匹配"><a href="#参数不匹配" class="headerlink" title="参数不匹配"></a>参数不匹配</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">50220 java.lang.IllegalArgumentException</span></span><br><span class="line">Unknown color</span><br></pre></td></tr></table></figure>
 
 <p>传入了不正确的参数导致。</p>
 <p>常见场景：</p>
@@ -359,7 +363,7 @@
 <li>在请求网络的回调中使用了Glide.into(view),view已经被销毁会导致该错误</li>
 </ol>
 </blockquote>
-<h2 id="1-6-空指针异常（NPE）"><a href="#1-6-空指针异常（NPE）" class="headerlink" title="1.6. 空指针异常（NPE）"></a>1.6. 空指针异常（NPE）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">2002 java.lang.NullPointerException</span></span><br><span class="line">SimpleDraweeView was not initialized!</span><br></pre></td></tr></table></figure>
+<h2 id="空指针异常（NPE）"><a href="#空指针异常（NPE）" class="headerlink" title="空指针异常（NPE）"></a>空指针异常（NPE）</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">2002 java.lang.NullPointerException</span></span><br><span class="line">SimpleDraweeView was not initialized!</span><br></pre></td></tr></table></figure>
 
 <p>空指针最为常见，也最容易规避，使用的时候一定要进行<code>null check</code>或者<code>try-catch</code>，采取不信任原则。</p>
 <p>解决方案：</p>
@@ -371,7 +375,7 @@
 <li>请注意线程安全</li>
 </ol>
 </blockquote>
-<h2 id="1-7-数组存储异常"><a href="#1-7-数组存储异常" class="headerlink" title="1.7. 数组存储异常"></a>1.7. 数组存储异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">28916 java.lang.ArrayStoreException</span></span><br><span class="line">source[0] of type com.google.android.gms.internal.zzcek cannot be stored in destination array of type com.google.android.gms.common.api.internal.BasePendingResult[]</span><br></pre></td></tr></table></figure>
+<h2 id="数组存储异常"><a href="#数组存储异常" class="headerlink" title="数组存储异常"></a>数组存储异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">28916 java.lang.ArrayStoreException</span></span><br><span class="line">source[0] of type com.google.android.gms.internal.zzcek cannot be stored in destination array of type com.google.android.gms.common.api.internal.BasePendingResult[]</span><br></pre></td></tr></table></figure>
 
 <p>当向数组中存放非数组声明类型对象时抛出</p>
 <p>解决方案：</p>
@@ -381,7 +385,7 @@
 <li>重新声明数组类型</li>
 </ol>
 </blockquote>
-<h2 id="1-8-Bitmap异常"><a href="#1-8-Bitmap异常" class="headerlink" title="1.8. Bitmap异常"></a>1.8. Bitmap异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4230 java.lang.RuntimeException</span></span><br><span class="line">Canvas: trying to use a recycled bitmap android.graphics.Bitmap@1d515bf2</span><br><span class="line"></span><br><span class="line">android.graphics.Canvas.throwIfCannotDraw(Canvas.java:1282)</span><br></pre></td></tr></table></figure>
+<h2 id="Bitmap异常"><a href="#Bitmap异常" class="headerlink" title="Bitmap异常"></a>Bitmap异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4230 java.lang.RuntimeException</span></span><br><span class="line">Canvas: trying to use a recycled bitmap android.graphics.Bitmap@1d515bf2</span><br><span class="line"></span><br><span class="line">android.graphics.Canvas.throwIfCannotDraw(Canvas.java:1282)</span><br></pre></td></tr></table></figure>
 
 <p>画布尝试去使用一个已回收的位图对象，建议解除一切与Bitmap的绑定。通常由于bitmap比较占用内存，为避免oom习惯使用bitmap.recycle()来回收，当再次使用这个被回收的bitmap时就会产生发生异常。</p>
 <p>解决方案：</p>
@@ -392,7 +396,7 @@
 </ol>
 </blockquote>
 <p>RuntimeException（运行时异常），是所有Java虚拟机正常操作期间可以被抛出的异常的父类。通常需要关注cause by以下部分的堆栈。</p>
-<h2 id="1-9-找不到指定方法"><a href="#1-9-找不到指定方法" class="headerlink" title="1.9. 找不到指定方法"></a>1.9. 找不到指定方法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">13623 java.lang.NoSuchMethodError</span></span><br><span class="line">no non-static method &quot;Lcom/**/**/**;.&lt;init&gt;(Ljava/lang/String;Ljava/l</span><br></pre></td></tr></table></figure>
+<h2 id="找不到指定方法"><a href="#找不到指定方法" class="headerlink" title="找不到指定方法"></a>找不到指定方法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">13623 java.lang.NoSuchMethodError</span></span><br><span class="line">no non-static method &quot;Lcom/**/**/**;.&lt;init&gt;(Ljava/lang/String;Ljava/l</span><br></pre></td></tr></table></figure>
 
 <p>该异常表示找不到指定方法。主要是由于Android系统和Rom厂商定制化导致的碎片化问题，很难根治，建议做好机型适配，解决top机型问题：</p>
 <blockquote>
@@ -402,7 +406,7 @@
 <li>setBackground方法在API &gt;= 16才生效</li>
 </ol>
 </blockquote>
-<h2 id="1-10-安全异常、权限异常"><a href="#1-10-安全异常、权限异常" class="headerlink" title="1.10. 安全异常、权限异常"></a>1.10. 安全异常、权限异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4523 java.lang.SecurityException</span></span><br><span class="line">Client must have ACCESS_FINE_LOCATION permission to request PRIORITY_HIGH_ACCURACY locations.</span><br><span class="line"></span><br><span class="line">com.google.android.gms.internal.zzeu.zzb(Unknown Source:10)</span><br></pre></td></tr></table></figure>
+<h2 id="安全异常、权限异常"><a href="#安全异常、权限异常" class="headerlink" title="安全异常、权限异常"></a>安全异常、权限异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">4523 java.lang.SecurityException</span></span><br><span class="line">Client must have ACCESS_FINE_LOCATION permission to request PRIORITY_HIGH_ACCURACY locations.</span><br><span class="line"></span><br><span class="line">com.google.android.gms.internal.zzeu.zzb(Unknown Source:10)</span><br></pre></td></tr></table></figure>
 
 <p>权限异常或者称为安全异常，由安全管理器抛出，用于指示违反安全情况的异常，通常由于没有获取对应的权限。</p>
 <p>解决方案：</p>
@@ -412,7 +416,7 @@
 <li>android6.0及以上，在使用时需要动态申请权限。</li>
 </ol>
 </blockquote>
-<h2 id="1-11-不支持的操作"><a href="#1-11-不支持的操作" class="headerlink" title="1.11. 不支持的操作"></a>1.11. 不支持的操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">11210 java.lang.UnsupportedOperationException</span></span><br><span class="line">Failed to resolve attribute at index 13: TypedValue&#123;t=0x2/d=0x7f040210 a=3&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="不支持的操作"><a href="#不支持的操作" class="headerlink" title="不支持的操作"></a>不支持的操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">11210 java.lang.UnsupportedOperationException</span></span><br><span class="line">Failed to resolve attribute at index 13: TypedValue&#123;t=0x2/d=0x7f040210 a=3&#125;</span><br></pre></td></tr></table></figure>
 
 <p>常见场景：xml中</p>
 <blockquote>
@@ -422,7 +426,7 @@
 <li>还有一种情况是build目录下的文件没有清除干净，导致失败的。</li>
 </ol>
 </blockquote>
-<h2 id="1-12-内存溢出"><a href="#1-12-内存溢出" class="headerlink" title="1.12. 内存溢出"></a>1.12. 内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#17553 java.lang.OutOfMemoryError</span><br><span class="line">pthread_create (1040KB stack) failed: Out of memory</span><br><span class="line">com.facebook.imagepipeline.core.PriorityThreadFactory1.run(PriorityThreadFactory.java:<span class="number">43</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="内存溢出-1"><a href="#内存溢出-1" class="headerlink" title="内存溢出"></a>内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#17553 java.lang.OutOfMemoryError</span><br><span class="line">pthread_create (1040KB stack) failed: Out of memory</span><br><span class="line">com.facebook.imagepipeline.core.PriorityThreadFactory1.run(PriorityThreadFactory.java:<span class="number">43</span>)</span><br></pre></td></tr></table></figure>
 
 <p>该异常表示内存不足导致线程创建失败。pthread_create默认创建的线程是非detached的。如果使用不当，确实会造成内存泄漏。</p>
 <p>预防方案：</p>
@@ -433,7 +437,7 @@
 <li>主线程中使用pthread_join。</li>
 </ol>
 </blockquote>
-<h2 id="1-13-迭代器异常"><a href="#1-13-迭代器异常" class="headerlink" title="1.13. 迭代器异常"></a>1.13. 迭代器异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">7707 java.util.ConcurrentModificationException</span></span><br></pre></td></tr></table></figure>
+<h2 id="迭代器异常"><a href="#迭代器异常" class="headerlink" title="迭代器异常"></a>迭代器异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">7707 java.util.ConcurrentModificationException</span></span><br></pre></td></tr></table></figure>
 
 <p>该异常表示迭代器迭代过程中，迭代的对象发生了改变，如数据项增加或删除。由于迭代对象不是线程安全，在迭代的过程中，会检查modCount是否和初始modCount即expectedModCount一致，如果不一致，则认为数据有变化，迭代终止并抛出异常。</p>
 <p>常见场景：两个线程同时对集合进行操作，线程1对集合进行遍历，而线程2对集合进行增加、删除操作。</p>
@@ -444,7 +448,7 @@
 <li>或者使用使用Vector替换ArrayList，Vector是线程安全的。Vector的缺点：大量数据操作时，由于线程安全，性能比ArrayList低.</li>
 </ol>
 </blockquote>
-<h2 id="1-14-通知异常"><a href="#1-14-通知异常" class="headerlink" title="1.14. 通知异常"></a>1.14. 通知异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android.app.RemoteServiceException</span><br><span class="line">Context.startForegroundService() did not then call Service.startForeground()</span><br><span class="line"></span><br><span class="line">android.app.ActivityThreadH.handleMessage(ActivityThread.java:1768)</span><br></pre></td></tr></table></figure>
+<h2 id="通知异常"><a href="#通知异常" class="headerlink" title="通知异常"></a>通知异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android.app.RemoteServiceException</span><br><span class="line">Context.startForegroundService() did not then call Service.startForeground()</span><br><span class="line"></span><br><span class="line">android.app.ActivityThreadH.handleMessage(ActivityThread.java:1768)</span><br></pre></td></tr></table></figure>
 
 <p>该异常表示从Package发布通知时存在异常，主要出现在通知栏更新。</p>
 <p>使用通知需要注意以下几点：</p>
@@ -456,10 +460,10 @@
 <li>注意各个系统版本对于Notification使用方法的差异性。</li>
 </ol>
 </blockquote>
-<h2 id="1-15-Native方法没找到"><a href="#1-15-Native方法没找到" class="headerlink" title="1.15. Native方法没找到"></a>1.15. Native方法没找到</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.UnsatisfiedLinkError</span><br><span class="line">Native method not found: com.tutk.IOTC.AVAPIs.avInitialize:(I)I</span><br></pre></td></tr></table></figure>
+<h2 id="Native方法没找到"><a href="#Native方法没找到" class="headerlink" title="Native方法没找到"></a>Native方法没找到</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.UnsatisfiedLinkError</span><br><span class="line">Native method not found: com.tutk.IOTC.AVAPIs.avInitialize:(I)I</span><br></pre></td></tr></table></figure>
 
 <p>该异常表示native方法没有找到。报这个错误通常是so库加载失败，或者找不到准备执行的JNI方法，可能是因为method的signature或命名有误，建议使用javah命令行来生成JNI头文件来避免这个问题。</p>
-<h2 id="1-16-状态异常"><a href="#1-16-状态异常" class="headerlink" title="1.16. 状态异常"></a>1.16. 状态异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">37812 java.lang.IllegalStateException</span></span><br></pre></td></tr></table></figure>
+<h2 id="状态异常"><a href="#状态异常" class="headerlink" title="状态异常"></a>状态异常</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">37812 java.lang.IllegalStateException</span></span><br></pre></td></tr></table></figure>
 
 <p>常见类型</p>
 <blockquote>
@@ -486,7 +490,29 @@
 <p>该异常是由于服务器错误返回的JSON字符串和服务器正常下时返回的JSON字符串结构不同,导致利用Gson解析的时候报了一个异常:本该去解析集合却强制去解析对象所致.</p>
 <p>解决方案：在使用Gson解析JSON时try cash一下,不报错按照正常逻辑继续解析,报异常则处理为请求失败逻辑即可.</p>
 </blockquote>
-<h2 id="1-17-Fresco图片加载"><a href="#1-17-Fresco图片加载" class="headerlink" title="1.17. Fresco图片加载"></a>1.17. Fresco图片加载</h2><p>使用FrescoManager 的时候默认使用的是可轻易被回收的bitmap，如果不在当前页面使用可能会被回收报错。如果报这个错，可以使用FrescoManager.load(String url, ImageView view, boolean canBeRecycled), 传入false，或者直接使用Fresco的SimpleDraweeView,这个是官方推荐的做法</p>
+<h2 id="Fresco图片加载"><a href="#Fresco图片加载" class="headerlink" title="Fresco图片加载"></a>Fresco图片加载</h2><p>使用FrescoManager 的时候默认使用的是可轻易被回收的bitmap，如果不在当前页面使用可能会被回收报错。如果报这个错，可以使用FrescoManager.load(String url, ImageView view, boolean canBeRecycled), 传入false，或者直接使用Fresco的SimpleDraweeView,这个是官方推荐的做法。</p>
+<h1 id="版本适配问题"><a href="#版本适配问题" class="headerlink" title="版本适配问题"></a>版本适配问题</h1><h2 id="Android-P使用http明文传输"><a href="#Android-P使用http明文传输" class="headerlink" title="Android P使用http明文传输"></a>Android P使用http明文传输</h2><p>报错：<code>java.io.IOException: Cleartext HTTP traffic to  not permitted</code></p>
+<p>解决方案：</p>
+<ol>
+<li>APP改用https请求</li>
+<li>targetSdkVersion 降到27以下</li>
+<li>更改网络安全配置</li>
+</ol>
+<p>方式一：</p>
+<p>manifest文件中<code>&lt;application&gt;</code>标签添加：<code>android:usesCleartextTraffic=&quot;true&quot;</code></p>
+<p>方式二：</p>
+<ol>
+<li>创建<code>res/xml/network_security_config.xml</code>文件，配置如下</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">network-security-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">base-config</span> <span class="attr">cleartextTrafficPermitted</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">network-security-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改manifest文件，引入配置</li>
+</ol>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;application</span><br><span class="line">	android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+
+
 
     </div>
 
@@ -592,7 +618,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%BC%82%E5%B8%B8"><span class="nav-number">1.</span> <span class="nav-text">Java异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-error%E5%92%8Cexception%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. error和exception有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%80%E8%88%AC%E5%BC%82%E5%B8%B8"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 运行时异常和一般异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8"><span class="nav-number">2.</span> <span class="nav-text">常见异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1.1. 内存不足，无法启动虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-sdk%E7%89%88%E6%9C%AC%E4%B8%8D%E6%AD%A3%E7%A1%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1.2. sdk版本不正确</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-Dialog-amp-AlertDialog%EF%BC%8CWindowManager%E4%B8%8D%E8%83%BD%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">1.3. Dialog&amp;AlertDialog，WindowManager不能正确使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-Context%E5%90%AF%E5%8A%A8Activity"><span class="nav-number">2.4.</span> <span class="nav-text">1.4. Context启动Activity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%8F%82%E6%95%B0%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">2.5.</span> <span class="nav-text">1.5. 参数不匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E7%A9%BA%E6%8C%87%E9%92%88%E5%BC%82%E5%B8%B8%EF%BC%88NPE%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">1.6. 空指针异常（NPE）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">2.7.</span> <span class="nav-text">1.7. 数组存储异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-Bitmap%E5%BC%82%E5%B8%B8"><span class="nav-number">2.8.</span> <span class="nav-text">1.8. Bitmap异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-%E6%89%BE%E4%B8%8D%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.9.</span> <span class="nav-text">1.9. 找不到指定方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10-%E5%AE%89%E5%85%A8%E5%BC%82%E5%B8%B8%E3%80%81%E6%9D%83%E9%99%90%E5%BC%82%E5%B8%B8"><span class="nav-number">2.10.</span> <span class="nav-text">1.10. 安全异常、权限异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-11-%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.11.</span> <span class="nav-text">1.11. 不支持的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-12-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.12.</span> <span class="nav-text">1.12. 内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-13-%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">2.13.</span> <span class="nav-text">1.13. 迭代器异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-14-%E9%80%9A%E7%9F%A5%E5%BC%82%E5%B8%B8"><span class="nav-number">2.14.</span> <span class="nav-text">1.14. 通知异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-15-Native%E6%96%B9%E6%B3%95%E6%B2%A1%E6%89%BE%E5%88%B0"><span class="nav-number">2.15.</span> <span class="nav-text">1.15. Native方法没找到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-16-%E7%8A%B6%E6%80%81%E5%BC%82%E5%B8%B8"><span class="nav-number">2.16.</span> <span class="nav-text">1.16. 状态异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-17-Fresco%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.17.</span> <span class="nav-text">1.17. Fresco图片加载</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%BC%82%E5%B8%B8"><span class="nav-number">1.</span> <span class="nav-text">Java异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#error%E5%92%8Cexception%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">1.1.</span> <span class="nav-text">error和exception有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%80%E8%88%AC%E5%BC%82%E5%B8%B8"><span class="nav-number">1.2.</span> <span class="nav-text">运行时异常和一般异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BC%96%E8%AF%91%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">常见编译错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%EF%BC%8C%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">内存不足，无法启动虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.2.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sdk%E7%89%88%E6%9C%AC%E4%B8%8D%E6%AD%A3%E7%A1%AE"><span class="nav-number">2.3.</span> <span class="nav-text">sdk版本不正确</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%BF%90%E8%A1%8C%E5%BC%82%E5%B8%B8"><span class="nav-number">3.</span> <span class="nav-text">常见运行异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dialog-amp-AlertDialog%EF%BC%8CWindowManager%E4%B8%8D%E8%83%BD%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Dialog&amp;AlertDialog，WindowManager不能正确使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Context%E5%90%AF%E5%8A%A8Activity"><span class="nav-number">3.2.</span> <span class="nav-text">Context启动Activity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">3.3.</span> <span class="nav-text">参数不匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E6%8C%87%E9%92%88%E5%BC%82%E5%B8%B8%EF%BC%88NPE%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">空指针异常（NPE）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">3.5.</span> <span class="nav-text">数组存储异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitmap%E5%BC%82%E5%B8%B8"><span class="nav-number">3.6.</span> <span class="nav-text">Bitmap异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0%E6%8C%87%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">3.7.</span> <span class="nav-text">找不到指定方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%BC%82%E5%B8%B8%E3%80%81%E6%9D%83%E9%99%90%E5%BC%82%E5%B8%B8"><span class="nav-number">3.8.</span> <span class="nav-text">安全异常、权限异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">3.9.</span> <span class="nav-text">不支持的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA-1"><span class="nav-number">3.10.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%BC%82%E5%B8%B8"><span class="nav-number">3.11.</span> <span class="nav-text">迭代器异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%9F%A5%E5%BC%82%E5%B8%B8"><span class="nav-number">3.12.</span> <span class="nav-text">通知异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Native%E6%96%B9%E6%B3%95%E6%B2%A1%E6%89%BE%E5%88%B0"><span class="nav-number">3.13.</span> <span class="nav-text">Native方法没找到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%BC%82%E5%B8%B8"><span class="nav-number">3.14.</span> <span class="nav-text">状态异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fresco%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.15.</span> <span class="nav-text">Fresco图片加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">版本适配问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-P%E4%BD%BF%E7%94%A8http%E6%98%8E%E6%96%87%E4%BC%A0%E8%BE%93"><span class="nav-number">4.1.</span> <span class="nav-text">Android P使用http明文传输</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -608,20 +634,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

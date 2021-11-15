@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="线程同步的方式，转自AndroidPub公众号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程同步的方式【转】">
+<meta property="og:url" content="http://yoursite.com/2021/09/15/kotlin-2021-09-15-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:description" content="线程同步的方式，转自AndroidPub公众号">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-09T07:11:16.681Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="线程">
+<meta property="article:tag" content="kotlin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/09/15/kotlin-2021-09-15-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>线程同步的方式【转】 | Akiyama's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Akiyama's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/15/kotlin-2021-09-15-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Akiyama's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线程同步的方式【转】
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-15T00:00:00+08:00">2021-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-09 15:11:16" itemprop="dateModified" datetime="2021-11-09T15:11:16+08:00">2021-11-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index"><span itemprop="name">kotlin</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">线程同步的方式，转自AndroidPub公众号</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>引自：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/eLxDiOgUiOl9BWu7FrvR2A">建议收藏！Kotlin 线程同步的 N 种方法</a></p>
+<h1 id="线程同步的方式"><a href="#线程同步的方式" class="headerlink" title="线程同步的方式"></a>线程同步的方式</h1><blockquote>
+<p>问题： 现有 Task1、Task2 等多个并行任务，如何等待全部任务执行完成后，开始执行 Task3 ? </p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> task1: () -&gt; String = &#123;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;Hello&quot;</span>.also &#123; println(<span class="string">&quot;task1 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> task2: () -&gt; String = &#123;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;World&quot;</span>.also &#123; println(<span class="string">&quot;task2 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> task3: (String, String) -&gt; String = &#123; p1, p2 -&gt;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;<span class="variable">$p1</span> <span class="variable">$p2</span>&quot;</span>.also &#123; println(<span class="string">&quot;task3 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Thread-join"><a href="#Thread-join" class="headerlink" title="Thread.join"></a>Thread.join</h2><p><code>join</code>方法：让当前所在线程挂起，让指定线程先执行</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_join</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">    <span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> t1 = Thread &#123; s1 = task1() &#125;</span><br><span class="line">    <span class="keyword">val</span> t2 = Thread &#123; s2 = task2() &#125;</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line"></span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line">    </span><br><span class="line">    task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h2><p><code>synchronized</code>：锁住一个对象，使其他线程无法访问该对象的同步代码块，但可以访问该对象的非同步代码块。</p>
+<ol>
+<li>修饰代码块：<code>synchronized(this)&#123;&#125;</code>，锁住当前对象，作用范围是{}代码块</li>
+<li>修饰方法：锁住当前对象，作用范围是整个方法</li>
+<li>修饰静态方法：锁住当前类的所有对象，作用范围是整个静态方法</li>
+<li>修饰类：<code>synchronized(XXX.class)&#123;&#125;</code>，锁住类的所有对象，作用范围是{}代码块</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_synchrnoized</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	Thread &#123;</span><br><span class="line">		synchronized(<span class="built_in">Unit</span>) &#123;</span><br><span class="line">			s1 = task1()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;.start()</span><br><span class="line">	s2 = task2()</span><br><span class="line">  <span class="comment">//task3在task2之后执行，task1执行完之后释放锁，才能执行task3</span></span><br><span class="line">	synchronized(<span class="built_in">Unit</span>) &#123;</span><br><span class="line">		task3(s1, s2)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多个并行任务写法比较复杂，需要嵌套synchronized</p>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><p><code>ReentrantLock</code>是<code>JUC（java.util .concurrent，并发工具包）</code>提供的线程锁，可以替换Synchronized使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_ReentrantLock</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> lock = ReentrantLock()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		lock.lock()</span><br><span class="line">		s1 = task1()</span><br><span class="line">		lock.unlock()</span><br><span class="line">	&#125;.start()</span><br><span class="line">  </span><br><span class="line">	s2 = task2()</span><br><span class="line">  </span><br><span class="line">	lock.lock()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">	lock.unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多个并行任务需要创建多个Lock管理不同的任务</p>
+<h2 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h2><p>阻塞队列：阻塞队列内部也是通过 Lock 实现的。</p>
+<p>阻塞队列更多是使用在生产/消费场景中的同步。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_blockingQueue</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> queue = SynchronousQueue&lt;<span class="built_in">Unit</span>&gt;()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		queue.put(<span class="built_in">Unit</span>)</span><br><span class="line">	&#125;.start()</span><br><span class="line">	s2 = task2()</span><br><span class="line">	queue.take()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p>JUC 中的锁大都基于 <code>AQS</code> 实现的，可以分为独享锁和共享锁。<code>ReentrantLock</code> 就是一种独享锁。相比之下，共享锁更适合本场景。例如 <code>CountDownLatch</code>，它可以让一个线程一直处于阻塞状态，直到其他线程的执行全部完成：</p>
+<p>共享锁的好处是不必为了每个任务都创建单独的锁，即使再多并行任务写起来也很轻松</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_countdownlatch</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> cd = CountDownLatch(<span class="number">2</span>)</span><br><span class="line">	Thread() &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cd.countDown()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread() &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cd.countDown()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	cd.await()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h2><p><code>CyclicBarrier</code> 是 JUC 提供的另一种共享锁机制，它可以让一组线程到达一个同步点后再一起继续运行，其中任意一个线程未达到同步点，其他已到达的线程均会被阻塞。</p>
+<p>与 <code>CountDownLatch</code> 的区别在于 <code>CountDownLatch</code> 是一次性的，而 <code>CyclicBarrier</code> 可以被重置后重复使用，这也正是 <code>Cyclic</code> 的命名由来，可以循环使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_CyclicBarrier</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> cb = CyclicBarrier(<span class="number">3</span>)</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cb.await()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread() &#123;</span><br><span class="line">		s2 = task1()</span><br><span class="line">		cb.await()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	cb.await()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h2><p>AQS 内部通过自旋锁实现同步，自旋锁的本质是利用 <code>CompareAndSwap</code> 避免线程阻塞的开销。因此，我们可以使用基于 CAS 的原子类计数，达到实现无锁操作的目的。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_cas</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> cas = AtomicInteger(<span class="number">2</span>)</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cas.getAndDecrement()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cas.getAndDecrement()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	<span class="keyword">while</span> (cas.<span class="keyword">get</span>() != <span class="number">0</span>) &#123;&#125;</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>while</code> 循环空转看起来有些浪费资源，但是自旋锁的本质就是这样，所以 CAS 仅仅适用于一些cpu密集型的短任务同步。</p>
+<h2 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_Volatile</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	<span class="keyword">while</span> (cnt != <span class="number">0</span>) &#123;&#125;</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意，这种写法是错误的<code>volatile</code> 能保证可见性，但是不能保证原子性，<code>cnt--</code> 并非线程安全，需要加锁操作</strong></p>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>上面无论有锁操作还是无锁操作，都需要定义两个变量<code>s1</code>、<code>s2</code>记录结果非常不方便。Java 1.5 开始，提供了 <code>Callable</code> 和 <code>Future</code> ，可以在任务执行结束时返回结果。</p>
+<p>通过 <code>future.get()</code>，可以同步等待结果返回，写起来非常方便</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_future</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">val</span> future1 = FutureTask(Callable(task1))</span><br><span class="line">	<span class="keyword">val</span> future2 = FutureTask(Callable(task2))</span><br><span class="line">	Executors.newCachedThreadPool().execute(future1)</span><br><span class="line">	Executors.newCachedThreadPool().execute(future2)</span><br><span class="line">	task3(future1.<span class="keyword">get</span>(), future2.<span class="keyword">get</span>())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CompletableFuture"><a href="#CompletableFuture" class="headerlink" title="CompletableFuture"></a>CompletableFuture</h2><p><code>future.get()</code> 虽然方便，但是会阻塞线程。Java 8 中引入了 <code>CompletableFuture</code> ，他实现了 Future 接口的同时实现了 <code>CompletionStage</code> 接口。<code>CompletableFuture</code> 可以针对多个 <code>CompletionStage</code> 进行逻辑组合、实现复杂的异步编程。这些逻辑组合的方法以回调的形式避免了线程阻塞：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_CompletableFuture</span><span class="params">()</span></span> &#123;</span><br><span class="line">	CompletableFuture.supplyAsync(task1)</span><br><span class="line">		.thenCombine(CompletableFuture.supplyAsync(task2)) &#123; p1, p2 -&gt;</span><br><span class="line">				task3(p1, p2)</span><br><span class="line">		&#125;.join()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="RxJava"><a href="#RxJava" class="headerlink" title="RxJava"></a>RxJava</h2><p><code>RxJava</code> 提供的各种操作符以及线程切换能力同样可以帮助我们实现需求：<code>zip</code> 操作符可以组合两个 <code>Observable</code> 的结果；<code>subscribeOn</code> 用来启动异步任务</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_Rxjava</span><span class="params">()</span></span> &#123;</span><br><span class="line">	Observable.zip(</span><br><span class="line">		Observable.fromCallable(Callable(task1))</span><br><span class="line">			.subscribeOn(Schedulers.newThread()),</span><br><span class="line">		Observable.fromCallable(Callable(task2))</span><br><span class="line">			.subscribeOn(Schedulers.newThread()),</span><br><span class="line">    BiFunction(task3)</span><br><span class="line">  ).test().awaitTerminalEvent()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h2><p>协程：<code>kotlin</code>特有</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_coroutine</span><span class="params">()</span></span> &#123;</span><br><span class="line">	runBlocking &#123;</span><br><span class="line">    <span class="keyword">val</span> c1 = async(Dispatchers.IO) &#123;</span><br><span class="line">      task1()</span><br><span class="line">    &#125;</span><br><span class="line">		<span class="keyword">val</span> c2 = async(Dispatchers.IO) &#123;</span><br><span class="line">      task2()</span><br><span class="line">    &#125;</span><br><span class="line">    task3(c1.await(), c2.await())</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Flow"><a href="#Flow" class="headerlink" title="Flow"></a>Flow</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_flow</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">val</span> flow1 = flow&lt;String&gt; &#123; emit(task1()) &#125;</span><br><span class="line">	<span class="keyword">val</span> flow2 = flow&lt;String&gt; &#123; emit(task2()) &#125;    </span><br><span class="line">	runBlocking &#123;</span><br><span class="line">		flow1.zip(flow2) &#123; t1, t2 -&gt;</span><br><span class="line">			task3(t1, t2)</span><br><span class="line">		&#125;.flowOn(Dispatchers.IO)</span><br><span class="line">		.collect()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>flowOn</code> 使得 Task 在异步计算并发射结果。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 线程</a>
+              <a href="/tags/kotlin/" rel="tag"><i class="fa fa-tag"></i> kotlin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/14/tech-2021-09-14-%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/" rel="prev" title="防抖（debounce）和节流（throttle）">
+      <i class="fa fa-chevron-left"></i> 防抖（debounce）和节流（throttle）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/26/personal-2021-09-26-%E6%9B%BC%E5%BE%B7%E6%8B%89%E6%95%88%E5%BA%94/" rel="next" title="曼德拉效应">
+      曼德拉效应 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">线程同步的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Thread-join"><span class="nav-number">1.1.</span> <span class="nav-text">Thread.join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Synchronized"><span class="nav-number">1.2.</span> <span class="nav-text">Synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">1.3.</span> <span class="nav-text">ReentrantLock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BlockingQueue"><span class="nav-number">1.4.</span> <span class="nav-text">BlockingQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CountDownLatch"><span class="nav-number">1.5.</span> <span class="nav-text">CountDownLatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CyclicBarrier"><span class="nav-number">1.6.</span> <span class="nav-text">CyclicBarrier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS"><span class="nav-number">1.7.</span> <span class="nav-text">CAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Volatile"><span class="nav-number">1.8.</span> <span class="nav-text">Volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">1.9.</span> <span class="nav-text">Future</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CompletableFuture"><span class="nav-number">1.10.</span> <span class="nav-text">CompletableFuture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RxJava"><span class="nav-number">1.11.</span> <span class="nav-text">RxJava</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coroutine"><span class="nav-number">1.12.</span> <span class="nav-text">Coroutine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flow"><span class="nav-number">1.13.</span> <span class="nav-text">Flow</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/collection/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;collection&#x2F;" rel="noopener" target="_blank">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/GitBook-Learner/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;GitBook-Learner&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
