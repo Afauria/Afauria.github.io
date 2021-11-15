@@ -12,13 +12,13 @@ keywords: [android, java]
 
 # Java异常
 
-## 1.1. error和exception有什么区别
+## error和exception有什么区别
 
 * error表示系统级的错误，是java运行环境内部错误或者硬件问题，不能指望程序来处理这样的问题，除了退出运行外别无选择，它是Java虚拟机抛出的。
   * 如OutOfMemoryError（内存溢出）、NoClassDefFoundError（类定义错误）
 * exception 表示程序需要捕捉、需要处理的异常，是由与程序设计的不完善而出现的问题，程序必须处理的问题
 
-## 1.2. 运行时异常和一般异常
+## 运行时异常和一般异常
 
 * 一般异常（CheckedException）主要是指IO异常、SQL异常等。对于这种异常，JVM要求我们必须对其进行try-catch处理，否则编译器会报错。
 * **运行时异常（RuntimeException）我们一般不处理**，当出现这类异常的时候程序会由虚拟机接管。比如，我们从来没有去处理过NullPointerException。
@@ -61,16 +61,16 @@ try (MyResource mr = new MyResource()) {
 
 
 
-# 常见异常
+# 常见编译错误
 
-## 1.1. 内存不足，无法启动虚拟机
+## 内存不足，无法启动虚拟机
 
 ```bash
 Error occurred during initialization of VM
 Could not reserve enough space for 1572864KB object heap
 ```
 
-![内存不足](/images/AndroidError/error01.png)
+![内存不足](2019-02-27-AndroidError/error01.png)
 
 解决方案：
 
@@ -93,9 +93,15 @@ Android查看内存、CPU、电量等信息：
 
 * [Android 通过adb shell命令查看内存，CPU，启动时间，电量等信息](https://www.cnblogs.com/flyingcode/p/6113368.html)
 
-## 1.2. sdk版本不正确
+## 内存溢出
 
-![sdk版本](/images/AndroidError/error02.png)
+`java.lang.OutOfMemoryError: Metaspace`
+
+> 有可能是电脑内存不足，重启电脑
+
+## sdk版本不正确
+
+![sdk版本](2019-02-27-AndroidError/error02.png)
 
 ```shell
 * What went wrong:
@@ -105,7 +111,9 @@ Execution failed for task ':girls:compileReleaseRenderscript'.
 
 解决方案：修改build.gradle中的版本号为下载过的sdk版本
 
-## 1.3. Dialog&AlertDialog，WindowManager不能正确使用
+# 常见运行异常
+
+## Dialog&AlertDialog，WindowManager不能正确使用
 
 ```shell
 #20715 android.view.WindowManager$BadTokenException
@@ -122,13 +130,13 @@ Unable to add window -- token android.os.BinderProxy@caaa709 is not valid; is yo
 > 4. 6.0的系统上, (非定制 rom 行为)若没有给予悬浮窗权限, 会弹出该问题, 可以通过Settings.canDrawOverlays来判断是否有该权限.
 > 5. 某些不稳定的MIUI系统bug引起的权限问题，系统把Toast也当成了系统级弹窗，android6.0的系统Dialog弹窗需要用户手动授权，若果app没有加入SYSTEM_ALERT_WINDOW权限就会报这个错。需要加入给app加系统Dialog弹窗权限，并动态申请权限，不满足第一条会出现没权限闪退，不满足第二条会出现没有Toast的情况。
 
-## 1.4. Context启动Activity
+## Context启动Activity
 
 在 Android P 中，无法通过非 Activity 的 Context（如 Service）启动 Activity，除非在 Intent 中添加 FLAG_ACTIVITY_NEW_TASK，否则该 Activity 不会启动，并抛异常。
 
 解决方案：启动 Activity 的地方判断Context是否`instanceof Activity`
 
-## 1.5. 参数不匹配
+## 参数不匹配
 
 ```shell
 #50220 java.lang.IllegalArgumentException
@@ -145,7 +153,7 @@ Unknown color
 > 4. Fragment中嵌套了子Fragment，Fragment被销毁，而内部Fragment未被销毁，所以导致再次加载时重复，在onDestroyView() 中将内部Fragment销毁即可
 > 5. 在请求网络的回调中使用了Glide.into(view),view已经被销毁会导致该错误
 
-## 1.6. 空指针异常（NPE）
+## 空指针异常（NPE）
 
 ```shell
 #2002 java.lang.NullPointerException
@@ -161,7 +169,7 @@ SimpleDraweeView was not initialized!
 > 3. 第三方接口的调用，对返回值进行判空。
 > 4. 请注意线程安全
 
-## 1.7. 数组存储异常
+## 数组存储异常
 
 ```shell
 #28916 java.lang.ArrayStoreException
@@ -175,7 +183,7 @@ source[0] of type com.google.android.gms.internal.zzcek cannot be stored in dest
 > 1. 进行类型判断
 > 2. 重新声明数组类型
 
-## 1.8. Bitmap异常
+## Bitmap异常
 
 ```shell
 #4230 java.lang.RuntimeException
@@ -193,7 +201,7 @@ android.graphics.Canvas.throwIfCannotDraw(Canvas.java:1282)
 
 RuntimeException（运行时异常），是所有Java虚拟机正常操作期间可以被抛出的异常的父类。通常需要关注cause by以下部分的堆栈。
 
-## 1.9. 找不到指定方法
+## 找不到指定方法
 
 ```shell
 #13623 java.lang.NoSuchMethodError
@@ -206,7 +214,7 @@ no non-static method "Lcom/**/**/**;.<init>(Ljava/lang/String;Ljava/l
 > 2. 如果是系统API方法，使用时要注意API Level，如果设置的target version过高，调用低于设置版本的API方法将会报错。
 > 3. setBackground方法在API >= 16才生效
 
-## 1.10. 安全异常、权限异常
+## 安全异常、权限异常
 
 ```shell
 #4523 java.lang.SecurityException
@@ -222,7 +230,7 @@ com.google.android.gms.internal.zzeu.zzb(Unknown Source:10)
 > 1. android6.0以下需要在manifest中声明相应的权限；
 > 2. android6.0及以上，在使用时需要动态申请权限。
 
-## 1.11. 不支持的操作
+## 不支持的操作
 
 ```shell
 #11210 java.lang.UnsupportedOperationException
@@ -236,7 +244,7 @@ Failed to resolve attribute at index 13: TypedValue{t=0x2/d=0x7f040210 a=3}
 >    总体来说就是，该属性在某些奇葩设备下不兼容，尽量使用兼容的属性。
 > 3. 还有一种情况是build目录下的文件没有清除干净，导致失败的。
 
-## 1.12. 内存溢出
+## 内存溢出
 
 ```java
 #17553 java.lang.OutOfMemoryError
@@ -252,7 +260,7 @@ com.facebook.imagepipeline.core.PriorityThreadFactory1.run(PriorityThreadFactory
 > 2. 线程的start_routine结束之前detached；
 > 3. 主线程中使用pthread_join。
 
-## 1.13. 迭代器异常
+## 迭代器异常
 
 ```shell
 #7707 java.util.ConcurrentModificationException
@@ -267,7 +275,7 @@ com.facebook.imagepipeline.core.PriorityThreadFactory1.run(PriorityThreadFactory
 > 1. 使用ConcurrentHashMap替换HashMap，CopyOnWriteArrayList替换ArrayList；
 > 2. 或者使用使用Vector替换ArrayList，Vector是线程安全的。Vector的缺点：大量数据操作时，由于线程安全，性能比ArrayList低.
 
-## 1.14. 通知异常
+## 通知异常
 
 ```shell
 android.app.RemoteServiceException
@@ -285,7 +293,7 @@ android.app.ActivityThreadH.handleMessage(ActivityThread.java:1768)
 > 3. 如果使用了RemoteViews时，需要保证包名的正确性；
 > 4. 注意各个系统版本对于Notification使用方法的差异性。
 
-## 1.15. Native方法没找到
+## Native方法没找到
 
 ```shell
 java.lang.UnsatisfiedLinkError
@@ -294,7 +302,7 @@ Native method not found: com.tutk.IOTC.AVAPIs.avInitialize:(I)I
 
 该异常表示native方法没有找到。报这个错误通常是so库加载失败，或者找不到准备执行的JNI方法，可能是因为method的signature或命名有误，建议使用javah命令行来生成JNI头文件来避免这个问题。
 
-## 1.16. 状态异常
+## 状态异常
 
 ```shell
 #37812 java.lang.IllegalStateException
@@ -337,6 +345,44 @@ Native method not found: com.tutk.IOTC.AVAPIs.avInitialize:(I)I
 >
 > 解决方案：在使用Gson解析JSON时try cash一下,不报错按照正常逻辑继续解析,报异常则处理为请求失败逻辑即可.
 
-## 1.17. Fresco图片加载
+## Fresco图片加载
 
-使用FrescoManager 的时候默认使用的是可轻易被回收的bitmap，如果不在当前页面使用可能会被回收报错。如果报这个错，可以使用FrescoManager.load(String url, ImageView view, boolean canBeRecycled), 传入false，或者直接使用Fresco的SimpleDraweeView,这个是官方推荐的做法
+使用FrescoManager 的时候默认使用的是可轻易被回收的bitmap，如果不在当前页面使用可能会被回收报错。如果报这个错，可以使用FrescoManager.load(String url, ImageView view, boolean canBeRecycled), 传入false，或者直接使用Fresco的SimpleDraweeView,这个是官方推荐的做法。
+
+# 版本适配问题
+
+## Android P使用http明文传输
+
+报错：`java.io.IOException: Cleartext HTTP traffic to  not permitted`
+
+解决方案：
+
+1. APP改用https请求
+2. targetSdkVersion 降到27以下
+3. 更改网络安全配置
+
+方式一：
+
+manifest文件中`<application>`标签添加：`android:usesCleartextTraffic="true"`
+
+方式二：
+
+1. 创建`res/xml/network_security_config.xml`文件，配置如下
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
+```
+
+2. 修改manifest文件，引入配置
+
+ ```xml
+ <application
+ 	android:networkSecurityConfig="@xml/network_security_config"
+ />
+ ```
+
+
+
