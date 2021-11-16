@@ -301,7 +301,7 @@ MVVM核心：可观察数据驱动UI。
    3. View和Presenter一般情况下是一对一。View和Controller是多对多，一个页面可以包含多个控制器，一个控制器可以被多个页面使用。
 3. MVC做到了视图和数据的**分离**，MVP做到了视图和逻辑的**分离**，数据和视图的**隔离**
 
-# Android中架构模式演变过程：MVC->MVP->MVVM
+# Android架构模式演变：MVC->MVP->MVVM
 
 1. MVC问题：Activity承担了View和Controller的职责，同时View和Model存在耦合
 2. MVP：抽取业务逻辑放到Presenter中，隔离了View和Model，View只能和Presenter交互
