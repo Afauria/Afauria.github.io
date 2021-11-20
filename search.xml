@@ -5043,7 +5043,24 @@ end</pre>
   <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
-    <content><![CDATA[<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>大体有两种思路</p>
+    <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
+<ol>
+<li>通过网站提供的API进行爬取<ol>
+<li>有的网站不提供API。</li>
+<li>API可能收费。</li>
+<li>API可能有速率限制</li>
+<li>API可能不会公开部分数据</li>
+</ol>
+</li>
+<li>基于HTML的数据抓取：通过访问网页的HTML代码，并从中抓取到所需节点上的数据。网页结构一旦变化，抓取代码可能需要重写。<ol>
+<li>全网爬虫：主要用于搜索引擎。深度优先策略、广度优先策略。</li>
+<li>聚焦网络爬虫：爬取特定主题页面。</li>
+<li>增量式网络爬虫：只爬取新产生或者发生变化的页面。</li>
+<li>Deep Web爬虫：需要提交表单才能获取到页面</li>
+</ol>
+</li>
+</ol>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>大体有两种思路</p>
 <ol>
 <li>使用python定期抓取数据，写入自己的数据库，再自己写个后端服务，前端请求自己的后端数据</li>
 </ol>
@@ -9065,14 +9082,14 @@ end</pre>
 <li><a href="http://java-decompiler.github.io/"><code>jd-gui</code></a>：查看jar源码文件</li>
 </ul>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><pre class="mermaid">graph LR
-apk--apktool-->dex文件--dex2jar-->jar文件-->使用jd-gui查看java源代码
-apk--apktool-->smali文件-->对照java源代码修改smali汇编代码-->打包-->重签名
-apk--apktool-->资源文件-->修改资源文件-->打包</pre>
+apk--解压-->dex文件--dex2jar-->jar文件-->使用jd-gui查看java源代码
+apk--apktool-->smali文件-->对照java源代码修改smali汇编代码-->apktool打包-->重签名
+apk--apktool-->资源文件-->修改资源文件-->apktool打包</pre>
 
 <p>其他工具：</p>
 <p><a href="https://github.com/skylot/jadx">jadx</a>：反编译dex、aar、aab、apk、资源等，包括可视化和命令行方式</p>
 <p><a href="https://github.com/Jermic/Android-Crack-Tool">CrackTool</a>：反编译、签名、可视化工具</p>
-<p><a href>jbe</a>：字节码编辑器，用于查看和修改java类文件</p>
+<p><a href>jbe</a>：字节码编辑器，用于查看和修改class字节码文件</p>
 <h2 id="各类文件说明和转换"><a href="#各类文件说明和转换" class="headerlink" title="各类文件说明和转换"></a>各类文件说明和转换</h2><h3 id="安装前"><a href="#安装前" class="headerlink" title="安装前"></a>安装前</h3><ol>
 <li>jar文件：Java归档文件，以zip格式构建，包含java和一些元数与资源文件</li>
 <li>apk文件：安卓应用安装包，本质是一个压缩包，可以将后缀名改为zip直接解压，解压缩后会得到dex文件、资源文件、so文件等</li>
@@ -10748,9 +10765,9 @@ apk--apktool-->资源文件-->修改资源文件-->打包</pre>
 <td></td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>ToS</td>
+<td>Terms of Service</td>
+<td>服务条款</td>
 <td></td>
 </tr>
 </tbody></table>
@@ -10799,20 +10816,20 @@ apk--apktool-->资源文件-->修改资源文件-->打包</pre>
 </thead>
 <tbody><tr>
 <td>CPA</td>
-<td>Call To Action</td>
-<td></td>
+<td>Cost To Action</td>
+<td>根据用户行为付费的计费方式（如打开一次广告，注册一次账号，购买一次会员等）</td>
 <td></td>
 </tr>
 <tr>
 <td>CPS</td>
-<td>Call To</td>
-<td></td>
+<td>Cost To Sales</td>
+<td>以实际销售产品数量支付佣金的计费方式</td>
 <td></td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>ASO</td>
+<td>App Store Optimization</td>
+<td>应用商店优化</td>
 <td></td>
 </tr>
 <tr>
