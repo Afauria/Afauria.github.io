@@ -9084,12 +9084,14 @@ end</pre>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><pre class="mermaid">graph LR
 apk--解压-->dex文件--dex2jar-->jar文件-->使用jd-gui查看java源代码
 apk--apktool-->smali文件-->对照java源代码修改smali汇编代码-->apktool打包-->重签名
-apk--apktool-->资源文件-->修改资源文件-->apktool打包</pre>
+apk--apktool-->资源文件-->修改资源文件-->apktool打包
+apk--解压-->二进制资源文件-->使用AXMLEditor修改二进制文件--压缩-->修改zip为apk-->重签名</pre>
 
 <p>其他工具：</p>
 <p><a href="https://github.com/skylot/jadx">jadx</a>：反编译dex、aar、aab、apk、资源等，包括可视化和命令行方式</p>
 <p><a href="https://github.com/Jermic/Android-Crack-Tool">CrackTool</a>：反编译、签名、可视化工具</p>
-<p><a href>jbe</a>：字节码编辑器，用于查看和修改class字节码文件</p>
+<p><a href="http://set.ee/jbe/">jbe</a>：字节码编辑器，用于查看和修改class字节码文件</p>
+<p><a href="https://github.com/fourbrother/AXMLEditor">AXMLEditor</a>：<code>AndroidManifest.xml</code>打包之后会被编译成二进制文件，使用apktool可以反编译回来，但是使用apktool有时候无法再编译回apk。可以直接解压apk，使用该工具直接修改二进制文件，再压缩回apk</p>
 <h2 id="各类文件说明和转换"><a href="#各类文件说明和转换" class="headerlink" title="各类文件说明和转换"></a>各类文件说明和转换</h2><h3 id="安装前"><a href="#安装前" class="headerlink" title="安装前"></a>安装前</h3><ol>
 <li>jar文件：Java归档文件，以zip格式构建，包含java和一些元数与资源文件</li>
 <li>apk文件：安卓应用安装包，本质是一个压缩包，可以将后缀名改为zip直接解压，解压缩后会得到dex文件、资源文件、so文件等</li>
@@ -9129,8 +9131,10 @@ apk--apktool-->资源文件-->修改资源文件-->apktool打包</pre>
 <li>混淆</li>
 <li>加固：加密dex和so，先运行壳dex代码，通过壳dex代码自定义DexClassLoader解析加密后的dex运行</li>
 <li>敏感计算、数据、不要放客户端</li>
+<li>核心方法使用Native</li>
 <li>不要在代码中直接使用字符串，通过资源获取</li>
 <li>签名校验：运行时在代码中对应用签名进行校验</li>
+<li>插入代码花指令，使反编译工具报错：可以结合apt、asm插入，避免影响原代码阅读</li>
 <li>…</li>
 </ol>
 <h1 id="应用安全CheckList"><a href="#应用安全CheckList" class="headerlink" title="应用安全CheckList"></a>应用安全CheckList</h1><p>引自：<a href="https://www.jianshu.com/p/4ff48b761ff6">Android应用加固原理</a></p>
