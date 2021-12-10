@@ -1,6 +1,10 @@
 ---
+layout: post
 title: {{ title }}
 date: {{ date }}
-tags: Android
-categories: Android
+categories: 技术
+description: 介绍
+tags: 
+- Android
+keywords: [Android]
 ---

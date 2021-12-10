@@ -39,7 +39,7 @@ canvas_ribbon:
 
 ## 修改文章底部的带#号的标签
 
-修改模板/themes/next/layout/_macro/post.swig，搜索 rel=”tag”>#，将 # 换成`<i class="fa fa-tag"></i>`
+修改模板`/themes/next/layout/_macro/post.swig`，搜索 rel=”tag”>#，将 # 换成`<i class="fa fa-tag"></i>`
 
 ## 设置网站的图标Favicon
 
@@ -80,7 +80,7 @@ npm install hexo-generator-searchdb --save
 > local_search:
 > ​	enable: true
 
-踩坑：启用搜索功能之后，使用`hexo serve`运行正常，点击按钮弹出搜索框，发布到GitPage，搜索框直接显示到搜索按钮旁边了。
+【踩坑】：启用搜索功能之后，使用`hexo serve`运行正常，点击按钮弹出搜索框，发布到GitPage，搜索框直接显示到搜索按钮旁边了。
 
 > 打开浏览器开发者工具，找到html元素，查看本地和GitPage页面差异，发现两者`main.css`样式不同，GitPage上搜素框css样式丢失
 >
@@ -123,6 +123,77 @@ comments: false
 为了让博文被google或百度检索，需要使用hexo的sitemap功能。
 
 见[hexo博客站点sitemap的使用](https://eericzeng.github.io/2019/07/14/hexo%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9sitemap%E7%9A%84%E4%BD%BF%E7%94%A8/)
+
+## 添加博客字数统计
+
+1. 安装插件：`npm i hexo-symbols-count-time --save`
+2. 修改站点配置文件
+
+```yml
+symbols_count_time:
+  symbols: true # 文章字数
+  time: true   # 文章阅读时长
+  total_symbols: true   # 站点总字数
+  total_time: true  # 站点总阅读时长
+  exclude_codeblock: false   # 排除代码字数统计
+  awl: 4   # 平均单词长度
+  wpm: 275   # 平均每分钟阅读单词数
+  suffix: "mins." # 时长单位
+```
+
+3. 修改主题配置文件
+
+```yml
+symbols_count_time:
+  separated_meta: false   # 是否另起一行
+  item_text_post: true
+  item_text_total: true
+```
+
+【踩坑】：配置之后发现文章字数始终为空，打印`post.length`为`undefined`。最终发现因为先安装了`hexo-wordcount`，卸载之后需要执行`hexo clean`清除缓存
+
+## 添加站点访问统计
+
+修改主题配置文件，页脚会出现访问量。**会和`Live2d`冲突。可以使用valine的visitor进行字数统计，见下文添加评论系统**
+
+```yml
+busuanzi_count:
+  enable: true
+```
+
+## 添加站点访问统计评论系统
+
+使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）
+
+由于`busuanzi`统计站点访问量会和`Live2d`插件冲突，因此使用Valine visitor进行访问统计。（会和`leancloud_visitors`冲突，打开一个就行）
+
+步骤如下：
+
+1. 注册[LeanCloud](https://www.leancloud.cn/)账号，实名认证
+2. 进入控制台，创建应用
+3. 在【设置-应用凭证】中找到appId和appKey
+4. 【设置-安全中心】可以配置Web安全域名，避免别人拿到appId和appKey之后使用
+5. 在LeanCloud控制台【数据存储-结构化数据】中创建Class，起名为Counter，如下图。（Comment为评论记录，Counter为访问记录）
+
+![](2018-10-20-NextConfig/LeanCloud创建Class.png)
+
+7. 修改主题配置文件，如下
+
+```yml
+valine:
+  enable: true
+  appid: "第3步中的appId" # Your leancloud application appid
+  appkey: "第3步中的appKey" # Your leancloud application appkey
+  placeholder: "欢迎交流讨论" # Comment box placeholder
+  avatar: mm # Gravatar style
+  guest_info: nick,mail,link # Custom comment header
+  pageSize: 10 # Pagination size
+  language: # Language, available values: en, zh-cn
+  visitor: true # 文章阅读统计
+  comment_count: true # 文章评论
+```
+
+
 
 ## 配置Live2d卡通人物
 

@@ -108,3 +108,14 @@ live2d:
     scale: 0.5
   react:
     opacity: 0.7
+
+symbols_count_time:
+  symbols: true # 文章字数
+  time: true   # 文章阅读时长
+  total_symbols: true   # 站点总字数
+  total_time: true  # 站点总阅读时长
+  exclude_codeblock: false   # 排除代码字数统计
+  awl: 4   # 平均单词长度
+  wpm: 275   # 平均每分钟阅读单词数
+  suffix: "mins." # 时长单位
+

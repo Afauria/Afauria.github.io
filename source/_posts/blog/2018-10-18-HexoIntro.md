@@ -158,8 +158,6 @@ description: Hexo一些概念、命令、配置等
 | ---------- | -------- |
 | `page.tag` | 标签名称 |
 
-
-
 # Hexo常用命令
 
 ## 安装插件
@@ -199,10 +197,13 @@ description: Hexo一些概念、命令、配置等
 
 ## 写作
 
-| 命令                          | 解释                                                         |
-| ----------------------------- | ------------------------------------------------------------ |
-| hexo publish [layout] <title> | 发表草稿                                                     |
-| hexo new [layout] <title>     | 新建文章。如果没有设置 `layout` 的话，默认使用站点配置文件 [_config.yml](https://hexo.io/zh-cn/docs/configuration) 中的 `default_layout` 参数（默认为post）代替。如果标题包含空格的话，使用引号括起来。<br>hexo new post 文章名：新建文章<br>hexo new page 页面名：新建页面，如关于、分类、标签<br>hexo new draft 草稿名：新建草稿 |
+`hexo new [layout] <title>`：新建文章。如果指定设置 `layout` 的话，默认使用站点配置文件 [_config.yml](https://hexo.io/zh-cn/docs/configuration) 中的 `default_layout` 参数（默认为post）代替。如果标题包含空格的话，使用引号括起来。
+
+* hexo new post 文章名：新建文章，会在`source/_post/`目录下新建文件
+* hexo new draft 草稿名：新建草稿，会在`source/_draft/`目录下新建文件
+* hexo new page 页面名：新建页面，会生成`source/页面名/index.md`，如关于、分类、标签
+
+可以自定义模版，在`scaffolds`目录下新建或修改模版文件，`hexo new `会从`scaffolds`文件夹下找到对应的模版，生成文件。
 
 ## 其他选项
 
@@ -214,8 +215,6 @@ description: Hexo一些概念、命令、配置等
 | hexo --config custom.yml | 自定义配置文件的路径，执行后将不再使用 `_config.yml`         |
 | hexo --draft             | 显示 `source/_drafts` 文件夹中的草稿文章                     |
 | hexo --cwd /path/to/cwd  | 自定义当前工作目录（Current working directory）的路径。      |
-
-
 
 # Hexo配置参数说明
 
