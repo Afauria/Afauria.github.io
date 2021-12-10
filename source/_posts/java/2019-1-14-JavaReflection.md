@@ -46,4 +46,6 @@ Method：类中的方法对象
 
 Modifier
 
+虚拟机允许两个相同类名的class被不同的ClassLoader加载，在运行时也会被认为是两个不同的类，因此需要注意不能相互赋值， 不然会抛出ClassCastException。
+
 # 4. 代码实现
