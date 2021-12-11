@@ -372,3 +372,4 @@ live2d:
 2. [Hexo+NexT 主题配置备忘](http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html)
 3. [hexo博客添加搜索功能](https://blog.csdn.net/qq_40265501/article/details/80030627)
 4. [hexo(next)——每日一言、今日诗词](https://blog.csdn.net/qq_44036990/article/details/105088198)
+4. [Hexo博客+Next主题深度优化与定制](https://blog.csdn.net/qq_42889280/article/details/103087433)
