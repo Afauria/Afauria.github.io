@@ -288,35 +288,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         logParsingError(element, BindView.class, e);
       }
     }
-    Map<TypeElement, ClasspathBindingSet> classpathBindings =
-        findAllSupertypeBindings(builderMap, erasedTargetNames);
-
-    Deque<Map.Entry<TypeElement, BindingSet.Builder>> entries =
-        new ArrayDeque<>(builderMap.entrySet());
-    Map<TypeElement, BindingSet> bindingMap = new LinkedHashMap<>();
-    while (!entries.isEmpty()) {
-      Map.Entry<TypeElement, BindingSet.Builder> entry = entries.removeFirst();
-
-      TypeElement type = entry.getKey();
-      BindingSet.Builder builder = entry.getValue();
-
-      TypeElement parentType = findParentType(type, erasedTargetNames, classpathBindings.keySet());
-      if (parentType == null) {
-        bindingMap.put(type, builder.build());
-      } else {
-        BindingInformationProvider parentBinding = bindingMap.get(parentType);
-        if (parentBinding == null) {
-          parentBinding = classpathBindings.get(parentType);
-        }
-        if (parentBinding != null) {
-          builder.setParent(parentBinding);
-          bindingMap.put(type, builder.build());
-        } else {
-          // Has a superclass binding but we haven't built it yet. Re-enqueue for later.
-          entries.addLast(entry);
-        }
-      }
-    }
+    //省略遍历查找父类binder...
     return bindingMap;
   }
 }
@@ -582,25 +554,25 @@ final class BindingSet implements BindingInformationProvider {
 4. 使用`JavaPoet`库的API生成Java文件对象。
 5. 最后使用`Filer`类写入文件。
 
-## 注解处理器执行原理
+## APT如何找到自定义注解处理器？
 
-使用了JavaSPI（Service Provider Interface，服务发现接口）机制。APT运行的时候加载Processor接口，通过`ServiceLoader`读取services下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。
+APT是如何找到自定义的`ButterKnifeProcessor`注解处理器并执行的呢？
 
-1. 手动创建：main目录下面新建`resources/META_INF/services/javax.annotation.processing.Processor`文件，在文件中写入注解处理器全称，包括包路径（可以配置多个注解处理器）。格式如下
+> 使用了JavaSPI（Service Provider Interface，服务发现接口）机制。关于JavaSPI机制可以阅读[另一篇文章](/2021/12/06/architecture-2021-12-06-SPI/)
 
-```
-butterknife.compiler.ButterKnifeProcessor
-```
+原理：APT运行的时候加载Processor接口，通过`ServiceLoader`读取services下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。（类似于`AndroidManifest`注册组件）
 
-2. 使用Google的AutoService库：只要在注解处理器上添加`@AutoService(Processor.class)`，即可自动生成SPI文件
+具体介绍和配置可以参考[APT介绍和实践](/2021/12/08/tech-2021-12-08-APT/)
 
-```java
-//使用Google提供的@AutoService注解
-//自动生成/META_INF/services/javax.annotation.processing.Processor文件，并打包进jar包中
-@AutoService(Processor.class)
-public final class ButterKnifeProcessor extends AbstractProcessor {
-}
-```
+## 增量注解处理器
+
+注意到`ButterKnife`中还依赖了一个`incap`的库，并且使用了它的注解`@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.DYNAMIC)`。
+
+> Gradle支持配置增量注解处理器，通过在`main`目录下新建`resources/META-INF/gradle/incremental.annotation.processors`文件进行配置
+>
+> 这个库实际上就是通过注解+APT自动帮我们生成了配置文件
+
+具体介绍和可以参考[APT介绍和实践](/2021/12/08/tech-2021-12-08-APT/)
 
 # Android视图绑定历程
 
