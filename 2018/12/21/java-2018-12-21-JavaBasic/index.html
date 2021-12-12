@@ -28,7 +28,7 @@
 <meta property="og:description" content="平常写代码的时候很多细节没有注意，就是凭感觉和习惯，理论很少去记，因此记录下来作为复习和回顾">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-12-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.051Z">
+<meta property="article:modified_time" content="2021-12-11T17:24:53.932Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2021-12-12 01:24:53" itemprop="dateModified" datetime="2021-12-12T01:24:53+08:00">2021-12-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,7 +269,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>3.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -289,11 +289,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-知识点"><a href="#1-知识点" class="headerlink" title="1. 知识点"></a>1. 知识点</h1><h2 id="1-1-重写和重载"><a href="#1-1-重写和重载" class="headerlink" title="1.1. 重写和重载"></a>1.1. 重写和重载</h2><ul>
+        <h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><h2 id="重写和重载"><a href="#重写和重载" class="headerlink" title="重写和重载"></a>重写和重载</h2><ul>
 <li>重写：子类对父类方法重新定义，具有相同的方法名，参数，返回类型，若是重写了方法，则要使用父类方法需要使用super，子类访问权限不能比父类严格，子类抛出异常范围不能比父类大（RuntimeException除外）</li>
 <li>重载：参数个数、类型不同，返回值可以不同</li>
 </ul>
-<h2 id="1-2-数组定义"><a href="#1-2-数组定义" class="headerlink" title="1.2. 数组定义"></a>1.2. 数组定义</h2><ul>
+<h2 id="数组定义"><a href="#数组定义" class="headerlink" title="数组定义"></a>数组定义</h2><ul>
 <li>定义一维数组时，必须显式指明数组的长度； </li>
 <li>定义多维数组时，其一维数组的长度必须首先指明，其他维数组长度可以稍后指定； </li>
 <li>采用给定值初始化数组时，不必指明长度； <code>int[] a = &#123;1, 2, 3&#125;</code></li>
@@ -302,7 +302,7 @@
 <p>二维数组声明可以如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> []b[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> [][]c = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][<span class="number">10</span>];</span><br><span class="line"><span class="comment">//多维数组可以先声明第一维长度，后面的长度可以稍后声明</span></span><br><span class="line"><span class="keyword">int</span> d[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]【】;</span><br></pre></td></tr></table></figure>
 
-<h2 id="1-3-四种引用"><a href="#1-3-四种引用" class="headerlink" title="1.3. 四种引用"></a>1.3. 四种引用</h2><ul>
+<h2 id="四种引用"><a href="#四种引用" class="headerlink" title="四种引用"></a>四种引用</h2><ul>
 <li>强引用：普通的引用</li>
 <li>软引用：内存不足时被回收</li>
 <li>弱引用：除了弱引用外没有其他的引用则会被回收</li>
@@ -313,25 +313,25 @@
 </li>
 </ul>
 <p>引用队列：引用的对象将要被JVM回收时，会将其加入到引用队列中。通过引用队列可以了解JVM垃圾回收情况。</p>
-<h1 id="2-细节"><a href="#2-细节" class="headerlink" title="2. 细节"></a>2. 细节</h1><h2 id="2-1-amp-amp-和-amp-的区别"><a href="#2-1-amp-amp-和-amp-的区别" class="headerlink" title="2.1. &amp;&amp;和&amp;的区别"></a>2.1. &amp;&amp;和&amp;的区别</h2><ul>
+<h1 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h1><h2 id="amp-amp-和-amp-的区别"><a href="#amp-amp-和-amp-的区别" class="headerlink" title="&amp;&amp;和&amp;的区别"></a>&amp;&amp;和&amp;的区别</h2><ul>
 <li>&amp;&amp;：短路与，即前面的表达式能确定结果就不执行后面的表达式，可以用来代替简单的if语句</li>
 <li>&amp;：不短路与，前后表达式都需要执行</li>
 </ul>
-<h2 id="2-2-接口可以继承多个接口"><a href="#2-2-接口可以继承多个接口" class="headerlink" title="2.2. 接口可以继承多个接口"></a>2.2. 接口可以继承多个接口</h2><ul>
+<h2 id="接口可以继承多个接口"><a href="#接口可以继承多个接口" class="headerlink" title="接口可以继承多个接口"></a>接口可以继承多个接口</h2><ul>
 <li>类只能继承一个类，但可以实现多个接口</li>
 <li>接口不可以实现接口，但可以继承多个接口（不用实现） A extends B,C</li>
 </ul>
-<h2 id="2-3-equals和"><a href="#2-3-equals和" class="headerlink" title="2.3. equals和=="></a>2.3. equals和==</h2><p>==判断是否是同一个对象（对于非基本类型）</p>
+<h2 id="equals和"><a href="#equals和" class="headerlink" title="equals和=="></a>equals和==</h2><p>==判断是否是同一个对象（对于非基本类型）</p>
 <p>equals判断的是内容是否相同，可以通过重写对象的equals方法来自定义比较规则</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例</span></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line">System.out.println(a.equals(b));<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-3-String常量池"><a href="#2-3-String常量池" class="headerlink" title="2.3. String常量池"></a>2.3. String常量池</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">System.out.println(a==b);<span class="comment">//true：同一个对象。</span></span><br><span class="line"><span class="comment">//使用双引号创建的是字符串常量，存储在常量池中</span></span><br><span class="line"><span class="comment">//创建常量对象的时候会先判断常量池中是否已经存在，如果存在则直接引用</span></span><br><span class="line"></span><br><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line"><span class="comment">//使用new String创建对象，存放在堆中，两个引用不相等</span></span><br><span class="line"><span class="comment">//实际上是将常量池中的123复制到了堆中，如果常量池没有，会先再常量池中创建，如下</span></span><br><span class="line"></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line"><span class="comment">//实际上创建了两个对象，一个在常量池，一个在堆中</span></span><br><span class="line"><span class="comment">//如果前面常量池已经有该字符串，则只创建一个对象。</span></span><br></pre></td></tr></table></figure>
+<h2 id="String常量池"><a href="#String常量池" class="headerlink" title="String常量池"></a>String常量池</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">System.out.println(a==b);<span class="comment">//true：同一个对象。</span></span><br><span class="line"><span class="comment">//使用双引号创建的是字符串常量，存储在常量池中</span></span><br><span class="line"><span class="comment">//创建常量对象的时候会先判断常量池中是否已经存在，如果存在则直接引用</span></span><br><span class="line"></span><br><span class="line">String a = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">String b = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">System.out.println(a==b);<span class="comment">//false</span></span><br><span class="line"><span class="comment">//使用new String创建对象，存放在堆中，两个引用不相等</span></span><br><span class="line"><span class="comment">//实际上是将常量池中的123复制到了堆中，如果常量池没有，会先再常量池中创建，如下</span></span><br><span class="line"></span><br><span class="line">String a = <span class="keyword">new</span> String(<span class="string">&quot;123&quot;</span>);</span><br><span class="line"><span class="comment">//实际上创建了两个对象，一个在常量池，一个在堆中</span></span><br><span class="line"><span class="comment">//如果前面常量池已经有该字符串，则只创建一个对象。</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-4-继承时构造方法"><a href="#2-4-继承时构造方法" class="headerlink" title="2.4. 继承时构造方法"></a>2.4. 继承时构造方法</h2><ul>
+<h2 id="继承时构造方法"><a href="#继承时构造方法" class="headerlink" title="继承时构造方法"></a>继承时构造方法</h2><ul>
 <li>子类构造方法总是先调用父类的构造方法，如果没有显式指明调用父类哪个构造方法，则默认调用无参构造方法</li>
 <li>若父类没有无参构造方法，子类需要在自己的构造函数中显式调用父类的构造函数<code>super(arg);</code>，并且一定要在第一行调用。若不调用，编译器会报错</li>
 </ul>
-<h2 id="2-5-继承时初始化顺序"><a href="#2-5-继承时初始化顺序" class="headerlink" title="2.5. 继承时初始化顺序"></a>2.5. 继承时初始化顺序</h2><ul>
+<h2 id="继承时初始化顺序"><a href="#继承时初始化顺序" class="headerlink" title="继承时初始化顺序"></a>继承时初始化顺序</h2><ul>
 <li>父类的静态变量</li>
 <li>父类静态代码块</li>
 <li>子类的静态变量</li>
@@ -343,8 +343,8 @@
 <li>子类普通代码块</li>
 <li>子类无参构造函数</li>
 </ul>
-<h2 id="2-6-自动装箱-拆箱"><a href="#2-6-自动装箱-拆箱" class="headerlink" title="2.6. 自动装箱/拆箱"></a>2.6. 自动装箱/拆箱</h2><p>装箱：将8个基本类型转换成对应的包装类型。拆箱则反过来</p>
-<h3 id="2-6-1-基本数据类型和包装类"><a href="#2-6-1-基本数据类型和包装类" class="headerlink" title="2.6.1. 基本数据类型和包装类"></a>2.6.1. 基本数据类型和包装类</h3><p>在Java语言中，<code>new</code>一个对象是存储在堆里的，我们通过栈中的引用来使用这些对象；所以，对象本身来说是比较消耗资源的。对于经常用到的类型，如int等，如果我们每次使用这种变量的时候都需要new一个Java对象的话，就会比较笨重。</p>
+<h2 id="自动装箱-拆箱"><a href="#自动装箱-拆箱" class="headerlink" title="自动装箱/拆箱"></a>自动装箱/拆箱</h2><p>装箱：将8个基本类型转换成对应的包装类型。拆箱则反过来</p>
+<h3 id="基本数据类型和包装类"><a href="#基本数据类型和包装类" class="headerlink" title="基本数据类型和包装类"></a>基本数据类型和包装类</h3><p>在Java语言中，<code>new</code>一个对象是存储在堆里的，我们通过栈中的引用来使用这些对象；所以，对象本身来说是比较消耗资源的。对于经常用到的类型，如int等，如果我们每次使用这种变量的时候都需要new一个Java对象的话，就会比较笨重。</p>
 <p>Java是一种面向对象语言，很多地方都需要使用对象而不是基本数据类型。比如，在集合类中，我们是无法将int 、double等类型放进去的。因为集合的容器要求元素是Object类型。为了让基本类型也具有对象的特征，就出现了包装类型，它相当于将基本类型“包装起来”，使得它具有了对象的性质，并且为其添加了属性和方法，丰富了基本类型的操作。</p>
 <table>
 <thead>
@@ -403,7 +403,7 @@
 <p>《Java虚拟机规范》一书中的描述：“虽然定义了boolean这种数据类型，但是只对它提供了非常有限的支持。在Java虚拟机中没有任何供boolean值专用的字节码指令，Java语言表达式所操作的boolean值，在编译之后都使用Java虚拟机中的int数据类型来代替，而boolean数组将会被编码成Java虚拟机的byte数组，每个元素boolean元素占8位”。这样我们可以得出boolean类型占了单独使用是4个字节，在数组中又是1个字节。</p>
 <p>使用int的原因是，对于当下32位的处理器（CPU）来说，一次处理数据是32位（这里不是指的是32/64位系统，而是指CPU硬件层面），具有高效存取的特点。</p>
 </blockquote>
-<h3 id="2-6-2-自动装箱、拆箱"><a href="#2-6-2-自动装箱、拆箱" class="headerlink" title="2.6.2. 自动装箱、拆箱"></a>2.6.2. 自动装箱、拆箱</h3><ul>
+<h3 id="自动装箱、拆箱"><a href="#自动装箱、拆箱" class="headerlink" title="自动装箱、拆箱"></a>自动装箱、拆箱</h3><ul>
 <li>在Java SE5之前，装箱：<code>Integer i = new Integer(10);</code></li>
 <li>在Java SE5中，提供了自动装箱、拆箱功能</li>
 </ul>
@@ -414,7 +414,7 @@
 <p>将上述代码反编译后得到</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[]args)</span></span>&#123;</span><br><span class="line">    Integer integer=Integer.valueOf(<span class="number">1</span>); <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">int</span> i=integer.intValue(); <span class="comment">//拆箱</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-6-3-常见场景"><a href="#2-6-3-常见场景" class="headerlink" title="2.6.3 常见场景"></a>2.6.3 常见场景</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//基本数据类型放入集合类</span></span><br><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">50</span>; i ++)&#123;</span><br><span class="line">    li.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//基本数据类型放入集合类</span></span><br><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">50</span>; i ++)&#123;</span><br><span class="line">    li.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//包装类型与基本数据类型比较</span></span><br><span class="line"><span class="comment">//理论上==是比较对象地址，这里实现了拆箱</span></span><br><span class="line">Integer a=<span class="number">1</span>;</span><br><span class="line">System.out.println(a==<span class="number">1</span>?<span class="string">&quot;等于&quot;</span>:<span class="string">&quot;不等于&quot;</span>);<span class="comment">//等于</span></span><br><span class="line">Boolean bool=<span class="keyword">false</span>;</span><br><span class="line">System.out.println(bool?<span class="string">&quot;真&quot;</span>:<span class="string">&quot;假&quot;</span>);<span class="comment">//真</span></span><br></pre></td></tr></table></figure>
 
@@ -428,6 +428,10 @@
 
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wufaliang003/article/details/82347077">什么是Java中的自动拆装箱</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2f663dc820d0">你真的知道Java中boolean类型占用多少个字节吗？</a></p>
+<p>待补充更新知识点：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b5b919f24f82">https://www.jianshu.com/p/b5b919f24f82</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2adb8fe74987">https://www.jianshu.com/p/2adb8fe74987</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/63TOcAyQL9LIEX9UHLtmyw">https://mp.weixin.qq.com/s/63TOcAyQL9LIEX9UHLtmyw</a></p>
 
     </div>
 
@@ -470,8 +474,8 @@
       <i class="fa fa-chevron-left"></i> Cmder——Windows下好用的命令行工具
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/01/01/android-2019-01-01-ReactNative/" rel="next" title="ReactNative学习">
-      ReactNative学习 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/01/01/algorithm-2019-01-01-SortAlgorithm/" rel="next" title="排序算法">
+      排序算法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -533,7 +537,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">1. 知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 重写和重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 数组定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 四种引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BB%86%E8%8A%82"><span class="nav-number">2.</span> <span class="nav-text">2. 细节</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-amp-amp-%E5%92%8C-amp-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. &amp;&amp;和&amp;的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%8E%A5%E5%8F%A3%E5%8F%AF%E4%BB%A5%E7%BB%A7%E6%89%BF%E5%A4%9A%E4%B8%AA%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 接口可以继承多个接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-equals%E5%92%8C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. equals和&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-String%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">2.4.</span> <span class="nav-text">2.3. String常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%BB%A7%E6%89%BF%E6%97%B6%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">2.4. 继承时构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E7%BB%A7%E6%89%BF%E6%97%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.6.</span> <span class="nav-text">2.5. 继承时初始化顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1-%E6%8B%86%E7%AE%B1"><span class="nav-number">2.7.</span> <span class="nav-text">2.6. 自动装箱&#x2F;拆箱</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-1-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%8C%85%E8%A3%85%E7%B1%BB"><span class="nav-number">2.7.1.</span> <span class="nav-text">2.6.1. 基本数据类型和包装类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E3%80%81%E6%8B%86%E7%AE%B1"><span class="nav-number">2.7.2.</span> <span class="nav-text">2.6.2. 自动装箱、拆箱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-3-%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="nav-number">2.8.</span> <span class="nav-text">2.6.3 常见场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD"><span class="nav-number">1.1.</span> <span class="nav-text">重写和重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">数组定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">四种引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%86%E8%8A%82"><span class="nav-number">2.</span> <span class="nav-text">细节</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#amp-amp-%E5%92%8C-amp-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">&amp;&amp;和&amp;的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%8F%AF%E4%BB%A5%E7%BB%A7%E6%89%BF%E5%A4%9A%E4%B8%AA%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.2.</span> <span class="nav-text">接口可以继承多个接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#equals%E5%92%8C"><span class="nav-number">2.3.</span> <span class="nav-text">equals和&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">2.4.</span> <span class="nav-text">String常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E6%97%B6%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">继承时构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E6%97%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.6.</span> <span class="nav-text">继承时初始化顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1-%E6%8B%86%E7%AE%B1"><span class="nav-number">2.7.</span> <span class="nav-text">自动装箱&#x2F;拆箱</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%8C%85%E8%A3%85%E7%B1%BB"><span class="nav-number">2.7.1.</span> <span class="nav-text">基本数据类型和包装类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E3%80%81%E6%8B%86%E7%AE%B1"><span class="nav-number">2.7.2.</span> <span class="nav-text">自动装箱、拆箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="nav-number">2.7.3.</span> <span class="nav-text">常见场景</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -549,14 +553,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -643,13 +647,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">358k</span>
+    <span title="站点总字数">365k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:26</span>
+    <span title="站点阅读时长">5:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

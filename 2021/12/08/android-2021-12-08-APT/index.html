@@ -23,18 +23,21 @@
   <meta name="description" content="介绍注解和APT，动手实现@BindView功能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="APT介绍和实践">
-<meta property="og:url" content="http://yoursite.com/2021/12/08/tech-2021-12-08-APT/index.html">
+<meta property="og:url" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/index.html">
 <meta property="og:site_name" content="Akiyama&#39;s Blog">
 <meta property="og:description" content="介绍注解和APT，动手实现@BindView功能">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/Element%E6%8E%A5%E5%8F%A3%E7%B1%BB.png">
+<meta property="og:image" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/TypeMirror%E6%8E%A5%E5%8F%A3%E7%B1%BB.png">
 <meta property="article:published_time" content="2021-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-11T04:08:37.380Z">
+<meta property="article:modified_time" content="2021-12-12T16:22:49.892Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="AOP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/Element%E6%8E%A5%E5%8F%A3%E7%B1%BB.png">
 
-<link rel="canonical" href="http://yoursite.com/2021/12/08/tech-2021-12-08-APT/">
+<link rel="canonical" href="http://yoursite.com/2021/12/08/android-2021-12-08-APT/">
 
 
 <script id="page-configurations">
@@ -201,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/08/tech-2021-12-08-APT/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/12/08/android-2021-12-08-APT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -231,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-11 12:08:37" itemprop="dateModified" datetime="2021-12-11T12:08:37+08:00">2021-12-11</time>
+                <time title="修改时间：2021-12-13 00:22:49" itemprop="dateModified" datetime="2021-12-13T00:22:49+08:00">2021-12-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,12 +242,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
           
-            <span id="/2021/12/08/tech-2021-12-08-APT/" class="post-meta-item leancloud_visitors" data-flag-title="APT介绍和实践" title="阅读次数">
+            <span id="/2021/12/08/android-2021-12-08-APT/" class="post-meta-item leancloud_visitors" data-flag-title="APT介绍和实践" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -259,8 +262,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/12/08/tech-2021-12-08-APT/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/08/tech-2021-12-08-APT/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/12/08/android-2021-12-08-APT/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/08/android-2021-12-08-APT/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -270,14 +273,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.5k</span>
+              <span>9.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>9 分钟</span>
             </span>
             <div class="post-description">介绍注解和APT，动手实现@BindView功能</div>
 
@@ -358,24 +361,205 @@
 <h1 id="运行时注解实现findViewById功能"><a href="#运行时注解实现findViewById功能" class="headerlink" title="运行时注解实现findViewById功能"></a>运行时注解实现findViewById功能</h1><p>避免写大量的<code>findViewById</code>代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 自定义注解</span></span><br><span class="line"><span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@interface</span> ViewInject &#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. 运行时注入注解</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewInjectUtil</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectViews</span><span class="params">(Activity activity)</span> </span>&#123;</span><br><span class="line">        Class&lt;? extends Activity&gt; activityCls = activity.getClass(); <span class="comment">// 获取activity的Class</span></span><br><span class="line">        Field[] fields = activityCls.getDeclaredFields(); <span class="comment">// 通过Class获取activity的所有字段</span></span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123; <span class="comment">// 遍历所有字段</span></span><br><span class="line">            <span class="comment">// 获取字段的注解，如果没有ViewInject注解，则返回null</span></span><br><span class="line">            ViewInject viewInject = field.getAnnotation(ViewInject.class);</span><br><span class="line">            <span class="keyword">if</span> (viewInject == <span class="keyword">null</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> viewId = viewInject.value(); <span class="comment">// 获取字段注解的参数，这就是我们传进去控件Id</span></span><br><span class="line">            <span class="keyword">if</span> (viewId == -<span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 获取类中的findViewById方法，参数为int</span></span><br><span class="line">                Method method = activityCls.getMethod(<span class="string">&quot;findViewById&quot;</span>, <span class="keyword">int</span>.class);</span><br><span class="line">                <span class="comment">// 执行findViewById方法，返回View实例</span></span><br><span class="line">                Object resView = method.invoke(activity, viewId);</span><br><span class="line">                field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                <span class="comment">// 给变量赋值</span></span><br><span class="line">                field.set(activity, resView);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//3. Activity中调用，解析注解给变量赋值</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewInjectActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ViewInject(R.id.viewInjectBtn1)</span></span><br><span class="line">    <span class="keyword">private</span> Button mBtn1;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ViewInject(R.id.viewInjectBtn2)</span></span><br><span class="line">    <span class="keyword">private</span> Button mBtn2;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_view_inject);</span><br><span class="line">        <span class="comment">//运行时反射解析注解，给变量赋值</span></span><br><span class="line">        ViewInjectUtil.injectViews(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="APT介绍"><a href="#APT介绍" class="headerlink" title="APT介绍"></a>APT介绍</h1><p>原理：javac的一个工具，可以在编译时扫描和处理注解，并生成java文件，参与class字节码编译。</p>
+<h1 id="APT介绍"><a href="#APT介绍" class="headerlink" title="APT介绍"></a>APT介绍</h1><p>APT是javac的一个工具，可以在编译时扫描和处理注解，并生成java文件，参与编译。</p>
+<p>原理：编译前端过程中javac进行词法分析和语法分析之后会生成<strong>抽象语法树（AST）</strong>，然后调用注解处理器（注解处理器相当于javac对外提供的插件），可以在这个阶段生成新的java文件，或者<strong>直接修改抽象语法树</strong></p>
+<blockquote>
+<ul>
+<li>编译前端：指Java源文件编译成class文件。</li>
+<li>编译后端：class文件转为本地机器码</li>
+</ul>
+<p>详情见<a href="/2021/11/05/basic-2021-11-05-%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/">编程语言、编译器和Android虚拟机</a></p>
+</blockquote>
 <p>APT特点：</p>
 <ol>
 <li>需要自定义APT处理器</li>
 <li>需要手动拼接代理的代码：可以使用<a target="_blank" rel="noopener" href="https://github.com/square/javapoet">JavaPoet</a>，调用API生成java源代码。如果是Kotlin，可以使用Kotlin Poet</li>
-<li>会生成大量代理类</li>
-<li>无法直接在源文件中插入代码，需要生成代理类</li>
-<li>需要使用者手动调用代理类执行，或者通过门面对象，反射找到代理类并执行（如<code>ButterKnife.bind(this)</code>）</li>
+<li>需要使用者手动调用代理类执行，或者通过门面对象，反射找到代理类并执行。如<code>ButterKnife.bind(this)</code></li>
+<li>会生成大量代理类，导致类和方法数增多</li>
+<li>无法直接在源文件中插入代码，而是生成代理类。</li>
 </ol>
+<blockquote>
+<p>其实也可以通过<code>tools.jar</code>库中的API（如JCTree、TreeMaker）直接操作抽象语法树，插入代码。</p>
+<p>需要添加依赖包：<code>compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())</code></p>
+<p>可以参考<a target="_blank" rel="noopener" href="https://fanmingyi.blog.csdn.net/article/details/113766921">Java Pluginable Annotation processing</a></p>
+</blockquote>
 <p>代表框架：DataBinding、Dagger2、ButterKnife、EventBus3、DBFlow</p>
-<p>KAPT：Kotlin注解处理器。kotlin代码生成Java AST，然后交给javac APT处理注解。生成Kotlin代码无法再被Kotlin编译器编译</p>
-<h1 id="自定义APT步骤"><a href="#自定义APT步骤" class="headerlink" title="自定义APT步骤"></a>自定义APT步骤</h1><ol>
-<li>创建一个Java Module，用于定义注解，如<code>xxx-annotation</code></li>
-<li>编写注解处理器<ol>
-<li>创建一个Java Module：如<code>xxx-processor</code>、<code>xxx-compiler</code>。和自定义注解分开，打包的时候不需要依赖注解处理器</li>
-<li>定义Processor类，继承自AbstractProcessor</li>
-<li>使用@SupportedAnnotationTypes声明该Processor可以检测到的注解，也可以重写<code>getSupportedAnnotationTypes</code>方法，通过返回值决定</li>
-<li>重写process方法处理注解，使用processingEnv中的Messager工具输出编译日志，使用Filer工具写入java文件。<ol>
+<p>KAPT：Kotlin注解处理器。kotlin代码生成Java AST，然后交给javac APT处理注解。生成Kotlin代码无法再被Kotlin编译器编译。（不同版本KAPT原理有一些差异）</p>
+<p><strong>下面介绍APT涉及到的相关知识点，内容较多，可以先跳到后面看<a href="#%E8%87%AA%E5%AE%9A%E4%B9%89APT%E6%AD%A5%E9%AA%A4">自定义APT步骤</a>，再回过头来看细节</strong></p>
+<h2 id="AbstractProcessor介绍"><a href="#AbstractProcessor介绍" class="headerlink" title="AbstractProcessor介绍"></a>AbstractProcessor介绍</h2><p>自定义注解处理器需要继承<code>AbstractProcessor</code>，有几个关键的方法，如下</p>
+<ol>
+<li><code>init</code>：用于初始化变量</li>
+<li><code>process</code>：最核心的方法，用于执行注解解析逻辑、生成文件。</li>
+<li><code>getSupportedAnnotationTypes</code>：返回需要被处理的注解的<strong>完整类型名</strong>，其他注解会被过滤掉</li>
+<li><code>getSupportedOptions</code>：返回注解处理器可以接收的参数。使用注解处理器的时候可以传入对应的参数值。</li>
+<li><code>getSupportedSourceVersion</code>：返回支持的JDK版本</li>
+</ol>
+<p>其中<code>getSupportedAnnotationTypes</code>除了可以用返回值的方式指定之外，还可以用注解声明。<code>AbstractProcessor</code>中重写了该方法，反射解析对应的注解<code>@SupportedAnnotationTypes</code>，拿到注解的值然后返回。<code>getSupportedOptions</code>和<code>getSupportedSourceVersion</code>同理。</p>
+<blockquote>
+<p>Tips：简单的可以使用注解指定，传入完整的类型名。多个注解的时候还是通过代码返回列表，不容易出错，而且路径改变的时候可以跟着一起改。</p>
+</blockquote>
+<h2 id="注解处理器传入参数"><a href="#注解处理器传入参数" class="headerlink" title="注解处理器传入参数"></a>注解处理器传入参数</h2><ol>
+<li>例如配置<code>@SupportedOptions(&quot;content&quot;)</code></li>
+<li>使用注解处理器的时候，传入参数，gradle配置如下：</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">// 在gradle文件中配置选项参数值（用于APT传参接收）</span></span><br><span class="line">        javaCompileOptions &#123;</span><br><span class="line">            annotationProcessorOptions &#123;</span><br><span class="line">                arguments = [<span class="attr">content:</span> <span class="string">&#x27;Hello World&#x27;</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在注解处理器代码中通过<code>processingEnvironment.getOptions().get(&quot;content&quot;);</code>拿到参数使用</li>
+</ol>
+<h2 id="常用类和API"><a href="#常用类和API" class="headerlink" title="常用类和API"></a>常用类和API</h2><p>参考<a target="_blank" rel="noopener" href="https://fanmingyi.blog.csdn.net/article/details/116274271">注解处理器常用类说明</a></p>
+<h3 id="Element"><a href="#Element" class="headerlink" title="Element"></a><code>Element</code></h3><p>位于<code>javax.lang.model.element.Element</code></p>
+<p>Java文件是有规范和格式的，源代码有对应的结构体，主要包含以下几种元素：</p>
+<p><img src="/2021/12/08/android-2021-12-08-APT/Element%E6%8E%A5%E5%8F%A3%E7%B1%BB.png"></p>
+<ol>
+<li><code>PackageElement:</code>表示包。提供对有关包及其成员的信息的访问</li>
+<li> <code>TypeElement:</code>表示类或接口程序元素。提供对有关类型及其成员的信息的访问。</li>
+<li> <code>ExecutableElement:</code>表示某个类或接口的方法、构造方法或初始化程序</li>
+<li> <code>VariableElement:</code>表示字段、enum常量、方法或构造方法参数、局部变量或异常参数</li>
+<li><code>TypeParameterElement</code>：表示泛型</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.afauria.sample.apt; <span class="comment">//PackageElement</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123; <span class="comment">//TypeElement</span></span><br><span class="line">  <span class="keyword">private</span> String test = <span class="string">&quot;&quot;</span>; <span class="comment">//VariableElement</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123; <span class="comment">//ExecuteableElement</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 泛型：TypeParameterElement</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常用API：</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>accept</td>
+<td>访问者模式，传入<code>ElementVisitor</code>。用于访问该元素下的所有元素。根据元素类型进行访问</td>
+</tr>
+<tr>
+<td>getEnclosedElements</td>
+<td>获取该元素的所有<strong>直接</strong>子元素</td>
+</tr>
+<tr>
+<td>getEnclosingElement</td>
+<td>获取该元素的父元素</td>
+</tr>
+<tr>
+<td>getKind</td>
+<td>返回ElementKind枚举，例如VariableElement可以表示字段、参数等，通过ElementKind可以判断元素具体类型</td>
+</tr>
+<tr>
+<td>getSimpleName</td>
+<td>返回名字，不含包名</td>
+</tr>
+<tr>
+<td>getQualifiedName</td>
+<td>获取全名</td>
+</tr>
+<tr>
+<td>getModifiers</td>
+<td>获取修饰符集合<code>Set&lt;Modifier&gt;</code>，如public、native、synchronized等</td>
+</tr>
+<tr>
+<td>getParameters</td>
+<td>获取方法参数列表List&lt;? extends VariableElement&gt;</td>
+</tr>
+<tr>
+<td>getReturnType</td>
+<td>获取方法返回值</td>
+</tr>
+<tr>
+<td>asType</td>
+<td>返回对应的TypeMirror</td>
+</tr>
+</tbody></table>
+<h3 id="TypeMirror"><a href="#TypeMirror" class="headerlink" title="TypeMirror"></a><code>TypeMirror</code></h3><p>位于<code>javax.lang.model.type.TypeMirror</code></p>
+<p><code>Element</code>只能表示Java文件结构，不能获取具体的Java类型，需要使用<code>TypeMirror</code>相关的类</p>
+<p><img src="/2021/12/08/android-2021-12-08-APT/TypeMirror%E6%8E%A5%E5%8F%A3%E7%B1%BB.png"></p>
+<p>常用API：</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>accpet</td>
+<td>访问者模式，传入<code>TypeVisitor</code>。根据子类类型进行访问</td>
+</tr>
+<tr>
+<td>getKind</td>
+<td>返回具体类型。如boolean、String等</td>
+</tr>
+</tbody></table>
+<h3 id="辅助类"><a href="#辅助类" class="headerlink" title="辅助类"></a>辅助类</h3><ol>
+<li><code>javax.lang.model.util.Elements</code>：用于操作Element，可以通过<code>processingEnvironment.getElementUtils();</code>获取</li>
+<li><code>javax.lang.model.util.getType</code>：用于操作TyoeMirror，可以通过<code>processingEnvironment.getTypeUtils();</code>获取</li>
+<li><code>javax.annotation.processing.Messager</code>：用于输出信息，可以通过<code>processingEnvironment.getMessager();</code>获取</li>
+<li><code>javax.annotation.processing.Filer</code>：用于生成文件，可以通过<code>processingEnvironment.getFiler();</code>获取。新生成的文件分为三类，会被放到不同路径<ol>
+<li><code>createSourceFile</code>：源代码文件</li>
+<li><code>createClassFile</code>：类文件</li>
+<li><code>createResource</code>：资源文件</li>
+</ol>
+</li>
+</ol>
+<h2 id="注册JavaSPI服务配置文件"><a href="#注册JavaSPI服务配置文件" class="headerlink" title="注册JavaSPI服务配置文件"></a>注册JavaSPI服务配置文件</h2><p>APT是如何找到我们自定义的<code>Processor</code>注解并执行的呢？</p>
+<blockquote>
+<p>使用了JavaSPI（Service Provider Interface，服务发现接口）机制。关于JavaSPI机制可以阅读<a target="_blank" rel="noopener" href="//todo">另一篇文章</a></p>
+</blockquote>
+<p>APT运行的时候加载Processor接口，通过<code>ServiceLoader</code>读取services下的服务配置文件，找到Processor接口的实现类（可以有多个），<strong>遍历</strong>初始化和执行多个注解处理器。（类似于<code>AndroidManifest</code>注册组件）</p>
+<p>有两种注册方式，如下：</p>
+<h3 id="手动创建service文件"><a href="#手动创建service文件" class="headerlink" title="手动创建service文件"></a>手动创建service文件</h3><p>main目录下面新建<code>resources/META_INF/services/javax.annotation.processing.Processor</code>文件，在文件中写入完整的自定义注解处理器类名（配置多个注解处理器的时候需要换行）。如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">butterknife.compiler.ButterKnifeProcessor</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用AutoService库生成service文件"><a href="#使用AutoService库生成service文件" class="headerlink" title="使用AutoService库生成service文件"></a>使用AutoService库生成service文件</h3><p>原理：通过APT解析<code>@AutoSerivce</code>自动生成文件。</p>
+<ol>
+<li>添加依赖包和对应的注解处理器</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly <span class="string">&quot;com.google.auto.service:auto-service-annotations:1.0&quot;</span> <span class="comment">//添加注解依赖包</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;com.google.auto.service:auto-service:1.0&quot;</span> <span class="comment">//添加注解处理器，使用compileOnly可以下载AutoService源码查看</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用<code>@AutoService(Processor.class)</code>，即可自动生成SPI文件，如下</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用Google提供的@AutoService注解</span></span><br><span class="line"><span class="comment">//自动生成/META_INF/services/javax.annotation.processing.Processor文件，并打包进jar包中</span></span><br><span class="line"><span class="meta">@AutoService(Processor.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">AptProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>【踩坑】：低版本<code>gradle</code>直接<code>compileOnly</code>依赖即可，会自动应用<code>annotationProcessor</code>，高版本<code>gradle</code>需要单独使用<code>annotationProcessor</code>配置注解处理器。</strong></p>
+<h2 id="增量注解处理器"><a href="#增量注解处理器" class="headerlink" title="增量注解处理器"></a>增量注解处理器</h2><p>具体可以参考<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/java_plugin.html#sec:incremental_compile">官方文档</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qfanmingyiq/article/details/116300913">Gradle编译时注解增量教程</a></p>
+<ul>
+<li>全量编译：改动一个注解会删除之前已经生成过的文件，再重新生成新的文件，效率较低。</li>
+<li>增量注解：从<code>Gradle 4.7</code>开始,<code>gradle</code>提供了增量<code>apt</code>,可以使上层开发者更快的编译。</li>
+</ul>
+<h3 id="增量注解处理器类型"><a href="#增量注解处理器类型" class="headerlink" title="增量注解处理器类型"></a>增量注解处理器类型</h3><ol>
+<li>isolating注解处理器：最快的增量注解处理器。一个注解处理器只处理一个注解</li>
+<li>aggregationg注解处理器：可以处理多个注解。注解的Retention必须是<code>CLASS</code> or <code>RUNTIME</code></li>
+<li>dynamic注解处理器：重写<code>AbstractProcessor.getSupportedOptions</code>函数，在执行APT的时候根据自身情况决定使用哪一种增量注解处理器类型</li>
+</ol>
+<p>配置方式如下：</p>
+<h3 id="手动配置"><a href="#手动配置" class="headerlink" title="手动配置"></a>手动配置</h3><p>新建<code>resources/META-INF/gradle/incremental.annotation.processors</code>文件，在文件中写入注解处理器全称和增量注解处理器类型。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.afauria.sample.apt_processor.AptProcessor,DYNAMIC</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用incap-processor自动生成"><a href="#使用incap-processor自动生成" class="headerlink" title="使用incap-processor自动生成"></a>使用<code>incap-processor</code>自动生成</h3><p>原理：通过APT解析<code>@IncrementalAnnotationProcessor</code>自动生成文件，类似<code>AutoService</code>库。</p>
+<ol>
+<li>添加依赖包和对应的注解处理器</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly <span class="string">&quot;net.ltgt.gradle.incap:incap:0.2&quot;</span> <span class="comment">//添加依赖包</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;net.ltgt.gradle.incap:incap-processor:0.2&quot;</span> <span class="comment">//添加注解处理器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用<code>@IncrementalAnnotationProcessor</code>注解配置增量类型，如下</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.DYNAMIC)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AptProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="应用注解处理器"><a href="#应用注解处理器" class="headerlink" title="应用注解处理器"></a>应用注解处理器</h2><p>定义好注解处理器之后，如何使用呢？</p>
+<ol>
+<li>Gradle2.2之前，需要先依赖三方插件<code>apply plugin: &#39;com.neenbedankt.android-apt&#39;</code>，在<code>dependencies</code>中添加<code>apt project(&#39;:xxx-processor&#39;)</code></li>
+<li>Gradle2.2之后，Gradle内置了了APT工具，直接在dependencies中添加<code>annotationProcessor project(&#39;:xxx-processor&#39;)</code></li>
+<li>kotlin中先依赖插件<code>apply plugin: &#39;kotlin-kapt&#39;</code>，dependencies中添加<code>kapt project(&#39;:xxx-processor&#39;)</code></li>
+</ol>
+<h1 id="自定义APT步骤"><a href="#自定义APT步骤" class="headerlink" title="自定义APT步骤"></a>自定义APT步骤</h1><p>上面介绍了APT涉及到的知识点，简单串联一下整个过程：</p>
+<ol>
+<li>创建一个<strong>Java Module</strong>，用于定义注解，如<code>xxx-annotation</code></li>
+<li>编写注解处理器代码<ol>
+<li>创建一个<strong>Java Module</strong>：如<code>xxx-processor</code>、<code>xxx-compiler</code>。和自定义注解分开，打包的时候不需要依赖注解处理器</li>
+<li>定义<code>XXProcessor</code>类，继承自<code>AbstractProcessor</code></li>
+<li>重写<code>getSupportedAnnotationTypes</code>方法，返回要被检测的注解</li>
+<li>重写<code>process</code>方法解析注解，生成对应的文件，有几种方式：<ol>
 <li>手动拼接源代码</li>
 <li>定义模版java文件，通过关键字匹配替换</li>
 <li>使用JavaPoet，调用JavaAPI生成</li>
@@ -383,35 +567,27 @@
 </li>
 </ol>
 </li>
-<li>注册注解处理器，让apt能够运行对应的注解处理器：使用JavaSPI机制，APT运行的时候需要加载Processor接口，通过<code>ServiceLoader</code>读取services下的服务文件，找到Processor接口的实现类（可以有多个），遍历执行多个注解处理器<ol>
-<li>手动创建：main目录下面新建<code>resources/META_INF/services/javax.annotation.processing.Processor</code>文件，在文件中写入注解处理器全称，包括包路径（可以配置多个注解处理器）</li>
-<li>使用Google的AutoService库：只要在注解处理器上添加<code>@AutoService(Processor.class)</code>，即可自动生成SPI文件<ol>
-<li>低版本gradle直接compileOnly依赖即可，会自动应用annotationProcessor，高版本gradle会忽略annotationProcessor，因此需要手动添加annotationProcessor。即</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.google.auto.service:auto-service:1.0-rc6&#x27;</span></span><br><span class="line">annotationProcessor <span class="string">&#x27;com.google.auto.service:auto-service:1.0-rc6&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>应用注解处理器<ol>
-<li>Gradle2.2之前，需要先依赖三方插件<code>apply plugin: &#39;com.neenbedankt.android-apt&#39;</code>，在<code>dependencies</code>中添加<code>apt project(&#39;:xxx-processor&#39;)</code></li>
-<li>Gradle2.2之后，Gradle内置了了APT工具，直接在dependencies中添加<code>annotationProcessor project(&#39;:xxx-processor&#39;)</code></li>
-<li>kotlin中先依赖插件<code>apply plugin: &#39;kotlin-kapt&#39;</code>，dependencies中添加<code>kapt project(&#39;:xxx-processor&#39;)</code></li>
-</ol>
-</li>
+<li>注册注解处理器：JavaSPI机制</li>
+<li>注册增量注解处理器类型</li>
+<li>应用注解处理器</li>
 <li>源代码中使用注解</li>
 <li>编译时扫描注解，生成代理类</li>
-<li>调用代理类方法</li>
+<li>调用生成的代理类方法，或者通过门面对象，反射找到代理类并执行。</li>
 </ol>
-<h1 id="自定义APT实例"><a href="#自定义APT实例" class="headerlink" title="自定义APT实例"></a>自定义APT实例</h1><p>代码上传至<a target="_blank" rel="noopener" href="https://github.com/Afauria/AOPSample">仓库</a></p>
+<p>流程图就不画了，可以参考<a href="/2021/12/09/android-2021-12-09-ButterKnife/#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">ButterKnife解析</a></p>
+<h1 id="自定义APT示例"><a href="#自定义APT示例" class="headerlink" title="自定义APT示例"></a>自定义APT示例</h1><p>代码上传至<a target="_blank" rel="noopener" href="https://github.com/Afauria/AOPSample">仓库</a></p>
 <ol>
 <li>创建<code>java-library</code>，名为<code>apt-annotation</code>，用于自定义注解</li>
 <li>创建自定义注解</li>
 <li>创建<code>java-library</code>，名为<code>apt-processor</code>，用于自定义注解处理器</li>
 </ol>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>代码均上传至<a target="_blank" rel="noopener" href="https://github.com/Afauria/AOPSample">仓库</a></p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://fanmingyi.blog.csdn.net/article/details/113766921">Java Pluginable Annotation processing</a></li>
+<li><a target="_blank" rel="noopener" href="https://fanmingyi.blog.csdn.net/article/details/116274271">注解处理器常用类说明</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qfanmingyiq/article/details/116300913">Gradle编译时注解增量教程</a></li>
+</ul>
 
     </div>
 
@@ -451,8 +627,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/02/tech-2021-12-02-AspectJ%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%A4%BA%E4%BE%8B/" rel="prev" title="AspectJ介绍和示例">
-      <i class="fa fa-chevron-left"></i> AspectJ介绍和示例
+    <a href="/2021/12/06/architecture-2021-12-06-SPI/" rel="prev" title="SPI和API">
+      <i class="fa fa-chevron-left"></i> SPI和API
     </a></div>
       <div class="post-nav-item">
     <a href="/2021/12/09/android-2021-12-09-ButterKnife/" rel="next" title="ButterKnife解析">
@@ -518,7 +694,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">注解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%80%94"><span class="nav-number">1.3.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IntDef%E6%88%96-StringDef%E6%9B%BF%E4%BB%A3%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用@IntDef或@StringDef替代枚举</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0findViewById%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">运行时注解实现findViewById功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APT%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">APT介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89APT%E6%AD%A5%E9%AA%A4"><span class="nav-number">4.</span> <span class="nav-text">自定义APT步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89APT%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">自定义APT实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">注解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%80%94"><span class="nav-number">1.3.</span> <span class="nav-text">用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IntDef%E6%88%96-StringDef%E6%9B%BF%E4%BB%A3%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用@IntDef或@StringDef替代枚举</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0findViewById%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">运行时注解实现findViewById功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APT%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">APT介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AbstractProcessor%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.</span> <span class="nav-text">AbstractProcessor介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">注解处理器传入参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%92%8CAPI"><span class="nav-number">3.3.</span> <span class="nav-text">常用类和API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Element"><span class="nav-number">3.3.1.</span> <span class="nav-text">Element</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TypeMirror"><span class="nav-number">3.3.2.</span> <span class="nav-text">TypeMirror</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E7%B1%BB"><span class="nav-number">3.3.3.</span> <span class="nav-text">辅助类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8CJavaSPI%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.</span> <span class="nav-text">注册JavaSPI服务配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAservice%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">手动创建service文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8AutoService%E5%BA%93%E7%94%9F%E6%88%90service%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.2.</span> <span class="nav-text">使用AutoService库生成service文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.5.</span> <span class="nav-text">增量注解处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.5.1.</span> <span class="nav-text">增量注解处理器类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.5.2.</span> <span class="nav-text">手动配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8incap-processor%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90"><span class="nav-number">3.5.3.</span> <span class="nav-text">使用incap-processor自动生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.6.</span> <span class="nav-text">应用注解处理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89APT%E6%AD%A5%E9%AA%A4"><span class="nav-number">4.</span> <span class="nav-text">自定义APT步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89APT%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">自定义APT示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -534,14 +710,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -628,13 +804,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">358k</span>
+    <span title="站点总字数">365k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:26</span>
+    <span title="站点阅读时长">5:31</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
