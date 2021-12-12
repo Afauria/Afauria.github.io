@@ -28,9 +28,10 @@
 <meta property="og:description" content="介绍SPI和API区别，以及JavaSPI机制">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2021/12/06/architecture-2021-12-06-SPI/%E9%9D%A2%E5%90%91%E6%8E%A5%E5%8F%A3%E7%BC%96%E7%A8%8B.png">
+<meta property="og:image" content="http://yoursite.com/2021/12/06/architecture-2021-12-06-SPI/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6.png">
 <meta property="og:image" content="http://yoursite.com/2021/12/06/architecture-2021-12-06-SPI/MySQL%E9%A9%B1%E5%8A%A8.png">
 <meta property="article:published_time" content="2021-12-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-12T16:22:34.458Z">
+<meta property="article:modified_time" content="2021-12-12T18:17:36.522Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="架构">
@@ -234,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-13 00:22:34" itemprop="dateModified" datetime="2021-12-13T00:22:34+08:00">2021-12-13</time>
+                <time title="修改时间：2021-12-13 02:17:36" itemprop="dateModified" datetime="2021-12-13T02:17:36+08:00">2021-12-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,14 +274,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
+              <span>8.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>8 分钟</span>
             </span>
             <div class="post-description">介绍SPI和API区别，以及JavaSPI机制</div>
 
@@ -299,6 +300,7 @@
 <ol>
 <li>接口位于实现方所在的包中：称为API（Application Programming Interface，应用程序接口）。<ol>
 <li>调用方直接依赖三方库</li>
+<li>从名字上理解，API是给客户端调用的接口</li>
 <li>从时间上讲，先有实现方和接口，再有调用方，实现方较固定，调用方可变。</li>
 <li>常用于SDK开发，接口由三方库开发者提供，并可能提供了多种实现，调用方只负责使用。（如果调用方能够自己实现功能，何必再使用三方库呢？）</li>
 <li>当然有些框架也会提供SPI接口，调用方有需求的时候也可以自己实现，替换SDK中的实现，如自定义GlideModule。</li>
@@ -306,6 +308,7 @@
 </li>
 <li>接口位于调用方所在的包中：称为SPI（Service Provider Interface，服务提供接口）<ol>
 <li>插件依赖调用方接口</li>
+<li>从名字上理解，SPI服务接口是给服务端实现的接口</li>
 <li>从时间上讲，先有调用方和接口，再有具体的实现方，实现方可变，调用方较固定</li>
 <li>常用于插件开发，调用方先定义好接口，并写好调用逻辑，由插件实现接口。如自定义注解处理器、插件换肤。</li>
 </ol>
@@ -323,7 +326,8 @@
 <li>使用SPI，就是由调用方来决定接口行为，不同的实现方都需要遵循这个接口定义。</li>
 </ol>
 </li>
-<li>API是让外部调用自身的方式，不单指Java语言中的接口，例如我们常说的Restful API，实际上是网络请求的url</li>
+<li>广义上讲API是<strong>一种提供给外部调用自身的方式</strong>，不单指Java语言中的接口，例如我们常说的Restful API，实际上是网络请求的url</li>
+<li>广义上讲SPI是<strong>一种让外部能够按照自己定制的规则实现功能的方式</strong>，不单指Java语言中的接口</li>
 </ol>
 <h2 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h2><p>在SPI的情况下，插件需要依赖调用方，调用方也需要依赖插件具体实现。是否会产生依赖冲突呢，三者的依赖关系应该是怎么样的？</p>
 <blockquote>
@@ -335,43 +339,106 @@
 <p>依赖倒置：高层模块不依赖底层模块，两者都应该依赖于抽象。抽象不应该依赖具体，具体应该依赖抽象</p>
 <p>实际上就是说把接口（抽象层）抽出来，调用方和实现方都依赖接口，也就是上面的第3种情况。</p>
 </blockquote>
-<h2 id="问题4"><a href="#问题4" class="headerlink" title="问题4"></a>问题4</h2><p>SPI中调用方提供接口，调用方直接实例化对象，存在问题：</p>
+<h2 id="服务发现机制"><a href="#服务发现机制" class="headerlink" title="服务发现机制"></a>服务发现机制</h2><p>SPI中调用方提供接口，调用方直接实例化对象，存在问题：</p>
 <ol>
 <li>调用方先定义好接口，无法写逻辑，需要等到实现方实现接口之后再来添加逻辑。（当然也可以先定义一个默认的Fake实现类）</li>
 <li>如果要替换一种实现，需要修改调用方的代码，不符合可插拔的原则</li>
 </ol>
+<p>为了解决上面的问题，让调用方不需要指定具体模块，需要一种服务注册和发现的机制：服务端注册了服务之后，客户端可以找到对应的服务。</p>
+<p><img src="/2021/12/06/architecture-2021-12-06-SPI/%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6.png"></p>
+<p>服务发现是IoC（Inversion of Control，控制反转）思想的一种实现，将初始化实例的控制权移到了程序之外。</p>
 <blockquote>
-<p>为了解决上面的问题，让调用方不需要指定具体模块，这就需要一种服务发现机制，调用方可以通过服务发现机制找到对应的接口实现类。</p>
-<p>类似IOC的思想，将初始化实例的控制权移到了程序之外。</p>
+<p>Tips：IoC主要有两种实现：</p>
+<ul>
+<li>服务提供模式：从外部服务容器抓取依赖对象</li>
+<li>依赖注入：以参数的形式注入依赖对象</li>
+</ul>
 </blockquote>
-<p>JDK6中引入了ServiceLoader，通过配置文件来装载指定的服务。也叫做JavaSPI机制（这里要和上文所说的SPI接口区分开来）</p>
+<p>控制反转（或服务发现）有以下优势：</p>
+<ul>
+<li>在外部注入或配置依赖项，因此我们可以重用这些组件。当我们需要修改依赖项的实现时，只需要修改配置文件；</li>
+<li>可以配置依赖项的模拟实现（Fake），让代码测试更加容易。</li>
+</ul>
+<h1 id="Java-SPI机制"><a href="#Java-SPI机制" class="headerlink" title="Java SPI机制"></a>Java SPI机制</h1><p>JDK6中引入了ServiceLoader，通过配置文件来装载指定的服务。也叫做Java SPI机制（<strong>这里要和上文所说的SPI接口区分开来</strong>）</p>
+<p><code>ServiceLoader</code>是Java提供的一种SPI机制，但服务发现机制不是Java特有的</p>
 <p>类似地，在Android中，通过Manifest注册组件，让Launcher能够找到应用程序的入口，或者让AMS能够启动应用内的Activity、Service，发送广播等</p>
-<h1 id="JavaSPI机制"><a href="#JavaSPI机制" class="headerlink" title="JavaSPI机制"></a>JavaSPI机制</h1><h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><ol>
-<li>定义服务接口</li>
-<li>外部实现方实现该接口</li>
-<li>在<code>META-INF/service</code>目录下新建一个以服务接口命名的文件，文件内填入该服务接口的具体实现类（完整类名，可以填多个）</li>
-<li>调用方使用<code>ServiceLoader</code>加载配置文件中的具体实现类并返回实例化对象。存在多个实现类，通过迭代器<code>iterator</code>访问</li>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><ol>
+<li>客户端定义服务接口</li>
+<li>服务端实现该接口</li>
+<li>服务端在<code>META-INF/services</code>目录下新建一个以服务接口命名的文件，文件内填入该服务接口的具体实现类（完整类名，可以填多个）</li>
+<li>客户端使用<code>ServiceLoader</code>加载配置文件中的具体实现类并返回实例化对象。存在多个实现类，通过迭代器<code>iterator</code>访问</li>
 </ol>
-<p>当然除了使用<code>ServiceLoader</code>去加载配置文件外，我们也可以自己读取文件，反射创建实例。实际上<code>ServiceLoader</code>正是帮我们做了这件事</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><ol>
-<li>JDBC加载不同的数据库驱动，服务接口为<code>java.sql.Driver</code>，由不同的数据库驱动要实现该服务接口</li>
+<blockquote>
+<p>Tips：这里客户端指接口调用方，服务端指接口实现方</p>
+</blockquote>
+<p>第4步除了使用<code>ServiceLoader</code>去加载配置文件外，我们也可以自己读取文件，通过<strong>反射创建实例</strong>。实际上<code>ServiceLoader</code>正是帮我们做了这件事</p>
+<p>第3步除了手动创建之外，还可以使用<code>AutoService</code>库帮我们自动生成文件：通过APT解析<code>@AutoSerivce</code>自动生成文件。</p>
+<ol>
+<li>添加依赖包和对应的注解处理器</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MySQL实现JDBC服务驱动接口，即Driver类</span></span><br><span class="line"><span class="keyword">package</span> com.mysql.jdbc;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> <span class="keyword">extends</span> <span class="title">NonRegisteringDriver</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">sql</span>.<span class="title">Driver</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Driver</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            DriverManager.registerDriver(<span class="keyword">new</span> Driver());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException var1) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Can&#x27;t register driver!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly <span class="string">&quot;com.google.auto.service:auto-service-annotations:1.0&quot;</span> <span class="comment">//添加注解依赖包</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;com.google.auto.service:auto-service:1.0&quot;</span> <span class="comment">//添加注解处理器，使用compileOnly可以下载AutoService源码查看</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>DriverManager</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DriverManager</span> </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">//初始化所有数据库驱动</span></span><br><span class="line">    loadInitialDrivers();</span><br><span class="line">    println(<span class="string">&quot;JDBC DriverManager initialized&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadInitialDrivers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//使用ServiceLoader加载驱动，并迭代初始化实例对象</span></span><br><span class="line">    ServiceLoader var1 = ServiceLoader.load(Driver.class);</span><br><span class="line">    Iterator var2 = var1.iterator();</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用<code>@AutoService(Processor.class)</code>，即可自动生成SPI文件，如下</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用Google提供的@AutoService注解</span></span><br><span class="line"><span class="comment">//自动生成/META_INF/services/javax.annotation.processing.Processor文件，并打包进jar包中</span></span><br><span class="line"><span class="meta">@AutoService(Processor.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">AptProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ol>
+<li>首先看<code>Service.load</code>源码，返回<code>ServiceLoader</code>对象：可以看到这个时候还没加载实现类，一个服务接口对应一个<code>ServiceLoader</code>实例。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ServiceLoader类</span></span><br><span class="line"><span class="comment">//方法1：使用 SystemClassLoader 类加载器</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;S&gt; <span class="function">ServiceLoader&lt;S&gt; <span class="title">loadInstalled</span><span class="params">(Class&lt;S&gt; service)</span> </span>&#123;</span><br><span class="line">    ClassLoader cl = ClassLoader.getSystemClassLoader();</span><br><span class="line">    ClassLoader prev = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> (cl != <span class="keyword">null</span>) &#123;</span><br><span class="line">        prev = cl;</span><br><span class="line">        cl = cl.getParent();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ServiceLoader.load(service, prev);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//方法2：使用线程上下文类加载器</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;S&gt; <span class="function">ServiceLoader&lt;S&gt; <span class="title">load</span><span class="params">(Class&lt;S&gt; service)</span> </span>&#123;</span><br><span class="line">    ClassLoader cl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">    <span class="keyword">return</span> ServiceLoader.load(service, cl);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//方法3：自定义类加载器</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;S&gt; <span class="function">ServiceLoader&lt;S&gt; <span class="title">load</span><span class="params">(Class&lt;S&gt; service, ClassLoader loader)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ServiceLoader&lt;&gt;(service, loader);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ServiceLoader构造函数：保存<strong>服务接口的类对象</strong>，并创建了一个<code>LazyIterator</code>对象，迭代器中暂时只是保存了<code>service</code>类对象和类加载器。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">ServiceLoader</span><span class="params">(Class&lt;S&gt; var1, ClassLoader var2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.service = (Class)Objects.requireNonNull(var1, <span class="string">&quot;Service interface cannot be null&quot;</span>);</span><br><span class="line">    <span class="keyword">this</span>.loader = var2 == <span class="keyword">null</span> ? ClassLoader.getSystemClassLoader() : var2;</span><br><span class="line">    <span class="keyword">this</span>.acc = System.getSecurityManager() != <span class="keyword">null</span> ? AccessController.getContext() : <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.reload();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//清空服务Providers</span></span><br><span class="line">    <span class="keyword">this</span>.providers.clear();</span><br><span class="line">    <span class="comment">//创建懒加载迭代器</span></span><br><span class="line">    <span class="keyword">this</span>.lookupIterator = <span class="keyword">new</span> ServiceLoader.LazyIterator(<span class="keyword">this</span>.service, <span class="keyword">this</span>.loader);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>到这里还没开始加载具体的实现类，继续看迭代器中关键的<code>nextService</code>方法：可以看到使用<code>Class.fromName</code>反射加载了<code>nextName</code>类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> S <span class="title">nextService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.hasNextService()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        String var1 = <span class="keyword">this</span>.nextName;</span><br><span class="line">        <span class="keyword">this</span>.nextName = <span class="keyword">null</span>;</span><br><span class="line">        Class var2 = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//反射加载nextName类</span></span><br><span class="line">            var2 = Class.forName(var1, <span class="keyword">false</span>, <span class="keyword">this</span>.loader);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException var5) &#123;</span><br><span class="line">            ServiceLoader.fail(<span class="keyword">this</span>.service, <span class="string">&quot;Provider &quot;</span> + var1 + <span class="string">&quot; not found&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//检查注册的类是不是服务接口的实现类</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.service.isAssignableFrom(var2)) &#123;</span><br><span class="line">            ServiceLoader.fail(<span class="keyword">this</span>.service, <span class="string">&quot;Provider &quot;</span> + var1 + <span class="string">&quot; not a subtype&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//实例化服务对象，并强制转换成服务接口。调用的是无参构造函数</span></span><br><span class="line">            Object var3 = <span class="keyword">this</span>.service.cast(var2.newInstance());</span><br><span class="line">            <span class="comment">//缓存接口实现类的实例</span></span><br><span class="line">            ServiceLoader.<span class="keyword">this</span>.providers.put(var1, var3);</span><br><span class="line">            <span class="keyword">return</span> var3;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var4) &#123;</span><br><span class="line">            ServiceLoader.fail(<span class="keyword">this</span>.service, <span class="string">&quot;Provider &quot;</span> + var1 + <span class="string">&quot; could not be instantiated&quot;</span>, var4);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>nextName</code>从哪来的呢，继续看<code>hasNextService</code>方法：可以看到读取了<code>META-INF/services/</code>下的服务配置文件</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasNextService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.nextName != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.configs == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//读取META-INF/services/下的服务配置文件</span></span><br><span class="line">                String var1 = <span class="string">&quot;META-INF/services/&quot;</span> + <span class="keyword">this</span>.service.getName();</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.loader == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.configs = ClassLoader.getSystemResources(var1);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">this</span>.configs = <span class="keyword">this</span>.loader.getResources(var1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException var2) &#123;</span><br><span class="line">                ServiceLoader.fail(<span class="keyword">this</span>.service, <span class="string">&quot;Error locating configuration files&quot;</span>, var2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">this</span>.pending == <span class="keyword">null</span> || !<span class="keyword">this</span>.pending.hasNext()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.configs.hasMoreElements()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//parse中按行读取配置文件（utf-8编码），并排除已经加载过的服务，返回配置文件中的服务类型名列表</span></span><br><span class="line">            <span class="keyword">this</span>.pending = ServiceLoader.<span class="keyword">this</span>.parse(<span class="keyword">this</span>.service, (URL)<span class="keyword">this</span>.configs.nextElement());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//给nextName赋值为下一个类的类名</span></span><br><span class="line">        <span class="keyword">this</span>.nextName = (String)<span class="keyword">this</span>.pending.next();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>继续看<code>ServiceLoader</code>的<code>iterator</code>方法，对懒加载迭代器进行了包装，首先返回已经实例化过并缓存下来的服务对象。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;S&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;S&gt;() &#123;</span><br><span class="line">        Iterator&lt;Entry&lt;String, S&gt;&gt; knownProviders;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//获取缓存的providers列表</span></span><br><span class="line">            <span class="keyword">this</span>.knownProviders = ServiceLoader.<span class="keyword">this</span>.providers.entrySet().iterator();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.knownProviders.hasNext() ? <span class="keyword">true</span> : ServiceLoader.<span class="keyword">this</span>.lookupIterator.hasNext();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> S <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//首先返回缓存的provider服务对象</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.knownProviders.hasNext() ? ((Entry)<span class="keyword">this</span>.knownProviders.next()).getValue() : ServiceLoader.<span class="keyword">this</span>.lookupIterator.next();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结一下：<code>ServiceLoader</code>本质就是实现了一个迭代器，读取<code>META-INF/services</code>下的文件，通过ClassLoader加载文件中的接口实现类，放到懒加载迭代器中，访问的时候才加载类并实例化对象。</p>
+<p>有几个注意的点：</p>
+<ol>
+<li>使用了懒加载创建服务实例</li>
+<li>使用<code>LinkedHashMap</code>缓存创建过的provider实例</li>
+<li>服务实现类必须实现服务接口：<code>if (!service.isAssignableFrom(c))</code>；</li>
+<li>服务实现类需包含无参的构造器，LazyInterator 是反射创建服务对象的：<code>S p = service.cast(c.newInstance())</code>；</li>
+<li>配置文件需要使用 UTF-8 编码：<code>parse</code>方法中<code>new BufferedReader(new InputStreamReader(in, &quot;utf-8&quot;))</code>。</li>
+<li>存在多个实现类的时候，并不一定需要全部使用，只能迭代筛选合适的实现类，因此可以尽可能把常用的放到配置文件前面，避免加载不常用的类</li>
+<li>服务无法注销remove，只能当没有引用时被GC回收，<code>ServiceLoader</code>提供了<code>reload</code>方法清除自身的缓存</li>
+</ol>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><ol>
+<li>JDBC加载不同的数据库驱动，服务接口为<code>java.sql.Driver</code>，由不同的数据库驱动要实现该服务接口。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MySQL实现JDBC服务驱动接口，即Driver类</span></span><br><span class="line"><span class="keyword">package</span> com.mysql.jdbc;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> <span class="keyword">extends</span> <span class="title">NonRegisteringDriver</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">sql</span>.<span class="title">Driver</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Driver</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">//将自身存入DriverManager</span></span><br><span class="line">      DriverManager.registerDriver(<span class="keyword">new</span> Driver());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException var1) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Can&#x27;t register driver!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DriverManager源码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DriverManager</span> </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">//初始化所有数据库驱动</span></span><br><span class="line">    loadInitialDrivers();</span><br><span class="line">    println(<span class="string">&quot;JDBC DriverManager initialized&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadInitialDrivers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//使用ServiceLoader加载驱动类</span></span><br><span class="line">    ServiceLoader var1 = ServiceLoader.load(Driver.class);</span><br><span class="line">    Iterator var2 = var1.iterator();</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//参数：数据库连接url、账号、密码</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">(String var0, String var1, String var2)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//获取数据库Driver对象，调用connect连接并返回</span></span><br><span class="line">    Iterator var5 = registeredDrivers.iterator();</span><br><span class="line">    <span class="keyword">while</span>(var5.hasNext()) &#123;</span><br><span class="line">      DriverInfo var6 = (DriverInfo)var5.next();</span><br><span class="line">      <span class="keyword">if</span> (isDriverAllowed(var6.driver, var3)) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          println(<span class="string">&quot;    trying &quot;</span> + var6.driver.getClass().getName());</span><br><span class="line">          Connection var7 = var6.driver.connect(var0, var1);</span><br><span class="line">          <span class="keyword">if</span> (var7 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            println(<span class="string">&quot;getConnection returning &quot;</span> + var6.driver.getClass().getName());</span><br><span class="line">            <span class="comment">//找到一个就返回</span></span><br><span class="line">            <span class="keyword">return</span> var7;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以看到mysql的jdbc驱动包中确实存在服务配置文件</p>
 <p><img src="/2021/12/06/architecture-2021-12-06-SPI/MySQL%E9%A9%B1%E5%8A%A8.png"></p>
+<p><strong>如果三方数据库驱动没有配置服务文件（例如Oracle数据库），就需要我们自己通过<code>Class.forName</code>去加载驱动类了</strong></p>
 <ol start="2">
 <li>APT加载不同的注解处理器。服务接口为<code>javax.annotation.processing.Processor</code>，由不同的注解处理器实现该服务接口</li>
 </ol>
-<p>AutoService</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>本来是打算介绍JavaSPI机制，放到Java分类下的。但是研究之后发现更应该归属到架构分类。</p>
-<p>了解SPI和API区别，有助于我们更好的理解依赖倒置原则、DDD（Domain Driven Design,领域驱动设计）等。</p>
+<p>了解SPI和API区别，有助于我们更好的理解IoC、依赖倒置原则、DDD（Domain Driven Design,领域驱动设计）等。</p>
 <p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/happyframework/archive/2013/09/17/3325560.html">设计原则：小议SPI和API</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a18499b5df1c">「Java 路线」| 服务发现框架 ServiceLoader</a></li>
 </ul>
 
     </div>
@@ -479,7 +546,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SPI%E5%92%8CAPI"><span class="nav-number">1.</span> <span class="nav-text">SPI和API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%981"><span class="nav-number">1.1.</span> <span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%982"><span class="nav-number">1.2.</span> <span class="nav-text">问题2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%983"><span class="nav-number">1.3.</span> <span class="nav-text">问题3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%984"><span class="nav-number">1.4.</span> <span class="nav-text">问题4</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaSPI%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">JavaSPI机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">2.3.</span> <span class="nav-text">案例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SPI%E5%92%8CAPI"><span class="nav-number">1.</span> <span class="nav-text">SPI和API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%981"><span class="nav-number">1.1.</span> <span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%982"><span class="nav-number">1.2.</span> <span class="nav-text">问题2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%983"><span class="nav-number">1.3.</span> <span class="nav-text">问题3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">服务发现机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-SPI%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Java SPI机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">2.3.</span> <span class="nav-text">案例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -589,13 +656,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">365k</span>
+    <span title="站点总字数">371k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:31</span>
+    <span title="站点阅读时长">5:37</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
