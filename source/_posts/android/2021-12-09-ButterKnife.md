@@ -318,6 +318,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     // 获取注解值，即View的id
     int id = element.getAnnotation(BindView.class).value();
     BindingSet.Builder builder = builderMap.get(enclosingElement);
+    //解析为Id，通过Trees访问抽象语法树，保存id的值和对应的代码，如R.id.btn
     Id resourceId = elementToId(element, BindView.class, id);
     if (builder != null) {
       String existingBindingName = builder.findExistingBindingName(resourceId);
@@ -329,7 +330,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         return;
       }
     } else {
-      //创建新的builder，并加入到map中
+      //如果已经有对应类的builder，则直接返回。没有的话就新建一个builder，加入到map中。
       builder = getOrCreateBindingBuilder(builderMap, enclosingElement);
     }
     //变量名称
