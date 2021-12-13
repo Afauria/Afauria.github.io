@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍注解和APT，动手实现@BindView功能">
+  <meta name="description" content="介绍注解和APT，自定义APT示例">
 <meta property="og:type" content="article">
-<meta property="og:title" content="APT介绍和实践">
+<meta property="og:title" content="注解、APT介绍和实践">
 <meta property="og:url" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/index.html">
 <meta property="og:site_name" content="Akiyama&#39;s Blog">
-<meta property="og:description" content="介绍注解和APT，动手实现@BindView功能">
+<meta property="og:description" content="介绍注解和APT，自定义APT示例">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/Element%E6%8E%A5%E5%8F%A3%E7%B1%BB.png">
 <meta property="og:image" content="http://yoursite.com/2021/12/08/android-2021-12-08-APT/TypeMirror%E6%8E%A5%E5%8F%A3%E7%B1%BB.png">
 <meta property="article:published_time" content="2021-12-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-13T17:44:21.009Z">
+<meta property="article:modified_time" content="2021-12-13T17:51:15.264Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="AOP">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>APT介绍和实践 | Akiyama's Blog</title>
+  <title>注解、APT介绍和实践 | Akiyama's Blog</title>
   
 
 
@@ -217,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          APT介绍和实践
+          注解、APT介绍和实践
         </h1>
 
         <div class="post-meta">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-14 01:44:21" itemprop="dateModified" datetime="2021-12-14T01:44:21+08:00">2021-12-14</time>
+                <time title="修改时间：2021-12-14 01:51:15" itemprop="dateModified" datetime="2021-12-14T01:51:15+08:00">2021-12-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,7 +247,7 @@
             </span>
 
           
-            <span id="/2021/12/08/android-2021-12-08-APT/" class="post-meta-item leancloud_visitors" data-flag-title="APT介绍和实践" title="阅读次数">
+            <span id="/2021/12/08/android-2021-12-08-APT/" class="post-meta-item leancloud_visitors" data-flag-title="注解、APT介绍和实践" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -282,7 +282,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>19 分钟</span>
             </span>
-            <div class="post-description">介绍注解和APT，动手实现@BindView功能</div>
+            <div class="post-description">介绍注解和APT，自定义APT示例</div>
 
         </div>
       </header>
@@ -552,7 +552,7 @@
 <li>Gradle2.2之后，Gradle内置了了APT工具，直接在dependencies中添加<code>annotationProcessor project(&#39;:xxx-processor&#39;)</code></li>
 <li>kotlin中先依赖插件<code>apply plugin: &#39;kotlin-kapt&#39;</code>，dependencies中添加<code>kapt project(&#39;:xxx-processor&#39;)</code></li>
 </ol>
-<h1 id="自定义APT步骤"><a href="#自定义APT步骤" class="headerlink" title="自定义APT步骤"></a>自定义APT步骤</h1><p>上面介绍了APT涉及到的知识点，简单串联一下整个过程：</p>
+<h1 id="自定义APT步骤"><a href="#自定义APT步骤" class="headerlink" title="自定义APT步骤"></a>自定义APT步骤</h1><p>上面介绍了APT涉及到的知识点，比较零散，简单串联一下整个过程：</p>
 <ol>
 <li>创建一个<strong>Java Module</strong>，用于定义注解，如<code>xxx-annotation</code></li>
 <li>创建一个<strong>Android Module</strong>，用于封装API接口，供使用者调用，如<code>xxx-library</code>，依赖<code>xxx-annotation</code></li>
