@@ -12,7 +12,7 @@ keywords: [Java , Mina , 网络]
 
 上一篇文章讲了Mina的简单使用，这一篇将要讲讲怎么用Mina实现心跳检测。网上有很多相关的文章，但是我觉得比较难理解，自己折腾了好久才明白，所以想用我觉得容易理解的话总结一下。也给自己做个笔记。
 
-## 一、心跳机制
+# 心跳机制
 
 ​    1.心跳机制有什么用？
 在TCP的长连接中，有可能两端有很长一段时间没有数据往来，理论上连接应该是一直保持的。但实际情况中，如果中间节点出现故障，连接断开（如防火墙，或者断网等），这时候故障是难以知道的。
@@ -33,7 +33,7 @@ keywords: [Java , Mina , 网络]
 
 由谁（客户端还是服务端）发起请求其实都一样，当然也可以两边都发，具体情况看需求和方便性。比如为了减轻服务端压力，由客户端发出请求较合适。
 
-![mina心跳包01](/images/Mina/mina_heartbeat01.png)
+![mina心跳包01](2018-07-24-MinaHeartbeat/mina_heartbeat01.png)
 
 
 
@@ -45,7 +45,7 @@ keywords: [Java , Mina , 网络]
 
 心跳包之所以叫心跳包是因为：他像心跳一样每隔一定时间发送一次，以此告诉对方，自己还活着。
 
-## 二、Mina实现心跳机制
+# Mina实现心跳机制
 
 ​    上一篇文章讲了Mina的简单使用，我们通过设置IoHandler来处理业务逻辑，IoHandler中有messageReceived方法，当接收到消息时回调此方法。
 
@@ -116,7 +116,7 @@ getResponse：获取心跳回复包
 **关键要理解这些方法返回值的含义和调用时机：**
 
 以服务端发送心跳请求包为例（反过来也一样），流程如下：
-![mina心跳包02](/images/Mina/mina_heartbeat02.png)
+![mina心跳包02](2018-07-24-MinaHeartbeat/mina_heartbeat02.png)
 
 可以看到，客户端和服务端都需要创建拦截器，实现KeepAliveMessageFactory接口方法，只不过写法不一样。其他的发送消息流程并不需要关心
 
@@ -133,10 +133,7 @@ public class KeepAliveRequestTimeoutHandlerImpl implements KeepAliveRequestTimeo
 
 
 
-
 **分析源码：**
-
-
 
 心跳拦截器KeepAliveFliter源码，关键部分如下：
 
@@ -230,10 +227,6 @@ try {
     }//如果接收到的消息是心跳请求包“或者”心跳回复包，则在上面几句中就已经将该消息消费掉了
 }
 ```
-
-
-
-
 
 注意上面还有一句：
 
