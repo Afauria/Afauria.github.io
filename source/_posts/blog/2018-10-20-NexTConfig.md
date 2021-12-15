@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NexTConfig
+title: NexT主题配置
 date: 2018-10-20
 categories: 工具
 tags:
@@ -12,7 +12,7 @@ description: NexT高级配置
 
 # 博客效果
 
-![博客效果](/images/BuildBlog/next-effect.png)
+![博客效果](2018-10-20-NexTConfig/博客效果.png)
 
 # NexT配置
 
@@ -90,7 +90,7 @@ npm install hexo-generator-searchdb --save
 
 NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件
 
-![去掉文章目录序号](/images/BuildBlog/config01.png)
+![去掉文章目录序号](2018-10-20-NexTConfig/配置去掉目录序号.png)
 
 ## 生成分类、标签和关于页面
 
@@ -118,18 +118,52 @@ comments: false
 
 可以修改next主题下的layout和source中的布局和css样式，定制主题
 
-## 站点地图sitemap
+## 添加站点地图sitemap
 
 为了让博文被google或百度检索，需要使用hexo的sitemap功能。
 
-见[hexo博客站点sitemap的使用](https://eericzeng.github.io/2019/07/14/hexo%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9sitemap%E7%9A%84%E4%BD%BF%E7%94%A8/)
+1. 安装插件，自动生成站点地图：`sitemap.xml、baidusitemap.xml`
+
+```shell
+npm install hexo-generator-sitemap --save
+npm install hexo-generator-baidu-sitemap --save
+```
+
+2. `hexo g -d`生成并发布博客之后，可以通过`博客地址/sitemap.xml`、`博客地址/baidusitemap.xml`访问站点地图文件
+
+### Google检索
+
+1. 登录[Google Search Console](https://search.google.com/search-console/about)
+2. 点击立即使用，输入域名或`xxx.github.io`验证资源。
+3. 选择HTML标记验证，如下图
+
+<img src="2018-10-20-NexTConfig/Google Search验证资源.jpg" style="zoom:33%;" />
+
+4. 如果使用NexT主题，可以直接修改**主题配置文件**，`google_site_verification: xxx`，填入`content`中的内容。（原理是自动帮我们在生成的静态html文件head中添加`<meta>`）
+5. `hexo g -d`重新生成并发布博客
+6. 回到Google Search Console，点击验证
+7. 添加站点地图文件`sitemap.xml`，如下图。过一段时间会在**概述**中显示被索引的情况
+
+<img src="2018-10-20-NexTConfig/添加Google站点地图.png" style="zoom: 67%;" />
+
+### 百度检索
+
+1. 登录【[百度资源管理平台-用户中心-站点管理](https://ziyuan.baidu.com/site/index#/)】
+2. 点击添加网站，输入博客地址
+3. 选择HTMl标签验证
+4. 如果使用NexT主题，可以直接修改**主题配置文件**，`baidu_site_verification: xxx`，填入`content`中的内容。
+5. `hexo g -d`重新生成并发布博客
+6. 回到百度资源页面完成验证
+7. 添加站点地图文件`baidusitemap.xml`，如下图。过一段时间可以查看索引数据
+
+<img src="2018-10-20-NexTConfig/添加百度站点地图.png" style="zoom: 67%;" />
 
 ## 添加博客字数统计
 
 1. 安装插件：`npm i hexo-symbols-count-time --save`
 2. 修改站点配置文件
 
-```yml
+```yaml
 symbols_count_time:
   symbols: true # 文章字数
   time: true   # 文章阅读时长
@@ -143,7 +177,7 @@ symbols_count_time:
 
 3. 修改主题配置文件
 
-```yml
+```yaml
 symbols_count_time:
   separated_meta: false   # 是否另起一行
   item_text_post: true
@@ -161,9 +195,11 @@ busuanzi_count:
   enable: true
 ```
 
-## 添加站点访问统计评论系统
+## 添加评论系统
 
-使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）
+使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、Gitalk、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）
+
+> 看别人用Gitalk也挺不错的，还可以将评论发到issue，及时收到通知。缺点是需要登录GitHub账号，可能会劝退一拨人
 
 由于`busuanzi`统计站点访问量会和`Live2d`插件冲突，因此使用Valine visitor进行访问统计。（会和`leancloud_visitors`冲突，打开一个就行）
 
@@ -278,7 +314,6 @@ live2d:
     text-align: center;
     margin: 80px auto;
 }
- 
 .poem-wrap .poem-title {
     font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
     font-weight: bold;
@@ -291,60 +326,49 @@ live2d:
     letter-spacing: 4px;
     color: #797979;
 }
-
 .poem-wrap p {
     width: 70%;
     margin: auto;
     line-height: 30px;
     color: #797979;
 }
- 
 .poem-wrap p#poem {
     font-size: 25px;
 }
- 
 .poem-wrap p#info {
     font-size: 15px;
     margin: 15px auto;
 }
-
 .poem-border {
     position: absolute;
     height: 2px;
     width: 27%;
     background-color: #797979;
 }
- 
 .poem-right {
     right: 0;
 }
- 
 .poem-left {
     left: 0;
 }
- 
 @media (max-width: 685px) {
     .poem-border {
         width: 18%;
     }
 }
- 
 @media (max-width: 500px) {
     .poem-wrap {
         margin-top: 60px;
         margin-bottom: 20px;
         border-top: 2px solid #797979;
     }
- 
     .poem-wrap h1 {
         margin: 20px 6px;
     }
- 
     .poem-border {
         display: none;
     }
 }
-
 .poem-side {
     transform: translateX(0px);
     color: #f5f5f5;
@@ -357,14 +381,11 @@ live2d:
     font-size: 15px;
     text-align: left;
 }
- 
 .poem-side div#hitokotofrom {
     font-size: 12px;
     text-align: right;
 }
 ```
-
-
 
 # 参考文章
 
@@ -373,3 +394,5 @@ live2d:
 3. [hexo博客添加搜索功能](https://blog.csdn.net/qq_40265501/article/details/80030627)
 4. [hexo(next)——每日一言、今日诗词](https://blog.csdn.net/qq_44036990/article/details/105088198)
 4. [Hexo博客+Next主题深度优化与定制](https://blog.csdn.net/qq_42889280/article/details/103087433)
+6. [hexo博客站点sitemap的使用](https://eericzeng.github.io/2019/07/14/hexo%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9sitemap%E7%9A%84%E4%BD%BF%E7%94%A8/)
+

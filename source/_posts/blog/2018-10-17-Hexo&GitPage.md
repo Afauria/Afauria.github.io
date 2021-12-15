@@ -66,7 +66,7 @@ description: Hexo+GitPage搭建博客
 3. 输入`hexo s`或`hexo server`启动服务
 4. 默认端口为4000，访问 http://localhost:4000/ 即可，也可通过`hexo server -p 端口号`指定端口号
    出现下图就成功了，里面已经有一篇文章hello world了
-   ![hexo成功图](/images/BuildBlog/hexo01.png)
+   ![hexo成功图](2018-10-17-Hexo&GitPage/hexo01.png)
 
 # GitPage搭建
 
@@ -77,7 +77,7 @@ description: Hexo+GitPage搭建博客
 ## GitPage创建
 
 创建一个新的仓库，仓库名称使用：用户名.github.io，如图
-![git仓库创建](/images/BuildBlog/GitPage01.png)
+![git仓库创建](2018-10-17-Hexo&GitPage/GitPage01.png)
 创建完之后就可以通过 `https://moon-lights.github.io/` 来访问博客地址了
 
 # 将GitPage和Hexo联系起来
@@ -96,7 +96,7 @@ deploy:
 ​    branch: master
 ```
 repo地址如下图获取
-![ssh地址拷贝](/images/BuildBlog/GitPage02.png)
+![ssh地址拷贝](2018-10-17-Hexo&GitPage/GitPage02.png)
 
 ## 安装上传到GitHub的插件
 
@@ -133,7 +133,7 @@ cmd打开终端，进入站点根目录，输入`npm install --save hexo-deploye
 
 ## 两年后~，更新nodejs，hexo g -d发布失败。错误如下
 
-![Hexo发布失败](/images/BuildBlog/HexoDeployFailed.png)
+![Hexo发布失败](2018-10-17-Hexo&GitPage/HexoDeployFailed.png)
 
 解决方案：
 
@@ -147,7 +147,7 @@ cmd打开终端，进入站点根目录，输入`npm install --save hexo-deploye
    5. 再执行`npm install`和`npm update`更新版本到`^5.3.0`，其他依赖也更新
 3. 再执行`hexo g -d`，成功发布
 
-![Hexo依赖版本图](/images/BuildBlog/HexoDependenciesVersion.png)
+![Hexo依赖版本图](2018-10-17-Hexo&GitPage/HexoDependenciesVersion.png)
 
 ### 补充知识点
 
@@ -200,7 +200,7 @@ If you have any questions you can submit a request at https://support.github.com
 
 7. 最后甚至准备转战Gitee发布，结果创建GitPage服务的时候提示服务不可用……
 
-   ![GiteePages](/images/BuildBlog/GiteePages.png)
+   ![GiteePages](2018-10-17-Hexo&GitPage/GiteePages.png)
 
 本地构建运行`hexo serve`正常，使用jekyll编译也正常，说明文章格式没有错误。就是GitPage构建的时候失败了。
 
