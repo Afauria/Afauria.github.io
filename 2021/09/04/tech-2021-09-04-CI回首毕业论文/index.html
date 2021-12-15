@@ -9,6 +9,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -17,88 +19,88 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CI——回首毕业论文">
-<meta property="og:url" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/index.html">
-<meta property="og:site_name" content="Akiyama&#39;s Blog">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="本文源于本人本科毕业论文—— 《面向Android项目的持续集成系统的设计与实现》，把论文内容整理成博客。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Android%E7%BB%84%E4%BB%B6%E5%8C%96%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Sub-Module%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Multi-Project%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%97%A9%E6%9C%9F%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8E%A5%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/CI%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A2%84%E6%9C%9F%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E5%92%8C%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%88%E4%BE%8B%E6%95%88%E6%9E%9C.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Git%E5%AD%90%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Win10%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Nexus%E9%95%9C%E5%83%8F.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Nexus%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Jenkins%E9%95%9C%E5%83%8F.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%B8%BB%E9%A1%B5.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%AA%8C%E8%AF%81Java%E7%8E%AF%E5%A2%83.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEAndroid%E7%8E%AF%E5%A2%83.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEGradle.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E5%AE%89%E8%A3%85pip.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AESSH%E7%99%BB%E9%99%86.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/JenkinsAPI%E5%BD%A2%E5%BC%8F%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9E%84%E5%BB%BA%E7%BB%93%E6%9E%9C%E6%97%A5%E5%BF%97.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E7%AE%B1%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%BB%93%E6%9E%9C.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnpm%E9%85%8D%E7%BD%AE.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFBabel%E9%85%8D%E7%BD%AE.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnextjs%E9%85%8D%E7%BD%AE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%88%9B%E5%BB%BA%E7%BB%84%E4%BB%B6%E9%A1%B5%E9%9D%A2.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%80%9A%E7%9F%A5%E5%BC%B9%E7%AA%97%E6%95%88%E6%9E%9C.png">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%AF%BB%E5%8F%96%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E4%BF%AE%E6%94%B9.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%95%B0%E6%8D%AE%E5%BA%93ER%E5%9B%BE.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AEJob%E5%88%9B%E5%BB%BA.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6%E5%85%A5%E5%8F%A3.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%80%9A%E7%9F%A5.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%97%A5%E5%BF%97.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E7%BB%84%E4%BB%B6.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/apk%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%89%8D.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BC%80%E5%8F%91%E5%85%B6%E4%BB%96%E9%A1%B5%E9%9D%A2.jpg">
-<meta property="og:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%90%8E.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Android%E7%BB%84%E4%BB%B6%E5%8C%96%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Sub-Module%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Multi-Project%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%97%A9%E6%9C%9F%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8E%A5%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/CI%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A2%84%E6%9C%9F%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E5%92%8C%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%8C%96%E6%A1%88%E4%BE%8B%E6%95%88%E6%9E%9C.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Git%E5%AD%90%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Win10%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Nexus%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Nexus%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Docker%E6%90%9C%E7%B4%A2Jenkins%E9%95%9C%E5%83%8F.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%B8%BB%E9%A1%B5.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%AA%8C%E8%AF%81Java%E7%8E%AF%E5%A2%83.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEAndroid%E7%8E%AF%E5%A2%83.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AEGradle.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E5%AE%89%E8%A3%85pip.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%85%8D%E7%BD%AESSH%E7%99%BB%E9%99%86.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/JenkinsAPI%E5%BD%A2%E5%BC%8F%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E6%9E%84%E5%BB%BA%E7%BB%93%E6%9E%9C%E6%97%A5%E5%BF%97.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E7%AE%B1%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E4%BB%BB%E5%8A%A1%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/Jenkins%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnpm%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFBabel%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AFnextjs%E9%85%8D%E7%BD%AE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%88%9B%E5%BB%BA%E7%BB%84%E4%BB%B6%E9%A1%B5%E9%9D%A2.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%80%9A%E7%9F%A5%E5%BC%B9%E7%AA%97%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E8%AF%BB%E5%8F%96%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E4%BF%AE%E6%94%B9.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%95%B0%E6%8D%AE%E5%BA%93ER%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AEJob%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E8%AF%A6%E6%83%85.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6%E5%85%A5%E5%8F%A3.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E8%BF%9B%E5%BA%A6.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%80%9A%E7%9F%A5.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E6%97%A5%E5%BF%97.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E7%BB%84%E4%BB%B6.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/apk%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%89%8D.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BC%80%E5%8F%91%E5%85%B6%E4%BB%96%E9%A1%B5%E9%9D%A2.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E5%BA%94%E7%94%A8%E6%95%88%E6%9E%9C%E5%90%8E.jpg">
 <meta property="article:published_time" content="2021-09-03T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-11-06T05:01:51.871Z">
 <meta property="article:author" content="丘山月夜">
@@ -107,9 +109,9 @@
 <meta property="article:tag" content="组件化">
 <meta property="article:tag" content="Jenkins">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
 
-<link rel="canonical" href="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
+<link rel="canonical" href="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
 
 
 <script id="page-configurations">
@@ -122,7 +124,7 @@
   };
 </script>
 
-  <title>CI——回首毕业论文 | Akiyama's Blog</title>
+  <title>CI——回首毕业论文 | Afauria's Blog</title>
   
 
 
@@ -173,7 +175,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Akiyama's Blog</h1>
+      <h1 class="site-title">Afauria's Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
       <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
@@ -276,7 +278,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -285,7 +287,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Akiyama's Blog">
+      <meta itemprop="name" content="Afauria's Blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -1446,13 +1448,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">382k</span>
+    <span title="站点总字数">384k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:48</span>
+    <span title="站点阅读时长">5:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
