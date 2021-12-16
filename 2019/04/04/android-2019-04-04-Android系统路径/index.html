@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
-  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
   <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -30,7 +30,7 @@
 <meta property="og:description" content="Android系统常用路径">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-04-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-15T12:37:03.952Z">
+<meta property="article:modified_time" content="2021-12-16T07:33:31.590Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -232,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-15 20:37:03" itemprop="dateModified" datetime="2021-12-15T20:37:03+08:00">2021-12-15</time>
+                <time title="修改时间：2021-12-16 15:33:31" itemprop="dateModified" datetime="2021-12-16T15:33:31+08:00">2021-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>819</span>
+              <span>893</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -296,9 +296,10 @@
 <li>appops权限路径：<code>/data/system/appops.xml</code></li>
 <li>运行时权限：<code>/data/system/users/0/runtime-permissions.xml</code></li>
 <li><code>/system/etc/permissions</code>、<code>/vendor/etc/permissions</code></li>
-<li><code>/system/etc/default_permissions/default-permissions.xml</code>、<code>/system/etc/default_permissions/open app-permissions.xm</code></li>
+<li><code>/system/etc/default_permissions/default-permissions.xml</code>、<code>/system/etc/default_permissions/open app-permissions.xml</code></li>
 <li>settings provider属性：<code>/data/system/users/0/settings_global.xml</code></li>
 <li>所有应用权限：<code>/data/system/packages.xml</code></li>
+<li><code>/system/etc/sysconfig/hiddenapi-package-whitelist.xml</code>：无法调用hidden api，添加白名单</li>
 <li>uri访问权限：<code>/data/system/urigrants.xml</code></li>
 </ol>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27; standalone=&#x27;yes&#x27; ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uri-grants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uri-grant</span> <span class="attr">sourceUserId</span>=<span class="string">&quot;0&quot;</span> <span class="attr">targetUserId</span>=<span class="string">&quot;0&quot;</span> <span class="attr">sourcePkg</span>=<span class="string">&quot;com.cvte.tv.media&quot;</span> <span class="attr">targetPkg</span>=<span class="string">&quot;com.android.htmlviewer&quot;</span> <span class="attr">uri</span>=<span class="string">&quot;content://com.cvte.tv.media.fileProvider&quot;</span> <span class="attr">prefix</span>=<span class="string">&quot;true&quot;</span> <span class="attr">modeFlags</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">uri-grants</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -428,7 +429,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -522,13 +523,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">391k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

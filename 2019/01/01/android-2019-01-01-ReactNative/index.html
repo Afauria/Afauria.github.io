@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
-  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
   <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="笔记，常见问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/images/ReactNative/vscode_format.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/01/01/android-2019-01-01-ReactNative/vscode_format.png">
 <meta property="article:published_time" content="2018-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.029Z">
+<meta property="article:modified_time" content="2021-12-16T01:18:57.319Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="ReactNative">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/images/ReactNative/vscode_format.png">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2019/01/01/android-2019-01-01-ReactNative/vscode_format.png">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2019/01/01/android-2019-01-01-ReactNative/">
 
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2021-12-16 09:18:57" itemprop="dateModified" datetime="2021-12-16T09:18:57+08:00">2021-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,14 +274,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>2 分钟</span>
             </span>
             <div class="post-description">笔记，常见问题</div>
 
@@ -294,7 +294,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-和传统前端的区别【转】"><a href="#1-和传统前端的区别【转】" class="headerlink" title="1. 和传统前端的区别【转】"></a>1. 和传统前端的区别<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/91dd6ae96a26">【转】</a></h1><h2 id="1-1-标签不同"><a href="#1-1-标签不同" class="headerlink" title="1.1. 标签不同"></a>1.1. 标签不同</h2><ul>
+        <h1 id="和传统前端的区别【转】"><a href="#和传统前端的区别【转】" class="headerlink" title="和传统前端的区别【转】"></a>和传统前端的区别<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/91dd6ae96a26">【转】</a></h1><h2 id="标签不同"><a href="#标签不同" class="headerlink" title="标签不同"></a>标签不同</h2><ul>
 <li>容器：div——View</li>
 <li>图片    img——Image</li>
 <li>文字    所有双标签——Text</li>
@@ -311,14 +311,14 @@
 <li><p>HTML中的图片：<code>&lt;img src=&quot;a.jpg&quot;/&gt;</code>，react native中的图片必须指定宽高：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Image source&#x3D;&quot;&#123;&#123; uri: thumb &#125;&#125;&quot; style&#x3D;&quot;&#123;&#123; width:100, height:100 &#125;&#125;&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="1-2-布局样式不同"><a href="#1-2-布局样式不同" class="headerlink" title="1.2. 布局样式不同"></a>1.2. 布局样式不同</h2><p>react native中不存在float，也不支持position:fixed，而是采用的flex布局，虽然react native支持position中的absolute和realative以及flex,都是和html中css有所不同:</p>
+<h2 id="布局样式不同"><a href="#布局样式不同" class="headerlink" title="布局样式不同"></a>布局样式不同</h2><p>react native中不存在float，也不支持position:fixed，而是采用的flex布局，虽然react native支持position中的absolute和realative以及flex,都是和html中css有所不同:</p>
 <ul>
 <li>react native中的absolute默认相对于父级，就算父级没有定位，而css中的absolute是向上寻找的相对点，如果父级没有定位，一直往上找定位参考点</li>
 <li>react native中的flex的flexDirection默认值是:column而css中的默认值是row</li>
 <li>react native中的高度等于父级高度使用flex:1 ，而web的css中使用height:100%，react native中没有百分比的概念</li>
 </ul>
 <p><em>react native支持的属性：参考<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.49/layout-props.html#content">属性</a></em></p>
-<h2 id="1-3-结构不同"><a href="#1-3-结构不同" class="headerlink" title="1.3. 结构不同"></a>1.3. 结构不同</h2><p>html加载的时候是自上而下的阻塞式加载，而react native根据生命周期来渲染，跟写的位置无关，而且react native文件一切皆js，无论是结构还是css还是JS逻辑，下面是react native的生命周期:</p>
+<h2 id="结构不同"><a href="#结构不同" class="headerlink" title="结构不同"></a>结构不同</h2><p>html加载的时候是自上而下的阻塞式加载，而react native根据生命周期来渲染，跟写的位置无关，而且react native文件一切皆js，无论是结构还是css还是JS逻辑，下面是react native的生命周期:</p>
 <ul>
 <li>constructor:组件被创建之前初始化数据</li>
 <li>componentWillMount组件已创建但是未被渲染，可以在这里面请求数据</li>
@@ -330,11 +330,11 @@
 <li>componentDidUpdate调用了 render() 更新完成界面之后，会调用 componentDidUpdate() 来得到通知</li>
 <li>componentWillUnmount当组件要被从界面上移除的时候，就会调用此函数，一般在这里取消定时器，remove监听事件</li>
 </ul>
-<h2 id="1-4-页面跳转不同"><a href="#1-4-页面跳转不同" class="headerlink" title="1.4. 页面跳转不同"></a>1.4. 页面跳转不同</h2><p>html中使用a标签或者window.location.href来跳转页面，react native的路由跳转有多种方案,可以根据自身选择，官方推荐react-navigation，还有react-native-router-flux,navigator等</p>
-<h2 id="1-5-js运行环境不同"><a href="#1-5-js运行环境不同" class="headerlink" title="1.5. js运行环境不同"></a>1.5. js运行环境不同</h2><p>web中的js运行在浏览器，最上级是window，而react native里没有window的概念,组件化最上级是global,挂在global下面是跨组件的，例如global.a=1，那么在所有组件都能使用a，所以一般登录成功后把token挂在global上面，在其他任何页面请求数据的时候可以直接使用token，注销登录就清除token</p>
-<h1 id="2-常见问题"><a href="#2-常见问题" class="headerlink" title="2. 常见问题"></a>2. 常见问题</h1><h2 id="2-1-React-Native-Error-Cannot-find-module-‘asap-raw’"><a href="#2-1-React-Native-Error-Cannot-find-module-‘asap-raw’" class="headerlink" title="2.1. React Native:Error: Cannot find module ‘asap/raw’"></a>2.1. React Native:Error: Cannot find module ‘asap/raw’</h2><p>安装<code>react-native-navigation</code>后出错</p>
+<h2 id="页面跳转不同"><a href="#页面跳转不同" class="headerlink" title="页面跳转不同"></a>页面跳转不同</h2><p>html中使用a标签或者window.location.href来跳转页面，react native的路由跳转有多种方案,可以根据自身选择，官方推荐react-navigation，还有react-native-router-flux,navigator等</p>
+<h2 id="js运行环境不同"><a href="#js运行环境不同" class="headerlink" title="js运行环境不同"></a>js运行环境不同</h2><p>web中的js运行在浏览器，最上级是window，而react native里没有window的概念,组件化最上级是global,挂在global下面是跨组件的，例如global.a=1，那么在所有组件都能使用a，所以一般登录成功后把token挂在global上面，在其他任何页面请求数据的时候可以直接使用token，注销登录就清除token</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="React-Native-Error-Cannot-find-module-‘asap-raw’"><a href="#React-Native-Error-Cannot-find-module-‘asap-raw’" class="headerlink" title="React Native:Error: Cannot find module ‘asap/raw’"></a>React Native:Error: Cannot find module ‘asap/raw’</h2><p>安装<code>react-native-navigation</code>后出错</p>
 <p>解决办法：重新安装依赖，执行<code>npm install</code></p>
-<h2 id="2-2-setting-gradle路径问题"><a href="#2-2-setting-gradle路径问题" class="headerlink" title="2.2. setting.gradle路径问题"></a>2.2. setting.gradle路径问题</h2><p>使用react-navigation：</p>
+<h2 id="setting-gradle路径问题"><a href="#setting-gradle路径问题" class="headerlink" title="setting.gradle路径问题"></a>setting.gradle路径问题</h2><p>使用react-navigation：</p>
 <ul>
 <li>yarn add react-navigation</li>
 <li>yarn add react-native-gesture-handler</li>
@@ -343,9 +343,9 @@
 <p>问题：路径使用<code>\</code>分割，不正确，应该修改为<code>/</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Settings file &#x27;E:\AndroidStudioProjects\Demo\android\settings.gradle&#x27; line: 3</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Could not compile settings file &#x27;E:\AndroidStudioProjects\Demo\android\settings.gradle&#x27;.</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> startup failed:</span></span><br><span class="line">  settings file &#x27;E:\AndroidStudioProjects\Demo\android\settings.gradle&#x27;: 3: unexpected char: &#x27;\&#x27; @ line 3, column 133.</span><br><span class="line">     s\react-native-gesture-handler\android&#x27;)</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-3-VsCode格式化代码"><a href="#2-3-VsCode格式化代码" class="headerlink" title="2.3. VsCode格式化代码"></a>2.3. VsCode格式化代码</h2><p>VsCode格式化ReactNative代码的时候，标签尖括号会换行</p>
+<h2 id="VsCode格式化代码"><a href="#VsCode格式化代码" class="headerlink" title="VsCode格式化代码"></a>VsCode格式化代码</h2><p>VsCode格式化ReactNative代码的时候，标签尖括号会换行</p>
 <p>解决办法：如果是js文件，下面不要选择JavaScript，而是JavaScript React，如图</p>
-<p><img src="/images/ReactNative/vscode_format.png" alt="VsCode格式化ReactNative代码"></p>
+<p><img src="/2019/01/01/android-2019-01-01-ReactNative/vscode_format.png" alt="VsCode格式化ReactNative代码"></p>
 
     </div>
 
@@ -389,8 +389,8 @@
       <i class="fa fa-chevron-left"></i> 排序算法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/01/14/tool-2019-1-14-Docker-Jenkins/" rel="next" title="Docker for windows+Jenkins+gradle配置">
-      Docker for windows+Jenkins+gradle配置 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/01/14/java-2019-1-14-JavaReflection/" rel="next" title="java反射">
+      java反射 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -452,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%92%8C%E4%BC%A0%E7%BB%9F%E5%89%8D%E7%AB%AF%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%90%E8%BD%AC%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">1. 和传统前端的区别【转】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%A0%87%E7%AD%BE%E4%B8%8D%E5%90%8C"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 标签不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%B8%83%E5%B1%80%E6%A0%B7%E5%BC%8F%E4%B8%8D%E5%90%8C"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 布局样式不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E7%BB%93%E6%9E%84%E4%B8%8D%E5%90%8C"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 结构不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E4%B8%8D%E5%90%8C"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. 页面跳转不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-js%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8D%E5%90%8C"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. js运行环境不同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">2. 常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-React-Native-Error-Cannot-find-module-%E2%80%98asap-raw%E2%80%99"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. React Native:Error: Cannot find module ‘asap&#x2F;raw’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-setting-gradle%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. setting.gradle路径问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-VsCode%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. VsCode格式化代码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%92%8C%E4%BC%A0%E7%BB%9F%E5%89%8D%E7%AB%AF%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%90%E8%BD%AC%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">和传统前端的区别【转】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E4%B8%8D%E5%90%8C"><span class="nav-number">1.1.</span> <span class="nav-text">标签不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E6%A0%B7%E5%BC%8F%E4%B8%8D%E5%90%8C"><span class="nav-number">1.2.</span> <span class="nav-text">布局样式不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%B8%8D%E5%90%8C"><span class="nav-number">1.3.</span> <span class="nav-text">结构不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E4%B8%8D%E5%90%8C"><span class="nav-number">1.4.</span> <span class="nav-text">页面跳转不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8D%E5%90%8C"><span class="nav-number">1.5.</span> <span class="nav-text">js运行环境不同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Native-Error-Cannot-find-module-%E2%80%98asap-raw%E2%80%99"><span class="nav-number">2.1.</span> <span class="nav-text">React Native:Error: Cannot find module ‘asap&#x2F;raw’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setting-gradle%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">setting.gradle路径问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VsCode%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="nav-number">2.3.</span> <span class="nav-text">VsCode格式化代码</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -468,7 +468,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -562,13 +562,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">391k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
-  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
   <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -29,8 +29,8 @@
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="Java 编码规范 程序员的职业素养编码是一门手艺，我们都是匠人请对代码怀有敬畏之心编码是一种责任请对你自己写的代码负责请在你的作品上署名，并郑重的承诺——为了这段代码我已用尽我的全力请不要编写你自己不懂的代码我们允许你寻求帮助，允许你拷贝但——在你弄懂你写下的代码的实际含义之前，请不要把它合并到你的作品中去我，要做一名有素养的程序员  目录 程序员的职业素养 1. 源文件要求 1.1 文件名 [">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-27T01:44:09.220Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.220Z">
+<meta property="article:published_time" content="2021-12-16T01:18:57.390Z">
+<meta property="article:modified_time" content="2021-12-16T01:18:57.390Z">
 <meta property="article:author" content="丘山月夜">
 <meta name="twitter:card" content="summary">
 
@@ -887,7 +887,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (MenuConfigManager.getInstance().getProperty(<span class="string">&quot;enable_set_audio_prescaler&quot;</span>, <span class="string">&quot;0&quot;</span>).equals(<span class="string">&quot;1&quot;</span>)) &#123;</span><br><span class="line">    preScaleApi.eventSoundPreScalerSetValue(isMute ? WALTON_MUTE_PRESCALE : WALTON_UNMUTE_PRESCALE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>GOOD:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CVT_EN_CNC_FACTORY_MODE = SystemProperties.getInt(<span class="string">&quot;ro.CVT_EN_CNC_FACTORY_MODE&quot;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (CVT_EN_CNC_FACTORY_MODE == <span class="number">1</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> XXX_EN_CNC_FACTORY_MODE = SystemProperties.getInt(<span class="string">&quot;ro.XXX_EN_CNC_FACTORY_MODE&quot;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (XXX_EN_CNC_FACTORY_MODE == <span class="number">1</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       </div>
       
       
@@ -966,7 +966,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1060,13 +1060,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">391k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
-  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
   <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -29,17 +29,17 @@
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="面试复习">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Review/ActivityLifecycler.png">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Review/ServiceLifecycle.png">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Review/Android%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Review/Android%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Review/%E8%87%AA%E5%AE%9A%E4%B9%89View%E7%BB%98%E5%88%B6%E9%A1%BA%E5%BA%8F.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/ActivityLifecycler.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/ServiceLifecycle.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/Android%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/Android%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/%E8%87%AA%E5%AE%9A%E4%B9%89View%E7%BB%98%E5%88%B6%E9%A1%BA%E5%BA%8F.jpg">
 <meta property="article:published_time" content="2019-02-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-06T05:12:51.420Z">
+<meta property="article:modified_time" content="2021-12-16T01:18:57.320Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/images/Review/ActivityLifecycler.png">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/ActivityLifecycler.png">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2019/02/14/android-2019-02-14-Review/">
 
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-06 13:12:51" itemprop="dateModified" datetime="2021-11-06T13:12:51+08:00">2021-11-06</time>
+                <time title="修改时间：2021-12-16 09:18:57" itemprop="dateModified" datetime="2021-12-16T09:18:57+08:00">2021-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -303,7 +303,7 @@
 <li>Stopped：Activity完全不可见，如退回主界面，或被另一个Activity覆盖。</li>
 <li>Killed：Activity被销毁，即从Task中出栈。</li>
 </ul>
-<h3 id="七大生命周期"><a href="#七大生命周期" class="headerlink" title="七大生命周期"></a>七大生命周期</h3><p><img src="/images/Review/ActivityLifecycler.png" alt="Activity生命周期"></p>
+<h3 id="七大生命周期"><a href="#七大生命周期" class="headerlink" title="七大生命周期"></a>七大生命周期</h3><p><img src="/2019/02/14/android-2019-02-14-Review/ActivityLifecycler.png" alt="Activity生命周期"></p>
 <p><strong>具体情况分析</strong></p>
 <p>ActivityA启动ActivityB时</p>
 <blockquote>
@@ -438,7 +438,7 @@
 </ol>
 </blockquote>
 <p>生命周期（官方图）：</p>
-<p><img src="/images/Review/ServiceLifecycle.png" alt="Service生命周期官方图"></p>
+<p><img src="/2019/02/14/android-2019-02-14-Review/ServiceLifecycle.png" alt="Service生命周期官方图"></p>
 <h3 id="Service和Thread的区别"><a href="#Service和Thread的区别" class="headerlink" title="Service和Thread的区别"></a>Service和Thread的区别</h3><p>Thread是程序执行的最小单元，可以用Thread执行异步的操作。</p>
 <ul>
 <li>独立于Activity：当Activity被销毁，线程没有主动停止或者run方法没有执行完毕，Thread会一直执行</li>
@@ -668,7 +668,7 @@
 <p>这样的进程不会直接影响到用户体验，所以系统可以在任意时刻杀了它们从而为前台、可见、以及服务进程们提供存储空间。通常有很多后台进程在运行。它们被保存在一个LRU(最近最少使用)列表中来确保拥有最近刚被看到的activity的进程最后被杀。如果一个activity正确的实现了它的生命周期方法，并保存了它的当前状态，那么杀死它的进程将不会对用户的可视化体验造成影响。因为当用户返回到这个activity时，这个activity会恢复它所有的可见状态。</p>
 <h3 id="空进程"><a href="#空进程" class="headerlink" title="空进程"></a>空进程</h3><p>空进程指的是在这些进程内部，没有任何东西在运行。保留这种进程的的唯一目的是用作缓存，以缩短该应用下次在其中运行组件所需的启动时间。</p>
 <p>系统经常为了平衡在进程高速缓存和底层的内核高速缓存之间的整体系统资源而杀死它们。</p>
-<h2 id="Android介绍"><a href="#Android介绍" class="headerlink" title="Android介绍"></a>Android介绍</h2><h3 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h3><p><img src="/images/Review/Android%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg" alt="Android系统架构"></p>
+<h2 id="Android介绍"><a href="#Android介绍" class="headerlink" title="Android介绍"></a>Android介绍</h2><h3 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h3><p><img src="/2019/02/14/android-2019-02-14-Review/Android%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.jpg" alt="Android系统架构"></p>
 <h3 id="历史版本"><a href="#历史版本" class="headerlink" title="历史版本"></a>历史版本</h3><table>
 <thead>
 <tr>
@@ -847,10 +847,10 @@
 <td>API level 28</td>
 </tr>
 </tbody></table>
-<h3 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h3><p><img src="/images/Review/Android%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B.jpg" alt="Android打包流程"></p>
+<h3 id="打包流程"><a href="#打包流程" class="headerlink" title="打包流程"></a>打包流程</h3><p><img src="/2019/02/14/android-2019-02-14-Review/Android%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B.jpg" alt="Android打包流程"></p>
 <h1 id="自定义View"><a href="#自定义View" class="headerlink" title="自定义View"></a>自定义View</h1><h2 id="绘制过程"><a href="#绘制过程" class="headerlink" title="绘制过程"></a>绘制过程</h2><p>重写onMeasure()-&gt;onLayout()-&gt;onDraw()</p>
 <h2 id="控制绘制顺序"><a href="#控制绘制顺序" class="headerlink" title="控制绘制顺序"></a>控制绘制顺序</h2><p>图片来源于HenCoder大佬的教程，自定义View讲的很详细很清楚：<a target="_blank" rel="noopener" href="https://hencoder.com/ui-1-5/">HenCoder Android 开发进阶：自定义 View 1-5 绘制顺序</a></p>
-<p><img src="/images/Review/%E8%87%AA%E5%AE%9A%E4%B9%89View%E7%BB%98%E5%88%B6%E9%A1%BA%E5%BA%8F.jpg" alt="自定义View绘制顺序"></p>
+<p><img src="/2019/02/14/android-2019-02-14-Review/%E8%87%AA%E5%AE%9A%E4%B9%89View%E7%BB%98%E5%88%B6%E9%A1%BA%E5%BA%8F.jpg" alt="自定义View绘制顺序"></p>
 <h1 id="事件分发"><a href="#事件分发" class="headerlink" title="事件分发"></a>事件分发</h1><h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><h2 id="帧动画"><a href="#帧动画" class="headerlink" title="帧动画"></a>帧动画</h2><p>主要使用AnimationDrawable，Drawable的子类，可以通过Java代码或者xml文件创建Drawable</p>
 <p>xml创建：位于drawable目录下，可以当作普通的drawable使用</p>
 <ul>
@@ -1004,8 +1004,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/01/14/java-2019-1-14-JavaReflection/" rel="prev" title="java反射">
-      <i class="fa fa-chevron-left"></i> java反射
+    <a href="/2019/01/14/tool-2019-1-14-Docker-Jenkins/" rel="prev" title="Docker for windows+Jenkins+gradle配置">
+      <i class="fa fa-chevron-left"></i> Docker for windows+Jenkins+gradle配置
     </a></div>
       <div class="post-nav-item">
     <a href="/2019/02/27/android-2019-02-27-AndroidError/" rel="next" title="Java异常和Android常见异常解决方案（更新中，占坑）">
@@ -1087,7 +1087,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1181,13 +1181,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">391k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

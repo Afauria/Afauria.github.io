@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/favicon.ico" color="#222">
-  <meta name="google-site-verification" content="0MDiByniceTHx4-jn5eI7J8vs26cHFJyzUm0izFdH_U">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
   <meta name="baidu-site-verification" content="code-c502xbTetv">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -29,13 +29,13 @@
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="进程和线程、通信方式、并行和并发、同步和异步、阻塞和非阻塞相关概念笔记笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/images/Thread/treadstate.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2018/11/17/basic-2018-10-17-ipc-thread/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81.png">
 <meta property="article:published_time" content="2018-11-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.049Z">
+<meta property="article:modified_time" content="2021-12-16T01:18:57.334Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="程序基础">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/images/Thread/treadstate.png">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2018/11/17/basic-2018-10-17-ipc-thread/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81.png">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2018/11/17/basic-2018-10-17-ipc-thread/">
 
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2021-12-16 09:18:57" itemprop="dateModified" datetime="2021-12-16T09:18:57+08:00">2021-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -371,7 +371,7 @@
 <p><strong>synchronized是非公平锁，线程需要竞争锁</strong></p>
 <p><strong>公平锁：可以使用FIFO（先进先出），维护一个队列，让先进的线程获得锁</strong></p>
 <h1 id="6-线程状态"><a href="#6-线程状态" class="headerlink" title="6. 线程状态"></a>6. 线程状态</h1><p><strong><a target="_blank" rel="noopener" href="https://www.cnblogs.com/happy-coder/p/6587092.html">转自此处</a></strong></p>
-<p><img src="/images/Thread/treadstate.png" alt="线程状态"></p>
+<p><img src="/2018/11/17/basic-2018-10-17-ipc-thread/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81.png" alt="线程状态"></p>
 <h2 id="6-1-线程共包括以下5种状态。"><a href="#6-1-线程共包括以下5种状态。" class="headerlink" title="6.1. 线程共包括以下5种状态。"></a>6.1. 线程共包括以下5种状态。</h2><ol>
 <li>新建状态(New)         : 线程对象被创建后，就进入了新建状态。例如，Thread thread = new Thread()。</li>
 <li>就绪状态(Runnable): 也被称为“可执行状态”。线程对象被创建后，其它线程调用了该对象的start()方法，从而来启动该线程。例如，thread.start()。处于就绪状态的线程，随时可能被CPU调度执行。</li>
@@ -447,12 +447,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/11/17/architecture-2018-11-17-strategy/" rel="prev" title="策略模式和状态模式">
-      <i class="fa fa-chevron-left"></i> 策略模式和状态模式
+    <a href="/2018/11/04/tool-2018-11-04-Docker/" rel="prev" title="Docker笔记">
+      <i class="fa fa-chevron-left"></i> Docker笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/11/17/architecture-2018-11-17-singleton/" rel="next" title="单例模式">
-      单例模式 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/11/17/architecture-2018-11-17-strategy/" rel="next" title="策略模式和状态模式">
+      策略模式和状态模式 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -530,7 +530,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -624,13 +624,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">391k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
