@@ -12,32 +12,52 @@ keywords: [android, java]
 
 # Java异常
 
-## error和exception有什么区别
+## 什么是异常
 
-* error表示系统级的错误，是java运行环境内部错误或者硬件问题，不能指望程序来处理这样的问题，除了退出运行外别无选择，它是Java虚拟机抛出的。
-  * 如OutOfMemoryError（内存溢出）、NoClassDefFoundError（类定义错误）
-* exception 表示程序需要捕捉、需要处理的异常，是由与程序设计的不完善而出现的问题，程序必须处理的问题
+Java 通过面向对象的方法来处理异常：在一个方法的运行过程中，如果发生了异常，会产生一个异常对象，并把它交给运行时的系统，运行时系统寻找相应的代码来处理这一异常。
 
-## 运行时异常和一般异常
-
-* 一般异常（CheckedException）主要是指IO异常、SQL异常等。对于这种异常，JVM要求我们必须对其进行try-catch处理，否则编译器会报错。
-* **运行时异常（RuntimeException）我们一般不处理**，当出现这类异常的时候程序会由虚拟机接管。比如，我们从来没有去处理过NullPointerException。
-
-> 1. 出现运行时异常的时候，程序会将异常一直向上抛，直到遇到处理代码，如果没有catch块进行处理，到了最上层，如果是多线程就有Thread.run()抛出，如果不是多线程那么就由main.run()抛出。抛出之后，如果是线程，那么该线程也就终止了，如果是主程序，那么该程序也就终止了。
-> 2. 其实运行时异常的也是继承自Exception，也可以用catch块捕获，只是我们一般不处理，也就是说，如果不对运行时异常进行catch处理，那么结果会导致当前线程终止
-> 3. 如果不想终止，那么我们就必须捕获所有可能出现的运行时异常。如果程序中出现了异常数据，但是它不影响下面的程序执行，那么我们就该在catch块里面将异常数据舍弃，然后记录日志。如果，它影响到了下面的程序运行，那么还是程序退出比较好些。
+* 拋出（throw）异常：生成异常对象，并把它提交给运行时系统的过程。
+* 捕获（catch）异常：运行时系统在方法的调用栈中查找能够处理该类型异常的代码。
 
 关键字：
 
-> 1. try：用来指定一块预防所有异常的程序。后面需要跟catch或者finally
-> 2. catch：紧跟在try后面，用来捕获异常。可以try-finally不加catch
-> 3. throw：用来明确的抛出一个异常
-> 4. throws：用来标明一个成员函数可能抛出的各种异常
-> 5. finally：确保一段代码无论发生什么异常都会被执行的一段代码。可以try-catch不加finally
+1. try：指定一段可能会产生异常的代码，后面需要跟catch或者finally捕获异常
+2. catch：紧跟在try后面，用来捕获异常。
+3. throw：手动抛出一个异常
+4. throws：用来标明一个函数内部可能抛出的各种异常，调用该函数需要捕获异常
+5. finally：try-catch结束之后，无论有没有发生异常都会执行
 
-*try中return了也会执行finally*
+**try中return了也会执行finally，如果finally中也有return，会使用finally中的return**
 
-java7新特性：
+**子类不能比父类抛出更多异常**
+
+## 异常类型
+
+![](2019-02-27-AndroidError/异常分类.png)
+
+Error和Exception：
+
+* Error：编译时错误或系统错误，是Java运行环境内部或系统本身的错误，一般不需要应用程序处理。如OutOfMemoryError（内存溢出）、NoClassDefFoundError（类定义错误）
+* Exception：程序需要捕捉、需要处理的异常，是程序设计的不完善而出现的问题，程序必须处理的问题
+
+Exception又分为运行时异常和非运行时异常：
+
+* 运行时异常（Runtime Exception）：也称为不检查异常（UnChecked Exception），一般是由程序逻辑错误引起。
+  * 运行时发生，编译时不会检查。
+  * 程序中可以捕获，也可以不捕获。
+  * 如`NullPointerException`、`IndexOutOfBoundsException`等。
+* 非运行时异常：也称为检查异常（Checked Exception），除RuntimeException以外的异常。
+  * 可以被预测，程序需要进行处理，否则编译器会报错：捕获（try-catch）或者向上抛出（throws）。
+  * 如IO异常、SQL异常等。
+
+
+如下图：检查异常要求我们对异常进行处理，否则编译器会报错。不检查异常则没要求，程序可以捕获也可以不捕获
+
+![](2019-02-27-AndroidError/检查异常和不检查异常.png)
+
+> 异常如果没被处理，最终会抛到该线程run方法。因此在多线程情况下，子线程出现异常会导致该线程终止
+
+## Java7新特性：
 
 1. 可以捕获多个异常
 
@@ -48,7 +68,7 @@ catch(IOException | SQLException | Exception ex){
 }
 ```
 
-2. try-with-resources：finally常用来关闭资源（如IO读写），使用新特性可以不用手动关闭（老师上课的时候建议我们还是手动维护）
+2. `try-with-resources`：finally常用来关闭资源（如IO读写），使用新特性可以不用手动关闭（建议还是手动维护释放）
 
 ```java
 //在try子句中能创建一个资源对象，当程序的执行完try-catch之后，运行环境自动关闭资源。
@@ -58,8 +78,6 @@ try (MyResource mr = new MyResource()) {
 	e.printStackTrace();
 }
 ```
-
-
 
 # 常见编译错误
 
@@ -97,7 +115,11 @@ Android查看内存、CPU、电量等信息：
 
 `java.lang.OutOfMemoryError: Metaspace`
 
-> 有可能是电脑内存不足，重启电脑
+> 有可能是电脑内存不足，
+>
+> 1. 重启Android Studio
+> 2. 查看内存，杀进程（活动监视器，或者命令行）
+> 3. 重新开机
 
 ## sdk版本不正确
 
@@ -109,7 +131,7 @@ Execution failed for task ':girls:compileReleaseRenderscript'.
 > llvm-rs-cc is missing
 ```
 
-解决方案：修改build.gradle中的版本号为下载过的sdk版本
+解决方案：修改`build.gradle`中的版本号为下载过的sdk版本
 
 # 常见运行异常
 
