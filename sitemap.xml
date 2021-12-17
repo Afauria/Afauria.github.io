@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.afauria.xyz/2021/12/08/android-2021-12-08-APT/</loc>
+    
+    <lastmod>2021-12-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/2021/04/14/java-2021-4-14-%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
+    
+    <lastmod>2021-12-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
     
     <lastmod>2021-12-16</lastmod>
@@ -230,15 +248,6 @@
     <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsJoker/</loc>
     
     <lastmod>2021-12-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/2021/12/08/android-2021-12-08-APT/</loc>
-    
-    <lastmod>2021-12-14</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -587,7 +596,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -596,7 +605,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
+    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -632,15 +641,6 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2017/11/24/reader-2017-11-24-Coco/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/2018/11/02/reader-2017-10-01-PartyArticleStudy/</loc>
     
     <lastmod>2021-09-27</lastmod>
@@ -659,6 +659,15 @@
   </url>
   
   <url>
+    <loc>https://blog.afauria.xyz/2017/11/24/reader-2017-11-24-Coco/</loc>
+    
+    <lastmod>2021-09-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/2021/09/26/personal-2021-09-26-%E6%9B%BC%E5%BE%B7%E6%8B%89%E6%95%88%E5%BA%94/</loc>
     
     <lastmod>2021-09-27</lastmod>
@@ -669,6 +678,15 @@
   
   <url>
     <loc>https://blog.afauria.xyz/2017/12/21/personal-2017-12-21-Party/</loc>
+    
+    <lastmod>2021-09-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/2021/09/13/note-2021-09-13-UML/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -704,24 +722,6 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/09/13/note-2021-09-13-UML/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/2021/04/14/java-2021-4-14-%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/2018/04/04/hello-world/</loc>
     
     <lastmod>2021-09-27</lastmod>
@@ -740,7 +740,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/</loc>
+    <loc>https://blog.afauria.xyz/2021/07/15/basic-2021-07-15-%E5%BC%82%E6%AD%A5%E6%A6%82%E5%BF%B5%E5%92%8C%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -749,7 +749,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/07/15/basic-2021-07-15-%E5%BC%82%E6%AD%A5%E6%A6%82%E5%BF%B5%E5%92%8C%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0/</loc>
+    <loc>https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -767,7 +767,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-singleton/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-factory/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -776,7 +776,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-factory/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-singleton/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -823,7 +823,7 @@
 
   <url>
     <loc>https://blog.afauria.xyz/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -831,259 +831,259 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Java/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Android/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E8%BF%9B%E9%98%B6/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/ReactNative/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Firebase/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%8E%A8%E9%80%81/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E5%90%8E%E7%AB%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Jekyll/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Hexo/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/UML/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%94%B5%E5%BD%B1/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/python/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Flutter/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/AOP/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Docker/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/ssh/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/linux/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/kotlin/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/APT/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Jenkins/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1092,112 +1092,112 @@
   
   <url>
     <loc>https://blog.afauria.xyz/categories/Java/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/Android/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E5%90%8E%E7%AB%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E6%9E%B6%E6%9E%84%E5%92%8C%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E7%94%B5%E5%BD%B1/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/kotlin/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blog.afauria.xyz/categories/%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <lastmod>2021-12-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

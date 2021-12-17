@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.afauria.xyz/2021/12/08/android-2021-12-08-APT/</loc>
+    <lastmod>2021-12-17</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/04/14/java-2021-4-14-%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
+    <lastmod>2021-12-16</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
     <lastmod>2021-12-16</lastmod>
   </url>
@@ -87,10 +95,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsJoker/</loc>
     <lastmod>2021-12-15</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/12/08/android-2021-12-08-APT/</loc>
-    <lastmod>2021-12-14</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2021/12/09/android-2021-12-09-ButterKnife/</loc>
@@ -237,11 +241,11 @@
     <lastmod>2021-10-19</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
+    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
@@ -257,10 +261,6 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2017/11/24/reader-2017-11-24-Coco/</loc>
-    <lastmod>2021-09-27</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2018/11/02/reader-2017-10-01-PartyArticleStudy/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
@@ -269,11 +269,19 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
+    <loc>https://blog.afauria.xyz/2017/11/24/reader-2017-11-24-Coco/</loc>
+    <lastmod>2021-09-27</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2021/09/26/personal-2021-09-26-%E6%9B%BC%E5%BE%B7%E6%8B%89%E6%95%88%E5%BA%94/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2017/12/21/personal-2017-12-21-Party/</loc>
+    <lastmod>2021-09-27</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/09/13/note-2021-09-13-UML/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
@@ -289,14 +297,6 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/09/13/note-2021-09-13-UML/</loc>
-    <lastmod>2021-09-27</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/04/14/java-2021-4-14-%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
-    <lastmod>2021-09-27</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2018/04/04/hello-world/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
@@ -305,11 +305,11 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/</loc>
+    <loc>https://blog.afauria.xyz/2021/07/15/basic-2021-07-15-%E5%BC%82%E6%AD%A5%E6%A6%82%E5%BF%B5%E5%92%8C%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/07/15/basic-2021-07-15-%E5%BC%82%E6%AD%A5%E6%A6%82%E5%BF%B5%E5%92%8C%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0/</loc>
+    <loc>https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
@@ -317,11 +317,11 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-singleton/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-factory/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-factory/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-singleton/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
