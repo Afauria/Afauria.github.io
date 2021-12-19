@@ -25,8 +25,6 @@ description: 个人简介
 
 编程动漫小说游戏电视剧手工绘画戏曲写博客等等，坐标广州
 
-[个人简历]()：暂时不放
-
 # 联系我
 
 QQ：410013112
@@ -51,6 +49,6 @@ QQ：410013112
 
 # 知识体系
 
-Todo1：计划将一些基础知识和体系逐步整理到GitBook中，不发布在博客里面：[GitBook-Learner](/GitBook-Learner/)
+Todo1：计划将一些基础知识和体系逐步整理到GitBook中，不发布在博客里面（整理中，暂未开放）：[GitBook-Learner](/GitBook-Learner/)
 
 Todo2：早期的文章比较稚嫩，质量比较低，有点充数，markdown用的也不好，格式比较杂乱，找个时间要给他重新整下
