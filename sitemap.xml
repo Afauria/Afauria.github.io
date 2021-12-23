@@ -596,7 +596,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -605,7 +605,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/12/12/webdev-2018-12-12-SyntaxSugarNote/</loc>
+    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -632,7 +632,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/02/reader-2017-10-01-PartyArticleStudy/</loc>
+    <loc>https://blog.afauria.xyz/2017/11/11/reader-2017-11-11-%E9%81%93%E5%BE%B7%E7%BB%8F/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -641,7 +641,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2017/11/11/reader-2017-11-11-%E9%81%93%E5%BE%B7%E7%BB%8F/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/02/reader-2017-10-01-PartyArticleStudy/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -677,7 +677,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-GithubConnection/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -695,7 +695,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -704,7 +704,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
+    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-GithubConnection/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -740,33 +740,6 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-strategy/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-singleton/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/2018/11/17/architecture-2018-11-17-factory/</loc>
-    
-    <lastmod>2021-09-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/2020/12/14/android-2020-12-14-FCM%E6%8E%A8%E9%80%81/</loc>
     
     <lastmod>2021-09-27</lastmod>
@@ -785,7 +758,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/08/04/android-2018-08-04-DependenciesNote/</loc>
+    <loc>https://blog.afauria.xyz/2018/10/14/android-2018-10-14-HybridSolution/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -794,7 +767,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/10/14/android-2018-10-14-HybridSolution/</loc>
+    <loc>https://blog.afauria.xyz/2018/08/04/android-2018-08-04-DependenciesNote/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -862,13 +835,6 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%8E%A8%E9%80%81/</loc>
-    <lastmod>2021-12-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
     <lastmod>2021-12-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

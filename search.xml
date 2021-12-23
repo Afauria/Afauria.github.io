@@ -4100,54 +4100,6 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
-
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
-<ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
-</ol>
-</li>
-</ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
-
-<ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
-</ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
-<ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>前端网站部署</title>
     <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
@@ -4250,6 +4202,54 @@ end</pre>
       <tags>
         <tag>前端</tag>
         <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
+
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
+
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+<ol>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+</ol>
+</li>
+</ol>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
       </tags>
   </entry>
   <entry>
@@ -6480,127 +6480,6 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>工厂模式</title>
-    <url>/2018/11/17/architecture-2018-11-17-factory/</url>
-    <content><![CDATA[<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>用于创建复杂对象。</p>
-<ul>
-<li>定义实体类的接口和实体类</li>
-<li>定义一个工厂类</li>
-<li>将对象实例化封装到工厂方法中，根据参数返回不同的实体对象。</li>
-<li>工厂类可以是普通类（通过new实例化）、也可以是单例类或者提供静态方法</li>
-</ul>
-<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>用于创建工厂的超级工厂</p>
-<ul>
-<li>定义一个抽象工厂类和抽象方法</li>
-<li>定义不同种类的工厂类，继承抽象工厂，并实现抽象方法，创建不同种类的对象，如ColorFactory、ShapeFactory</li>
-<li>定义工厂生成器类，提供方法用于创建不同的工厂，实际上是选择不同的实体类接口</li>
-<li>定义不同实体类的接口和实体类。如Circle、Rectangle实现Shape接口，Red、Green实现Color接口</li>
-<li>通过不同的工厂生成不同的接口对象</li>
-</ul>
-<p>核心是面向接口编程，工厂类和实体类都使用接口来声明，根据参数创建具体的对象，外部不需要知道具体的类的名称</p>
-]]></content>
-      <categories>
-        <category>架构和设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>单例模式</title>
-    <url>/2018/11/17/architecture-2018-11-17-singleton/</url>
-    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>单例类通过在内部创建自己的实例，并提供给外部，保证外部访问的都是同一个对象。外部不需要实例化该类的对象（构造方法私有）</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>自己创建自己的实例</li>
-<li>将这个实例提供给外部</li>
-<li>只能有一个实例</li>
-</ul>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>减少内存开销，避免频繁创建和销毁实例</li>
-<li>避免对资源的多重占用</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>与单一职责原则冲突：一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。</li>
-<li>没有接口，不能继承</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="懒汉式，线程不安全"><a href="#懒汉式，线程不安全" class="headerlink" title="懒汉式，线程不安全"></a>懒汉式，线程不安全</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;  </span><br><span class="line">        instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="懒汉式，线程安全"><a href="#懒汉式，线程安全" class="headerlink" title="懒汉式，线程安全"></a>懒汉式，线程安全</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="comment">//使用synchronized加锁，影响效率</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;  </span><br><span class="line">        instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;  </span><br><span class="line">    <span class="comment">//类加载时进行实例化，浪费内存</span></span><br><span class="line">    <span class="comment">//通过classloader保证初始化时只有一个线程，因此是线程安全的</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="登记式-静态内部类"><a href="#登记式-静态内部类" class="headerlink" title="登记式/静态内部类"></a>登记式/静态内部类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="comment">//通过classloader保证初始化时只有一个线程，是线程安全的</span></span><br><span class="line">    <span class="comment">//通过静态内部类实现懒汉式加载</span></span><br><span class="line">    <span class="comment">//即使Singleton类被加载了也不会进行实例化，如调用Singleton其他方法触发Singleton类加载</span></span><br><span class="line">    <span class="comment">//只有显示调用getInstance()时才会加载Holder类</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;  </span><br><span class="line">    	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">new</span> Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    	<span class="keyword">return</span> SingletonHolder.INSTANCE;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="双检锁-双重校验锁（DCL，即-double-checked-locking）"><a href="#双检锁-双重校验锁（DCL，即-double-checked-locking）" class="headerlink" title="双检锁/双重校验锁（DCL，即 double-checked locking）"></a>双检锁/双重校验锁（DCL，即 double-checked locking）</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="comment">//volatile保证每次从内存中读取，跳过cpu缓存</span></span><br><span class="line">    <span class="comment">//正常情况下，线程从内存拷贝变量到cpu缓存，每个线程可能在不同的cpu上，变量的修改是不可见的，可能会造成数据不同步</span></span><br><span class="line">    <span class="comment">//volatile保证可见性（一个线程的修改对另一个线程可见），不能保证原子性，不会使线程阻塞，更轻量的同步机制</span></span><br><span class="line">    <span class="comment">//synchronized保证可见性和原子性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;  </span><br><span class="line">    <span class="comment">//效率比第二种要高</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    	<span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;</span><br><span class="line">        	<span class="keyword">synchronized</span> (Singleton.class) &#123;  </span><br><span class="line">            	<span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;  </span><br><span class="line">                	singleton = <span class="keyword">new</span> Singleton();  </span><br><span class="line">            	&#125;  </span><br><span class="line">        	&#125;  </span><br><span class="line">    	&#125;  </span><br><span class="line">    	<span class="keyword">return</span> singleton;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>补充</strong></p>
-<p>类加载的时机：和虚拟机有关，可能是饿汉式、也可能是懒汉式，并且受JLS保证（当有初始化需求时）</p>
-<p>类的初始化，加载完类就进行初始化，可能由以下几种情况触发：</p>
-<ul>
-<li>使用new关键字实例化对象，或者class.forName()反射</li>
-<li>读取一个类的静态字段（被final修饰、已在编译期把结果放在常量池的静态字段除外）</li>
-<li>设置一个类的静态字段（被final修饰、已在编译期把结果放在常量池的静态字段除外）</li>
-<li>调用一个类的静态方法</li>
-</ul>
-]]></content>
-      <categories>
-        <category>架构和设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>策略模式和状态模式</title>
-    <url>/2018/11/17/architecture-2018-11-17-strategy/</url>
-    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><img src="/images/DesignPattern/strategy.png" alt="策略模式uml类图"></p>
-<p>定义一套算法族，实现行为接口，对每一种行为进行封装。对象拥有某种行为接口，提供方法供外部动态替换行为。</p>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>能够动态改变对象的行为，用户可以自己调用不同的行为、算法进行处理。增强了灵活性和可扩展性</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>每种算法需要定义相应的类</p>
-<p><strong>补充</strong></p>
-<p>可以与工厂模式配合使用，工厂模式用来创建具体的算法，避免多重条件判断</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
-<li>定义一个策略接口（行为，算法）</li>
-<li>定义不同实体类，实现策略接口</li>
-<li>定义Context类，包含策略属性（面向接口），并执行相应的方法</li>
-<li>外部通过创建具体的策略，传入Context中来实现动态替换对象（Context）的行为</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//飞的行为接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FlyBehavior</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//具体的飞的行为</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyWithWings</span> <span class="keyword">implements</span> <span class="title">FlyBehavior</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Fly With Wings&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyNoWay</span> <span class="keyword">implements</span> <span class="title">FlyBehavior</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Fly no way&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//叫的行为接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QuackBehavior</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quack</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//具体的叫的行为</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Quack</span> <span class="keyword">implements</span> <span class="title">QuackBehavior</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Quack&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Squeak</span> <span class="keyword">implements</span> <span class="title">QuackBehavior</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Squeak&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Mute</span> <span class="keyword">implements</span> <span class="title">QuackBehavior</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Mute&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Context对象，抽象鸭子，拥有飞和叫的行为</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Duck</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> FlyBehavior flyBehavior=<span class="keyword">new</span> FlyWithWings();</span><br><span class="line">    <span class="keyword">private</span> QuackBehavior quackBehavior=<span class="keyword">new</span> Quack();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFlyBehavior</span><span class="params">(FlyBehavior flyBehavior)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.flyBehavior = flyBehavior;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQuackBehavior</span><span class="params">(QuackBehavior quackBehavior)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.quackBehavior = quackBehavior;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fly</span><span class="params">()</span></span>&#123;</span><br><span class="line">        flyBehavior.fly();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">quack</span><span class="params">()</span></span>&#123;</span><br><span class="line">        quackBehavior.quack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//具体的鸭子对象，对应具体的行为</span></span><br><span class="line"><span class="comment">//这部分是对策略模式的进一层封装，也可以由用户调用set方法动态更改Behavior</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedHeadDuck</span> <span class="keyword">extends</span> <span class="title">Duck</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RedHeadDuck</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setFlyBehavior(<span class="keyword">new</span> FlyWithWings());</span><br><span class="line">        setQuackBehavior(<span class="keyword">new</span> Quack());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Red Head Duck&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RubberDuck</span> <span class="keyword">extends</span> <span class="title">Duck</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RubberDuck</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setFlyBehavior(<span class="keyword">new</span> FlyNoWay());</span><br><span class="line">        setQuackBehavior(<span class="keyword">new</span> Mute());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Rubber Duck&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MallardDuck</span> <span class="keyword">extends</span> <span class="title">Duck</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MallardDuck</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setFlyBehavior(<span class="keyword">new</span> FlyWithWings());</span><br><span class="line">        setQuackBehavior(<span class="keyword">new</span> Squeak());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Mallard Duck&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//主程序</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunStrategy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//对策略模式的封装，将具体的行为封装到具体的对象中</span></span><br><span class="line">        Duck duck=<span class="keyword">new</span> RedHeadDuck();</span><br><span class="line">        duck.display();</span><br><span class="line">        duck.fly();</span><br><span class="line">        duck.quack();</span><br><span class="line">        duck=<span class="keyword">new</span> MallardDuck();</span><br><span class="line">        duck.display();</span><br><span class="line">        duck.fly();</span><br><span class="line">        duck.quack();</span><br><span class="line">        duck=<span class="keyword">new</span> RubberDuck();</span><br><span class="line">        duck.display();</span><br><span class="line">        duck.fly();</span><br><span class="line">        duck.quack();</span><br><span class="line">		<span class="comment">//动态修改行为</span></span><br><span class="line">        duck.setQuackBehavior(<span class="keyword">new</span> Squeak());</span><br><span class="line">        duck.quack();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h2><p><img src="/images/DesignPattern/state.png" alt="状态模式uml"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//状态接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GameState</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//主菜单状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MenuState</span> <span class="keyword">implements</span> <span class="title">GameState</span> </span>&#123;</span><br><span class="line">    Game game;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MenuState</span><span class="params">(Game game)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.game = game;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Start a new game&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getRunState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Click to help&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getHelpState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is menu state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Click Setting&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getSettingState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Click to exit&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getExitState());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//帮助状态，用户只能点击返回菜单，不能做其他行为</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelpState</span> <span class="keyword">implements</span> <span class="title">GameState</span></span>&#123;</span><br><span class="line">    Game game;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HelpState</span><span class="params">(Game game)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.game = game;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is help state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is help state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Return menu&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getMenuState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is help state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is help state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SettingState</span> <span class="keyword">implements</span> <span class="title">GameState</span></span>&#123;</span><br><span class="line">    Game game;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SettingState</span><span class="params">(Game game)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.game = game;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is setting state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is setting state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Return menu&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getMenuState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is setting state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is setting state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunState</span> <span class="keyword">implements</span> <span class="title">GameState</span></span>&#123;</span><br><span class="line">    Game game;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RunState</span><span class="params">(Game game)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.game = game;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is game state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is game state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Return menu&quot;</span>);</span><br><span class="line">        game.setCurrentState(game.getMenuState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is game state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;it is game state&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Context对象拥有状态，且同一时间只由一种状态</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Game</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> GameState currentState=<span class="keyword">new</span> MenuState(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GameState menuState=<span class="keyword">new</span> MenuState(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> GameState runState=<span class="keyword">new</span> RunState(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> GameState helpState=<span class="keyword">new</span> HelpState(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> GameState settingState=<span class="keyword">new</span> SettingState(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> GameState exitState=<span class="keyword">new</span> ExitState(<span class="keyword">this</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickNewGame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.clickNewGame();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickHelpItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.clickHelpItem();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickReturnMenu</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.clickReturnMenu();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickSettingsItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.clickSettingsItem();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clickExit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.clickExit();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Game State: &quot;</span>+currentState.getClass().getSimpleName();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getMenuState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> menuState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getRunState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> runState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getHelpState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helpState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getSettingState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> settingState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getExitState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> exitState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameState <span class="title">getCurrentState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCurrentState</span><span class="params">(GameState currentState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentState = currentState;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//主程序</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Game game = <span class="keyword">new</span> Game();</span><br><span class="line">        System.out.println(game.toString());</span><br><span class="line">        game.clickNewGame();</span><br><span class="line">        game.clickHelpItem();</span><br><span class="line">        game.clickReturnMenu();</span><br><span class="line">        game.clickSettingsItem();</span><br><span class="line">        game.clickReturnMenu();</span><br><span class="line">        game.clickExit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="策略模式和状态模式"><a href="#策略模式和状态模式" class="headerlink" title="策略模式和状态模式"></a>策略模式和状态模式</h2><p>uml类图相似，都能动态改变对象的行为。</p>
-<p>状态模式的状态是自动切换的，由状态决定行为，用户无法改变逻辑，最多指定初始状态</p>
-<p>策略模式是让用户指定更换的策略算法，动态替换算法</p>
-<p>状态模式能够在对象内部改变行为，状态需要持有对象的引用（方法参数或者属性），通过调用对象setState，自动改变对象状态。</p>
-<p>策略模式由用户在外部改变行为，策略不需要持有对象的引用。</p>
-<p>通过状态模式和策略模式消除多重if……else：</p>
-<p>策略模式将行为封装成策略，通过创建不同的策略并作为参数传给对象，代替条件判断，使用面向接口的方式，调用接口方法。</p>
-]]></content>
-      <categories>
-        <category>架构和设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-        <tag>架构</tag>
       </tags>
   </entry>
   <entry>
@@ -9453,53 +9332,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/note-2018-10-04-Git/</url>
-    <content><![CDATA[<p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-</ul>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-TerminalCommand/</url>
     <content><![CDATA[<p>windows命令行工具推荐cmder</p>
@@ -9634,6 +9466,53 @@ dispatchMessage-->判断是否是通知消息
 <h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
 <p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
 <h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/note-2018-10-04-Git/</url>
+    <content><![CDATA[<p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+</ul>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -9852,74 +9731,6 @@ dispatchMessage-->判断是否是通知消息
   </entry>
   <entry>
     <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
-    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
-<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
-<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
-<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
-</ol>
-<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
-<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
-<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
-<li>长连接和短连接是相对的：但都是TCP连接</li>
-<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
-<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
-<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
-<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
-</ol>
-<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
-<p>除了mina框架外，还有netty框架。</p>
-<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
-<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
-<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
-<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina01.png" alt="Mina流程"></p>
-<ol>
-<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
-<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
-</li>
-<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
-</li>
-</ol>
-<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
-<ol>
-<li>首先创建IoService</li>
-<li>添加过滤器/拦截器IoFilterChain</li>
-<li>实现IoHandler对数据进行业务逻辑处理</li>
-</ol>
-<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
-<p>Binaries是jar包，Sources是源码</p>
-<p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina02.png" alt="导入包"></p>
-<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
-<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
-<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
-<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
-<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
-<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网络编程和Mina入门</title>
     <url>/2018/07/23/tech-2018-07-23-Mina/</url>
     <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
 <li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
@@ -9987,42 +9798,71 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch+Logstash+Kibana</title>
-    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
-    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
-<li>Elasticsearch：后台分布式存储以及全文检索</li>
-<li>Logstash: 日志加工、“搬运工” </li>
-<li>Kibana：数据可视化展示。</li>
+    <title>网络编程和Mina入门</title>
+    <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
+    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
+<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
+<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
+<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
 </ol>
-<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
-<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
-<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
-<li><p>Cluster ：集群。</p>
-<p>多个搜索服务器的集合</p>
+<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
+<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
+<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
+<li>长连接和短连接是相对的：但都是TCP连接</li>
+<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
+<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
+<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
+<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
+</ol>
+<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
+<p>除了mina框架外，还有netty框架。</p>
+<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
+<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
+<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
+<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
+<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina01.png" alt="Mina流程"></p>
+<ol>
+<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
+<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
 </li>
-<li><p>Node：节点。</p>
-<p>组成集群的单个服务器</p>
+<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
 </li>
-<li><p>Shard：分片。</p>
-<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
-<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
-</li>
-<li><p>Replia：副本。</p>
-<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-</li>
-</ul>
-<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
-<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
-<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
-<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+</ol>
+<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
+<ol>
+<li>首先创建IoService</li>
+<li>添加过滤器/拦截器IoFilterChain</li>
+<li>实现IoHandler对数据进行业务逻辑处理</li>
+</ol>
+<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
+<p>Binaries是jar包，Sources是源码</p>
+<p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina02.png" alt="导入包"></p>
+<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
+<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
+<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
+<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
+<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
+<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>技术</category>
       </categories>
       <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
+        <tag>技术</tag>
+        <tag>网络编程</tag>
       </tags>
   </entry>
   <entry>
@@ -10085,6 +9925,45 @@ dispatchMessage-->判断是否是通知消息
       <tags>
         <tag>工具</tag>
         <tag>Jekyll</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch+Logstash+Kibana</title>
+    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
+    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
+<li>Elasticsearch：后台分布式存储以及全文检索</li>
+<li>Logstash: 日志加工、“搬运工” </li>
+<li>Kibana：数据可视化展示。</li>
+</ol>
+<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
+<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
+<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li><p>Cluster ：集群。</p>
+<p>多个搜索服务器的集合</p>
+</li>
+<li><p>Node：节点。</p>
+<p>组成集群的单个服务器</p>
+</li>
+<li><p>Shard：分片。</p>
+<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
+<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
+</li>
+<li><p>Replia：副本。</p>
+<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+</li>
+</ul>
+<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
+<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
+<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
+<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -10491,312 +10370,6 @@ dispatchMessage-->判断是否是通知消息
 <li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
 <li>明月来复照，把酒贺今朝——观风月</li>
 </ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>作为一个诗人</title>
-    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
-    <content><![CDATA[<center>
-    <b><font size="5">越人歌</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-    今夕何夕兮搴洲中流。<br>
-    今日何日兮得与王子同舟。<br>
-    蒙羞被好兮不訾诟耻。<br>
-    心几烦而不绝兮得知王子。<br>
-    山有木兮木有枝。<br>
-    心悦君兮君不知。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
-    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
-    一尺深红胜曲尘，天生旧物不如新。<br>
-    合欢桃核终堪恨，里许元来别有人。<br>
-    井底点灯深烛伊，共郎长行莫围棋。<br>
-    玲珑骰子安红豆，入骨相思知不知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
-    <font size="2">【作者】姜夔 【朝代】宋</font><br>
-       肥水东流无尽期。当初不合种相思。<br>
-    梦中未比丹青见，暗里忽惊山鸟啼。<br>
-    春未绿，鬓先丝。人间别久不成悲。<br>
-    谁教岁岁红莲夜，两处沉吟各自知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       十三与君初相识，王侯宅里弄丝竹。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    再见君时妾十五，且为君作霓裳舞。<br>
-    可叹年华如朝露，何时衔泥巢君屋？<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       君似明月我似雾，雾随月隐空留露。<br>
-    君善抚琴我善舞，曲终人离心若堵。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    魂随君去终不悔, 绵绵相思为君苦。<br>
-    相思苦，凭谁诉？遥遥不知君何处。<br>
-    扶门切思君之嘱，登高望断天涯路。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">绸缪</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
-    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
-    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
-</center>
-
-
-<center>
-    <b><font size="5">我亦好歌亦好酒</font></b><br>
-    <font size="2">【作者】殊同 【朝代】现代</font><br>
-       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
-    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
-    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
-    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
-    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
-    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
-    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
-    <font size="2">【作者】刘过 【朝代】宋</font><br>
-       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
-    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
-    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
-       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
-    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
-    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
-    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
-    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
-       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
-    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-       花非花，雾非雾。<br>
-    夜半来，天明去。<br>
-    来如春梦不多时，去似朝云无觅处。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花 ·花曲</font></b><br>
-    <font size="2"></font><br>
-       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
-    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
-    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
-    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">将进酒</font></b><br>
-    <font size="2">【作者】李白 【朝代】唐</font><br>
-       君不见，黄河之水天上来，奔流到海不复回。<br>
-    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
-    人生得意须尽欢，莫使金樽空对月。<br>
-    天生我材必有用，千金散尽还复来。<br>
-    烹羊宰牛且为乐，会须一饮三百杯。<br>
-    岑夫子，丹丘生，将进酒，杯莫停。<br>
-    与君歌一曲，请君为我倾耳听。<br>
-    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
-    古来圣贤皆寂寞，惟有饮者留其名。<br>
-    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
-    主人何为言少钱，径须沽取对君酌。<br>
-    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">长恨歌</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
-    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
-    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
-    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
-    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
-    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
-    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
-    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
-    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
-    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
-    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
-    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
-    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
-    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
-    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
-    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
-    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
-    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
-    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
-    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
-    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
-    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
-    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
-    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
-    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
-    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
-    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
-    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
-    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
-    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
-</center>
-
-
-<center>
-    <b><font size="5">贺新郎</font></b><br>
-    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
-   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
-</center>
-​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
-​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
-
-<center>
-    <b><font size="5">宽心谣</font></b><br>
-    <font size="2">【作者】赵朴初</font><br>
-    日出东海落西山，愁也一天，喜也一天。<br>
-    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
-    每月领取养老钱，多也喜欢，少也喜欢。<br>
-    少荤多素日三餐，粗也香甜，细也香甜。<br>
-    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
-    常与知己聊聊天，古也谈谈，今也谈谈。<br>
-    内孙外孙同样看，儿也心欢，女也心欢。<br>
-    全家老少互慰勉，贫也相安，富也相安。<br>
-    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
-    心宽体健养天年，不是神仙，胜似神仙。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">观猎</font></b><br>
-    <font size="2">【作者】王维</font><br>
-    风劲角弓鸣，将军猎渭城。<br>
-    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
-    忽过新丰市，还归细柳营。<br>
-    回看射雕处，千里暮云平。<br>
-</center>
-
-
-<center>
-    <b><font size="5">国风·秦风·小戎</font></b><br>
-    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
-    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
-    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
-    <font size="2">【作者】韦庄</font><br>
-    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
-    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
-</center>
-
-
-<center>
-    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
-    <font size="2">【作者】欧阳修</font><br>
-    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
-    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
-</center>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
-</ul>
-</li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
 ]]></content>
       <categories>
         <category>其他</category>
@@ -12026,6 +11599,312 @@ dispatchMessage-->判断是否是通知消息
 <li>身不在高，米五就行。胸不在大，有型则灵。斯是萝莉，为吾是侵，洋装猫耳朵，小嘴大眼睛，短发很俏丽，长发也飘逸，可以给糖果，玩亲亲。无八卦之乱耳，无血拼之劳行。学校游泳室，公园小凉亭。孔子云：三年起步，最高死刑。</li>
 <li>之前打排位，一个安其拉突然说：我男朋友想要，我先挂机。她还开着麦，最后我们四个硬生生守了两个小时</li>
 </ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>作为一个诗人</title>
+    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
+    <content><![CDATA[<center>
+    <b><font size="5">越人歌</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+    今夕何夕兮搴洲中流。<br>
+    今日何日兮得与王子同舟。<br>
+    蒙羞被好兮不訾诟耻。<br>
+    心几烦而不绝兮得知王子。<br>
+    山有木兮木有枝。<br>
+    心悦君兮君不知。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
+    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
+    一尺深红胜曲尘，天生旧物不如新。<br>
+    合欢桃核终堪恨，里许元来别有人。<br>
+    井底点灯深烛伊，共郎长行莫围棋。<br>
+    玲珑骰子安红豆，入骨相思知不知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
+    <font size="2">【作者】姜夔 【朝代】宋</font><br>
+       肥水东流无尽期。当初不合种相思。<br>
+    梦中未比丹青见，暗里忽惊山鸟啼。<br>
+    春未绿，鬓先丝。人间别久不成悲。<br>
+    谁教岁岁红莲夜，两处沉吟各自知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       十三与君初相识，王侯宅里弄丝竹。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    再见君时妾十五，且为君作霓裳舞。<br>
+    可叹年华如朝露，何时衔泥巢君屋？<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       君似明月我似雾，雾随月隐空留露。<br>
+    君善抚琴我善舞，曲终人离心若堵。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    魂随君去终不悔, 绵绵相思为君苦。<br>
+    相思苦，凭谁诉？遥遥不知君何处。<br>
+    扶门切思君之嘱，登高望断天涯路。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">绸缪</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
+    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
+    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
+</center>
+
+
+<center>
+    <b><font size="5">我亦好歌亦好酒</font></b><br>
+    <font size="2">【作者】殊同 【朝代】现代</font><br>
+       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
+    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
+    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
+    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
+    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
+    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
+    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
+    <font size="2">【作者】刘过 【朝代】宋</font><br>
+       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
+    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
+    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
+       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
+    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
+    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
+    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
+    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
+       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
+    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+       花非花，雾非雾。<br>
+    夜半来，天明去。<br>
+    来如春梦不多时，去似朝云无觅处。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花 ·花曲</font></b><br>
+    <font size="2"></font><br>
+       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
+    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
+    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
+    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">将进酒</font></b><br>
+    <font size="2">【作者】李白 【朝代】唐</font><br>
+       君不见，黄河之水天上来，奔流到海不复回。<br>
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
+    人生得意须尽欢，莫使金樽空对月。<br>
+    天生我材必有用，千金散尽还复来。<br>
+    烹羊宰牛且为乐，会须一饮三百杯。<br>
+    岑夫子，丹丘生，将进酒，杯莫停。<br>
+    与君歌一曲，请君为我倾耳听。<br>
+    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
+    古来圣贤皆寂寞，惟有饮者留其名。<br>
+    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
+    主人何为言少钱，径须沽取对君酌。<br>
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">长恨歌</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
+    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
+    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
+    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
+    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
+    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
+    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
+    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
+    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
+    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
+    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
+    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
+    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
+    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
+    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
+    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
+    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
+    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
+    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
+    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
+    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
+    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
+    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
+    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
+    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
+    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
+    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
+    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
+    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
+    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
+</center>
+
+
+<center>
+    <b><font size="5">贺新郎</font></b><br>
+    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
+   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
+</center>
+​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
+​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
+
+<center>
+    <b><font size="5">宽心谣</font></b><br>
+    <font size="2">【作者】赵朴初</font><br>
+    日出东海落西山，愁也一天，喜也一天。<br>
+    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
+    每月领取养老钱，多也喜欢，少也喜欢。<br>
+    少荤多素日三餐，粗也香甜，细也香甜。<br>
+    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
+    常与知己聊聊天，古也谈谈，今也谈谈。<br>
+    内孙外孙同样看，儿也心欢，女也心欢。<br>
+    全家老少互慰勉，贫也相安，富也相安。<br>
+    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
+    心宽体健养天年，不是神仙，胜似神仙。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">观猎</font></b><br>
+    <font size="2">【作者】王维</font><br>
+    风劲角弓鸣，将军猎渭城。<br>
+    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
+    忽过新丰市，还归细柳营。<br>
+    回看射雕处，千里暮云平。<br>
+</center>
+
+
+<center>
+    <b><font size="5">国风·秦风·小戎</font></b><br>
+    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
+    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
+    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
+    <font size="2">【作者】韦庄</font><br>
+    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
+    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
+</center>
+
+
+<center>
+    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
+    <font size="2">【作者】欧阳修</font><br>
+    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
+    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
+</center>
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
         <category>其他</category>
