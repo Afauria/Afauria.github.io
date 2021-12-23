@@ -8,7 +8,9 @@ tags:
 - 算法
 ---
 
-### 冒泡排序
+# 排序算法
+
+## 冒泡排序
 
 ```java
 //冒泡排序
@@ -30,7 +32,7 @@ private void bubbleSort(int[] arr) {
 }
 ```
 
-### 选择排序
+## 选择排序
 
 ```java
 //选择排序
@@ -54,7 +56,7 @@ private void selectSort(int[] arr) {
 }
 ```
 
-### 插入排序
+## 插入排序
 
 ```java
 //插入排序
@@ -80,7 +82,7 @@ private int[] insertSort(int[] arr) {
 }
 ```
 
-### 快速排序
+## 快速排序
 
 ```java
 //快速排序,平均时间复杂度：O(NlogN)
@@ -116,7 +118,7 @@ private void quickSort(int[] arr, int left, int right) {
 }
 ```
 
-**参考文章**
+# 结语
 
-[十大经典排序算法（动图演示）](https://www.cnblogs.com/onepixel/p/7674659.html)
+参考资料：[十大经典排序算法（动图演示）](https://www.cnblogs.com/onepixel/p/7674659.html)
 

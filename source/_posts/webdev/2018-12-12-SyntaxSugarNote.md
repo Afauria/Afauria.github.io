@@ -8,7 +8,7 @@ tags:
 - 前端
 ---
 
-## javascript
+# javascript
 
 * `==`和`===`
 
@@ -18,9 +18,7 @@ tags:
 * `success?.() `相当于`success && success()`，判断不为空再执行
 * (+”1”)把字符串转换成整数
 
-### 
-
-### prototype 
+## prototype 
 
 prototype 属性允许您向对象添加属性和方法
 
@@ -41,9 +39,7 @@ document.write(fred.salary);
 
 给employee函数添加了salary属性，可以.出来
 
-
-
-### argument
+## argument
 
 在函数代码中，使用特殊对象 arguments，开发者无需明确指出参数名，就能访问它们。
 
@@ -59,7 +55,7 @@ howManyArgs(12);    //1
 
 注意：与其他程序设计语言不同，ECMAScript 不会验证传递给函数的参数个数是否等于函数定义的参数个数。开发者定义的函数都可以接受任意个数的参数（根据 Netscape 的文档，最多可接受 255 个），而不会引发任何错误。任何遗漏的参数都会以 undefined 传递给函数，多余的函数将忽略。
 
-### pipeline写法
+## pipeline写法
 
 ```
 data 
@@ -70,11 +66,11 @@ data
 
 相当于fnz(fny(fnx(data)))，pipeline写法
 
-### 纯函数
+## 纯函数
 
-### 高阶函数
+## 高阶函数
 
-### 函数柯里化
+## 函数柯里化
 
 ```javascript
 function connect(a,b){
