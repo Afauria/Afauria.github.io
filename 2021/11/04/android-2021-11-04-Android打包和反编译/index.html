@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/Java和Android编译各类文件格式转换.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/dex%E4%BC%98%E5%8C%96.png">
 <meta property="article:published_time" content="2021-11-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-06T01:14:04.174Z">
+<meta property="article:modified_time" content="2021-12-22T10:58:46.383Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -132,6 +132,11 @@
     <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
 
   </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
         <li class="menu-item menu-item-collection">
 
     <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
@@ -224,6 +229,7 @@
         </h1>
 
         <div class="post-meta">
+          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
@@ -237,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-06 09:14:04" itemprop="dateModified" datetime="2021-12-06T09:14:04+08:00">2021-12-06</time>
+                <time title="修改时间：2021-12-22 18:58:46" itemprop="dateModified" datetime="2021-12-22T18:58:46+08:00">2021-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -417,8 +423,10 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 <li>dex文件：Dalvik字节码文件，在DVM中执行</li>
 <li>smali文件：dalvik字节码文件，dex文件反汇编得到，相当于dalvik虚拟机的汇编语言，便于阅读</li>
 </ol>
+<img src="/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/Java和Android编译各类文件格式转换.png" style="zoom:40%;">
+
 <blockquote>
-<p>javap：将class字节码文件反汇编，用于查看java字节码，了解JVM指令执行过程。JVM汇编指令参考<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5">官方文档</a></p>
+<p>javap：将class字节码文件反汇编，用于查看java字节码，了解JVM指令执行过程。常用参数<code>-v -l -s -c</code>等。JVM汇编指令参考<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html#jvms-6.5">官方文档</a></p>
 <p>有助于了解原理，如</p>
 <ul>
 <li>java枚举</li>
@@ -427,8 +435,6 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 <li>非静态内部类持有外部类的引用</li>
 </ul>
 </blockquote>
-<img src="/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/Java和Android编译各类文件格式转换.png" style="zoom:40%;">
-
 <h3 id="安装后"><a href="#安装后" class="headerlink" title="安装后"></a>安装后</h3><p>除了上述文件外，不同版本的Android系统虚拟机会在应用安装之后进行JIT和AOT，生成另外一些文件，存在于系统中</p>
 <ol>
 <li>odex文件(optimized dex)：针对系统和平台优化过的dex。ART上AOT编译过的机器码也保存在odex文件中。<ol>
@@ -886,7 +892,7 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:32</span>
+    <span title="站点阅读时长">5:33</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
