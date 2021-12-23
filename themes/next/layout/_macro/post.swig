@@ -41,7 +41,15 @@
         </{%- if is_index %}h2{% else %}h1{%- endif %}>
 
         <div class="post-meta">
-
+          {% if post.top %}
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-bolt" style="color:#7D26CD"></i>
+              </span>
+              <font color=7D26CD>置顶</font>
+            </span>
+          {% endif %}
+          
           {%- set date_diff = date(post.date) != date(post.updated) %}
           {%- set time_diff = time(post.date) != time(post.updated) %}
           {%- set datetime_diff = date_diff or time_diff %}

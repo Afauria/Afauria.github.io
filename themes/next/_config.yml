@@ -118,6 +118,7 @@ darkmode: false
 menu:
   home: /|| home fa fa-home
   about: /about/|| user fa fa-user
+  knowledge: /KnowledgeTree/ || graduation-cap fa fa-graduation-cap
   collection: /collection/|| suitcase fa fa-suitcase
   tags: /tags/|| tags fa fa-tags
   categories: /categories/|| th fa fa-th
@@ -237,6 +238,7 @@ chat:
 # ---------------------------------------------------------------
 
 # Automatically excerpt description in homepage as preamble text.
+# 只显示概述，不显示全文
 excerpt_description: true
 
 # Read more button

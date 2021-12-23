@@ -387,6 +387,38 @@ live2d:
 }
 ```
 
+## 添加文章置顶功能
+
+1. 安装插件
+
+```sh
+npm uninstall hexo-generator-index --save
+npm install hexo-generator-index-pin-top --save
+```
+
+2. 在需要置顶的文章头部中添加`top: true`
+3. 配置置顶图标：在`<div class="post-meta">`中添加下面代码
+
+```html
+<div class="post-meta">
+{% if post.top %}
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="far fa-thumb-tack" style="color:#7D26CD"></i>
+    </span>
+  <font color=7D26CD>置顶</font>
+  </span>
+{% endif %}
+  <!--省略..-->
+</div>
+```
+
+置顶图标无法显示？
+
+> 由于`next`主题使用的`fontawesome`图标只有`all.min.css`，不包含`fa-thumb-tack`（图钉）图标。需要手动下载`fontawesome`图标，替换`next/source/lib/font-awesome`下的文件夹。
+>
+> 这里就不引入了，换成`fa-fire`（火）或者`fa-bolt`（闪电）图标，能看懂就行
+
 # 参考文章
 
 1. [Hexo博客Next主题个性设置集锦](http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6)
