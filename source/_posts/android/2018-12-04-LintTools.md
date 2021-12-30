@@ -231,6 +231,10 @@ android {
   - OtherFileScanner：扫描其他类型文件
   - ……
 
+> * AST（Abstract Syntax Tree，抽象语法树）
+> * PSI（Program Structure Interface）：是一个框架，用于访问抽象语法树，`com.intellij.psi`
+> * UAST（Unified AST）：是一个框架，用于访问抽象语法树，`org.jetbrains.uast`
+
 ## 案例
 
 检查控件id命名前缀，如ImageView以iv_开头，Button以btn开头
