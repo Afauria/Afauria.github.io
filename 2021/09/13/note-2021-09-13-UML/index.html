@@ -70,7 +70,7 @@ note right: 考试结束;
 @enduml
 ">
 <meta property="article:published_time" content="2021-09-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.064Z">
+<meta property="article:modified_time" content="2022-01-05T06:16:13.580Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="UML">
@@ -294,7 +294,7 @@ C -.-> B: [《extend》];
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2022-01-05 14:16:13" itemprop="dateModified" datetime="2022-01-05T14:16:13+08:00">2022-01-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -333,7 +333,7 @@ C -.-> B: [《extend》];
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -355,14 +355,14 @@ C -.-> B: [《extend》];
       
         <h1 id="UML-Unified-Modeling-Language，-统一建模语言"><a href="#UML-Unified-Modeling-Language，-统一建模语言" class="headerlink" title="UML(Unified Modeling Language， 统一建模语言)"></a>UML(Unified Modeling Language， 统一建模语言)</h1><h2 id="模型分类"><a href="#模型分类" class="headerlink" title="模型分类"></a>模型分类</h2><ol>
 <li>功能模型：从用户的角度展示系统的功能，包含用例图；</li>
-<li>对象模型： 采用对象，属性，操作，关联等概念展示系统的结构和基础，包括类图、对象图。</li>
+<li>对象模型： 采用对象，属性，操作，关联等概念展示系统的结构，包括类图、对象图。</li>
 <li>动态模型： 展现系统的内部行为，包括时序图，活动图，状态图。</li>
 </ol>
 <h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><ul>
 <li>需求分析： 用例图，对外部的参与者以及其需要的系统功能建模，表示客户需求；</li>
 <li>概要设计： 类图、状态图、协作图、活动图，描述系统的静态结构、动态特征；</li>
 <li>详细设计：状态图、协作图、活动图、序列图，产生技术解决方案；</li>
-<li>测试：类图、构件图、部署图，单元测试使用类图，集成测试使用构建图、部署图。</li>
+<li>测试：类图、构件图、部署图，单元测试使用类图，集成测试使用构件图、部署图。</li>
 </ul>
 <h1 id="用例图（Use-Case-Diagram）"><a href="#用例图（Use-Case-Diagram）" class="headerlink" title="用例图（Use Case Diagram）"></a>用例图（Use Case Diagram）</h1><ol>
 <li>静态图</li>
@@ -460,6 +460,8 @@ note right: 考试结束;
 <li>组合：关联关系的一种，A组合B，B不可以脱离A单独存在，实心菱形直线表示</li>
 <li>聚合：关联关系的一种，A聚合B，B可以脱离A单独存在，空心菱形直线表示</li>
 </ol>
+<p>关系强弱：泛化&gt;= 实现&gt; 组合&gt; 聚合&gt; 关联&gt; 依赖</p>
+<p>关联、组合、聚合在代码中的体现都是成员变量，需要结合语义上下文才能判断是什么关系。</p>
 <h2 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h2><pre class="mermaid">classDiagram
 class IName{
 <<interface>>
@@ -492,8 +494,6 @@ Teacher --|> Person : 继承
 Person ..> Car : 依赖
 Company *--> Department : 1对多
 Teacher o--> Company : 1对1</abstract></interface></pre>
-
-
 
 <h1 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h1><ol>
 <li>动态图</li>
@@ -672,7 +672,7 @@ end</pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -685,7 +685,7 @@ end</pre>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -756,7 +756,7 @@ end</pre>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -766,13 +766,13 @@ end</pre>
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">348k</span>
+    <span title="站点总字数">352k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:17</span>
+    <span title="站点阅读时长">5:20</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
