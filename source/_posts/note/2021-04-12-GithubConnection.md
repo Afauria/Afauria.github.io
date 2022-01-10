@@ -9,14 +9,16 @@ description: Github访问不稳定解决
 keywords: [github]
 ---
 
-### 访问慢的原因
+# GitHub访问不稳定
+
+## 访问慢的原因
 
 DNS解析耗时。
 
 * DNS（域名系统，Domain Name System）：将[域名](https://baike.baidu.com/item/域名)和[IP地址](https://baike.baidu.com/item/IP地址)相互映射的一个分布式数据库。
 * DNS（域名服务器，Domain Name Server）：将域名转换为IP地址的服务器。
 
-### 解决方案
+## 解决方案
 
 手动修改系统hosts文件，将github域名对应的ip保存到hosts文件中，访问github的时候可以直接访问该ip，不需要dns解析。
 
@@ -52,8 +54,10 @@ DNS解析耗时。
 
 附：查询ip地址的网站：[ipaddress网站](https://www.ipaddress.com/)、[站长工具](http://tool.chinaz.com/dns)
 
-### GitPage博客无法访问
+## GitPage博客无法访问
 
 同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。
 
 困扰已久的问题，一直以为是需要翻墙vpn，原来是DNS服务器限制。
+
+当然有时候也确实和网络有关。

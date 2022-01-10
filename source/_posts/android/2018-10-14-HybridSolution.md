@@ -12,6 +12,8 @@ keywords: [Android]
 
 ## Hybrid App
 
+//todo 跨平台方案对比，选型
+
 Hybrid App（混合模式移动应用）：介于web-app、native-app这两者之间的app，兼具Native App（原生app）良好用户交互体验的优势”和“Web App跨平台开发的优势”。
 
 原因：
