@@ -22,20 +22,21 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="gcc和g++编译器">
+  <meta name="description" content="介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gcc和g++编译器">
-<meta property="og:url" content="https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/index.html">
+<meta property="og:title" content="GNU和构建工具介绍">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="gcc和g++编译器">
+<meta property="og:description" content="介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-08-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.049Z">
+<meta property="article:published_time" content="2022-01-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-10T10:11:34.455Z">
 <meta property="article:author" content="丘山月夜">
-<meta property="article:tag" content="程序基础">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="gradle">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/">
+<link rel="canonical" href="https://blog.afauria.xyz/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
 
 
 <script id="page-configurations">
@@ -48,7 +49,7 @@
   };
 </script>
 
-  <title>gcc和g++编译器 | Afauria's Blog</title>
+  <title>GNU和构建工具介绍 | Afauria's Blog</title>
   
 
 
@@ -207,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2018/08/17/basic-2018-08-17-gcc-g/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -220,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          gcc和g++编译器
+          GNU和构建工具介绍
         </h1>
 
         <div class="post-meta">
@@ -231,14 +232,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-08-17 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-17T00:00:00+08:00">2018-08-17</time>
+              <time title="创建时间：2022-01-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-05T00:00:00+08:00">2022-01-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2022-01-10 18:11:34" itemprop="dateModified" datetime="2022-01-10T18:11:34+08:00">2022-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,12 +247,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">程序基础</span></a>
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
                 </span>
             </span>
 
           
-            <span id="/2018/08/17/basic-2018-08-17-gcc-g/" class="post-meta-item leancloud_visitors" data-flag-title="gcc和g++编译器" title="阅读次数">
+            <span id="/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" class="post-meta-item leancloud_visitors" data-flag-title="GNU和构建工具介绍" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -266,8 +267,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/08/17/basic-2018-08-17-gcc-g/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/08/17/basic-2018-08-17-gcc-g/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -277,16 +278,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>301</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
-            <div class="post-description">gcc和g++编译器</div>
+            <div class="post-description">介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释</div>
 
         </div>
       </header>
@@ -297,19 +298,145 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h3><ol>
-<li>预处理,生成.i的文件[预处理器cpp]</li>
-<li>将预处理后的文件转换成汇编语言,生成文件.s[编译器egcs]</li>
-<li>由汇编变为目标代码(机器代码)生成.o的文件[汇编器as]</li>
-<li>连接目标代码,生成可执行程序[链接器ld]</li>
+        <h1 id="GNU介绍"><a href="#GNU介绍" class="headerlink" title="GNU介绍"></a>GNU介绍</h1><ul>
+<li>1983年：Richard Stallman发起GNU计划，目标是创建一套完全自由的操作系统，起因是Unix版权问题</li>
+<li>1985年：成立FSF，为GNU计划提供技术、法律以及财政支持</li>
+<li>1990年：完成Emacs编辑器，GCC编译器以及大部分Unix系统的程序库和工具。但操作系统内核（Hurd）仍未完成</li>
+<li>1991年：Linus开发与Unix兼容的Linux内核，并采用GPL条款发布。之后许多程序员参与了开发和修改</li>
+<li>1992年：Linux与其他GNU软件结合，诞生GNU/Linux操作系统，简称Linux系统。</li>
+</ul>
+<blockquote>
+<p>内核：用于资源分派和硬件管理的程序</p>
+<p>Linux只是一个内核，用户态还是使用GNU系的软件，如bash shell、emacs编辑器、gcc编译器套装、glibc（GNU的C库）等</p>
+<p>GNU官方核心是GNU Hurd，GNU/Linux是变种，除了Linux之外，还有FreeBSD内核、NetBSD内核等</p>
+<p>Google在Linux内核的基础上，开发了bionic库，替换了glibc库，用于Android系统</p>
+</blockquote>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>GNU（GNU’s Not Unix!）：是一个自由的操作系统，是由多个应用程序、系统库、开发工具组成的程序集合。模仿Unix界面和使用方式（类Unix），做的一个开源的版本。</p>
+<blockquote>
+<p>自由软件：</p>
+<ol>
+<li>运行软件的自由</li>
+<li>研究该软件如何工作，按需改写软件的自由</li>
+<li>重新发布拷贝的自由</li>
+<li>向公众发布改进版软件的自由</li>
 </ol>
-<p>命令：<code>gcc -o hello.exe hello.c</code>，将<code>hello.c</code>编译，生成<code>hello.exe</code>文件，默认生成a.out</p>
-<h3 id="区别：gcc和g"><a href="#区别：gcc和g" class="headerlink" title="区别：gcc和g++"></a>区别：gcc和g++</h3><ol>
-<li>对于.c后缀的文件,gcc把它当做是C程序；g++当做是C++程序；</li>
+</blockquote>
+<p>GNU计划：又称“革奴计划”，在这个计划下做了很多工作和项目，如GCC、glibc、bash shell、emacs等，并成立了FSF，起草了GPL协议条款。</p>
+<p>FSF：（Free Software Foundation，自由软件基金会）</p>
+<p>GPL：（GNU General Public License，GNU通用公共许可证）</p>
+<p>LGPL：(GNU Lesser General Public License，GNU较宽松公共许可证 ) ，旧称 GNU Library General Public License (GNU 库通用公共许可证)；</p>
+<p>GFDL：（GNU Free Documentation License，GNU自由文档许可证）</p>
+<p>BSD：（Berkeley Software Distribution，伯克利软件套件），Unix的衍生系统（类Unix）</p>
+<p>BSD许可证：允许软件闭源发布</p>
+<h1 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h1><ul>
+<li>GCC：GNU编译套件。只有一个文件的时候使用gcc编译器比较方便。当有多个文件时，编译顺序以及依赖关系处理使用gcc很麻烦</li>
+<li>Clang：C语言、C++、Objective-C的编译器前端，使用底层虚拟机（LLVM，Low Level Virtual Machine）作为编译器后端</li>
+<li>make工具：批处理工具。makefile中规定了编译和链接的顺序，make根据makefile文件进行编译，比直接调用gcc逐个编译文件方便。手写makefile文件较麻烦，并且不同平台makefile不一样。<ul>
+<li>Makefile定义了多个规则，每个规则由目标、依赖、命令构成</li>
+</ul>
+</li>
+<li>CMake工具：更加方便的生成makefile文件，并且能够跨平台，解决手写makefile较麻烦的问题，但仍然需要手写<code>CMakelist.txt</code>文件</li>
+</ul>
+<pre class="mermaid">graph LR
+编辑器--编写-->源文件-->cmakelist--cmake生成-->makefile--make批处理-->可执行程序</pre>
+
+<p>make、mm、mmm命令</p>
+<blockquote>
+<p>m是对make的封装</p>
+<p>make用来编译整个工程，首次编译需要使用make，</p>
+<p>mm和mmm用来编译某个目录下的模块</p>
+<p>默认是增量编译，使用-B选项可以强制编译所有目标文件</p>
+</blockquote>
+<p>make和Gradle</p>
+<blockquote>
+<ul>
+<li>gradle命令类似make命令，根据配置文件（makefile、gradle文件）进行构建</li>
+<li>gradle文件类似makefile，用于编译配置管理，语法使用groovy</li>
+<li>gradle通过dependencies配置依赖库，makefile通过gcc/g++编译器的链接参数引用第三方库</li>
+<li>makefile中的目标对应gradle中的task</li>
+<li>由于每种工程类型构建过程较固定（如Java项目、Android项目、Android库）。因此gradle中预置了很多task，打包在plugin中。使用不同的plugin即可直接构建。</li>
+<li>由于不同项目配置上存在差异，因此Gradle提供了一些自定义配置项：如项目id、sdk版本等</li>
+</ul>
+</blockquote>
+<p>Clang与GCC</p>
+<blockquote>
+<ul>
+<li>Clang采用BSD协议，GCC采用GPL协议</li>
+<li>Clang高度更轻量，编译提示更友好</li>
+<li>GCC使用<code>libstdc++</code>标准库，Clang使用<code>libc++</code>标准库</li>
+<li>Android NDK<ul>
+<li>r11：建议使用Clang编译</li>
+<li>r13：默认使用Clang编译</li>
+<li>r18：移除GCC</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>Clang与LLVM</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://llvm.org/">LLVM</a>项目是模块化、可重用的编译器和工具链集合。虽然全称是Low Level Virtual Machine，但它实际与虚拟机并没有关系。</p>
+<ul>
+<li>广义的LLVM指LLVM编译器框架系统，包括前端（源码转为中间代码）、优化器、后端（中间代码转为汇编代码）以及相关的库或模块。如下<ul>
+<li>核心库：源代码到中间代码的优化，与目标平台无关</li>
+<li>Clang：C/C++/Objective-C的编译器</li>
+<li>LLDB：基于Clang的调试库</li>
+<li>libc++：LLVM提供的c++标准库</li>
+<li>libclc：OpenCL标准库</li>
+<li>LLD：链接器</li>
+<li>…</li>
+</ul>
+</li>
+<li>狭义的LLVM聚焦于编译后端，Clang对应编译前端。</li>
+</ul>
+</blockquote>
+<h1 id="gcc和g"><a href="#gcc和g" class="headerlink" title="gcc和g++"></a>gcc和g++</h1><h2 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h2><ol>
+<li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，生成.i文件。<code>gcc -E file.c -o file.i</code></li>
+<li>编译（compile）[编译器egcs]：语法分析、词法分析、语义分析等，生成汇编代码.s文件。<code>gcc -S file.i -o file.s</code></li>
+<li>汇编（assembly）[汇编器as]：汇编代码转为机器代码.o文件。<code>gcc -c file.s -o file.o</code></li>
+<li>链接（link）[链接器ld]：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。生成可执行文件。<ol>
+<li>静态链接：目标文件直接进入可执行文件<ol>
+<li>编译静态库源码，生成.o文件：<code>gcc -c lib.c -o lib.o</code></li>
+<li>生成静态库文件，归档，生成.a文件：<code>ar -q lib.a lib.o</code></li>
+<li>使用静态库编译，生成.out可执行文件：<code>gcc main.c lib.a -o main.out</code></li>
+</ol>
+</li>
+<li>动态链接：可执行程序运行时加载目标文件<ol>
+<li>编译动态库源码，生成.so文件：<code>gcc -shared dlib.c -o dlib.so</code></li>
+<li>使用动态库编译：<code>gcc main -ldl -o main.out</code></li>
+<li>代码调用<ol>
+<li><code>dlopen</code>打开动态库文件</li>
+<li><code>dlsym</code>查找动态库中的函数并返回调用地址</li>
+<li><code>dlclose</code>关闭动态库文件</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>反汇编：使用<code>objdump</code>反汇编，输出机器码和对应的汇编代码</li>
+</ol>
+<p>也可以直接一条命令执行：<code>gcc -o hello.out hello.c</code>，将<code>hello.c</code>编译，生成<code>hello.out</code>文件，默认生成<code>a.out</code></p>
+<h2 id="gcc和GCC"><a href="#gcc和GCC" class="headerlink" title="gcc和GCC"></a>gcc和GCC</h2><p><strong>gcc和GCC是不同的东西</strong></p>
+<ul>
+<li>GCC：（GNU Compiler Collection，GNU编译器套件），为GNU操作系统开发的编译器，可以编译C、C++、Java、Go、Object-c等。</li>
+<li>gcc（GNU C Compiler，C 编译器）</li>
+<li>g++（GNU C++ Compiler，C++编译器）</li>
+</ul>
+<blockquote>
+<p>最早GCC是GNU C语言编译器（GNU C Compiler），只能处理C语言，后来扩展支持更多编程语言。</p>
+<p>也可以理解为gcc只是一个执行入口，不是编译器，通过调用GNU C compiler进行编译。</p>
+</blockquote>
+<h2 id="gcc和g-区别"><a href="#gcc和g-区别" class="headerlink" title="gcc和g++区别"></a>gcc和g++区别</h2><ol>
+<li>对于.c后缀的文件，gcc把它当做是C程序；g++当做是C++程序；</li>
 <li>对于.cpp后缀的文件，gcc和g++都会当做c++程序。</li>
 <li>编译阶段，g++会调用gcc;</li>
-<li>连接阶段，通常会用g++来完成，这是因为gcc命令不能自动和c++程序使用的库连接。</li>
+<li>链接阶段，通常会用g++来完成，因为gcc命令不能自动和c++程序使用的库连接。</li>
 </ol>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>操作系统不太了解，简单学习下，扩宽视野。顺便研究下Flutter跨平台移植到嵌入式系统，如何修改Flutter架构中的嵌入层。</p>
+<ul>
+<li>CMake使用可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/kai_zone/article/details/82656964">cmake快速入门</a></li>
+<li>gcc和g++具体区别可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/samewang/p/4774180.html">GCC的gcc和g++区别</a></li>
+</ul>
 
     </div>
 
@@ -339,7 +466,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/" rel="tag"><i class="fa fa-tag"></i> 程序基础</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/gradle/" rel="tag"><i class="fa fa-tag"></i> gradle</a>
           </div>
 
         
@@ -348,12 +476,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/08/14/tech-2018-08-14-Encrypt/" rel="prev" title="加密算法">
-      <i class="fa fa-chevron-left"></i> 加密算法
+    <a href="/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/" rel="prev" title="提问的智慧">
+      <i class="fa fa-chevron-left"></i> 提问的智慧
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/10/04/note-2018-10-04-TerminalCommand/" rel="next" title="命令行笔记">
-      命令行笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" rel="next" title="Flutter源码初探">
+      Flutter源码初探 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -415,7 +543,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#gcc-g-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">gcc&#x2F;g++编译过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB%EF%BC%9Agcc%E5%92%8Cg"><span class="nav-number">2.</span> <span class="nav-text">区别：gcc和g++</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GNU%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">GNU介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">1.1.</span> <span class="nav-text">名词解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">构建工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc%E5%92%8Cg"><span class="nav-number">3.</span> <span class="nav-text">gcc和g++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc-g-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">gcc&#x2F;g++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8CGCC"><span class="nav-number">3.2.</span> <span class="nav-text">gcc和GCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8Cg-%E5%8C%BA%E5%88%AB"><span class="nav-number">3.3.</span> <span class="nav-text">gcc和g++区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -431,7 +559,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -525,13 +653,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">354k</span>
+    <span title="站点总字数">360k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:22</span>
+    <span title="站点阅读时长">5:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

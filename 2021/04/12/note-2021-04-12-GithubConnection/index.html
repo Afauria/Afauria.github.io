@@ -30,7 +30,7 @@
 <meta property="og:description" content="Github访问不稳定解决">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.064Z">
+<meta property="article:modified_time" content="2022-01-10T02:19:15.180Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2022-01-10 10:19:15" itemprop="dateModified" datetime="2022-01-10T10:19:15+08:00">2022-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>990</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -297,12 +297,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="访问慢的原因"><a href="#访问慢的原因" class="headerlink" title="访问慢的原因"></a>访问慢的原因</h3><p>DNS解析耗时。</p>
+        <h1 id="GitHub访问不稳定"><a href="#GitHub访问不稳定" class="headerlink" title="GitHub访问不稳定"></a>GitHub访问不稳定</h1><h2 id="访问慢的原因"><a href="#访问慢的原因" class="headerlink" title="访问慢的原因"></a>访问慢的原因</h2><p>DNS解析耗时。</p>
 <ul>
 <li>DNS（域名系统，Domain Name System）：将<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9F%9F%E5%90%8D">域名</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/IP%E5%9C%B0%E5%9D%80">IP地址</a>相互映射的一个分布式数据库。</li>
 <li>DNS（域名服务器，Domain Name Server）：将域名转换为IP地址的服务器。</li>
 </ul>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>手动修改系统hosts文件，将github域名对应的ip保存到hosts文件中，访问github的时候可以直接访问该ip，不需要dns解析。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>手动修改系统hosts文件，将github域名对应的ip保存到hosts文件中，访问github的时候可以直接访问该ip，不需要dns解析。</p>
 <ul>
 <li>windows系统在<code>C:\Windows\System32\drivers\etc\hosts</code>，打开普通用户读写权限<code>右键-属性-安全-选择当前用户-编辑-修改权限-确认</code></li>
 <li>mac系统在<code>/etc/hosts</code>，sudo申请权限</li>
@@ -328,8 +328,9 @@
 </li>
 </ol>
 <p>附：查询ip地址的网站：<a target="_blank" rel="noopener" href="https://www.ipaddress.com/">ipaddress网站</a>、<a target="_blank" rel="noopener" href="http://tool.chinaz.com/dns">站长工具</a></p>
-<h3 id="GitPage博客无法访问"><a href="#GitPage博客无法访问" class="headerlink" title="GitPage博客无法访问"></a>GitPage博客无法访问</h3><p>同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。</p>
+<h2 id="GitPage博客无法访问"><a href="#GitPage博客无法访问" class="headerlink" title="GitPage博客无法访问"></a>GitPage博客无法访问</h2><p>同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。</p>
 <p>困扰已久的问题，一直以为是需要翻墙vpn，原来是DNS服务器限制。</p>
+<p>当然有时候也确实和网络有关。</p>
 
     </div>
 
@@ -372,8 +373,8 @@
       <i class="fa fa-chevron-left"></i> Markdown生成目录结构树
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/" rel="next" title="前端网站部署">
-      前端网站部署 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/04/12/note-2021-04-12-NPM/" rel="next" title="NPM笔记">
+      NPM笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -435,7 +436,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%85%A2%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">访问慢的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitPage%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE"><span class="nav-number">3.</span> <span class="nav-text">GitPage博客无法访问</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub%E8%AE%BF%E9%97%AE%E4%B8%8D%E7%A8%B3%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">GitHub访问不稳定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%85%A2%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">访问慢的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitPage%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.</span> <span class="nav-text">GitPage博客无法访问</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -451,7 +452,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -545,13 +546,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">354k</span>
+    <span title="站点总字数">360k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:22</span>
+    <span title="站点阅读时长">5:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

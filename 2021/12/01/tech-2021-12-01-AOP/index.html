@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/AOP%E6%A6%82%E5%BF%B5.png">
 <meta property="article:published_time" content="2021-11-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-24T08:47:33.881Z">
+<meta property="article:modified_time" content="2022-01-10T02:14:21.685Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="AOP">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-24 16:47:33" itemprop="dateModified" datetime="2021-12-24T16:47:33+08:00">2021-12-24</time>
+                <time title="修改时间：2022-01-10 10:14:21" itemprop="dateModified" datetime="2022-01-10T10:14:21+08:00">2022-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -351,7 +351,7 @@ end
 </li>
 </ul>
 <p><img src="/2021/12/01/tech-2021-12-01-AOP/AOP%E6%A6%82%E5%BF%B5.png"></p>
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ol>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><ol>
 <li>静态织入：编译期织入代码。又分为不同阶段：java、class、dex代码。如APT、AspectJ、ASM、Javassit、ASMDex、DexMaker、操作AST、手动修改class文件。</li>
 <li>动态织入：运行时织入代码。又分为类加载和运行。如Java动态代理、Cglib、Javassit、XPosed、Dexposed、自定义类加载器。</li>
 </ol>
@@ -368,7 +368,7 @@ end</pre>
 <li>运行时反射解析当前类（注解作用域：RUNTIME）：性能较低。</li>
 <li>编译期生成代理类和代理对象（注解作用域：SOURCE、CLASS）：需要生成额外代码</li>
 </ol>
-<h3 id="APT（Annotation-Processing-Tool，注解处理器）"><a href="#APT（Annotation-Processing-Tool，注解处理器）" class="headerlink" title="APT（Annotation Processing Tool，注解处理器）"></a>APT（Annotation Processing Tool，注解处理器）</h3><p>见<a href>APT介绍和实践</a></p>
+<h2 id="APT（Annotation-Processing-Tool，注解处理器）"><a href="#APT（Annotation-Processing-Tool，注解处理器）" class="headerlink" title="APT（Annotation Processing Tool，注解处理器）"></a>APT（Annotation Processing Tool，注解处理器）</h2><p>见<a href>APT介绍和实践</a></p>
 <table>
 <thead>
 <tr>
@@ -397,7 +397,8 @@ end</pre>
 <td></td>
 </tr>
 </tbody></table>
-<h3 id="方法优缺点、难点比对"><a href="#方法优缺点、难点比对" class="headerlink" title="方法优缺点、难点比对"></a>方法优缺点、难点比对</h3><table>
+<h2 id="方法优缺点、难点比对"><a href="#方法优缺点、难点比对" class="headerlink" title="方法优缺点、难点比对"></a>方法优缺点、难点比对</h2><p>//todo</p>
+<table>
 <thead>
 <tr>
 <th>方法</th>
@@ -489,8 +490,8 @@ end</pre>
 <td>–</td>
 </tr>
 </tbody></table>
-<h3 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h3><p>见<a href="/2021/12/02/tech-2021-12-02-AspectJ%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%A4%BA%E4%BE%8B/">AspectJ介绍和案例</a></p>
-<h3 id="ASM"><a href="#ASM" class="headerlink" title="ASM"></a>ASM</h3><p><strong>ASM 插桩工具 :</strong></p>
+<h2 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h2><p>见<a href="/2021/12/02/tech-2021-12-02-AspectJ%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%A4%BA%E4%BE%8B/">AspectJ介绍和案例</a></p>
+<h2 id="ASM"><a href="#ASM" class="headerlink" title="ASM"></a>ASM</h2><p><strong>ASM 插桩工具 :</strong></p>
 <p><strong>操作灵活 :</strong> 可以在字节码任何位置，自定义修改、插入、删除相关逻辑 ;</p>
 <p><strong>上手很难 :</strong> 对 .class 字节码文件有比较深入的了解，编写过程较复杂</p>
 <table>
@@ -546,12 +547,12 @@ end</pre>
 <p>它们的相似之处在于它们都通过现有字节码的字节码操作和/或生成新的字节码来实现其目标。</p>
 <p>ASM更通用，因为它没有关于如何修改现有字节码的意见，它只是为您提供了一个API，您可以随心所欲地使用它。另一方面，AspectJ更具体，范围更窄，它只支持一些预定义的AOP结构，但它为您提供了一个界面（aspectj语言），如果您可以在这些结构中使用它，则更容易使用它为您提供。</p>
 <p>对于我见过的大多数用例，AspectJ绰绰有余，但在极少数情况下，ASM可能是一个不错的选择，但是你需要更多的编程努力取得类似的成果。</p>
-<h3 id="ASMDex"><a href="#ASMDex" class="headerlink" title="ASMDex"></a>ASMDex</h3><p>类似ASM的字节码操作库，运行在Android平台，操作dex字节码</p>
-<h3 id="DexMaker"><a href="#DexMaker" class="headerlink" title="DexMaker"></a>DexMaker</h3><p>提供JavaAPI，用于编译期或运行时生成Dex字节码</p>
-<h3 id="Javassist"><a href="#Javassist" class="headerlink" title="Javassist"></a>Javassist</h3><p>原理：使用Gradle Task或Transform，在dex文件生成之前，修改class字节码。不需要生成子类代理</p>
+<h2 id="ASMDex"><a href="#ASMDex" class="headerlink" title="ASMDex"></a>ASMDex</h2><p>类似ASM的字节码操作库，运行在Android平台，操作dex字节码</p>
+<h2 id="DexMaker"><a href="#DexMaker" class="headerlink" title="DexMaker"></a>DexMaker</h2><p>提供JavaAPI，用于编译期或运行时生成Dex字节码</p>
+<h2 id="Javassist"><a href="#Javassist" class="headerlink" title="Javassist"></a>Javassist</h2><p>原理：使用Gradle Task或Transform，在dex文件生成之前，修改class字节码。不需要生成子类代理</p>
 <p>框架：热修复HotFix</p>
 <p>Javassist &amp; ASM 对比<br>Javassist抽象出源代码级的API，比ASM中实际的字节码操作更容易使用<br>Javassist使用反射机制，这使得它比运行时使用Classworking技术的ASM慢。<br>总的来说ASM比Javassist快得多，并且提供了更好的性能。Javassist使用Java源代码的简化版本，然后将其编译成字节码。这使得Javassist非常容易使用，但是它也将字节码的使用限制在Javassist源代码的限制之内。<br>总之，如果有人需要更简单的方法来动态操作或创建Java类，那么应该使用Javassist API 。如果需要注重性能地方，应该使用ASM库。</p>
-<h3 id="Cglib（Code-Generation-Library）"><a href="#Cglib（Code-Generation-Library）" class="headerlink" title="Cglib（Code Generation Library）"></a>Cglib（Code Generation Library）</h3><p>原理：底层采用ASM字节码框架，运行期间类加载的时候为目标类创建一个字类，代理拦截父类方法调用。解决了JDK动态代理需要定义接口的问题</p>
+<h2 id="Cglib（Code-Generation-Library）"><a href="#Cglib（Code-Generation-Library）" class="headerlink" title="Cglib（Code Generation Library）"></a>Cglib（Code Generation Library）</h2><p>原理：底层采用ASM字节码框架，运行期间类加载的时候为目标类创建一个字类，代理拦截父类方法调用。解决了JDK动态代理需要定义接口的问题</p>
 <p>缺点：</p>
 <ol>
 <li>无法代理final类和方法：Cglib是通过子类代理实现的</li>
@@ -730,7 +731,7 @@ end</pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFAOP"><span class="nav-number">1.</span> <span class="nav-text">什么是AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OOP%E5%92%8CAOP"><span class="nav-number">1.1.</span> <span class="nav-text">OOP和AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#APT%EF%BC%88Annotation-Processing-Tool%EF%BC%8C%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%EF%BC%89"><span class="nav-number">1.3.1.</span> <span class="nav-text">APT（Annotation Processing Tool，注解处理器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BC%98%E7%BC%BA%E7%82%B9%E3%80%81%E9%9A%BE%E7%82%B9%E6%AF%94%E5%AF%B9"><span class="nav-number">1.3.2.</span> <span class="nav-text">方法优缺点、难点比对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AspectJ"><span class="nav-number">1.3.3.</span> <span class="nav-text">AspectJ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ASM"><span class="nav-number">1.3.4.</span> <span class="nav-text">ASM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ASMDex"><span class="nav-number">1.3.5.</span> <span class="nav-text">ASMDex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DexMaker"><span class="nav-number">1.3.6.</span> <span class="nav-text">DexMaker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Javassist"><span class="nav-number">1.3.7.</span> <span class="nav-text">Javassist</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cglib%EF%BC%88Code-Generation-Library%EF%BC%89"><span class="nav-number">1.3.8.</span> <span class="nav-text">Cglib（Code Generation Library）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">AOP应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP%E5%AE%9E%E6%88%98"><span class="nav-number">3.</span> <span class="nav-text">AOP实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6"><span class="nav-number">4.</span> <span class="nav-text">框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.1.</span> <span class="nav-text">使用场景建议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFAOP"><span class="nav-number">1.</span> <span class="nav-text">什么是AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OOP%E5%92%8CAOP"><span class="nav-number">1.1.</span> <span class="nav-text">OOP和AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">相关概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APT%EF%BC%88Annotation-Processing-Tool%EF%BC%8C%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">APT（Annotation Processing Tool，注解处理器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BC%98%E7%BC%BA%E7%82%B9%E3%80%81%E9%9A%BE%E7%82%B9%E6%AF%94%E5%AF%B9"><span class="nav-number">2.2.</span> <span class="nav-text">方法优缺点、难点比对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AspectJ"><span class="nav-number">2.3.</span> <span class="nav-text">AspectJ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASM"><span class="nav-number">2.4.</span> <span class="nav-text">ASM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASMDex"><span class="nav-number">2.5.</span> <span class="nav-text">ASMDex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DexMaker"><span class="nav-number">2.6.</span> <span class="nav-text">DexMaker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Javassist"><span class="nav-number">2.7.</span> <span class="nav-text">Javassist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cglib%EF%BC%88Code-Generation-Library%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">Cglib（Code Generation Library）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">AOP应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AOP%E5%AE%9E%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">AOP实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E5%BB%BA%E8%AE%AE"><span class="nav-number">5.1.</span> <span class="nav-text">使用场景建议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -746,7 +747,7 @@ end</pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -840,13 +841,13 @@ end</pre>
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">354k</span>
+    <span title="站点总字数">360k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:22</span>
+    <span title="站点阅读时长">5:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
