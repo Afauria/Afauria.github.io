@@ -22,17 +22,17 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="程序语言概念解读，介绍编译过程、Java编译器、Android虚拟机优化历程等">
+  <meta name="description" content="介绍芯片架构和软件程序之间的关系；交叉编译；介绍程序语言区别、跨平台；介绍编译过程、Java编译器、Android虚拟机优化历程等">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编程语言、编译器和Android虚拟机">
 <meta property="og:url" content="https://blog.afauria.xyz/2021/11/05/basic-2021-11-05-%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="程序语言概念解读，介绍编译过程、Java编译器、Android虚拟机优化历程等">
+<meta property="og:description" content="介绍芯片架构和软件程序之间的关系；交叉编译；介绍程序语言区别、跨平台；介绍编译过程、Java编译器、Android虚拟机优化历程等">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/05/basic-2021-11-05-%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/JVM%E8%AF%AD%E8%A8%80%E6%97%A0%E5%85%B3%E6%80%A7.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/05/basic-2021-11-05-%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/%E7%BB%8F%E5%85%B8%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png">
 <meta property="article:published_time" content="2021-11-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-29T10:47:22.948Z">
+<meta property="article:modified_time" content="2022-01-10T01:43:30.403Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Android">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-29 18:47:22" itemprop="dateModified" datetime="2021-12-29T18:47:22+08:00">2021-12-29</time>
+                <time title="修改时间：2022-01-10 09:43:30" itemprop="dateModified" datetime="2022-01-10T09:43:30+08:00">2022-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,16 +282,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>7 分钟</span>
             </span>
-            <div class="post-description">程序语言概念解读，介绍编译过程、Java编译器、Android虚拟机优化历程等</div>
+            <div class="post-description">介绍芯片架构和软件程序之间的关系；交叉编译；介绍程序语言区别、跨平台；介绍编译过程、Java编译器、Android虚拟机优化历程等</div>
 
         </div>
       </header>
@@ -302,7 +302,109 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="程序语言"><a href="#程序语言" class="headerlink" title="程序语言"></a>程序语言</h1><h2 id="机器语言、汇编语言、高级语言"><a href="#机器语言、汇编语言、高级语言" class="headerlink" title="机器语言、汇编语言、高级语言"></a>机器语言、汇编语言、高级语言</h2><ol>
+        <h1 id="芯片架构、操作系统、应用之间的关系"><a href="#芯片架构、操作系统、应用之间的关系" class="headerlink" title="芯片架构、操作系统、应用之间的关系"></a>芯片架构、操作系统、应用之间的关系</h1><p>操作系统：管理计算机硬件和软件资源的计算机程序，是多个程序的集合，一般可以分为几个部分</p>
+<ol>
+<li>控制程序，也叫内核（进程管理、存储管理、设备管理、文件管理、作业管理）</li>
+<li>实用程序（文本编辑器、dump程序、shell、桌面程序等）</li>
+<li>编译工具（汇编、编译、解析）</li>
+</ol>
+<p>操作系统封装了硬件接口，应用是在操作系统之上运行的程序，通过调用系统API来运行，由于不同系统提供的API存在差异，因此高级语言编写的应用程序一般无法跨平台。就算不调用系统API，也需要依赖对应系统的编译程序。</p>
+<p>应用程序对系统的依赖体现在哪方面？</p>
+<blockquote>
+<ol>
+<li>开发时应用依赖操作系统中的编译程序</li>
+<li>运行时应用依赖操作系统提供的程序库（如网络库、线程库等）</li>
+</ol>
+</blockquote>
+<p>不管是操作系统程序还是应用程序，其实都是由CPU运行的。而CPU只认识对应的机器语言（指令集），同时提供了汇编语法便于记忆，汇编语言是对机器语言的一种映射，因此汇编写的程序只适用于一种或者一系列的CPU。</p>
+<p>不同CPU指的是架构不同（指令集不同），和厂商没有关系，例如AMD和Intel都使用x86架构，可能不同厂商会有各自的增强指令，但是不影响x86程序的执行。</p>
+<p>一支编译程序只生成一种机器代码。不同架构使用的编译器不同，并且生成不同的目标代码，例如x86，x64架构的GCC是不一样的。要在一种CPU架构上生成另一个平台的目标代码，需要使用<strong>交叉编译</strong>。</p>
+<p>同一个CPU架构可以运行不同的操作系统，同一个操作系统可以在不同CPU架构上运行，但是需要针对目标平台分别进行编译，使用不同的编译工具链。例如Linux for x86，Linux for arm，WindowsNT for x86。</p>
+<p>现代的操作系统一般都是使用高级语言编写，需要针对目标平台分别进行编译，例如ubuntu系统，有桌面版、Server版、以及各种嵌入式、IoT版（如树莓派）</p>
+<blockquote>
+<p>之所以下载的windows系统可以运行在不同芯片上，主要是因为PC基本都是AMD和Intel的芯片，而两家都使用x86架构，指令集是通用的。</p>
+</blockquote>
+<p>为什么应用一般以操作系统来分类，如windows版、linux版、mac版，不以CPU架构分类？</p>
+<blockquote>
+<p>应用程序的运行需要CPU架构和操作系统都支持。例如x86_64位的目标程序无法在x86_32位机器上运行。</p>
+<p>之所以Windows应用能够装在不同芯片的主机上，主要是因为PC基本都是AMD和Intel的芯片，两家都使用x86架构，指令集是通用的。如果应用编译的时候使用新的指令集，在老的机器还是无法运行。商业软件一般会先用基础指令集，再根据CPU判断是否使用扩展指令集</p>
+</blockquote>
+<p>应用跨平台兼容不同CPU架构一般有几种做法：</p>
+<blockquote>
+<ol>
+<li>多套目标代码放到同一个执行文件中。</li>
+<li>操作系统层面支持其他架构的目标代码。例如64位操作系统兼容32位CPU，并且可以运行32位的应用程序</li>
+<li>CPU架构向下兼容，例如arm64-v8a兼容arm和armv7a指令集。应用目标平台为armv7a，可以运行到arm64-v8a的设备上，但是反过来不支持。</li>
+<li>通过虚拟机运行，可执行程序不是目标平台代码，而是一种中间代码，通过虚拟机解释执行。例如Java、.Net等</li>
+</ol>
+</blockquote>
+<p>为什么操作系统无法屏蔽CPU架构差异？</p>
+<blockquote>
+<p>有两种思路：</p>
+<ol>
+<li>由操作系统来编译生成目标代码，在程序安装时进行编译</li>
+<li>由操作系统解释运行源代码或中间代码</li>
+</ol>
+<p>之所以不这么做有以下原因：</p>
+<ol>
+<li>理论上操作系统拿到源码之后可以编译成当前架构的代码，但是软件开发商不愿意公开源代码，因此往往会编译成目标代码之后再进行发布。</li>
+<li>如果都交由操作系统来运行的话，程序运行会比较慢。例如Android系统，早期由虚拟机解释运行，后来改进通过应用安装时预编译成目标代码，提高了效率。</li>
+<li>如果操作系统需要为不同语言、不同CPU架构提供编译器，会使操作系统变得越来越大，如果CPU架构更新操作系统也要更新</li>
+</ol>
+</blockquote>
+<p>Java程序为什么不需要根据CPU架构编译？</p>
+<blockquote>
+<p>Java之所以不需要根据CPU架构进行编译，是因为Java程序是通过虚拟机运行的，VM屏蔽了CPU架构的差异。</p>
+</blockquote>
+<p>Android中的目标代码编译</p>
+<blockquote>
+<p>由于VM功能不完备（如串口通讯需要依赖C写的库）或者性能问题，有时候需要使用C/C++开发，因此Android开放了NDK编译。</p>
+<p>这意味着不同CPU架构需要生成不同的目标代码，如arm、x86、mips等。</p>
+<p>NDK开发者需要针对不同架构进行编译，生成不同的so文件，Android打包的时候将多份目标代码一起打包，安装的时候根据设备选择对应的so安装。</p>
+</blockquote>
+<h1 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h1><p>本地编译（native compile）：本机编译出来的程序在本机上运行</p>
+<p>交叉编译（cross compile）：在一个平台上生成另一个平台的可执行代码，即编译环境和运行环境不一样。常用于嵌入式开发</p>
+<p>编译用的机器叫宿主机，软件运行的机器叫目标机。宿主机和目标机通过串口或网络通讯。</p>
+<p>为何需要交叉编译？</p>
+<blockquote>
+<p>单片机或嵌入式设备功能较少，硬件资源和性能有限，只能供嵌入式系统运行，难以再提供编译资源。</p>
+</blockquote>
+<p>嵌入式系统一般也比PC系统要轻量，CPU种类更多（如x86、arm、armv7、arm64、mips等），各家的指令集也存在差异，因此嵌入式操作系统一般要针对芯片分别进行编译。应用软件也需要分别编译。</p>
+<blockquote>
+<ul>
+<li>Android使用Java，运行在虚拟机上，因此不需要分别编译，但是如果使用了so库，则需要分别编译</li>
+<li>iPhone不同版本使用不同CPU架构，编译的时候可以选择目标版本系统和目标架构。</li>
+</ul>
+</blockquote>
+<p>交叉编译工具链（交叉编译器）：交叉编译用到的一系列工具。如<code>arm-linux-gcc</code>、<code>arm-linux-ld</code>等</p>
+<p>编译包括多个步骤，形成链条</p>
+<ol>
+<li>预处理（pre-compile）：删除#define并展开宏定义，处理#include等。<code>gcc -E file.c -o file.i</code></li>
+<li>编译（compile）：语法分析、词法分析、语义分析等，生成汇编代码.s文件。<code>gcc -S file.i -o file.s</code></li>
+<li>汇编（assembly）：汇编代码转为机器指令.o文件。<code>gcc -c file.s -o file.o</code></li>
+<li>链接（link）：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。<ol>
+<li>静态链接：目标文件直接进入可执行文件<ol>
+<li>编译静态库源码，生成.o文件：<code>gcc -c lib.c -o lib.o</code></li>
+<li>生成静态库文件，归档，生成.a文件：<code>ar -q lib.a lib.o</code></li>
+<li>使用静态库编译，生成.out可执行文件：<code>gcc main.c lib.a -o main.out</code></li>
+</ol>
+</li>
+<li>动态链接：可执行程序运行时加载目标文件<ol>
+<li>编译动态库源码，生成.so文件：<code>gcc -shared dlib.c -o dlib.so</code></li>
+<li>使用动态库编译：<code>gcc main -ldl -o main.out</code></li>
+<li>代码调用<ol>
+<li><code>dlopen</code>打开动态库文件</li>
+<li><code>dlsym</code>查找动态库中的函数并返回调用地址</li>
+<li><code>dlclose</code>关闭动态库文件</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>反汇编：使用<code>objdump</code>反汇编，输出机器码和对应的汇编代码</li>
+</ol>
+<h1 id="程序语言"><a href="#程序语言" class="headerlink" title="程序语言"></a>程序语言</h1><h2 id="机器语言、汇编语言、高级语言"><a href="#机器语言、汇编语言、高级语言" class="headerlink" title="机器语言、汇编语言、高级语言"></a>机器语言、汇编语言、高级语言</h2><ol>
 <li>机器语言（本地机器码，native code）：<ol>
 <li>计算机执行的二进制命令，由0和1组成。</li>
 <li>和CPU有关，不同计算机对应不同的机器语言指令集。</li>
@@ -314,7 +416,7 @@
 <li>汇编语言和机器语言一一对应。</li>
 <li>用助记符替代机器指令的操作码，用地址符号或标号替代操作数的地址。（如用“ADD”代表逻辑加）</li>
 <li>本质是一套语法规则和助记符的集合。</li>
-<li>不同CPU指令集不同，因此需要不同的汇编器（汇编语言翻译成机器语言），对应不同的汇编语言。但汇编语言语法规则本身可能通用，也可能不通用，由厂商定义（开发者实际上是面向编译器编程）</li>
+<li>不同CPU指令集不同，因此需要不同的汇编器（汇编语言翻译成机器语言），对应不同的汇编语言。但汇编语言语法规则本身可能通用，也可能不通用，由厂商定义</li>
 <li>不便于书写</li>
 </ol>
 </li>
@@ -325,17 +427,20 @@
 </ol>
 </li>
 </ol>
+<p>高级语言转为低级语言需要通过编译，编译器屏蔽了不同平台CPU架构的差异，开发者实际上是面向编译器编程。</p>
+<p>为了提升效率，编译器会分为前端和后端。前端将源代码生成统一的中间代码，后端将中间代码编译为不同目标架构下的汇编代码。再交由这些架构下的汇编器汇编成机器码。</p>
 <h2 id="跨平台、程序可移植性"><a href="#跨平台、程序可移植性" class="headerlink" title="跨平台、程序可移植性"></a>跨平台、程序可移植性</h2><ul>
 <li>write once, compile anywhere（一次编写，处处编译）：同样的代码在不同系统和开发环境中都可以编译运行，体现了代码的<strong>可移植性</strong>。</li>
 <li>write once , run anywhere（一次编写，处处运行）：Java特性。编译出来的<code>.class</code>，只要在装了jre环境（java运行环境）的机器上就可以执行。</li>
 </ul>
 <blockquote>
-<p>JVM是Java实现跨平台的核心，可以将Java编译的字节码解释成对应的机器码，不同系统有不同的JVM实现。核心思想是定义了一层中间语言进行适配。</p>
+<p>JVM是Java实现跨平台的核心，可以将Java编译的字节码解释成对应的机器码，不同系统有不同的JVM实现。</p>
+<p>核心思想是定义了一层中间语言进行适配。</p>
 </blockquote>
 <p><strong>JDK&gt;JRE&gt;JVM</strong></p>
 <ol>
 <li>JDK（Java Development Kit）：Java 开发工具包，包含JRE和一些开发工具，如<code>javac、javap、jar</code>等</li>
-<li>JDK（Java Runtime Environment）：Java 运行时环境，包含JVM和Java一些基本类库</li>
+<li>JRE（Java Runtime Environment）：Java 运行时环境，包含JVM和Java一些基本类库</li>
 <li>JVM（Java Virtual Machine）：Java 虚拟机。将class字节码解释成机器码执行，是Java能够跨平台的核心</li>
 </ol>
 <p>观点总结：</p>
@@ -343,8 +448,9 @@
 <li>高级语言和硬件结构及指令系统无关，从这个角度来说，高级语言都是跨平台的（平台无关性）。</li>
 <li>严格来说，高级语言只是语言规则，没有平台概念，语言本身也没法运行，运行的是编译后的本地代码。而本地代码是无法跨平台的。</li>
 <li>程序的可移植性指的是源代码，而不是本地代码。</li>
+<li>打包好的可执行程序要支持跨平台、移植，需要加一层中间代码，借助虚拟机或解释器将中间代码翻译成本地代码执行。</li>
 </ol>
-<h3 id="C-C-是否跨平台？"><a href="#C-C-是否跨平台？" class="headerlink" title="C/C++是否跨平台？"></a>C/C++是否跨平台？</h3><p>结论：C/C++语言本身是跨平台的，但是应用程序本身是否跨平台取决于该平台上有没有适用的库及编译器。</p>
+<h3 id="C-C-是否跨平台？"><a href="#C-C-是否跨平台？" class="headerlink" title="C/C++是否跨平台？"></a>C/C++是否跨平台？</h3><p>结论：C/C++语言本身是跨平台的，但是应用程序本身是否跨平台取决于该平台上有没有适用的库及编译器。C语言提供了不同CPU架构的编译器</p>
 <p>为什么说C/C++无法跨平台？</p>
 <blockquote>
 <p>C++标准库的东西太少了，没有多线程没有界面，内存管理很弱。这些都依赖于具体平台的API，而系统接口API不统一。比如在Windows下有WIN32、MFC，在Linux和Unix系列下，有pthread。</p>
@@ -370,6 +476,7 @@
 <li>解释型语言：程序执行的时候。将代码逐条转换成本地代码运行。Java、Basic、JavaScript、Python、PHP等</li>
 <li>脚本语言：也是解释型语言，不需要编译，代码即可执行文件，由解释器运行。</li>
 </ul>
+<p>编译型语言和解释型语言实现的关键在于有没有生成中间代码，由于CPU只认识特定的机器代码，要想可执行程序能够跨平台，需要由虚拟机或解释器来执行程序，由虚拟机或解释器将中间代码翻译成机器代码执行。</p>
 <table>
 <thead>
 <tr>
@@ -421,6 +528,9 @@
 </tbody></table>
 <h3 id="为什么说Java是解释型语言？"><a href="#为什么说Java是解释型语言？" class="headerlink" title="为什么说Java是解释型语言？"></a>为什么说Java是解释型语言？</h3><p>Java也有一个编译过程，但并不是将程序直接编译成本地机器语言，而是编译成<strong>中间语言（字节码）</strong>，运行的时候由JVM将字节码翻译成机器语言。</p>
 <p>现在的JVM大部分使用了JIT、AOT技术，会在执行之前将字节码编译成本地代码缓存下来，直接运行。因此，也可以说Java是编译的。</p>
+<blockquote>
+<p>有一个有趣的趋势：编译型语言在越来越解释（追求目标程序跨平台），解释型语言在越来越编译（使用AOT等技术，追求性能）</p>
+</blockquote>
 <h1 id="Java编译器"><a href="#Java编译器" class="headerlink" title="Java编译器"></a>Java编译器</h1><p>在Java中，编译通常指Java文件转换为Class文件的过程，也被叫做<strong>编译前端</strong>，主要包括词法分析、语法分析、注解处理、语义分析等步骤。不依赖虚拟机。</p>
 <p>除此之外编译也可以用来指即时编译（JIT）和提前编译（AOT），称为<strong>编译后端</strong>，主要用于生成更高效的机器码，提高运行效率。</p>
 <p>java常见的编译器有以下类型：在JVM中一般是将几种方式结合，提高运行速度和效率。</p>
@@ -474,7 +584,8 @@
 <li>DVM针对32位CPU设计，ART支持64位</li>
 <li>ART优化了垃圾回收机制，和运行时内存空间分配：新增<code>Image Space</code>和<code>Large Object Space</code></li>
 </ol>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>经典语录：<strong>java和c++之间有一堵由动态内存分配和垃圾收集技术所围成的’高墙’，墙外的人想进去，墙内的人想出来</strong></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>结构有点乱，基本是想到哪写到哪，不断延伸扩展出来相关的一些知识点</p>
+<p>经典语录：<strong>java和c++之间有一堵由动态内存分配和垃圾收集技术所围成的’高墙’，墙外的人想进去，墙内的人想出来</strong></p>
 <p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jmsjh/p/7808764.html">C为什么不能跨平台</a></li>
@@ -588,7 +699,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">程序语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E3%80%81%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%81%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">机器语言、汇编语言、高级语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E3%80%81%E7%A8%8B%E5%BA%8F%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">跨平台、程序可移植性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-%E6%98%AF%E5%90%A6%E8%B7%A8%E5%B9%B3%E5%8F%B0%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">C&#x2F;C++是否跨平台？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM%E8%AF%AD%E8%A8%80%E6%97%A0%E5%85%B3%E6%80%A7"><span class="nav-number">1.2.2.</span> <span class="nav-text">JVM语言无关性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80-amp-%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">1.3.</span> <span class="nav-text">编译型语言 &amp; 解释型语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%96%E8%AF%91%EF%BC%9F"><span class="nav-number">1.3.1.</span> <span class="nav-text">什么是编译？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4Java%E6%98%AF%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80%EF%BC%9F"><span class="nav-number">1.3.2.</span> <span class="nav-text">为什么说Java是解释型语言？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E7%BC%96%E8%AF%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">Java编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">2.1.</span> <span class="nav-text">Java语法糖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JIT%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8B%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">JIT如何检测热点代码？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BC%98%E5%8C%96%E5%8E%86%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">Android虚拟机优化历程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-1-0-Dalvik%EF%BC%88DVM%EF%BC%89-%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Android 1.0 Dalvik（DVM）+解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-2-2-DVM-JIT%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.</span> <span class="nav-text">Android 2.2 DVM+JIT编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-5-0-ART-AOT"><span class="nav-number">3.3.</span> <span class="nav-text">Android 5.0 ART+AOT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-7-0-ART-AOT-JIT%E6%B7%B7%E5%90%88%E7%BC%96%E8%AF%91"><span class="nav-number">3.4.</span> <span class="nav-text">Android 7.0 ART+AOT+JIT混合编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-8-0-%E6%94%B9%E8%BF%9B%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-number">3.5.</span> <span class="nav-text">Android 8.0 改进解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-9-0-%E6%94%B9%E8%BF%9B%E7%BC%96%E8%AF%91%E6%A8%A1%E7%89%88"><span class="nav-number">3.6.</span> <span class="nav-text">Android 9.0 改进编译模版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dalvik%E5%92%8CART%E5%AF%B9%E6%AF%94"><span class="nav-number">3.7.</span> <span class="nav-text">Dalvik和ART对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8A%AF%E7%89%87%E6%9E%B6%E6%9E%84%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81%E5%BA%94%E7%94%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">芯片架构、操作系统、应用之间的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">交叉编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80"><span class="nav-number">3.</span> <span class="nav-text">程序语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E3%80%81%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%81%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80"><span class="nav-number">3.1.</span> <span class="nav-text">机器语言、汇编语言、高级语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E3%80%81%E7%A8%8B%E5%BA%8F%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7"><span class="nav-number">3.2.</span> <span class="nav-text">跨平台、程序可移植性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-%E6%98%AF%E5%90%A6%E8%B7%A8%E5%B9%B3%E5%8F%B0%EF%BC%9F"><span class="nav-number">3.2.1.</span> <span class="nav-text">C&#x2F;C++是否跨平台？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM%E8%AF%AD%E8%A8%80%E6%97%A0%E5%85%B3%E6%80%A7"><span class="nav-number">3.2.2.</span> <span class="nav-text">JVM语言无关性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80-amp-%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">3.3.</span> <span class="nav-text">编译型语言 &amp; 解释型语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%96%E8%AF%91%EF%BC%9F"><span class="nav-number">3.3.1.</span> <span class="nav-text">什么是编译？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4Java%E6%98%AF%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80%EF%BC%9F"><span class="nav-number">3.3.2.</span> <span class="nav-text">为什么说Java是解释型语言？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E7%BC%96%E8%AF%91%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">Java编译器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">4.1.</span> <span class="nav-text">Java语法糖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JIT%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8B%E7%83%AD%E7%82%B9%E4%BB%A3%E7%A0%81%EF%BC%9F"><span class="nav-number">4.2.</span> <span class="nav-text">JIT如何检测热点代码？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BC%98%E5%8C%96%E5%8E%86%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">Android虚拟机优化历程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-1-0-Dalvik%EF%BC%88DVM%EF%BC%89-%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Android 1.0 Dalvik（DVM）+解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-2-2-DVM-JIT%E7%BC%96%E8%AF%91"><span class="nav-number">5.2.</span> <span class="nav-text">Android 2.2 DVM+JIT编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-5-0-ART-AOT"><span class="nav-number">5.3.</span> <span class="nav-text">Android 5.0 ART+AOT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-7-0-ART-AOT-JIT%E6%B7%B7%E5%90%88%E7%BC%96%E8%AF%91"><span class="nav-number">5.4.</span> <span class="nav-text">Android 7.0 ART+AOT+JIT混合编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-8-0-%E6%94%B9%E8%BF%9B%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-number">5.5.</span> <span class="nav-text">Android 8.0 改进解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-9-0-%E6%94%B9%E8%BF%9B%E7%BC%96%E8%AF%91%E6%A8%A1%E7%89%88"><span class="nav-number">5.6.</span> <span class="nav-text">Android 9.0 改进编译模版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dalvik%E5%92%8CART%E5%AF%B9%E6%AF%94"><span class="nav-number">5.7.</span> <span class="nav-text">Dalvik和ART对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -604,20 +715,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -698,13 +809,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">350k</span>
+    <span title="站点总字数">354k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:18</span>
+    <span title="站点阅读时长">5:22</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
