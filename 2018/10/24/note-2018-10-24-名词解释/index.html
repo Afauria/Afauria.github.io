@@ -30,7 +30,7 @@
 <meta property="og:description" content="名词解释笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-10-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-06T09:34:02.608Z">
+<meta property="article:modified_time" content="2022-01-11T12:16:29.619Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-06 17:34:02" itemprop="dateModified" datetime="2022-01-06T17:34:02+08:00">2022-01-06</time>
+                <time title="修改时间：2022-01-11 20:16:29" itemprop="dateModified" datetime="2022-01-11T20:16:29+08:00">2022-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,14 +277,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>11 分钟</span>
             </span>
             <div class="post-description">名词解释笔记</div>
 
@@ -666,8 +666,8 @@
 <tr>
 <td>PayLoad</td>
 <td></td>
-<td>有效载荷</td>
-<td>对接收者有用的数据，接口返回的有用字段</td>
+<td>有效载荷、负载</td>
+<td>对接收者有用的数据，接口返回的有用字段，信头和元数据等称为开销数据。<br>例如委托卡车运东西，货物的重量，车子重量，司机重量都属于载重，对于客户来说，只关心货物重量，因此货物重量是有效载重。</td>
 </tr>
 </tbody></table>
 <h1 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h1><h2 id="岗位"><a href="#岗位" class="headerlink" title="岗位"></a>岗位</h2><table>
@@ -929,6 +929,12 @@
 <td>ETA</td>
 <td>Estimated Time of Arrival</td>
 <td>预计到达时间</td>
+<td></td>
+</tr>
+<tr>
+<td>OTOH</td>
+<td>On the Other Hand</td>
+<td>另一方面</td>
 <td></td>
 </tr>
 </tbody></table>
@@ -1274,6 +1280,18 @@
 <td>Dynamic Link Library</td>
 <td>动态链接库</td>
 <td>.dll文件不能直接执行，他们通常由 .exe 在执行时装入，内含有一些资源以及可执行代码等。</td>
+</tr>
+<tr>
+<td>ABI</td>
+<td>Application Binary Interface</td>
+<td>应用程序二进制接口</td>
+<td>描述应用程序和操作系统之间的底层接口，约定目标文件格式、数据类型、如何进行系统调用等</td>
+</tr>
+<tr>
+<td>EABI</td>
+<td>Embedded ABI</td>
+<td>嵌入式ABI</td>
+<td></td>
 </tr>
 </tbody></table>
 <blockquote>
@@ -1625,7 +1643,7 @@
 <td>基于物理的着色方式</td>
 </tr>
 </tbody></table>
-<table>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><table>
 <thead>
 <tr>
 <th>缩写</th>
@@ -1645,6 +1663,114 @@
 <td>T-Flash，MicroSD</td>
 <td>微型SD卡</td>
 <td>TF卡比SD卡小，TF卡插入适配器中可以转换为SD卡</td>
+</tr>
+<tr>
+<td>ROM</td>
+<td>Read-Only Memory</td>
+<td>只读存储器</td>
+<td>一般存储BIOS等不需要被修改的基本程序</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>Random Access Memory</td>
+<td>随机存取存储器</td>
+<td>也叫主存、运行内存，用于临时存储程序、数据和中间结果，断电之后丢失。如PC上的内存条</td>
+</tr>
+<tr>
+<td>Flash</td>
+<td>Flash Memory</td>
+<td>闪存</td>
+<td>非易失性，断电之后还能保存数据。并且可以直接运行程序，不需要读到RAM中。一般用于嵌入式产品，如U盘、数码相机、MP3等</td>
+</tr>
+<tr>
+<td>eMMC</td>
+<td>Embedded Multi Media Card</td>
+<td></td>
+<td>集成了一个控制器，即Flash+主控IC，主要针对手机或平板电脑等内嵌式存储器。提供标准接口管理Flash，使得手机厂商能够专注开发其他部分</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td></td>
+<td>高速缓冲存储器</td>
+<td>位于CPU和内存之间，存储CPU临时数据，比RAM速度更快</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>Solid State Disk</td>
+<td>固态硬盘</td>
+<td>读写速度比SATA块，读写次数少于硬盘，价格更高</td>
+</tr>
+<tr>
+<td>SATA</td>
+<td>Serial Advanced Technology Attachment</td>
+<td>机械硬盘</td>
+<td></td>
+</tr>
+<tr>
+<td>SRAM</td>
+<td>Static RAM</td>
+<td>静态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>DRAM</td>
+<td>Dynamic RAM</td>
+<td>动态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>SDRAM</td>
+<td>Synchronous Dynamic RAM</td>
+<td>同步动态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>SDR SDRAM</td>
+<td>Single Data Rate SDRAM</td>
+<td>单信道同步动态随机存储器</td>
+<td>数据预取宽度为1bit</td>
+</tr>
+<tr>
+<td>DDR1 SDRAM</td>
+<td>Double Data Rate SDRAM</td>
+<td>双信道同步动态随机存储器</td>
+<td>数据预取宽度为2bit，即每次存取2bit为1组的数据</td>
+</tr>
+<tr>
+<td>DDR2 SDRAM</td>
+<td>Double Data Rate Two SDRAM</td>
+<td>双信道两次同步动态随机存储器</td>
+<td>数据预取宽度为4bit</td>
+</tr>
+<tr>
+<td>DDR3 SDRAM</td>
+<td>Double Data Rate Three SDRAM</td>
+<td>双信道三次同步动态随机存储器</td>
+<td>数据预取宽度为8bit</td>
+</tr>
+<tr>
+<td>PROM</td>
+<td>Programmable ROM</td>
+<td>可编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>EPROM</td>
+<td>Erasable Programmable ROM</td>
+<td>可擦除可编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>OTPROM</td>
+<td>One Time Programmable ROM</td>
+<td>一次编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>EEPROM</td>
+<td>Electrically Erasable Programmable ROM</td>
+<td>电子式可擦除可编程只读存储器</td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -1752,7 +1878,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">计算机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">存储单位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%89%E5%88%A9%E6%95%B0%E5%AD%97"><span class="nav-number">1.2.</span> <span class="nav-text">吉利数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">1.3.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.4.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.5.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B2%97%E4%BD%8D"><span class="nav-number">2.1.</span> <span class="nav-text">岗位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%9F%E9%80%9A"><span class="nav-number">2.2.</span> <span class="nav-text">沟通</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E5%93%81"><span class="nav-number">2.3.</span> <span class="nav-text">产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%90%A5"><span class="nav-number">2.4.</span> <span class="nav-text">运营</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.5.</span> <span class="nav-text">系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91"><span class="nav-number">3.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-number">5.</span> <span class="nav-text">前端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">5.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML"><span class="nav-number">5.2.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E5%92%8CHTML"><span class="nav-number">5.3.</span> <span class="nav-text">XML和HTML</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E9%9F%B3"><span class="nav-number">6.</span> <span class="nav-text">语音</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-1"><span class="nav-number">7.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%94%A8%E8%AF%AD"><span class="nav-number">7.1.</span> <span class="nav-text">网络用语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2"><span class="nav-number">7.2.</span> <span class="nav-text">博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E6%A8%A1-%E6%B8%B8%E6%88%8F"><span class="nav-number">7.3.</span> <span class="nav-text">建模&#x2F;游戏</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">计算机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">存储单位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%89%E5%88%A9%E6%95%B0%E5%AD%97"><span class="nav-number">1.2.</span> <span class="nav-text">吉利数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">1.3.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.4.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.5.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B2%97%E4%BD%8D"><span class="nav-number">2.1.</span> <span class="nav-text">岗位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%9F%E9%80%9A"><span class="nav-number">2.2.</span> <span class="nav-text">沟通</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E5%93%81"><span class="nav-number">2.3.</span> <span class="nav-text">产品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%90%A5"><span class="nav-number">2.4.</span> <span class="nav-text">运营</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.5.</span> <span class="nav-text">系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91"><span class="nav-number">3.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-number">5.</span> <span class="nav-text">前端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">5.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML"><span class="nav-number">5.2.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E5%92%8CHTML"><span class="nav-number">5.3.</span> <span class="nav-text">XML和HTML</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E9%9F%B3"><span class="nav-number">6.</span> <span class="nav-text">语音</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-1"><span class="nav-number">7.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%94%A8%E8%AF%AD"><span class="nav-number">7.1.</span> <span class="nav-text">网络用语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2"><span class="nav-number">7.2.</span> <span class="nav-text">博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E6%A8%A1-%E6%B8%B8%E6%88%8F"><span class="nav-number">7.3.</span> <span class="nav-text">建模&#x2F;游戏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8"><span class="nav-number">7.4.</span> <span class="nav-text">存储</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1768,20 +1894,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1862,13 +1988,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">360k</span>
+    <span title="站点总字数">397k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:27</span>
+    <span title="站点阅读时长">6:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

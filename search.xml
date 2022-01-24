@@ -8,26 +8,158 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Flutter源码初探</title>
-    <url>/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</url>
-    <content><![CDATA[<h1 id="Flutter介绍"><a href="#Flutter介绍" class="headerlink" title="Flutter介绍"></a>Flutter介绍</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
-<p>支持移动平台（Android、iOS），桌面平台（Windows、Linux、MacOS），Web平台（浏览器），其他嵌入式平台（如车载、IoT设备、树莓派等，需要自行扩展适配）</p>
-<p>支持多屏幕设备、折叠设备等</p>
-<h2 id="构建模式"><a href="#构建模式" class="headerlink" title="构建模式"></a>构建模式</h2><ul>
+    <title>Flutter构建流程分析</title>
+    <url>/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="Flutter构建流程"><a href="#Flutter构建流程" class="headerlink" title="Flutter构建流程"></a>Flutter构建流程</h1><h2 id="构建模式"><a href="#构建模式" class="headerlink" title="构建模式"></a>构建模式</h2><ul>
 <li>Debug模式下，Flutter应用在VM上运行，能够保存应用状态，提供热重载能力。支持断点，调试信息等。</li>
-<li>Release模式下，Flutter会编译成目标平台的机器代码，针对web平台，会编译成JavaScript代码。进行了编译优化、压缩等。</li>
-<li>Profile模式下，支持调试和跟踪，同时进行了一些优化，使性能更接近Release模式。模拟器上无法使用该模式</li>
+<li>Release模式下，Flutter会使用<code>gen_snapshot</code>将应用代码预编译成目标平台的机器代码，针对web平台，会编译成JavaScript代码。进行了编译优化、压缩等。</li>
+<li>Profile模式下，与Release类似，会进行预编译，进行了一些优化，使性能更接近Release模式，同时也支持调试和跟踪。模拟器上无法使用该模式</li>
 </ul>
-<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>Flutter源码包含两部分：</p>
+<blockquote>
+<p><code>flutter run</code>命令默认为debug模式，<code>flutter build</code>命令默认为release模式。构建时可以指定<code>--debug</code>、<code>--release</code>、<code>--profile</code>选项</p>
+</blockquote>
+<h2 id="Flutter项目构建源码分析"><a href="#Flutter项目构建源码分析" class="headerlink" title="Flutter项目构建源码分析"></a>Flutter项目构建源码分析</h2><p>以<code>flutter build apk</code>为例，分析apk构建执行过程。目的如下：</p>
+<ol>
+<li>便于分析定位构建错误，一般报错之后可以在<code>flutter_tools</code>中搜索关键字，找到报错的地方，分析代码上下文。</li>
+<li>可以修改<code>flutter_tools</code>流程，定制构建命令</li>
+<li>了解Flutter代码的编译，如何生成产物然后合并打包</li>
+</ol>
+<h3 id="Flutter命令脚本"><a href="#Flutter命令脚本" class="headerlink" title="Flutter命令脚本"></a>Flutter命令脚本</h3><p>查看<code>&#123;flutter_sdk&#125;/bin/flutter</code>脚本，内部会调用<code>shared.sh</code>脚本的execute方法</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source &quot;$BIN_DIR/internal/shared.sh&quot;</span><br><span class="line">shared::execute &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>shared.sh</code>脚本，最终会执行dart命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&quot;$DART&quot; --disable-dart-dev --packages=&quot;$FLUTTER_TOOLS_DIR/.packages&quot; $FLUTTER_TOOL_ARGS &quot;$SNAPSHOT_PATH&quot; &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>$DART：Dart可执行文件，用于启动Dart虚拟机。对应<code>&#123;flutter_sdk&#125;/bin/cache/dart-sdk/bin/dart</code></li>
+<li>$FLUTTER_TOOLS_DIR：<code>flutter_tools</code>项目路径，对应<code>&#123;flutter_sdk&#125;/packages/flutter_tools</code></li>
+<li>$SNAPSHOT_PATH：<code>flutter_tools</code>项目的snapshot文件，包含编译过的kernel中间代码，可以被Dart虚拟机执行，对应<code>&#123;flutter_sdk&#125;/bin/cache/flutter_tools.snapshot</code></li>
+<li>$FLUTTER_TOOL_ARGS：用于调试Flutter SDK，一般情况为空。可以开启断言和调试端口。</li>
+<li>$@：输入的参数</li>
+</ul>
+<p>因此实际的命令即：<code>flutter/bin/cache/dart-sdk/bin/dart flutter/bin/cache/flutter_tools.snapshot build apk</code></p>
+<blockquote>
+<p>类似java执行jar文件：<code>java -jar main.jar</code>，jar运行在java环境，snapshot运行在dart环境。</p>
+</blockquote>
+<h3 id="flutter-tools流程"><a href="#flutter-tools流程" class="headerlink" title="flutter_tools流程"></a>flutter_tools流程</h3><p><code>flutter_tools.snapshot</code>类似jar文件，也有对应的main函数入口，位于<code>flutter/packages/flutter_tools/lib/executable.dart</code>中，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_tools/executable.dart&#x27;</span> <span class="keyword">as</span> executable;</span><br><span class="line"><span class="keyword">void</span> main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) &#123;</span><br><span class="line">  executable.main(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>executable.dart</code>源码：<code>runner.run</code>比较复杂，我们只需要知道<code>flutter build</code>命令会匹配到<code>BuildCommand</code>类即可</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="keyword">await</span> runner.run(</span><br><span class="line">    args,</span><br><span class="line">    () =&gt; generateCommands(</span><br><span class="line">      verboseHelp: verboseHelp,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ),</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">List</span>&lt;FlutterCommand&gt; generateCommands(&#123;</span><br><span class="line">  <span class="meta">@required</span> <span class="built_in">bool</span> verboseHelp,</span><br><span class="line">  <span class="meta">@required</span> <span class="built_in">bool</span> verbose,</span><br><span class="line">&#125;) =&gt; &lt;FlutterCommand&gt;[</span><br><span class="line">  <span class="comment">//省略其他命令...</span></span><br><span class="line">  BuildCommand(verboseHelp: verboseHelp),</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">];</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看<code>runner.run</code>源码：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Future&lt;<span class="built_in">int</span>&gt; run(</span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args,</span><br><span class="line">  <span class="built_in">List</span>&lt;FlutterCommand&gt; <span class="built_in">Function</span>() commands) <span class="keyword">async</span> &#123;</span><br><span class="line">	<span class="comment">//....</span></span><br><span class="line">  <span class="keyword">return</span> runInContext&lt;<span class="built_in">int</span>&gt;(() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> FlutterCommandRunner runner = FlutterCommandRunner(verboseHelp: verboseHelp);</span><br><span class="line">    commands().forEach(runner.addCommand); <span class="comment">//将所有Flutter命令存入map中</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> runZoned&lt;Future&lt;<span class="built_in">int</span>&gt;&gt;(() <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> runner.run(args); <span class="comment">//FlutterCommandRunner根据参数找到对应的Command执行</span></span><br><span class="line">  &#125;, overrides: overrides);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FlutterCommandRunner</code>会调用父类<code>CommandRunner</code>的run方法</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CommandRunner</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  Future&lt;T?&gt; run(<span class="built_in">Iterable</span>&lt;<span class="built_in">String</span>&gt; args) =&gt; Future.<span class="keyword">sync</span>(() =&gt; runCommand(parse(args)));</span><br><span class="line">  </span><br><span class="line">  Future&lt;T?&gt; runCommand(ArgResults topLevelResults) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> argResults = topLevelResults;</span><br><span class="line">    <span class="keyword">var</span> commands = _commands; <span class="comment">//Flutter命令</span></span><br><span class="line">    Command? command;</span><br><span class="line">    <span class="keyword">var</span> commandString = executableName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (commands.isNotEmpty) &#123;</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">      <span class="comment">// Step into the command.</span></span><br><span class="line">      argResults = argResults.command!;</span><br><span class="line">      command = commands[argResults.name]!; <span class="comment">//遍历参数找到对应的命令类和子命令类，先找到BuildCommand类</span></span><br><span class="line">      command._globalResults = topLevelResults;</span><br><span class="line">      command._argResults = argResults;</span><br><span class="line">      commands = command._subcommands <span class="keyword">as</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, Command&lt;T&gt;&gt;; <span class="comment">//找到BuildCommand支持的子命令，下一次循环根据参数匹配子命令</span></span><br><span class="line">      commandString += <span class="string">&#x27; <span class="subst">$&#123;argResults.name&#125;</span>&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">await</span> command.run()) <span class="keyword">as</span> T?; <span class="comment">//执行最终匹配到的Command类的run方法</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先找到<code>BuildCommand类</code>：其中包含多个子命令，如下，<code>flutter build apk</code>命令最终会匹配到<code>BuildApkCommand</code>类，然后调用run方法</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildCommand</span> <span class="keyword">extends</span> <span class="title">FlutterCommand</span> </span>&#123;</span><br><span class="line">  BuildCommand(&#123; <span class="built_in">bool</span> verboseHelp = <span class="keyword">false</span> &#125;) &#123;</span><br><span class="line">    _addSubcommand(BuildAarCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildApkCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildAppBundleCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildIOSCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildIOSFrameworkCommand(</span><br><span class="line">      buildSystem: globals.buildSystem,</span><br><span class="line">      verboseHelp: verboseHelp,</span><br><span class="line">    ));</span><br><span class="line">    _addSubcommand(BuildIOSArchiveCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildBundleCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildWebCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildMacosCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildLinuxCommand(</span><br><span class="line">      operatingSystemUtils: globals.os,</span><br><span class="line">      verboseHelp: verboseHelp</span><br><span class="line">    ));</span><br><span class="line">    _addSubcommand(BuildWindowsCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildWindowsUwpCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildFuchsiaCommand(verboseHelp: verboseHelp));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>XXCommand继承自FlutterCommand类，调用FlutterCommand父类的run方法，如下：<code>verifyThenRunCommand</code>验证命令并调用runCommand方法。注释中说明了让子类重写<code>runCommand</code>来执行命令。</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterCommand</span> <span class="keyword">extends</span> <span class="title">Command</span>&lt;<span class="title">void</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Rather than overriding this method, subclasses should override</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">[verifyThenRunCommand] to perform any verification</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">and [runCommand] to execute the command</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">so that this method can record and report the overall time to analytics.</span></span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; run() &#123;</span><br><span class="line">    <span class="keyword">return</span> context.run&lt;<span class="keyword">void</span>&gt;(</span><br><span class="line">      name: <span class="string">&#x27;command&#x27;</span>,</span><br><span class="line">      overrides: &lt;<span class="built_in">Type</span>, Generator&gt;&#123;FlutterCommand: () =&gt; <span class="keyword">this</span>&#125;,</span><br><span class="line">      body: () <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          commandResult = <span class="keyword">await</span> verifyThenRunCommand(commandPath); <span class="comment">//验证命令并调用runCommand方法</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">          <span class="comment">//...</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>BuildApkCommand</code>的<code>runCommand</code>方法：通过<code>androidBuilder.buildApk</code>执行构建，<code>AndroidBuilder</code>从<code>context.get&lt;AndroidBuilder&gt;()</code>中获取，使用箭头函数，在调用的时候才会创建对象实现了懒加载。</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildApkCommand</span> <span class="keyword">extends</span> <span class="title">BuildSubCommand</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (globals.androidSdk == <span class="keyword">null</span>) &#123;</span><br><span class="line">      exitWithNoSdkMessage();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> BuildInfo buildInfo = <span class="keyword">await</span> getBuildInfo();</span><br><span class="line">    <span class="comment">//解析参数</span></span><br><span class="line">    <span class="keyword">final</span> AndroidBuildInfo androidBuildInfo = AndroidBuildInfo(</span><br><span class="line">      buildInfo,</span><br><span class="line">      splitPerAbi: boolArg(<span class="string">&#x27;split-per-abi&#x27;</span>),</span><br><span class="line">      targetArchs: stringsArg(<span class="string">&#x27;target-platform&#x27;</span>).map&lt;AndroidArch&gt;(getAndroidArchForName),</span><br><span class="line">    );</span><br><span class="line">    validateBuild(androidBuildInfo);</span><br><span class="line">    displayNullSafetyMode(androidBuildInfo.buildInfo);</span><br><span class="line">    <span class="keyword">await</span> androidBuilder.buildApk(</span><br><span class="line">      project: FlutterProject.current(),</span><br><span class="line">      target: targetFile,</span><br><span class="line">      androidBuildInfo: androidBuildInfo,</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> FlutterCommandResult.success();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终会调用<code>AndroidGradleBuilder</code>的<code>buildGradleApp</code>方法，内部就是拼接<code>gradle</code>命令，指定不同的参数，然后执行。例如</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;project_path&#125;/gradlew -q -Ptarget=lib/main.dart -Ptrack-widget-creation=<span class="literal">false</span> -Ptarget-platform=android-arm  -Psplit-per-abi=<span class="literal">true</span> assembleRelease</span><br></pre></td></tr></table></figure>
+
+<h3 id="flutter-gradle"><a href="#flutter-gradle" class="headerlink" title="flutter.gradle"></a>flutter.gradle</h3><p>Android本身的代码构建基本没什么疑问，这里主要关心Flutter项目中的dart代码如何构建打包成so的。</p>
+<p>查看<code>build.gradle</code>文件，主要是引入了<code>flutter.gradle</code>，位于<code>flutter_tools</code>中</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apply from: &quot;$flutterRoot&#x2F;packages&#x2F;flutter_tools&#x2F;gradle&#x2F;flutter.gradle&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>flutter.gradle</code>自定义了gradle插件，解析gradle命令参数，并添加自定义task完成flutter项目的构建和打包。分析几段关键代码</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">void</span> apply(Project project) &#123;</span><br><span class="line">    <span class="comment">//添加自定义task</span></span><br><span class="line">    <span class="built_in">this</span>.addFlutterTasks(project)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//so分包构建，否则会将多个架构的so打包到一个apk中</span></span><br><span class="line">    <span class="keyword">if</span> (shouldSplitPerAbi()) &#123;</span><br><span class="line">      project.android &#123;</span><br><span class="line">        splits &#123;</span><br><span class="line">          abi &#123;</span><br><span class="line">            <span class="comment">// Enables building multiple APKs per ABI.</span></span><br><span class="line">            enable <span class="literal">true</span></span><br><span class="line">            <span class="comment">// Resets the list of ABIs that Gradle should create APKs for to none.</span></span><br><span class="line">            reset()</span><br><span class="line">            <span class="comment">// Specifies that we do not want to also generate a universal APK that includes all ABIs.</span></span><br><span class="line">            universalApk <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//解析target-platform参数，指定编译目标平台的so</span></span><br><span class="line">    getTargetPlatforms().each &#123; targetArch -&gt;</span><br><span class="line">      String abiValue = PLATFORM_ARCH_MAP[targetArch]</span><br><span class="line">      project.android &#123;</span><br><span class="line">        <span class="keyword">if</span> (shouldSplitPerAbi()) &#123;</span><br><span class="line">          splits &#123;</span><br><span class="line">            abi &#123;</span><br><span class="line">              include abiValue</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//添加引擎库：io.flutter:xxx，即libflutter.so</span></span><br><span class="line">    <span class="comment">//添加嵌入层库：io.flutter:flutter_embedding_xxx，即FlutterActivity、FlutterView等</span></span><br><span class="line">    project.android.buildTypes.all <span class="built_in">this</span>.&amp;addFlutterDependencies</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>addFlutterTask</code>方法：主要是添加compileTask用于编译Flutter，生成so库。再通过其他Task对产物进行重命名、移动、合并，最终打包出apk</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> addFlutterTasks(Project project) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">def</span> targetPlatforms = getTargetPlatforms()</span><br><span class="line">    <span class="keyword">def</span> addFlutterDeps = &#123; variant -&gt;</span><br><span class="line">      </span><br><span class="line">      String taskName = toCammelCase([<span class="string">&quot;compile&quot;</span>, FLUTTER_BUILD_PREFIX, variant.name])</span><br><span class="line">      FlutterTask compileTask = project.tasks.create(<span class="attr">name:</span> taskName, <span class="attr">type:</span> FlutterTask) &#123;</span><br><span class="line">        <span class="comment">//创建Flutter编译Task：如compileFlutterRelease，编译Flutter代码</span></span><br><span class="line">      &#125;</span><br><span class="line">      File libJar = project.file(<span class="string">&quot;$&#123;project.buildDir&#125;/$&#123;AndroidProject.FD_INTERMEDIATES&#125;/flutter/$&#123;variant.name&#125;/libs.jar&quot;</span>)</span><br><span class="line">      <span class="comment">//创建Flutter打包Task，并dependsOn等待编译Task执行完成</span></span><br><span class="line">      Task packFlutterAppAotTask = project.tasks.create(<span class="attr">name:</span> <span class="string">&quot;packLibs$&#123;FLUTTER_BUILD_PREFIX&#125;$&#123;variant.name.capitalize()&#125;&quot;</span>, <span class="attr">type:</span> Jar) &#123;</span><br><span class="line">        destinationDir libJar.parentFile</span><br><span class="line">        archiveName libJar.name <span class="comment">//打包到/build/intermediates/flutter/debug/libs.jar中</span></span><br><span class="line">        dependsOn compileTask</span><br><span class="line">        targetPlatforms.each &#123; targetPlatform -&gt;</span><br><span class="line">          String abi = PLATFORM_ARCH_MAP[targetPlatform]</span><br><span class="line">          from(<span class="string">&quot;$&#123;compileTask.intermediateDir&#125;/$&#123;abi&#125;&quot;</span>) &#123;</span><br><span class="line">            include <span class="string">&quot;*.so&quot;</span></span><br><span class="line">            <span class="comment">// Move `app.so` to `lib/&lt;abi&gt;/libapp.so`</span></span><br><span class="line">            <span class="comment">//Flutter项目代码最终会转换成目标平台的libapp.so文件，将so文件打包到libs.jar中</span></span><br><span class="line">            rename &#123; String filename -&gt;</span><br><span class="line">              <span class="keyword">return</span> <span class="string">&quot;lib/$&#123;abi&#125;/lib$&#123;filename&#125;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//将Flutter项目编译打包好的libs.jar包添加到项目依赖中</span></span><br><span class="line">      addApiDependencies(project, variant.name, project.files &#123;</span><br><span class="line">        packFlutterAppAotTask</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">      <span class="comment">//这里定义了三个Task：packageAssets、cleanPackageAssets、copyFlutterAssets，将Flutter产物移到/build/app/intermediates/merged_assets/release/out目录下</span></span><br><span class="line">      Task packageAssets = project.tasks.findByPath(<span class="string">&quot;:flutter:package$&#123;variant.name.capitalize()&#125;Assets&quot;</span>)</span><br><span class="line">      Task cleanPackageAssets = project.tasks.findByPath(<span class="string">&quot;:flutter:cleanPackage$&#123;variant.name.capitalize()&#125;Assets&quot;</span>)</span><br><span class="line">      Task copyFlutterAssetsTask = project.tasks.create(</span><br><span class="line">        <span class="symbol">name:</span> <span class="string">&quot;copyFlutterAssets$&#123;variant.name.capitalize()&#125;&quot;</span>,</span><br><span class="line">        <span class="symbol">type:</span> Copy,</span><br><span class="line">      ) &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> copyFlutterAssetsTask</span><br><span class="line">    &#125; <span class="comment">// end def addFlutterDeps</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isFlutterAppProject()) &#123;</span><br><span class="line">      project.android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">        Task assembleTask = getAssembleTask(variant)</span><br><span class="line">        <span class="keyword">if</span> (!shouldConfigureFlutterTask(assembleTask)) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        Task copyFlutterAssetsTask = addFlutterDeps(variant)</span><br><span class="line">        <span class="keyword">def</span> variantOutput = variant.outputs.first()</span><br><span class="line">        <span class="keyword">def</span> processResources = variantOutput.hasProperty(<span class="string">&quot;processResourcesProvider&quot;</span>) ?</span><br><span class="line">          variantOutput.processResourcesProvider.get() : variantOutput.processResources</span><br><span class="line">        <span class="comment">//先编译生成Flutter产物，将Flutter任务加到Android构建流程中</span></span><br><span class="line">        processResources.dependsOn(copyFlutterAssetsTask)</span><br><span class="line"></span><br><span class="line">        variant.outputs.all &#123; output -&gt;</span><br><span class="line">          assembleTask.doLast &#123; <span class="comment">//将生成的apk拷贝到对应路径，并重命名：app&lt;-abi&gt;?&lt;-flavor-name&gt;?-&lt;build-mode&gt;.apk</span></span><br><span class="line">            <span class="comment">//...</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      configurePlugins()</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...其他模块编译类似</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>FlutterTask</code>源码如何编译Flutter代码生成so：调用<code>flutter assemble</code>命令编译flutter资源</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterTask</span> <span class="keyword">extends</span> <span class="title">BaseFlutterTask</span> &#123;</span></span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="meta">@TaskAction</span></span><br><span class="line">  <span class="keyword">void</span> build() &#123;</span><br><span class="line">    <span class="comment">//调用父类方法</span></span><br><span class="line">    buildBundle()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseFlutterTask</span> <span class="keyword">extends</span> <span class="title">DefaultTask</span> &#123;</span></span><br><span class="line">  <span class="keyword">void</span> buildBundle() &#123;</span><br><span class="line">    <span class="keyword">if</span> (!sourceDir.isDirectory()) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> GradleException(<span class="string">&quot;Invalid Flutter source directory: $&#123;sourceDir&#125;&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    intermediateDir.mkdirs()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compute the rule name for flutter assemble. To speed up builds that contain</span></span><br><span class="line">    <span class="comment">// multiple ABIs, the target name is used to communicate which ones are required</span></span><br><span class="line">    <span class="comment">// rather than the TargetPlatform. This allows multiple builds to share the same</span></span><br><span class="line">    <span class="comment">// cache.</span></span><br><span class="line">    <span class="comment">//根据ruleNames找到对应的编译目标</span></span><br><span class="line">    String[] ruleNames;</span><br><span class="line">    <span class="keyword">if</span> (buildMode == <span class="string">&quot;debug&quot;</span>) &#123;</span><br><span class="line">      ruleNames = [<span class="string">&quot;debug_android_application&quot;</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (deferredComponents) &#123;</span><br><span class="line">      ruleNames = targetPlatformValues.collect &#123; <span class="string">&quot;android_aot_deferred_components_bundle_$&#123;buildMode&#125;_$it&quot;</span> &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      ruleNames = targetPlatformValues.collect &#123; <span class="string">&quot;android_aot_bundle_$&#123;buildMode&#125;_$it&quot;</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    project.exec &#123; <span class="comment">//执行命令flutter assemble命令，加上各种参数，旧版本使用的可能是flutter build aot/bundle命令</span></span><br><span class="line">      logging.captureStandardError LogLevel.ERROR</span><br><span class="line">      executable flutterExecutable.absolutePath</span><br><span class="line">      workingDir sourceDir</span><br><span class="line">      <span class="keyword">if</span> (localEngine != <span class="literal">null</span>) &#123;</span><br><span class="line">        args <span class="string">&quot;--local-engine&quot;</span>, localEngine</span><br><span class="line">        args <span class="string">&quot;--local-engine-src-path&quot;</span>, localEngineSrcPath</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (verbose) &#123;</span><br><span class="line">        args <span class="string">&quot;--verbose&quot;</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args <span class="string">&quot;--quiet&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">      args <span class="string">&quot;assemble&quot;</span></span><br><span class="line">      args <span class="string">&quot;--no-version-check&quot;</span></span><br><span class="line">      args <span class="string">&quot;--depfile&quot;</span>, <span class="string">&quot;$&#123;intermediateDir&#125;/flutter_build.d&quot;</span></span><br><span class="line">      args <span class="string">&quot;--output&quot;</span>, <span class="string">&quot;$&#123;intermediateDir&#125;&quot;</span></span><br><span class="line">      <span class="comment">//省略其他参数...</span></span><br><span class="line">      args ruleNames</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Deferred Component延迟组件：可以在运行时下载Dart代码编译，减少包大小。目前只在Android上可用，利用Android和Google Play商店的动态功能模块实现延迟加载。</p>
+<p>参考<a href="https://flutter.cn/docs/perf/deferred-components">Flutter延迟加载组件</a></p>
+</blockquote>
+<h3 id="flutter-assemble编译"><a href="#flutter-assemble编译" class="headerlink" title="flutter assemble编译"></a>flutter assemble编译</h3><p>有了上面flutter命令执行经验，直接找到<code>AssembleCommand</code>类的<code>runCommand</code>方法</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AssembleCommand</span> <span class="keyword">extends</span> <span class="title">FlutterCommand</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; targets = createTargets(); <span class="comment">//根据ruleNames创建编译目标</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; nonDeferredTargets = &lt;Target&gt;[];</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; deferredTargets = &lt;AndroidAotDeferredComponentsBundle&gt;[]; <span class="comment">//延迟组件</span></span><br><span class="line">    Target target;</span><br><span class="line">    <span class="comment">//省略deferredComponents目标判断...</span></span><br><span class="line">    <span class="comment">//调用buildSystem.build方法对target进行编译</span></span><br><span class="line">    <span class="keyword">final</span> BuildResult result = <span class="keyword">await</span> _buildSystem.build(</span><br><span class="line">      target,</span><br><span class="line">      environment,</span><br><span class="line">      buildSystemConfig: BuildSystemConfig(</span><br><span class="line">        resourcePoolSize: argResults.wasParsed(<span class="string">&#x27;resource-pool-size&#x27;</span>)</span><br><span class="line">          ? <span class="built_in">int</span>.tryParse(stringArg(<span class="string">&#x27;resource-pool-size&#x27;</span>))</span><br><span class="line">          : <span class="keyword">null</span>,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> FlutterCommandResult.success();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//创建编译目标</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; createTargets() &#123;</span><br><span class="line">    <span class="keyword">if</span> (argResults.rest.isEmpty) &#123;</span><br><span class="line">      throwToolExit(<span class="string">&#x27;missing target name for flutter assemble.&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> name = argResults.rest.first;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, Target&gt; targetMap = &lt;<span class="built_in">String</span>, Target&gt;&#123; <span class="comment">//_kDefaultTargets预定义了一堆默认编译目标，存到map中</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">final</span> Target target <span class="keyword">in</span> _kDefaultTargets)</span><br><span class="line">        target.name: target <span class="comment">//目标名作为key</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; results = &lt;Target&gt;[</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">final</span> <span class="built_in">String</span> targetName <span class="keyword">in</span> argResults.rest)</span><br><span class="line">        <span class="comment">//根据rest参数（除了options和flags之外的参数），从map中获取编译目标对象</span></span><br><span class="line">        <span class="comment">//此处的rest即上文中的ruleNames，可以是一个数组，如：[android_aot_bundle_$&#123;buildMode&#125;_$it]，$it指目标平台</span></span><br><span class="line">        <span class="keyword">if</span> (targetMap.containsKey(targetName))</span><br><span class="line">          targetMap[targetName]</span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">if</span> (results.isEmpty) &#123;</span><br><span class="line">      throwToolExit(<span class="string">&#x27;No target named &quot;<span class="subst">$name</span>&quot; defined.&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FlutterBuildSystem</code>继承自<code>BuildSystem</code>，源码较长，简单来说就是将编译目标Target和其依赖的编译目标，组成一个个编译节点，依次调用Target的build方法。默认的编译目标如下</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="comment">//编译目标之间可以有依赖关系</span></span><br><span class="line"><span class="built_in">List</span>&lt;Target&gt; _kDefaultTargets = &lt;Target&gt;[</span><br><span class="line">  <span class="comment">// Shared targets</span></span><br><span class="line">  <span class="keyword">const</span> CopyAssets(),</span><br><span class="line">  <span class="keyword">const</span> KernelSnapshot(), <span class="comment">//生成kernel文件，即app.dill</span></span><br><span class="line">  <span class="keyword">const</span> AotElfProfile(TargetPlatform.android_arm),</span><br><span class="line">  <span class="keyword">const</span> AotElfRelease(TargetPlatform.android_arm), <span class="comment">//将dart kernel生成elf文件</span></span><br><span class="line">  <span class="keyword">const</span> AotAssemblyProfile(), <span class="comment">//将dart kernel生成汇编文件</span></span><br><span class="line">  <span class="keyword">const</span> AotAssemblyRelease(),</span><br><span class="line">  <span class="comment">// macOS targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugMacOSFramework(),</span><br><span class="line">  <span class="keyword">const</span> DebugMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="keyword">const</span> ProfileMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="comment">// Linux targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> DebugBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="comment">// Web targets</span></span><br><span class="line">  <span class="keyword">const</span> WebServiceWorker(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseAndroidApplication(),</span><br><span class="line">  <span class="comment">// This is a one-off rule for bundle and aot compat.</span></span><br><span class="line">  <span class="keyword">const</span> CopyFlutterBundle(),</span><br><span class="line">  <span class="comment">// Android targets,</span></span><br><span class="line">  <span class="keyword">const</span> DebugAndroidApplication(),</span><br><span class="line">  <span class="keyword">const</span> ProfileAndroidApplication(),</span><br><span class="line">  <span class="comment">// Android ABI specific AOT rules.</span></span><br><span class="line">  androidArmProfileBundle,</span><br><span class="line">  androidArm64ProfileBundle,</span><br><span class="line">  androidx64ProfileBundle,</span><br><span class="line">  androidArmReleaseBundle,</span><br><span class="line">  androidArm64ReleaseBundle,</span><br><span class="line">  androidx64ReleaseBundle,</span><br><span class="line">  <span class="comment">// Deferred component enabled AOT rules</span></span><br><span class="line">  androidArmProfileDeferredComponentsBundle,</span><br><span class="line">  androidArm64ProfileDeferredComponentsBundle,</span><br><span class="line">  androidx64ProfileDeferredComponentsBundle,</span><br><span class="line">  androidArmReleaseDeferredComponentsBundle,</span><br><span class="line">  androidArm64ReleaseDeferredComponentsBundle,</span><br><span class="line">  androidx64ReleaseDeferredComponentsBundle,</span><br><span class="line">  <span class="comment">// iOS targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugIosApplicationBundle(),</span><br><span class="line">  <span class="keyword">const</span> ProfileIosApplicationBundle(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseIosApplicationBundle(),</span><br><span class="line">  <span class="comment">// Windows targets</span></span><br><span class="line">  <span class="keyword">const</span> UnpackWindows(),</span><br><span class="line">  <span class="keyword">const</span> DebugBundleWindowsAssets(),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleWindowsAssets(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleWindowsAssets(),</span><br><span class="line">  <span class="comment">// Windows UWP targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugBundleWindowsAssetsUwp(),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleWindowsAssetsUwp(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleWindowsAssetsUwp(),</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>挑一个<code>androidArmReleaseBundle</code>编译目标的源码：依赖<code>androidArmRelease</code>编译目标生成<code>.so</code>文件，依赖<code>AotAndroidAssetBundle</code>生成<code>flutter_assets</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> AndroidAotBundle androidArmReleaseBundle = AndroidAotBundle(androidArmRelease); <span class="comment">//依赖androidArmRelease</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidAotBundle</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Create an [AndroidAotBundle] implementation for a given [targetPlatform] and [buildMode].</span></span></span><br><span class="line">  <span class="keyword">const</span> AndroidAotBundle(<span class="keyword">this</span>.dependency);</span><br><span class="line">  <span class="comment">//ruleNames匹配的名称</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;android_aot_bundle_<span class="subst">$&#123;getNameForBuildMode(dependency.buildMode)&#125;</span>_&#x27;</span></span><br><span class="line">    <span class="string">&#x27;<span class="subst">$&#123;getNameForTargetPlatform(dependency.targetPlatform)&#125;</span>&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Source&gt; <span class="keyword">get</span> inputs =&gt; &lt;Source&gt;[</span><br><span class="line">    Source.pattern(<span class="string">&#x27;&#123;BUILD_DIR&#125;/<span class="subst">$_androidAbiName</span>/app.so&#x27;</span>),</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//可以看出AndroidAotBundle只是将app.so移动打包而已</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Source&gt; <span class="keyword">get</span> outputs =&gt; &lt;Source&gt;[</span><br><span class="line">    Source.pattern(<span class="string">&#x27;&#123;OUTPUT_DIR&#125;/<span class="subst">$_androidAbiName</span>/app.so&#x27;</span>),</span><br><span class="line">  ];</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//依赖androidArmRelease和AotAndroidAssetBundle编译目标</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; <span class="keyword">get</span> dependencies =&gt; &lt;Target&gt;[</span><br><span class="line">    dependency,</span><br><span class="line">    <span class="keyword">const</span> AotAndroidAssetBundle(),</span><br><span class="line">  ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>AotAndroidAssetBundle</code>目标：<code>copyAssets</code>中生成Flutter静态资源并拷贝，如果是Debug模式，还会拷贝JIT快照文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidAssetBundle</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">final</span> Directory outputDirectory = environment.outputDir</span><br><span class="line">      .childDirectory(<span class="string">&#x27;flutter_assets&#x27;</span>)</span><br><span class="line">      ..createSync(recursive: <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Only copy the prebuilt runtimes and kernel blob in debug mode.</span></span><br><span class="line">    <span class="keyword">if</span> (buildMode == BuildMode.debug) &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> vmSnapshotData = environment.artifacts.getArtifactPath(Artifact.vmSnapshotData, mode: BuildMode.debug);</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> isolateSnapshotData = environment.artifacts.getArtifactPath(Artifact.isolateSnapshotData, mode: BuildMode.debug);</span><br><span class="line">      environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;kernel_blob.bin&#x27;</span>).path);</span><br><span class="line">      environment.fileSystem.file(vmSnapshotData)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;vm_snapshot_data&#x27;</span>).path);</span><br><span class="line">      environment.fileSystem.file(isolateSnapshotData)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;isolate_snapshot_data&#x27;</span>).path);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//调用copyAssets</span></span><br><span class="line">    <span class="keyword">final</span> Depfile assetDepfile = <span class="keyword">await</span> copyAssets(</span><br><span class="line">      environment,</span><br><span class="line">      outputDirectory,</span><br><span class="line">      targetPlatform: TargetPlatform.android,</span><br><span class="line">      buildMode: buildMode,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>androidArmRelease</code>编译目标：依赖<code>KernelSnapshot</code>编译目标生成<code>.dill</code>文件，可以将<code>.dill</code>文件编译成<code>.so</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> AndroidAot androidArmRelease = AndroidAot(TargetPlatform.android_arm,  BuildMode.release);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidAot</span> <span class="keyword">extends</span> <span class="title">AotElfBase</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;android_aot_<span class="subst">$&#123;getNameForBuildMode(buildMode)&#125;</span>_&#x27;</span></span><br><span class="line">    <span class="string">&#x27;<span class="subst">$&#123;getNameForTargetPlatform(targetPlatform)&#125;</span>&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//依赖KernelSnapshot编译目标</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; <span class="keyword">get</span> dependencies =&gt; <span class="keyword">const</span> &lt;Target&gt;[</span><br><span class="line">    KernelSnapshot(),</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> snapshotExitCode = <span class="keyword">await</span> snapshotter.build(</span><br><span class="line">      platform: targetPlatform,</span><br><span class="line">      buildMode: buildMode,</span><br><span class="line">      mainPath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      outputPath: output.path,</span><br><span class="line">      bitcode: <span class="keyword">false</span>,</span><br><span class="line">      extraGenSnapshotOptions: extraGenSnapshotOptions,</span><br><span class="line">      splitDebugInfo: splitDebugInfo,</span><br><span class="line">      dartObfuscation: dartObfuscation,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AOTSnapshotter</code>内部调用<code>_genSnapshot.run</code>方法，将<code>.dill</code>文件生成<code>.so</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AOTSnapshotter</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Builds an architecture-specific ahead-of-time compiled snapshot of the specified script.</span></span></span><br><span class="line">  Future&lt;<span class="built_in">int</span>&gt; build(</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  ) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//添加genSnapshot参数...</span></span><br><span class="line">    <span class="comment">//iOS编译出.S文件</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> assembly = _fileSystem.path.join(outputDir.path, <span class="string">&#x27;snapshot_assembly.S&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (platform == TargetPlatform.ios || platform == TargetPlatform.darwin) &#123;</span><br><span class="line">      genSnapshotArgs.addAll(&lt;<span class="built_in">String</span>&gt;[</span><br><span class="line">        <span class="string">&#x27;--snapshot_kind=app-aot-assembly&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--assembly=<span class="subst">$assembly</span>&#x27;</span>,</span><br><span class="line">      ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//Android编译出elf文件，.so文件</span></span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> aotSharedLibrary = _fileSystem.path.join(outputDir.path, <span class="string">&#x27;app.so&#x27;</span>);</span><br><span class="line">      genSnapshotArgs.addAll(&lt;<span class="built_in">String</span>&gt;[</span><br><span class="line">        <span class="string">&#x27;--snapshot_kind=app-aot-elf&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--elf=<span class="subst">$aotSharedLibrary</span>&#x27;</span>,</span><br><span class="line">      ]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> SnapshotType snapshotType = SnapshotType(platform, buildMode);</span><br><span class="line">    <span class="comment">//执行gen_snapshot程序</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> genSnapshotExitCode = <span class="keyword">await</span> _genSnapshot.run(</span><br><span class="line">      snapshotType: snapshotType,</span><br><span class="line">      additionalArgs: genSnapshotArgs,</span><br><span class="line">      darwinArch: darwinArch,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//iOS上将.S文件再通过XCode编译出.O文件</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终是调用对应架构引擎的<code>gen_snapshot</code>程序，命令如下，省略部分参数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">flutter/bin/cache/artifacts/engine/android-arm-release/darwin-x64/gen_snapshot </span><br><span class="line">--snapshot_kind=app-aot-elf</span><br><span class="line">--elf=&#123;output_path&#125;/app.so</span><br></pre></td></tr></table></figure>
+
+<p><code>KernelSnapshot</code>目标调用<code>KernelCompiler.compile</code>方法，将Flutter代码编译为<code>app.dill</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KernelSnapshot</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;kernel_snapshot&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> KernelCompiler compiler = KernelCompiler(</span><br><span class="line">      fileSystem: environment.fileSystem,</span><br><span class="line">      logger: environment.logger,</span><br><span class="line">      processManager: environment.processManager,</span><br><span class="line">      artifacts: environment.artifacts,</span><br><span class="line">      fileSystemRoots: &lt;<span class="built_in">String</span>&gt;[],</span><br><span class="line">      fileSystemScheme: <span class="keyword">null</span>,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//执行frontend_server.dart.snapshot程序</span></span><br><span class="line">    <span class="keyword">final</span> CompilerOutput output = <span class="keyword">await</span> compiler.compile(</span><br><span class="line">      sdkRoot: environment.artifacts.getArtifactPath(</span><br><span class="line">        Artifact.flutterPatchedSdkPath,</span><br><span class="line">        platform: targetPlatform,</span><br><span class="line">        mode: buildMode,</span><br><span class="line">      ),</span><br><span class="line">      outputFilePath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      <span class="comment">//....</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终是执行<code>frontend_server.dart.snapshot</code>程序，命令如下，省略部分参数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">flutter/bin/cache/dart-sdk/bin/dart /path-to-flutter-sdk/flutter/bin/cache/artifacts/engine/darwin-x64/frontend_server.dart.snapshot </span><br><span class="line">--sdk-root flutter/bin/cache/artifacts/engine/common/flutter_patched_sdk/ </span><br><span class="line">--target=flutter </span><br><span class="line">--aot --tfa </span><br><span class="line">--packages .packages </span><br><span class="line">--output-dill &#123;build_dir&#125;/app.dill </span><br><span class="line">--depfile &#123;build_dir&#125;/kernel_snapshot.d </span><br><span class="line">mainUri</span><br></pre></td></tr></table></figure>
+
+<p>FlutterTask用于编译Flutter资源，实际是执行<code>flutter assemble</code>命令。编译流程如下：</p>
+<p><img src="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/FlutterTask%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B.png"></p>
+<blockquote>
+<p><code>frontend_server.dart.snapshot</code>是一个dart程序，作为Dart编译前端，可以将dart源码编译成<code>.dill</code>中间代码文件。源码入口为<code>&#123;flutter_engine&#125;/flutter_frontend_server/bin/starter.dart</code>，内部会调用Dart SDK中的<code>frontend_server</code>，源码位于<code>&#123;dart_sdk&#125;/pkg/frontend_server</code>中</p>
+<p><code>gen_snapshot</code>是一个可执行程序，可以将<code>.dill</code>文件编译成目标代码，生成<code>.so</code>或者<code>App.framework</code>，源码入口为<code>&#123;dart_sdk&#125;/runtime/bin/gen_snapshot.cc</code></p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>Flutter命令脚本会启动一个dart虚拟机，执行<code>flutter_tools</code>的dart程序。</li>
+<li><code>flutter_tools</code>封装了不同的命令类，通过解析参数，执行对应的Command类，例如<code>BuildApkCommand.runCommand()</code></li>
+<li>Command类中解析参数，最终调用相应平台的构建工具进行构建，例如<code>gradlew assembleRelease</code></li>
+<li><code>flutter_tools</code>中自定义了一个gradle脚本<code>flutter.gradle</code>，将FlutterTask编译任务加到Android构建中，生成so库，合并打包生成最终的apk</li>
+<li>FlutterTask执行<code>flutter assemble</code>命令编译Flutter代码和资源。依次构建多个编译目标，关键的编译目标如下：<ol>
+<li><code>KernelSnapshot</code>目标：调用<code>KernelCompiler.compile()</code>方法，执行<code>dart frontend_server.dart.snapshot</code>命令，生成<code>.dill</code>文件</li>
+<li><code>AndroidAot</code>目标：调用<code>AOTSnapshotter.build()</code>方法，执行<code>gen_snapshot</code>命令，生成<code>app.so</code>文件</li>
+<li><code>AotAndroidAssetBundle</code>目标：调用<code>AssetBundle.build()</code>，生成<code>flutter_assets</code>资源</li>
+</ol>
+</li>
+</ol>
+<p>Flutter构建源码分析流程如下：</p>
+<p><img src="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/Flutter%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E6%B5%81%E7%A8%8B.png"></p>
+<p>Android中的Flutter Release产物编译总体流程如下：</p>
+<p>![](2022-01-12-Flutter构建流程分析/Android Flutter Release产物编译流程.png)</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>关于Dart前端编译（生成Dart Kernel文件，即<code>.dill</code>）和AOT编译（生成目标代码）可以参考：<a href="/2022/01/03/Dart%E7%AE%80%E4%BB%8B/">Dart简介</a></p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/4e8ccb02e92d">研读Flutter——打包编译流程详解</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flutter架构和源码编译</title>
+    <url>/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
 <ol>
 <li><a href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
-<li><a href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。会下载flutter默认构建的engine，包括各种架构的版本，位于<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine</code>下</li>
+<li><a href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
 </ol>
+<blockquote>
+<p>Flutter SDK默认会下载和使用官方构建好的engine，打包到应用中</p>
+</blockquote>
 <p>架构如下：</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/Flutter架构.png" style="zoom: 33%;">
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter架构.png" style="zoom: 33%;">
 
 <ol>
-<li><p>嵌入层：源码包含在Engine中。提供程序入口，程序通过嵌入层与底层操作系统交互，访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。不同平台包含特定的嵌入层，使用当前平台语言编写。</p>
+<li><p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供营养程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
 </li>
 <li><p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
 </li>
@@ -71,9 +203,54 @@
 </ul>
 <h2 id="Web上的Flutter"><a href="#Web上的Flutter" class="headerlink" title="Web上的Flutter"></a>Web上的Flutter</h2><p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
 <p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/FlutterWeb架构.png" style="zoom: 33%;">
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/FlutterWeb架构.png" style="zoom: 33%;">
 
-<h1 id="源码下载和编译"><a href="#源码下载和编译" class="headerlink" title="源码下载和编译"></a>源码下载和编译</h1><h2 id="depot-tools介绍"><a href="#depot-tools介绍" class="headerlink" title="depot_tools介绍"></a>depot_tools介绍</h2><p>Google用python开发的git仓库管理工具，用于管理chromium源码。包括gclient、repo、gn和ninja等工具。是对Git的增强，大项目由几十个独立的git仓库构成，不便于下载、提交和管理。</p>
+<h1 id="SDK下载和编译"><a href="#SDK下载和编译" class="headerlink" title="SDK下载和编译"></a>SDK下载和编译</h1><p>目的：</p>
+<ol>
+<li>学习源码</li>
+<li>定制框架：如修改<code>flutter_tools</code>编译工具等</li>
+</ol>
+<p>方法和搭建Flutter开发环境类似</p>
+<ol>
+<li><p>直接clone或先fork到本地：<code>git clone git@github.com:&lt;github_username&gt;/flutter.git</code></p>
+</li>
+<li><p>设置环境变量：也可以直接进入bin目录执行flutter命令</p>
+</li>
+<li><p>安装依赖包：<code>&#123;flutter_framework&#125;/bin/flutter update-packages</code></p>
+</li>
+<li><p>检查环境：<code>&#123;flutter_framework&#125;/bin/flutter doctor</code></p>
+</li>
+<li><p>Android Studio打开<code>&#123;flutter_framework&#125;/packages/</code>下的项目，默认会当做Android工程，IDE提示<code>Dart SDK is not configured</code>或者<code>Dart support is not enabled for the module &#39;flutter_tools&#39;</code>，如下</p>
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png"></p>
+</li>
+<li><p>配置Flutter工程：直接点击上图的<code>Open Dart Settings</code>或者打开<code>Prefereneces&gt;Language&gt;Dart/Flutter</code>。配置Dart SDK和Flutter SDK路径，对照下Flutter应用项目的配置即可。如下</p>
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置DartSDK.png" style="zoom: 67%;">
+
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png" style="zoom:67%;"></li>
+<li><p>配置完之后即可在IDE查看和修改源码</p>
+</li>
+<li><p>编译源码</p>
+<ol>
+<li>删除<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.snapshot</code>（Dart快照文件）和<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.stamp</code>（当前SDK的commit id文件）</li>
+<li>运行flutter命令的时候会自动编译源码，重新生成dart快照文件（下面会介绍flutter命令执行过程）</li>
+</ol>
+</li>
+</ol>
+<h1 id="Engine下载和编译"><a href="#Engine下载和编译" class="headerlink" title="Engine下载和编译"></a>Engine下载和编译</h1><p>这里只演示了官方支持的平台编译，还不涉及嵌入层的定制和交叉编译（用于定制的嵌入式平台运行Engine）。</p>
+<p>主要有几个目的</p>
+<ol>
+<li>学习源码</li>
+<li>定制引擎，使得Flutter能够在其他目标平台运行，例如树莓派，鸿蒙系统等</li>
+<li>通过压缩、裁剪引擎优化包体积</li>
+</ol>
+<p>推荐使用macOS，桌面应用需要在对应的平台上编译，暂不支持交叉编译</p>
+<ul>
+<li>macOS支持Android和iOS的交叉编译</li>
+<li>Linux支持Android和Fuchsia的交叉编译，不支持iOS</li>
+<li>Windows不支持Android、Fuchsia或iOS交叉编译</li>
+</ul>
+<p>x64主机交叉编译arm目标平台应用：参考<a href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
+<h2 id="depot-tools介绍"><a href="#depot-tools介绍" class="headerlink" title="depot_tools介绍"></a>depot_tools介绍</h2><p>Google用python开发的git仓库管理工具，用于管理chromium源码。包括gclient、repo、gn和ninja等工具。是对Git的增强，大项目由几十个独立的git仓库构成，不便于下载、提交和管理。</p>
 <ul>
 <li><a href="https://chromium.googlesource.com/chromium/tools/depot_tools.git">下载地址</a></li>
 <li><a href="https://www.chromium.org/developers/how-tos/depottools">简介</a></li>
@@ -93,7 +270,7 @@
 </ul>
 </blockquote>
 <p><a href="https://ninja-build.org/">ninja</a>：编译工具，负责编译最终的可执行文件。依赖其他构建工具进行高级语言编译。</p>
-<p><a href="https://gn.googlesource.com/gn">gn</a>：生成ninja所需的构建文件，可以针对不同平台生成不同的ninja构建文件</p>
+<p><a href="https://gn.googlesource.com/gn">gn</a>：生成ninja所需的构建文件，可以针对不同平台生成不同的ninja构建文件。<code>gn help</code>查看帮助</p>
 <p><code>depot_tools</code>安装：</p>
 <ol>
 <li>clone仓库：<code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</code></li>
@@ -105,13 +282,29 @@
 <p>也可以手动创建文件填写。这里直接使用官方仓库地址，如果要修改提交源码，则需要fork到自己的仓库下载。</p>
 </blockquote>
 <p>下载源码和依赖项目（大概10个G，不要中断下载）：<code>gclient sync --verbose</code></p>
-<p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
-<h2 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h2><p><a href="https://github.com/flutter/flutter/wiki/Compiling-the-engine">官方文档</a></p>
-<p>使用<code>gn</code>生成ninja构建文件（参数参考官方文档）：<code>./src/flutter/tools/gn --unoptimized --android --runtime-mode debug --android-cpu arm</code></p>
 <blockquote>
+<p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
+</blockquote>
+<p>切分支：默认获取master分支的版本，如果需要切到指定engine版本，需要进入<code>src/flutter</code>目录执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 切分支，commitId可以使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
+<h2 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h2><p><a href="https://github.com/flutter/flutter/wiki/Compiling-the-engine">官方文档</a></p>
+<p>使用<code>gn</code>生成ninja构建文件（参数参考官方文档）：<code>&#123;engine_path&#125;/src/flutter/tools/gn --unoptimized --android --runtime-mode debug --android-cpu arm</code></p>
+<blockquote>
+<p>这里的gn只是一个shell脚本，内部调用<code>gn gen</code>命令执行</p>
+<p>对应的构建产物会有多种组合：</p>
+<ul>
+<li>平台：iOS, Android, macOS, Linux, Windows</li>
+<li>构建模式：debug, release, profile</li>
+<li>是否优化：opt, unopt</li>
+<li>cpu架构：arm、arm64、x86、x64</li>
+</ul>
+<p>产物命名格式：<code>android/ios/host_debug/profile/release_unoptimized/optimized_cpu架构</code></p>
+<p>除此之外还可以根据图形后端进行编译：如OpenGL、Vulkan、software</p>
+</blockquote>
 <p>构建完之后生成<code>out</code>目录，根据参数生成不同文件夹，如<code>android_debug_unopt</code>、<code>ios_debug_unopt</code>等。</p>
 <p>内部包括ninja构建文件、<code>compile_commands.json</code>文件（Intellisense，用于编辑器索引）、xcode项目文件等</p>
-</blockquote>
 <p>使用<code>ninja</code>编译：<code>ninja -C out/android_debug_unopt</code></p>
 <blockquote>
 <p>编译生成的文件在<code>out/android_debug_unopt</code>目录下，主要产物如下：</p>
@@ -120,11 +313,17 @@
 <li><code>libflutter.so</code>：flutter引擎层代码</li>
 </ul>
 <p>二者最终会合并到<code>flutter.jar</code>中</p>
+<p>iOS引擎编译主要产物是<code>Flutter.framework</code>，其中包含<code>icudtl.dat</code>国际化数据文件和<code>FlutterEmbedder.framework</code>嵌入层代码</p>
 </blockquote>
-<h2 id="替换Engine"><a href="#替换Engine" class="headerlink" title="替换Engine"></a>替换Engine</h2><p><a href="https://github.com/flutter/flutter/wiki/Debugging-the-engine">官方文档</a></p>
-<p>Flutter默认会下载和使用官方构建好的engine。要替换自己编译出来的引擎，使用<code>--local-engine</code>选项。</p>
-<p>例如运行Mac主机应用：<code>flutter run --local-engine-src-path &#123;path&#125;/engine/src --local-engine=host_debug_unopt</code></p>
-<p>AndroidStudio中替换：<code>gradle.properties</code>添加变量<code>localEngineOut=&#123;path&#125;/engine/src/out/android_debug_unopt</code></p>
+<h2 id="替换Engine"><a href="#替换Engine" class="headerlink" title="替换Engine"></a>替换Engine</h2><p><a href="https://github.com/flutter/flutter/wiki/The-flutter-tool#using-a-locally-built-engine-with-the-flutter-tool">官方文档</a></p>
+<p><strong>Flutter默认会下载和使用官方构建好的engine</strong>，包括各种架构的版本，位于<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine</code>下。要替换自己编译出来的引擎，使用<code>local-engine-src-path</code>和<code>--local-engine</code>选项。如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指定的引擎需要与构建模式对应：debug版的引擎编译debug版的应用</span></span><br><span class="line">flutter run --local-engine-src-path &#123;path&#125;/engine/src --local-engine=&#123;path&#125;/engine/src/out/host_debug_unopt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果flutter引擎和sdk在同级目录下，或者<code>-local-engine</code>使用绝对路径，可以省略<code>--local-engine-src-path</code>参数。</p>
+<p>下面会分析<code>flutter_tools</code>解析该参数过程</p>
+</blockquote>
+<p>为Web应用构建，使用主机引擎即可：<code>flutter run --local-engine=host_debug_unopt -d chrome</code></p>
 <h2 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h2><p>参考<a href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">官方文档</a></p>
 <h3 id="Clion"><a href="#Clion" class="headerlink" title="Clion"></a>Clion</h3><p>将gn生成的<code>compile_commands.json</code>文件复制到<code>src/flutter</code>中，使用Clion打开，indexing之后就可以跟踪和跳转代码</p>
 <blockquote>
@@ -162,18 +361,46 @@
 </ol>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//相当于配置settings.json如下</span></span><br><span class="line">&quot;java.project.referencedLibraries&quot;: [</span><br><span class="line">  <span class="string">&quot;&#123;path to engine&#125;/src/third_party/android_embedding_dependencies/lib/**/*.jar&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
+<h1 id="flutter命令执行原理"><a href="#flutter命令执行原理" class="headerlink" title="flutter命令执行原理"></a>flutter命令执行原理</h1><p>分析下<code>flutter_tools</code>和本地编译引擎替换的原理。关于Flutter命令执行过程可以参考<a href="/2022/01/12/Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%92%8C%E4%BA%A7%E7%89%A9%E5%88%86%E6%9E%90/">Flutter构建流程和产物分析</a>，这里直接定位到关键代码。</p>
+<h2 id="替换flutter-tools"><a href="#替换flutter-tools" class="headerlink" title="替换flutter_tools"></a>替换flutter_tools</h2><p>上一篇文档已经介绍了Flutter命令执行过程：主要通过dart运行<code>&#123;flutter_sdk&#125;/bin/cache/flutter_tools.snapshot</code>程序解析参数，调用不同平台工具进行构建。</p>
+<p><code>flutter_tools.snapshot</code>对应的源码位于<code>&#123;flutter_framework&#125;/packages/flutter_tools/</code>中，可以直接修改。</p>
+<p>修改了<code>flutter_tools</code>源码之后如何编译并替换呢？</p>
+<p>查看<code>bin/internal/shared.sh</code>脚本的<code>upgrade_flutter</code>方法</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">function upgrade_flutter () (</span><br><span class="line">  mkdir -p &quot;$FLUTTER_ROOT/bin/cache&quot;</span><br><span class="line"></span><br><span class="line">  local revision=&quot;$(cd &quot;$FLUTTER_ROOT&quot;; git rev-parse HEAD)&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">  #</span><span class="bash"> Invalidate cache <span class="keyword">if</span>:</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * SNAPSHOT_PATH is not a file, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * STAMP_PATH is not a file with nonzero size, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * Contents of STAMP_PATH is not our <span class="built_in">local</span> git HEAD revision, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * pubspec.yaml last modified after pubspec.lock</span></span><br><span class="line">  if [[ ! -f &quot;$SNAPSHOT_PATH&quot; || ! -s &quot;$STAMP_PATH&quot; || &quot;$(cat &quot;$STAMP_PATH&quot;)&quot; != &quot;$revision&quot; || &quot;$FLUTTER_TOOLS_DIR/pubspec.yaml&quot; -nt &quot;$FLUTTER_TOOLS_DIR/pubspec.lock&quot; ]]; then</span><br><span class="line">    # 等待锁</span><br><span class="line">    _wait_for_lock</span><br><span class="line">    # 获取锁之后再次判断，防止并发</span><br><span class="line">    # A different shell process might have updated the tool/SDK.</span><br><span class="line">    if [[ -f &quot;$SNAPSHOT_PATH&quot; &amp;&amp; -s &quot;$STAMP_PATH&quot; &amp;&amp; &quot;$(cat &quot;$STAMP_PATH&quot;)&quot; == &quot;$revision&quot; &amp;&amp; &quot;$FLUTTER_TOOLS_DIR/pubspec.yaml&quot; -ot &quot;$FLUTTER_TOOLS_DIR/pubspec.lock&quot; ]]; then</span><br><span class="line">      exit $?</span><br><span class="line">    fi</span><br><span class="line">    </span><br><span class="line">    #...</span><br><span class="line">    </span><br><span class="line">    # 重新编译生成快照文件snapshot</span><br><span class="line">    &quot;$DART&quot; --verbosity=error --disable-dart-dev $FLUTTER_TOOL_ARGS --snapshot=&quot;$SNAPSHOT_PATH&quot; --packages=&quot;$FLUTTER_TOOLS_DIR/.packages&quot; --no-enable-mirrors &quot;$SCRIPT_PATH&quot;</span><br><span class="line">    echo &quot;$revision&quot; &gt; &quot;$STAMP_PATH&quot;</span><br><span class="line">  fi</span><br><span class="line">  exit $?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>  什么时候会重新编译<code>flutter_tools</code>？</p>
+<blockquote>
+<p>注释已经写的很清楚了：</p>
+<ol>
+<li>snapshot或者stamp文件不存在</li>
+<li>stamp的commit id不是当前的HEAD id</li>
+<li>pubspec.yaml文件被修改</li>
+</ol>
+</blockquote>
+<h2 id="替换本地引擎"><a href="#替换本地引擎" class="headerlink" title="替换本地引擎"></a>替换本地引擎</h2><p>Flutter可以指定<code>local-engine</code>和<code>local-engine-src-path</code>选项来替换本地引擎，这是如何生效的呢？</p>
+<p>上一篇文档已经介绍了Flutter命令执行过程，这里我们直接找到解析<code>local-engine-src-path</code>参数的地方</p>
+<p>查看<code>lib/src/runner/flutter_command_runner</code>源码，获取<code>local-engine</code>相关参数，查找本地构建引擎路径</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterCommandRunner</span> <span class="keyword">extends</span> <span class="title">CommandRunner</span>&lt;<span class="title">void</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; runCommand(ArgResults topLevelResults) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//传入参数，执行命令，根据local-engine参数获取本地构建的引擎</span></span><br><span class="line">    <span class="comment">// Set up the tooling configuration.</span></span><br><span class="line">    <span class="keyword">final</span> EngineBuildPaths engineBuildPaths = <span class="keyword">await</span> globals.localEngineLocator.findEnginePath(</span><br><span class="line">      topLevelResults[<span class="string">&#x27;local-engine-src-path&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">      topLevelResults[<span class="string">&#x27;local-engine&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">      topLevelResults[<span class="string">&#x27;packages&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>lib/src/runner/local_engine.dart</code>源码<code>findEnginePath</code>方法，如何获取引擎路径</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalEngineLocator</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Returns the engine build path of a local engine if one is located, otherwise <span class="code">`null`</span>.</span></span></span><br><span class="line">  Future&lt;EngineBuildPaths?&gt; findEnginePath(<span class="built_in">String?</span> engineSourcePath, <span class="built_in">String?</span> localEngine, <span class="built_in">String?</span> packagePath) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//如果没有指定参数，从系统环境变量$FLUTTER_ENGINE读取</span></span><br><span class="line">    engineSourcePath ??= _platform.environment[kFlutterEngineEnvironmentVariableName];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (engineSourcePath == <span class="keyword">null</span> &amp;&amp; localEngine != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//如果local-engine参数是绝对路径，且父文件夹为src/out/，则使用src目录</span></span><br><span class="line">        engineSourcePath = _findEngineSourceByLocalEngine(localEngine);</span><br><span class="line">        <span class="comment">//从配置中读取</span></span><br><span class="line">        engineSourcePath ??= <span class="keyword">await</span> _findEngineSourceByPackageConfig(packagePath);</span><br><span class="line">      &#125; <span class="keyword">on</span> FileSystemException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        _logger.printTrace(<span class="string">&#x27;Local engine auto-detection file exception: <span class="subst">$e</span>&#x27;</span>);</span><br><span class="line">        engineSourcePath = <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//判断如果engine源码和flutter sdk目录同级，则不需要该参数</span></span><br><span class="line">      engineSourcePath ??= _tryEnginePath(</span><br><span class="line">        _fileSystem.path.join(_fileSystem.directory(_flutterRoot).parent.path, <span class="string">&#x27;engine&#x27;</span>, <span class="string">&#x27;src&#x27;</span>),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">String?</span> _findEngineSourceByLocalEngine(<span class="built_in">String</span> localEngine) &#123;</span><br><span class="line">    <span class="comment">// When the local engine is an absolute path to a variant inside the</span></span><br><span class="line">    <span class="comment">// out directory, parse the engine source.</span></span><br><span class="line">    <span class="comment">// --local-engine /path/to/cache/builder/src/out/host_debug_unopt</span></span><br><span class="line">    <span class="keyword">if</span> (_fileSystem.path.isAbsolute(localEngine)) &#123;</span><br><span class="line">      <span class="keyword">final</span> Directory localEngineDirectory = _fileSystem.directory(localEngine);</span><br><span class="line">      <span class="keyword">final</span> Directory outDirectory = localEngineDirectory.parent;</span><br><span class="line">      <span class="keyword">final</span> Directory srcDirectory = outDirectory.parent;</span><br><span class="line">      <span class="keyword">if</span> (localEngineDirectory.existsSync() &amp;&amp; outDirectory.basename == <span class="string">&#x27;out&#x27;</span> &amp;&amp; srcDirectory.basename == <span class="string">&#x27;src&#x27;</span>) &#123;</span><br><span class="line">        _logger.printTrace(<span class="string">&#x27;Parsed engine source from local engine as <span class="subst">$&#123;srcDirectory.path&#125;</span>.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> srcDirectory.path;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Future&lt;<span class="built_in">String?</span>&gt; _findEngineSourceByPackageConfig(<span class="built_in">String?</span> packagePath) <span class="keyword">async</span> &#123;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//判断out文件夹是否存在</span></span><br><span class="line">  <span class="built_in">String?</span> _tryEnginePath(<span class="built_in">String</span> enginePath) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_fileSystem.isDirectorySync(_fileSystem.path.join(enginePath, <span class="string">&#x27;out&#x27;</span>))) &#123;</span><br><span class="line">      <span class="keyword">return</span> enginePath;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如何获取Flutter编译引擎源码路径？<code>--local-engine-src-path</code>什么时候可以省略？</p>
+<blockquote>
+<p>流程如下</p>
+<ol>
+<li>如果没有指定该参数，从系统环境变量<code>$FLUTTER_ENGINE</code>读取源码路径</li>
+<li>如果<code>--local-engine</code>参数是绝对路径，且父文件夹为src/out/，则使用src目录</li>
+<li>根据<code>--packages</code>参数加载<code>package_config.json</code>文件，读取<code>sky_engine</code>配置路径，例如<code>&#123;flutter-engine-local-path&#125;/src/out/host_debug_unopt/gen/dart-pkg/sky_engine/lib/</code></li>
+<li>如果engine源码和flutter sdk目录同级，且存在<code>src/out</code>文件夹，则使用src目录</li>
+</ol>
+</blockquote>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
 <li><a href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
 <li><a href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">Flutter Wiki官方文档</a></li>
 </ul>
 <p>gclient使用可以参考<a href="https://www.cnblogs.com/xl2432/p/11596695.html">chromium开发工具–gclient</a>、<a href="https://keyou.github.io/blog/2017/11/02/gclient/">gclient 介绍</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/394560540">https://zhuanlan.zhihu.com/p/394560540</a></p>
-<p><a href="https://segmentfault.com/a/1190000037683839?utm_source=tag-newest">https://segmentfault.com/a/1190000037683839?utm_source=tag-newest</a></p>
-<p><a href="https://www.jianshu.com/p/3e5d181ddf79">https://www.jianshu.com/p/3e5d181ddf79</a></p>
-<p><a href="https://www.jianshu.com/p/07bd34831f92">https://www.jianshu.com/p/07bd34831f92</a></p>
-<p><a href="https://www.jianshu.com/p/9536ffd7bbbc">https://www.jianshu.com/p/9536ffd7bbbc</a></p>
-<p><a href="https://www.cnblogs.com/xl2432/p/11596695.html">https://www.cnblogs.com/xl2432/p/11596695.html</a></p>
 ]]></content>
       <categories>
         <category>Flutter</category>
@@ -223,7 +450,7 @@
 <li>Makefile定义了多个规则，每个规则由目标、依赖、命令构成</li>
 </ul>
 </li>
-<li>CMake工具：更加方便的生成makefile文件，并且能够跨平台，解决手写makefile较麻烦的问题，但仍然需要手写<code>CMakelist.txt</code>文件</li>
+<li>CMake工具：更加方便的生成makefile文件，并且能够跨平台，解决不同平台手写makefile较麻烦的问题，但仍然需要手写<code>CMakelist.txt</code>文件</li>
 </ul>
 <pre class="mermaid">graph LR
 编辑器--编写-->源文件-->cmakelist--cmake生成-->makefile--make批处理-->可执行程序</pre>
@@ -263,6 +490,7 @@
 <p>Clang与LLVM</p>
 <blockquote>
 <p><a href="https://llvm.org/">LLVM</a>项目是模块化、可重用的编译器和工具链集合。虽然全称是Low Level Virtual Machine，但它实际与虚拟机并没有关系。</p>
+<p>Clang是LLVM项目下的一个子项目</p>
 <ul>
 <li>广义的LLVM指LLVM编译器框架系统，包括前端（源码转为中间代码）、优化器、后端（中间代码转为汇编代码）以及相关的库或模块。如下<ul>
 <li>核心库：源代码到中间代码的优化，与目标平台无关</li>
@@ -276,6 +504,14 @@
 </li>
 <li>狭义的LLVM聚焦于编译后端，Clang对应编译前端。</li>
 </ul>
+</blockquote>
+<p>make和ninja、cmake与gn</p>
+<blockquote>
+<ul>
+<li><a href="https://ninja-build.org/">ninja</a>：编译工具，负责编译最终的可执行文件。依赖其他构建工具进行高级语言编译。</li>
+<li><a href="https://gn.googlesource.com/gn">gn</a>：生成ninja所需的构建文件，可以针对不同平台生成不同的ninja构建文件</li>
+</ul>
+<p>chromium工程使用gn生成不同平台的ninja构建文件，再通过ninja进行编译。适用于大型项目。</p>
 </blockquote>
 <h1 id="gcc和g"><a href="#gcc和g" class="headerlink" title="gcc和g++"></a>gcc和g++</h1><h2 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h2><ol>
 <li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，生成.i文件。<code>gcc -E file.c -o file.i</code></li>
@@ -320,7 +556,7 @@
 <li>编译阶段，g++会调用gcc;</li>
 <li>链接阶段，通常会用g++来完成，因为gcc命令不能自动和c++程序使用的库连接。</li>
 </ol>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>操作系统不太了解，简单学习下，扩宽视野。顺便研究下Flutter跨平台移植到嵌入式系统，如何修改Flutter架构中的嵌入层。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>操作系统不太了解，简单学习下，扩宽视野。</p>
 <ul>
 <li>CMake使用可以参考<a href="https://blog.csdn.net/kai_zone/article/details/82656964">cmake快速入门</a></li>
 <li>gcc和g++具体区别可以参考<a href="https://www.cnblogs.com/samewang/p/4774180.html">GCC的gcc和g++区别</a></li>
@@ -332,6 +568,174 @@
       <tags>
         <tag>笔记</tag>
         <tag>gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dart简介</title>
+    <url>/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="Dart简介"><a href="#Dart简介" class="headerlink" title="Dart简介"></a>Dart简介</h1><p><a href="https://dart.dev/overview">官方网站</a></p>
+<p>目标是高效地开发多平台应用，提供灵活的运行时环境和编译工具。</p>
+<blockquote>
+<p>理论上所有高级语言都可跨平台，关键在于语法、库好不好用，编译工具成不成熟。下面详细介绍下Dart的多平台支持</p>
+</blockquote>
+<h2 id="Dart-SDK安装"><a href="#Dart-SDK安装" class="headerlink" title="Dart SDK安装"></a>Dart SDK安装</h2><p>参考<a href="https://dart.dev/get-dart">Dart SDK安装</a>。Dart SDK中包含了Dart基本类型、类库、编译器、命令行工具等</p>
+<ul>
+<li>Flutter SDK内置了Dart SDK工具，位于<code>&#123;flutter_sdk&#125;/bin/cache/dart-sdk</code>中（编译过的Dart SDK），不需要再单独下载。</li>
+<li>Flutter Engine中依赖了Dart SDK的源码，位于<code>&#123;flutter_engine&#125;/third_party/dart</code>中，通过ninja构建出Dart SDK可执行程序，供Flutter SDK使用。</li>
+</ul>
+<h2 id="Dart语言"><a href="#Dart语言" class="headerlink" title="Dart语言"></a>Dart语言</h2><p>支持众多特性：类型安全（静态类型检查、dynamic运行时检查）、空安全、异步调用、流、箭头函数、getter函数等。基本语法参考<a href="https://dart.dev/guides/language/language-tour">Dart语言</a></p>
+<h2 id="Dart库"><a href="#Dart库" class="headerlink" title="Dart库"></a>Dart库</h2><p><a href="https://dart.dev/guides/libraries">核心库</a>和<a href="https://dart.dev/guides/libraries/useful-libraries">三方库</a></p>
+<h2 id="Dart工具"><a href="#Dart工具" class="headerlink" title="Dart工具"></a>Dart工具</h2><p>Dart SDK中提供了一些工具，使用<code>-h</code>查看帮助或者参考<a href="https://dart.dev/tools/dart-tool">Dart命令行工具</a>。源码入口位于<code>&#123;dart_sdk&#125;/pkg/dartdev/</code>中</p>
+<p><img src="/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/dart%E5%B7%A5%E5%85%B7.png"></p>
+<ul>
+<li><code>dart</code>：用于创建、格式化、分析、测试、编译和运行dart代码</li>
+<li><code>dartaotruntime</code>：用于执行aot预编译过机器码</li>
+<li><code>dartdoc</code>：用于生成API文档</li>
+</ul>
+<p>除了上面三个工具外，还有<code>dart2js</code>、<code>dart2native</code>、<code>dartanalyzer</code>、<code>dartdevc</code>、<code>dartfmt</code>、<code>pub</code>等工具。这些工具从2.10版本开始全部被封装到了<code>dart</code>中，通过<code>dart &lt;subcommand&gt;</code>的方式执行：</p>
+<ul>
+<li><code>dart2native</code>, <code>dart2aot</code>,  <code>dart2js</code> 工具被 <code>dart compile</code> 替代</li>
+<li><code>dartanalyzer</code>被<code>dart analyze</code>替代</li>
+<li><code>dartfmt</code>被<code>dart format</code>替代</li>
+<li><code>pub</code>被<code>dart pub</code>替代</li>
+</ul>
+<p><code>&#123;flutter_sdk&#125;/bin/dart</code>对<code>dart-sdk</code>的工具做了一层包装，执行的时候会调用<code>dart-sdk</code>中的工具。</p>
+<blockquote>
+<p>由于配置Flutter SDK环境变量<code>&#123;flutter_sdk&#125;/bin</code>的时候没有配置<code>dart-sdk</code>的环境变量，如果要使用<code>dartaotruntime</code>工具，需要进入对应目录执行，或者给<code>dart-sdk</code>也配置环境变量</p>
+</blockquote>
+<h2 id="Dart的编译和执行"><a href="#Dart的编译和执行" class="headerlink" title="Dart的编译和执行"></a>Dart的编译和执行</h2><h3 id="Dart虚拟机"><a href="#Dart虚拟机" class="headerlink" title="Dart虚拟机"></a>Dart虚拟机</h3><p>Dart虚拟机源码位于<code>&#123;dart_sdk&#125;/runtime/vm</code>中，包含以下几个部分：</p>
+<p><img src="/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/DartVM.png"></p>
+<p>DartVM作为虚拟机为Dart高级语言提供执行环境，但这并不表示Dart一定运行在虚拟机中。Dart的运行主要有几种方式：</p>
+<ul>
+<li>虚拟机执行：通过JIT即时编译+解释器，执行Dart源文件或者Kernel二进制文件，运行在Dart虚拟机中。</li>
+<li>目标代码执行：通过AOT预编译成目标代码，运行在预编译运行时环境（Precompiled Runtime）中。不包含编译器，因此无法动态加载Dart源码。</li>
+</ul>
+<blockquote>
+<ul>
+<li>开发阶段：运行在Dart虚拟机中，通过Dart虚拟机提供的即时编译器（JIT）执行，支持增量编译，热重载和调试。</li>
+<li>发布阶段：通过Dart的AOT编译器编译成目标平台的代码，在Dart预编译运行时（Precompiled Runtime）中执行，提高启动速度和执行效率。</li>
+</ul>
+<p>Dart 2之后，Dart VM不支持直接执行源代码，只接收Kernel AST序列化成的Kernel二进制文件（即.dill文件）。通过Dart的<a href="https://github.com/dart-lang/sdk/tree/master/pkg/front_end">编译前端（CFE，common front-end）</a>编译，并被其他工具所依赖使用，例如Dart VM、dart2js、Dart Dev Compiler。</p>
+</blockquote>
+<p>Dart运行时会被打包到<code>Self-Contained</code>的目标可执行程序中，同时也是Dart虚拟机的一部分，包含以下功能</p>
+<ul>
+<li>内存管理：提供对象分配和分代垃圾回收功能。</li>
+<li>运行时类型检查和强制转换</li>
+<li>管理<code>isolates</code>：包括主isolate和应用自行创建的isolate</li>
+</ul>
+<h3 id="虚拟机执行"><a href="#虚拟机执行" class="headerlink" title="虚拟机执行"></a>虚拟机执行</h3><p>使用<code>dart run</code>命令启动虚拟机执行程序，如下</p>
+<ol>
+<li><p>新建<code>main.dart</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="comment">//main.dart</span></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Hello, World!&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行<code>dart main.dart</code>，输出”Hello, World!”</p>
+</li>
+</ol>
+<blockquote>
+<p>run子命令启动一个Dart虚拟机，执行未编译过的源码或者部分快照类型（JIT、Kernel快照），不支持执行aot快照。</p>
+<p>可以省略，例如<code>dart main.dart</code>，<code>dart main.dill</code></p>
+</blockquote>
+<h3 id="Dart编译"><a href="#Dart编译" class="headerlink" title="Dart编译"></a>Dart编译</h3><ul>
+<li>Dart编译前端：将Dart源码编译为Kernel二进制文件，是一种平台无关的中间代码。</li>
+<li>Dart编译后端：将Kernel二进制文件编译出目标代码<ul>
+<li>将Kernel二进制代码生成一个控制流图（CFG，control flow graph），CFG由中间语言（IL，Intermediate Language）指令组成。</li>
+<li>对IL指令进行优化</li>
+<li>CFG编译成机器码，每个IL指令对应多个机器指令</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>IL指令类似于虚拟机指令，从堆栈中获取操作数，执行操作，将结果推送到堆栈中</p>
+</blockquote>
+<p>使用<code>dart compile</code>命令进行编译，分为以下几种方式：</p>
+<ol>
+<li><code>exe</code>：生成<code>Self-Contained</code>可执行文件，*<strong>包含生成的目标代码和一个小型的Dart运行时</strong>，可以直接运行<ol>
+<li>编译：<code>dart compile exe main.dart</code>，生成<code>main.exe</code>文件</li>
+<li>运行：<code>./main.exe</code>，输出”Hello, World!”</li>
+</ol>
+</li>
+<li><code>aot-snapshot</code>：生成AOT快照文件，<strong>包含生成的目标代码，但不包含Dart运行时</strong>，需要使用<code>dartaotruntime</code>执行<ol>
+<li>编译：<code>dart compile aot-snapshot main.dart</code>，生成<code>main.aot</code>文件</li>
+<li>执行<code>dartaotruntime main.aot</code>，输出”Hello, World!”</li>
+</ol>
+</li>
+<li><code>jit-snapshot</code>：生成JIT快照文件，<strong>包含生成的目标代码，不同的是在训练运行期间已经加载和解析过代码</strong>，使用<code>dart run</code>运行。由于在训练运行期间已经解析和编译过，Dart虚拟机不需要再进行解析和编译，因此可以更快的执行代码。（经过训练和优化，有可能比aot执行更快）<ol>
+<li>编译：<code>dart compile jit-snapshot main.dart</code>，生成<code>main.jit</code>文件，并且会执行一遍程序训练，输出”Hello, World!”</li>
+<li>运行：<code>dart run main.jit</code>，输出”Hello, World!”</li>
+</ol>
+</li>
+<li><code>kernel</code>：生成<code>.dill</code>二进制的kernel快照文件，<strong>是一种中间代码，和平台无关，具有可移植性</strong>。包含二进制格式的Dart抽象语法树（Kernel AST）<ol>
+<li>编译：<code>dart compile kernel main.dart</code>，生成<code>main.dill</code>文件</li>
+<li>执行：<code>dart run main.dill</code>，输出”Hello, World!”</li>
+</ol>
+</li>
+<li><code>js</code>：生成js文件<ol>
+<li>编译：<code>dart compile js main.dart</code>，生成<code>out.js</code>文件</li>
+<li>可以使用<code>webdev serve</code>命令启动开发服务器运行js</li>
+</ol>
+</li>
+</ol>
+<p><code>exe</code>和<code>aot-snapshot</code>存在一些限制：</p>
+<ol>
+<li>不支持交叉编译、只能本地编译本地运行：需要在macOS、Windows、Linux主机上分别编译出三个目标程序</li>
+<li>生成的可执行程序不支持签名</li>
+<li>不支持<code>dart:mirrors</code>（用于动态反射）和<code>dart:developer</code>（用于调试检查）库，参考<a href="https://dart.dev/guides/libraries">Dart核心库</a>说明</li>
+</ol>
+<p>对比下编译产物文件，如下：<code>exe &gt; jit-snapshot &gt; aot-snapshot &gt; kernel &gt; dart source code</code>，一般情况下执行效率刚好相反。</p>
+<p><img src="/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/dart%E7%BC%96%E8%AF%91%E4%BA%A7%E7%89%A9%E6%96%87%E4%BB%B6.png"></p>
+<p><code>.snapshot</code>文件？</p>
+<p>在Flutter SDK中经常看到<code>.snapshot</code>后缀的文件，如<code>flutter_tools.snapshot</code>，查看Flutter命令脚本中源码使用了<code>dart --snapshot</code>命令，官网没有说明。使用<code>dart --snapshot</code>查看帮助如下：</p>
+<p><img src="/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/dart%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9.png"></p>
+<p><code>--snapshot</code>用于生成快照文件，<code>--snapshot-kind</code>指定生成JIT快照还是kernel快照。默认生成kernel快照。</p>
+<p><code>dart compile kernel/jit-snapshot</code>等价于<code>dart --snapshot-kind=kernel/app-jits</code>。只不过是新版本Dart工具统一封装到compile中而已。</p>
+<p>例如<code>dart --snapshot=main.snapshot main.dart</code>生成<code>main.snapshot</code>，<code>dart compile kernel main.dart</code>生成<code>main.dill</code>。<code>main.dill</code>和<code>main.snapshot</code>实际上是一样的，都是Kernel快照文件。</p>
+<p>查看<code>&#123;dart_sdk&#125;/pkg/dartdev/lib/src/commands/compile.dart</code>源码发现<code>dart compile kernel</code>和<code>dart compile jit-snapshot</code>命令实际会调用<code>dart --snapshot-kind=$formatName</code>执行。如下</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="comment">//dart compile命令</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompileCommand</span> <span class="keyword">extends</span> <span class="title">DartdevCommand</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> cmdName = <span class="string">&#x27;compile&#x27;</span>;</span><br><span class="line">  CompileCommand(&#123;<span class="built_in">bool</span> verbose = <span class="keyword">false</span>&#125;)</span><br><span class="line">      : <span class="keyword">super</span>(cmdName, <span class="string">&#x27;Compile Dart to various formats.&#x27;</span>, verbose) &#123;</span><br><span class="line">    addSubcommand(CompileJSCommand(verbose: verbose));</span><br><span class="line">    addSubcommand(CompileSnapshotCommand( <span class="comment">//dart compile jit-snapshot子命令</span></span><br><span class="line">      commandName: CompileSnapshotCommand.jitSnapshotCmdName,</span><br><span class="line">      help: <span class="string">&#x27;to a JIT snapshot.\n&#x27;</span></span><br><span class="line">          <span class="string">&#x27;To run the snapshot use: dart run &lt;JIT file&gt;&#x27;</span>,</span><br><span class="line">      fileExt: <span class="string">&#x27;jit&#x27;</span>,</span><br><span class="line">      formatName: <span class="string">&#x27;app-jit&#x27;</span>,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ));</span><br><span class="line">    addSubcommand(CompileSnapshotCommand( <span class="comment">//dart compile kernel子命令</span></span><br><span class="line">      commandName: CompileSnapshotCommand.kernelCmdName,</span><br><span class="line">      help: <span class="string">&#x27;to a kernel snapshot.\n&#x27;</span></span><br><span class="line">          <span class="string">&#x27;To run the snapshot use: dart run &lt;kernel file&gt;&#x27;</span>,</span><br><span class="line">      fileExt: <span class="string">&#x27;dill&#x27;</span>,</span><br><span class="line">      formatName: <span class="string">&#x27;kernel&#x27;</span>,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ));</span><br><span class="line">    addSubcommand(CompileNativeCommand(</span><br><span class="line">      commandName: CompileNativeCommand.exeCmdName,</span><br><span class="line">      help: <span class="string">&#x27;to a self-contained executable.&#x27;</span>,</span><br><span class="line">      format: <span class="string">&#x27;exe&#x27;</span>,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ));</span><br><span class="line">    addSubcommand(CompileNativeCommand(</span><br><span class="line">      commandName: CompileNativeCommand.aotSnapshotCmdName,</span><br><span class="line">      help: <span class="string">&#x27;to an AOT snapshot.\n&#x27;</span></span><br><span class="line">          <span class="string">&#x27;To run the snapshot use: dartaotruntime &lt;AOT snapshot file&gt;&#x27;</span>,</span><br><span class="line">      format: <span class="string">&#x27;aot&#x27;</span>,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompileSnapshotCommand</span> <span class="keyword">extends</span> <span class="title">CompileSubcommandCommand</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> jitSnapshotCmdName = <span class="string">&#x27;jit-snapshot&#x27;</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> kernelCmdName = <span class="string">&#x27;kernel&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> commandName;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> help;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> fileExt;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> formatName;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  FutureOr&lt;<span class="built_in">int</span>&gt; run() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args = [];</span><br><span class="line">    args.add(<span class="string">&#x27;--snapshot-kind=<span class="subst">$formatName</span>&#x27;</span>);</span><br><span class="line">    args.add(<span class="string">&#x27;--snapshot=<span class="subst">$&#123;path.canonicalize(outputFile)&#125;</span>&#x27;</span>);</span><br><span class="line">    <span class="keyword">final</span> process = <span class="keyword">await</span> startDartProcess(sdk, args);</span><br><span class="line">    <span class="keyword">return</span> process.exitCode;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Web平台"><a href="#Web平台" class="headerlink" title="Web平台"></a>Web平台</h3><p>dart支持在Web平台上执行，既不是JIT也不是AOT：生成JavaScript代码，运行在浏览器中，而不是目标平台代码</p>
+<ol>
+<li>开发阶段使用<code>dartdevc</code>增量式编译器</li>
+<li>生产环境使用<code>dart2js</code>编译器，高版本替换为<code>dart compile js</code>命令</li>
+</ol>
+<p>官方建议使用<a href="https://dart.dev/tools/webdev">webdev</a>工具，而不是直接使用<code>dartdevc</code>和<code>dart2js</code>工具。</p>
+<ul>
+<li><code>webdev serve</code>：编译并部署到开发服务器，使用<code>localhost:8080</code>访问。默认使用<code>dartdevc</code>编译。添加<code>--release</code>选项，替换为<code>dart2js</code>编译</li>
+<li><code>webdev build</code>：默认使用<code>dart2js</code>，添加<code>--no-release</code>选项，替换为<code>dartdevc</code>编译</li>
+</ul>
+<h2 id="Dart项目文件"><a href="#Dart项目文件" class="headerlink" title="Dart项目文件"></a>Dart项目文件</h2><p>Dart使用<code>pubspec.yaml</code>文件保存项目信息、发布信息、依赖包等。<a href="https://dart.dev/tools/pub/pubspec">pubspec说明</a></p>
+<blockquote>
+<p>类似npm的<code>package.json</code>，本地会缓存依赖包，不同项目可以共用本地缓存的依赖包</p>
+</blockquote>
+<p>可以使用<code>dart pub &lt;subcommand&gt;</code>命令管理项目，如add添加依赖，get获取依赖等。可以用<code>dart pub -h</code>查看帮助，也可以看<a href="https://dart.dev/tools/pub/cmd">dart pub说明</a></p>
+<blockquote>
+<p><strong>如果用dart开发Flutter程序，使用<code>flutter pub &lt;subcommand&gt;</code>命令替代，flutter对dart命令进行了一层包装</strong></p>
+</blockquote>
+<p>新建<code>pubspec.yaml</code>文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">myapp</span> <span class="comment"># 项目名称</span></span><br><span class="line"></span><br><span class="line"><span class="attr">environment:</span> <span class="comment"># dart版本</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&quot;&gt;=2.12.0 &lt;3.0.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span>  <span class="comment"># 依赖包</span></span><br><span class="line">  <span class="attr">js:</span> <span class="string">^0.6.0</span></span><br></pre></td></tr></table></figure>
+
+<p>执行<code>dart pub get</code>获取依赖，会生成几个文件。不需要提交，加到<code>.gitignore</code>中</p>
+<ol>
+<li><code>pubspec.lock</code>：保存项目信息</li>
+<li><code>.packages</code>：已经弃用，替换为<code>package_config.json</code>文件</li>
+<li><code>.dart_tool/package_config.json</code>：将依赖包映射到系统缓存该包的路径</li>
+</ol>
+<p><code>main.dart</code>中可以导入包使用，运行时会从<code>package_config.json</code>中查找依赖包路径</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:js/js.dart&#x27;</span> <span class="keyword">as</span> js;</span><br></pre></td></tr></table></figure>
+
+<p><code>dart compile</code>和<code>dart --snapshot</code>可以使用<code>--packages=&lt;path&gt;</code>选项指定<code>.packages</code>文件或者<code>package_config.json</code>文件，用于编译时查找依赖包路径</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>了解Dart编译方式和产物，以及执行原理，可以为动态化，分包等提供一些思路，甚至修改虚拟机、编译器等。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://dart.dev/overview">Dart官网</a></li>
+<li><a href="https://mrale.ph/dartvm/">Introduction to Dart VM</a></li>
+<li><a href="https://github.com/dart-lang/sdk/wiki">Dart Wiki</a></li>
+<li><a href="https://www.jianshu.com/p/a5b1997a01ba">Dart VM介绍</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Dart</category>
+      </categories>
+      <tags>
+        <tag>Dart</tag>
       </tags>
   </entry>
   <entry>
@@ -2215,7 +2619,7 @@ end</pre>
 </li>
 </ol>
 <p>高级语言转为低级语言需要通过编译，编译器屏蔽了不同平台CPU架构的差异，开发者实际上是面向编译器编程。</p>
-<p>为了提升效率，编译器会分为前端和后端。前端将源代码生成统一的中间代码，后端将中间代码编译为不同目标架构下的汇编代码。再交由这些架构下的汇编器汇编成机器码。</p>
+<p><strong>为了提升效率，编译器会分为前端和后端。前端将源代码生成统一的中间代码，后端将中间代码编译为不同目标架构下的汇编代码（中间代码隔开了编译前端和编译后端）。再交由这些架构下的汇编器汇编成机器码。</strong></p>
 <h2 id="跨平台、程序可移植性"><a href="#跨平台、程序可移植性" class="headerlink" title="跨平台、程序可移植性"></a>跨平台、程序可移植性</h2><ul>
 <li>write once, compile anywhere（一次编写，处处编译）：同样的代码在不同系统和开发环境中都可以编译运行，体现了代码的<strong>可移植性</strong>。</li>
 <li>write once , run anywhere（一次编写，处处运行）：Java特性。编译出来的<code>.class</code>，只要在装了jre环境（java运行环境）的机器上就可以执行。</li>
@@ -2458,7 +2862,8 @@ end</pre>
 <li>如果使用 <code>jarsigner</code>，只能在为 APK 文件签名<strong>之后</strong>执行 zipalign。</li>
 </ul>
 </blockquote>
-<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><ol>
+<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>详情见<a href="/2021/11/05/android-2021-11-05-Android%E7%AD%BE%E5%90%8D%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB/">Android签名知识汇总</a></p>
+<ol>
 <li><p>生成keystore文件：<code>keytool -genkey -alias &lt;别名&gt; -keyalg &lt;加密算法，如RSA&gt; -validity &lt;有效天数&gt; -keystore &lt;输出文件&gt;</code></p>
 </li>
 <li><p>生成系统签名keystore文件：系统应用需要使用系统签名，拥有更高的权限</p>
@@ -2499,6 +2904,11 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 
 
 
+<blockquote>
+<p>targetSdk版本为30（Android 11）时，apk需要按4字节边界对齐，否则应用无法安装，报错如下：</p>
+<p><code>Failure [-124: Failed parse during installPackageLI: Targeting R+ (version 30 and above) requires the resources.arsc of installed APKs to be stored uncompressed and aligned on a 4-byte boundary]</code></p>
+<p>需要用<code>zipalign</code>工具对齐之后，再使用apksigner签名</p>
+</blockquote>
 <p>其他工具：</p>
 <ul>
 <li><a href="https://github.com/skylot/jadx">jadx</a>：反编译dex、aar、aab、apk、资源等，可视化操作界面。支持导出Gradle工程。</li>
@@ -4566,6 +4976,159 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
+
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
+
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+<ol>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+</ol>
+</li>
+</ol>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端网站部署</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
+<ol>
+<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
+<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
+</ol>
+<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
+
+<ol>
+<li>使用python内置服务器开启端口访问文件<ol>
+<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
+<li>Python3：<code>python -m http.server 8081</code></li>
+</ol>
+</li>
+<li>使用node的http server<ol>
+<li>安装http server：<code>npm install http-server -g</code></li>
+<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
+<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
+<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
+<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
+<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
+<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
+<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
+<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
+<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
+<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
+</ol>
+<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
+<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
+<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
+<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
+</ol>
+<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
+<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
+<ol>
+<li>使用<code>chmod -R 777</code>修改读写权限</li>
+<li>Nginx用户配置</li>
+<li>Nginx文件路径和网页入口配置</li>
+<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
+<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
+</ol>
+</li>
+</ol>
+<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
+<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像</li>
+<li>启动容器</li>
+<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
+</ol>
+<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<blockquote>
+<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，宿主机可能会变导致路径不正确</p>
+</blockquote>
+<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
+<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
+<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
+</ol>
+<p>可以使用docker compose+yml配置文件创建和启动容器</p>
+<ol>
+<li>安装docker compose工具</li>
+<li>编写yml配置文件</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
+<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
+<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
+<li>内部网站使用vite或者node等开发工具部署。</li>
+<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
+<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
@@ -4727,156 +5290,30 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+    <title>Markdown生成目录结构树</title>
+    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
+    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
+<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
+<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
 
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
-<ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
-</ol>
-</li>
-</ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
-
-<ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
-</ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
-<ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端网站部署</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
-<ol>
-<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
-<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
-</ol>
-<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
-
-<ol>
-<li>使用python内置服务器开启端口访问文件<ol>
-<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
-<li>Python3：<code>python -m http.server 8081</code></li>
-</ol>
-</li>
-<li>使用node的http server<ol>
-<li>安装http server：<code>npm install http-server -g</code></li>
-<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
-<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
-<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
-<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
-<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
-<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
-<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
-<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
-<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
-<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
-<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
-</ol>
-<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
-<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
-<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
-<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
-</ol>
-<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
-<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
-<ol>
-<li>使用<code>chmod -R 777</code>修改读写权限</li>
-<li>Nginx用户配置</li>
-<li>Nginx文件路径和网页入口配置</li>
-<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
-<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
-</ol>
-</li>
-</ol>
-<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
-<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像</li>
-<li>启动容器</li>
-<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
-</ol>
-<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
 <blockquote>
-<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，宿主机可能会变导致路径不正确</p>
+<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
+<p>npm帮我们创建了两个cmd文件</p>
 </blockquote>
-<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
-<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
-<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
-</ol>
-<p>可以使用docker compose+yml配置文件创建和启动容器</p>
-<ol>
-<li>安装docker compose工具</li>
-<li>编写yml配置文件</li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
-<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
-<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
-</ol>
 </li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
-<li>内部网站使用vite或者node等开发工具部署。</li>
-<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
-<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
 </ol>
 ]]></content>
       <categories>
-        <category>前端</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>前端</tag>
-        <tag>Docker</tag>
+        <tag>工具</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -4913,33 +5350,6 @@ end</pre>
         <category>笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown生成目录结构树</title>
-    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
-    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
-<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
-<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
-<blockquote>
-<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
-<p>npm帮我们创建了两个cmd文件</p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -7512,8 +7922,8 @@ dispatchMessage-->判断是否是通知消息
 <tr>
 <td>PayLoad</td>
 <td></td>
-<td>有效载荷</td>
-<td>对接收者有用的数据，接口返回的有用字段</td>
+<td>有效载荷、负载</td>
+<td>对接收者有用的数据，接口返回的有用字段，信头和元数据等称为开销数据。<br>例如委托卡车运东西，货物的重量，车子重量，司机重量都属于载重，对于客户来说，只关心货物重量，因此货物重量是有效载重。</td>
 </tr>
 </tbody></table>
 <h1 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h1><h2 id="岗位"><a href="#岗位" class="headerlink" title="岗位"></a>岗位</h2><table>
@@ -7775,6 +8185,12 @@ dispatchMessage-->判断是否是通知消息
 <td>ETA</td>
 <td>Estimated Time of Arrival</td>
 <td>预计到达时间</td>
+<td></td>
+</tr>
+<tr>
+<td>OTOH</td>
+<td>On the Other Hand</td>
+<td>另一方面</td>
 <td></td>
 </tr>
 </tbody></table>
@@ -8120,6 +8536,18 @@ dispatchMessage-->判断是否是通知消息
 <td>Dynamic Link Library</td>
 <td>动态链接库</td>
 <td>.dll文件不能直接执行，他们通常由 .exe 在执行时装入，内含有一些资源以及可执行代码等。</td>
+</tr>
+<tr>
+<td>ABI</td>
+<td>Application Binary Interface</td>
+<td>应用程序二进制接口</td>
+<td>描述应用程序和操作系统之间的底层接口，约定目标文件格式、数据类型、如何进行系统调用等</td>
+</tr>
+<tr>
+<td>EABI</td>
+<td>Embedded ABI</td>
+<td>嵌入式ABI</td>
+<td></td>
 </tr>
 </tbody></table>
 <blockquote>
@@ -8471,7 +8899,7 @@ dispatchMessage-->判断是否是通知消息
 <td>基于物理的着色方式</td>
 </tr>
 </tbody></table>
-<table>
+<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><table>
 <thead>
 <tr>
 <th>缩写</th>
@@ -8491,6 +8919,114 @@ dispatchMessage-->判断是否是通知消息
 <td>T-Flash，MicroSD</td>
 <td>微型SD卡</td>
 <td>TF卡比SD卡小，TF卡插入适配器中可以转换为SD卡</td>
+</tr>
+<tr>
+<td>ROM</td>
+<td>Read-Only Memory</td>
+<td>只读存储器</td>
+<td>一般存储BIOS等不需要被修改的基本程序</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>Random Access Memory</td>
+<td>随机存取存储器</td>
+<td>也叫主存、运行内存，用于临时存储程序、数据和中间结果，断电之后丢失。如PC上的内存条</td>
+</tr>
+<tr>
+<td>Flash</td>
+<td>Flash Memory</td>
+<td>闪存</td>
+<td>非易失性，断电之后还能保存数据。并且可以直接运行程序，不需要读到RAM中。一般用于嵌入式产品，如U盘、数码相机、MP3等</td>
+</tr>
+<tr>
+<td>eMMC</td>
+<td>Embedded Multi Media Card</td>
+<td></td>
+<td>集成了一个控制器，即Flash+主控IC，主要针对手机或平板电脑等内嵌式存储器。提供标准接口管理Flash，使得手机厂商能够专注开发其他部分</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td></td>
+<td>高速缓冲存储器</td>
+<td>位于CPU和内存之间，存储CPU临时数据，比RAM速度更快</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>Solid State Disk</td>
+<td>固态硬盘</td>
+<td>读写速度比SATA块，读写次数少于硬盘，价格更高</td>
+</tr>
+<tr>
+<td>SATA</td>
+<td>Serial Advanced Technology Attachment</td>
+<td>机械硬盘</td>
+<td></td>
+</tr>
+<tr>
+<td>SRAM</td>
+<td>Static RAM</td>
+<td>静态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>DRAM</td>
+<td>Dynamic RAM</td>
+<td>动态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>SDRAM</td>
+<td>Synchronous Dynamic RAM</td>
+<td>同步动态随机存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>SDR SDRAM</td>
+<td>Single Data Rate SDRAM</td>
+<td>单信道同步动态随机存储器</td>
+<td>数据预取宽度为1bit</td>
+</tr>
+<tr>
+<td>DDR1 SDRAM</td>
+<td>Double Data Rate SDRAM</td>
+<td>双信道同步动态随机存储器</td>
+<td>数据预取宽度为2bit，即每次存取2bit为1组的数据</td>
+</tr>
+<tr>
+<td>DDR2 SDRAM</td>
+<td>Double Data Rate Two SDRAM</td>
+<td>双信道两次同步动态随机存储器</td>
+<td>数据预取宽度为4bit</td>
+</tr>
+<tr>
+<td>DDR3 SDRAM</td>
+<td>Double Data Rate Three SDRAM</td>
+<td>双信道三次同步动态随机存储器</td>
+<td>数据预取宽度为8bit</td>
+</tr>
+<tr>
+<td>PROM</td>
+<td>Programmable ROM</td>
+<td>可编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>EPROM</td>
+<td>Erasable Programmable ROM</td>
+<td>可擦除可编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>OTPROM</td>
+<td>One Time Programmable ROM</td>
+<td>一次编程只读存储器</td>
+<td></td>
+</tr>
+<tr>
+<td>EEPROM</td>
+<td>Electrically Erasable Programmable ROM</td>
+<td>电子式可擦除可编程只读存储器</td>
+<td></td>
 </tr>
 </tbody></table>
 ]]></content>
@@ -9699,6 +10235,70 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/note-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快捷键笔记</title>
+    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
+<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
+<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
+<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-TerminalCommand/</url>
     <content><![CDATA[<p>windows命令行工具推荐cmder</p>
@@ -9818,70 +10418,6 @@ dispatchMessage-->判断是否是通知消息
 </ul>
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快捷键笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
-<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
-<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
-<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/note-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -10211,45 +10747,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch+Logstash+Kibana</title>
-    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
-    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
-<li>Elasticsearch：后台分布式存储以及全文检索</li>
-<li>Logstash: 日志加工、“搬运工” </li>
-<li>Kibana：数据可视化展示。</li>
-</ol>
-<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
-<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
-<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
-<li><p>Cluster ：集群。</p>
-<p>多个搜索服务器的集合</p>
-</li>
-<li><p>Node：节点。</p>
-<p>组成集群的单个服务器</p>
-</li>
-<li><p>Shard：分片。</p>
-<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
-<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
-</li>
-<li><p>Replia：副本。</p>
-<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-</li>
-</ul>
-<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
-<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
-<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
-<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Jekyll-博客工具</title>
     <url>/2018/07/15/blog-2018-07-15-Jekyll/</url>
     <content><![CDATA[<h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><ul>
@@ -10312,6 +10809,45 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch+Logstash+Kibana</title>
+    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
+    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
+<li>Elasticsearch：后台分布式存储以及全文检索</li>
+<li>Logstash: 日志加工、“搬运工” </li>
+<li>Kibana：数据可视化展示。</li>
+</ol>
+<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
+<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
+<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li><p>Cluster ：集群。</p>
+<p>多个搜索服务器的集合</p>
+</li>
+<li><p>Node：节点。</p>
+<p>组成集群的单个服务器</p>
+</li>
+<li><p>Shard：分片。</p>
+<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
+<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
+</li>
+<li><p>Replia：副本。</p>
+<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+</li>
+</ul>
+<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
+<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
+<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
+<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>静态代码分析平台SonarQube</title>
     <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
     <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
@@ -10331,52 +10867,6 @@ dispatchMessage-->判断是否是通知消息
       <tags>
         <tag>工具</tag>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博君一笑图</title>
-    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
-    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
-
-<p>神评：防窥膜，看不见</p>
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
-<ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
-</ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
       </tags>
   </entry>
   <entry>
@@ -11590,6 +12080,80 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
+</ul>
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>道</title>
     <url>/2018/04/14/personal-2018-04-14-Think/</url>
     <content><![CDATA[<ul>
@@ -11729,6 +12293,284 @@ dispatchMessage-->判断是否是通知消息
 <li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博君一笑图</title>
+    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
+    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
+
+<p>神评：防窥膜，看不见</p>
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>作为一个诗人</title>
+    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
+    <content><![CDATA[<center>
+    <b><font size="5">越人歌</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+    今夕何夕兮搴洲中流。<br>
+    今日何日兮得与王子同舟。<br>
+    蒙羞被好兮不訾诟耻。<br>
+    心几烦而不绝兮得知王子。<br>
+    山有木兮木有枝。<br>
+    心悦君兮君不知。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
+    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
+    一尺深红胜曲尘，天生旧物不如新。<br>
+    合欢桃核终堪恨，里许元来别有人。<br>
+    井底点灯深烛伊，共郎长行莫围棋。<br>
+    玲珑骰子安红豆，入骨相思知不知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
+    <font size="2">【作者】姜夔 【朝代】宋</font><br>
+       肥水东流无尽期。当初不合种相思。<br>
+    梦中未比丹青见，暗里忽惊山鸟啼。<br>
+    春未绿，鬓先丝。人间别久不成悲。<br>
+    谁教岁岁红莲夜，两处沉吟各自知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       十三与君初相识，王侯宅里弄丝竹。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    再见君时妾十五，且为君作霓裳舞。<br>
+    可叹年华如朝露，何时衔泥巢君屋？<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       君似明月我似雾，雾随月隐空留露。<br>
+    君善抚琴我善舞，曲终人离心若堵。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    魂随君去终不悔, 绵绵相思为君苦。<br>
+    相思苦，凭谁诉？遥遥不知君何处。<br>
+    扶门切思君之嘱，登高望断天涯路。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">绸缪</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
+    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
+    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
+</center>
+
+
+<center>
+    <b><font size="5">我亦好歌亦好酒</font></b><br>
+    <font size="2">【作者】殊同 【朝代】现代</font><br>
+       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
+    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
+    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
+    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
+    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
+    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
+    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
+    <font size="2">【作者】刘过 【朝代】宋</font><br>
+       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
+    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
+    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
+       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
+    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
+    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
+    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
+    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
+       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
+    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+       花非花，雾非雾。<br>
+    夜半来，天明去。<br>
+    来如春梦不多时，去似朝云无觅处。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花 ·花曲</font></b><br>
+    <font size="2"></font><br>
+       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
+    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
+    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
+    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">将进酒</font></b><br>
+    <font size="2">【作者】李白 【朝代】唐</font><br>
+       君不见，黄河之水天上来，奔流到海不复回。<br>
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
+    人生得意须尽欢，莫使金樽空对月。<br>
+    天生我材必有用，千金散尽还复来。<br>
+    烹羊宰牛且为乐，会须一饮三百杯。<br>
+    岑夫子，丹丘生，将进酒，杯莫停。<br>
+    与君歌一曲，请君为我倾耳听。<br>
+    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
+    古来圣贤皆寂寞，惟有饮者留其名。<br>
+    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
+    主人何为言少钱，径须沽取对君酌。<br>
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">长恨歌</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
+    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
+    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
+    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
+    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
+    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
+    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
+    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
+    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
+    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
+    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
+    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
+    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
+    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
+    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
+    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
+    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
+    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
+    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
+    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
+    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
+    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
+    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
+    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
+    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
+    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
+    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
+    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
+    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
+    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
+</center>
+
+
+<center>
+    <b><font size="5">贺新郎</font></b><br>
+    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
+   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
+</center>
+​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
+​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
+
+<center>
+    <b><font size="5">宽心谣</font></b><br>
+    <font size="2">【作者】赵朴初</font><br>
+    日出东海落西山，愁也一天，喜也一天。<br>
+    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
+    每月领取养老钱，多也喜欢，少也喜欢。<br>
+    少荤多素日三餐，粗也香甜，细也香甜。<br>
+    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
+    常与知己聊聊天，古也谈谈，今也谈谈。<br>
+    内孙外孙同样看，儿也心欢，女也心欢。<br>
+    全家老少互慰勉，贫也相安，富也相安。<br>
+    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
+    心宽体健养天年，不是神仙，胜似神仙。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">观猎</font></b><br>
+    <font size="2">【作者】王维</font><br>
+    风劲角弓鸣，将军猎渭城。<br>
+    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
+    忽过新丰市，还归细柳营。<br>
+    回看射雕处，千里暮云平。<br>
+</center>
+
+
+<center>
+    <b><font size="5">国风·秦风·小戎</font></b><br>
+    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
+    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
+    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
+    <font size="2">【作者】韦庄</font><br>
+    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
+    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
+</center>
+
+
+<center>
+    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
+    <font size="2">【作者】欧阳修</font><br>
+    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
+    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
+</center>
+
 ]]></content>
       <categories>
         <category>其他</category>
@@ -12092,312 +12934,6 @@ dispatchMessage-->判断是否是通知消息
 <li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
 <li>明月来复照，把酒贺今朝——观风月</li>
 </ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>作为一个诗人</title>
-    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
-    <content><![CDATA[<center>
-    <b><font size="5">越人歌</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-    今夕何夕兮搴洲中流。<br>
-    今日何日兮得与王子同舟。<br>
-    蒙羞被好兮不訾诟耻。<br>
-    心几烦而不绝兮得知王子。<br>
-    山有木兮木有枝。<br>
-    心悦君兮君不知。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
-    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
-    一尺深红胜曲尘，天生旧物不如新。<br>
-    合欢桃核终堪恨，里许元来别有人。<br>
-    井底点灯深烛伊，共郎长行莫围棋。<br>
-    玲珑骰子安红豆，入骨相思知不知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
-    <font size="2">【作者】姜夔 【朝代】宋</font><br>
-       肥水东流无尽期。当初不合种相思。<br>
-    梦中未比丹青见，暗里忽惊山鸟啼。<br>
-    春未绿，鬓先丝。人间别久不成悲。<br>
-    谁教岁岁红莲夜，两处沉吟各自知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       十三与君初相识，王侯宅里弄丝竹。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    再见君时妾十五，且为君作霓裳舞。<br>
-    可叹年华如朝露，何时衔泥巢君屋？<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       君似明月我似雾，雾随月隐空留露。<br>
-    君善抚琴我善舞，曲终人离心若堵。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    魂随君去终不悔, 绵绵相思为君苦。<br>
-    相思苦，凭谁诉？遥遥不知君何处。<br>
-    扶门切思君之嘱，登高望断天涯路。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">绸缪</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
-    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
-    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
-</center>
-
-
-<center>
-    <b><font size="5">我亦好歌亦好酒</font></b><br>
-    <font size="2">【作者】殊同 【朝代】现代</font><br>
-       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
-    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
-    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
-    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
-    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
-    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
-    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
-    <font size="2">【作者】刘过 【朝代】宋</font><br>
-       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
-    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
-    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
-       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
-    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
-    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
-    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
-    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
-       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
-    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-       花非花，雾非雾。<br>
-    夜半来，天明去。<br>
-    来如春梦不多时，去似朝云无觅处。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花 ·花曲</font></b><br>
-    <font size="2"></font><br>
-       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
-    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
-    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
-    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">将进酒</font></b><br>
-    <font size="2">【作者】李白 【朝代】唐</font><br>
-       君不见，黄河之水天上来，奔流到海不复回。<br>
-    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
-    人生得意须尽欢，莫使金樽空对月。<br>
-    天生我材必有用，千金散尽还复来。<br>
-    烹羊宰牛且为乐，会须一饮三百杯。<br>
-    岑夫子，丹丘生，将进酒，杯莫停。<br>
-    与君歌一曲，请君为我倾耳听。<br>
-    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
-    古来圣贤皆寂寞，惟有饮者留其名。<br>
-    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
-    主人何为言少钱，径须沽取对君酌。<br>
-    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">长恨歌</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
-    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
-    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
-    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
-    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
-    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
-    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
-    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
-    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
-    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
-    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
-    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
-    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
-    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
-    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
-    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
-    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
-    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
-    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
-    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
-    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
-    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
-    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
-    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
-    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
-    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
-    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
-    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
-    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
-    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
-</center>
-
-
-<center>
-    <b><font size="5">贺新郎</font></b><br>
-    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
-   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
-</center>
-​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
-​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
-
-<center>
-    <b><font size="5">宽心谣</font></b><br>
-    <font size="2">【作者】赵朴初</font><br>
-    日出东海落西山，愁也一天，喜也一天。<br>
-    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
-    每月领取养老钱，多也喜欢，少也喜欢。<br>
-    少荤多素日三餐，粗也香甜，细也香甜。<br>
-    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
-    常与知己聊聊天，古也谈谈，今也谈谈。<br>
-    内孙外孙同样看，儿也心欢，女也心欢。<br>
-    全家老少互慰勉，贫也相安，富也相安。<br>
-    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
-    心宽体健养天年，不是神仙，胜似神仙。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">观猎</font></b><br>
-    <font size="2">【作者】王维</font><br>
-    风劲角弓鸣，将军猎渭城。<br>
-    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
-    忽过新丰市，还归细柳营。<br>
-    回看射雕处，千里暮云平。<br>
-</center>
-
-
-<center>
-    <b><font size="5">国风·秦风·小戎</font></b><br>
-    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
-    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
-    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
-    <font size="2">【作者】韦庄</font><br>
-    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
-    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
-</center>
-
-
-<center>
-    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
-    <font size="2">【作者】欧阳修</font><br>
-    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
-    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
-</center>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
-</ul>
-</li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
 ]]></content>
       <categories>
         <category>其他</category>

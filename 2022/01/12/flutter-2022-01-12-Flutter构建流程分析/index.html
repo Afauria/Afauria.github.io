@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Flutter构建流程分析，源码导读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter构建流程分析">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="Flutter构建流程分析，源码导读">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/FlutterTask%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/Flutter%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E6%B5%81%E7%A8%8B.png">
+<meta property="article:published_time" content="2022-01-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-24T09:42:58.080Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/FlutterTask%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter构建流程分析 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter构建流程分析
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-12T00:00:00+08:00">2022-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-24 17:42:58" itemprop="dateModified" datetime="2022-01-24T17:42:58+08:00">2022-01-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter构建流程分析" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>23k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>21 分钟</span>
+            </span>
+            <div class="post-description">Flutter构建流程分析，源码导读</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Flutter构建流程"><a href="#Flutter构建流程" class="headerlink" title="Flutter构建流程"></a>Flutter构建流程</h1><h2 id="构建模式"><a href="#构建模式" class="headerlink" title="构建模式"></a>构建模式</h2><ul>
+<li>Debug模式下，Flutter应用在VM上运行，能够保存应用状态，提供热重载能力。支持断点，调试信息等。</li>
+<li>Release模式下，Flutter会使用<code>gen_snapshot</code>将应用代码预编译成目标平台的机器代码，针对web平台，会编译成JavaScript代码。进行了编译优化、压缩等。</li>
+<li>Profile模式下，与Release类似，会进行预编译，进行了一些优化，使性能更接近Release模式，同时也支持调试和跟踪。模拟器上无法使用该模式</li>
+</ul>
+<blockquote>
+<p><code>flutter run</code>命令默认为debug模式，<code>flutter build</code>命令默认为release模式。构建时可以指定<code>--debug</code>、<code>--release</code>、<code>--profile</code>选项</p>
+</blockquote>
+<h2 id="Flutter项目构建源码分析"><a href="#Flutter项目构建源码分析" class="headerlink" title="Flutter项目构建源码分析"></a>Flutter项目构建源码分析</h2><p>以<code>flutter build apk</code>为例，分析apk构建执行过程。目的如下：</p>
+<ol>
+<li>便于分析定位构建错误，一般报错之后可以在<code>flutter_tools</code>中搜索关键字，找到报错的地方，分析代码上下文。</li>
+<li>可以修改<code>flutter_tools</code>流程，定制构建命令</li>
+<li>了解Flutter代码的编译，如何生成产物然后合并打包</li>
+</ol>
+<h3 id="Flutter命令脚本"><a href="#Flutter命令脚本" class="headerlink" title="Flutter命令脚本"></a>Flutter命令脚本</h3><p>查看<code>&#123;flutter_sdk&#125;/bin/flutter</code>脚本，内部会调用<code>shared.sh</code>脚本的execute方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source &quot;$BIN_DIR/internal/shared.sh&quot;</span><br><span class="line">shared::execute &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>shared.sh</code>脚本，最终会执行dart命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;$DART&quot; --disable-dart-dev --packages=&quot;$FLUTTER_TOOLS_DIR/.packages&quot; $FLUTTER_TOOL_ARGS &quot;$SNAPSHOT_PATH&quot; &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>$DART：Dart可执行文件，用于启动Dart虚拟机。对应<code>&#123;flutter_sdk&#125;/bin/cache/dart-sdk/bin/dart</code></li>
+<li>$FLUTTER_TOOLS_DIR：<code>flutter_tools</code>项目路径，对应<code>&#123;flutter_sdk&#125;/packages/flutter_tools</code></li>
+<li>$SNAPSHOT_PATH：<code>flutter_tools</code>项目的snapshot文件，包含编译过的kernel中间代码，可以被Dart虚拟机执行，对应<code>&#123;flutter_sdk&#125;/bin/cache/flutter_tools.snapshot</code></li>
+<li>$FLUTTER_TOOL_ARGS：用于调试Flutter SDK，一般情况为空。可以开启断言和调试端口。</li>
+<li>$@：输入的参数</li>
+</ul>
+<p>因此实际的命令即：<code>flutter/bin/cache/dart-sdk/bin/dart flutter/bin/cache/flutter_tools.snapshot build apk</code></p>
+<blockquote>
+<p>类似java执行jar文件：<code>java -jar main.jar</code>，jar运行在java环境，snapshot运行在dart环境。</p>
+</blockquote>
+<h3 id="flutter-tools流程"><a href="#flutter-tools流程" class="headerlink" title="flutter_tools流程"></a>flutter_tools流程</h3><p><code>flutter_tools.snapshot</code>类似jar文件，也有对应的main函数入口，位于<code>flutter/packages/flutter_tools/lib/executable.dart</code>中，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_tools/executable.dart&#x27;</span> <span class="keyword">as</span> executable;</span><br><span class="line"><span class="keyword">void</span> main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) &#123;</span><br><span class="line">  executable.main(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>executable.dart</code>源码：<code>runner.run</code>比较复杂，我们只需要知道<code>flutter build</code>命令会匹配到<code>BuildCommand</code>类即可</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="keyword">await</span> runner.run(</span><br><span class="line">    args,</span><br><span class="line">    () =&gt; generateCommands(</span><br><span class="line">      verboseHelp: verboseHelp,</span><br><span class="line">      verbose: verbose,</span><br><span class="line">    ),</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">List</span>&lt;FlutterCommand&gt; generateCommands(&#123;</span><br><span class="line">  <span class="meta">@required</span> <span class="built_in">bool</span> verboseHelp,</span><br><span class="line">  <span class="meta">@required</span> <span class="built_in">bool</span> verbose,</span><br><span class="line">&#125;) =&gt; &lt;FlutterCommand&gt;[</span><br><span class="line">  <span class="comment">//省略其他命令...</span></span><br><span class="line">  BuildCommand(verboseHelp: verboseHelp),</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">];</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看<code>runner.run</code>源码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">int</span>&gt; run(</span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args,</span><br><span class="line">  <span class="built_in">List</span>&lt;FlutterCommand&gt; <span class="built_in">Function</span>() commands) <span class="keyword">async</span> &#123;</span><br><span class="line">	<span class="comment">//....</span></span><br><span class="line">  <span class="keyword">return</span> runInContext&lt;<span class="built_in">int</span>&gt;(() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> FlutterCommandRunner runner = FlutterCommandRunner(verboseHelp: verboseHelp);</span><br><span class="line">    commands().forEach(runner.addCommand); <span class="comment">//将所有Flutter命令存入map中</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> runZoned&lt;Future&lt;<span class="built_in">int</span>&gt;&gt;(() <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> runner.run(args); <span class="comment">//FlutterCommandRunner根据参数找到对应的Command执行</span></span><br><span class="line">  &#125;, overrides: overrides);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FlutterCommandRunner</code>会调用父类<code>CommandRunner</code>的run方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CommandRunner</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  Future&lt;T?&gt; run(<span class="built_in">Iterable</span>&lt;<span class="built_in">String</span>&gt; args) =&gt; Future.<span class="keyword">sync</span>(() =&gt; runCommand(parse(args)));</span><br><span class="line">  </span><br><span class="line">  Future&lt;T?&gt; runCommand(ArgResults topLevelResults) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> argResults = topLevelResults;</span><br><span class="line">    <span class="keyword">var</span> commands = _commands; <span class="comment">//Flutter命令</span></span><br><span class="line">    Command? command;</span><br><span class="line">    <span class="keyword">var</span> commandString = executableName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (commands.isNotEmpty) &#123;</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">      <span class="comment">// Step into the command.</span></span><br><span class="line">      argResults = argResults.command!;</span><br><span class="line">      command = commands[argResults.name]!; <span class="comment">//遍历参数找到对应的命令类和子命令类，先找到BuildCommand类</span></span><br><span class="line">      command._globalResults = topLevelResults;</span><br><span class="line">      command._argResults = argResults;</span><br><span class="line">      commands = command._subcommands <span class="keyword">as</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, Command&lt;T&gt;&gt;; <span class="comment">//找到BuildCommand支持的子命令，下一次循环根据参数匹配子命令</span></span><br><span class="line">      commandString += <span class="string">&#x27; <span class="subst">$&#123;argResults.name&#125;</span>&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">await</span> command.run()) <span class="keyword">as</span> T?; <span class="comment">//执行最终匹配到的Command类的run方法</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先找到<code>BuildCommand类</code>：其中包含多个子命令，如下，<code>flutter build apk</code>命令最终会匹配到<code>BuildApkCommand</code>类，然后调用run方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildCommand</span> <span class="keyword">extends</span> <span class="title">FlutterCommand</span> </span>&#123;</span><br><span class="line">  BuildCommand(&#123; <span class="built_in">bool</span> verboseHelp = <span class="keyword">false</span> &#125;) &#123;</span><br><span class="line">    _addSubcommand(BuildAarCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildApkCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildAppBundleCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildIOSCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildIOSFrameworkCommand(</span><br><span class="line">      buildSystem: globals.buildSystem,</span><br><span class="line">      verboseHelp: verboseHelp,</span><br><span class="line">    ));</span><br><span class="line">    _addSubcommand(BuildIOSArchiveCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildBundleCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildWebCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildMacosCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildLinuxCommand(</span><br><span class="line">      operatingSystemUtils: globals.os,</span><br><span class="line">      verboseHelp: verboseHelp</span><br><span class="line">    ));</span><br><span class="line">    _addSubcommand(BuildWindowsCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildWindowsUwpCommand(verboseHelp: verboseHelp));</span><br><span class="line">    _addSubcommand(BuildFuchsiaCommand(verboseHelp: verboseHelp));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>XXCommand继承自FlutterCommand类，调用FlutterCommand父类的run方法，如下：<code>verifyThenRunCommand</code>验证命令并调用runCommand方法。注释中说明了让子类重写<code>runCommand</code>来执行命令。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterCommand</span> <span class="keyword">extends</span> <span class="title">Command</span>&lt;<span class="title">void</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Rather than overriding this method, subclasses should override</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">[verifyThenRunCommand] to perform any verification</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">and [runCommand] to execute the command</span></span></span><br><span class="line">  <span class="comment">/// <span class="markdown">so that this method can record and report the overall time to analytics.</span></span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; run() &#123;</span><br><span class="line">    <span class="keyword">return</span> context.run&lt;<span class="keyword">void</span>&gt;(</span><br><span class="line">      name: <span class="string">&#x27;command&#x27;</span>,</span><br><span class="line">      overrides: &lt;<span class="built_in">Type</span>, Generator&gt;&#123;FlutterCommand: () =&gt; <span class="keyword">this</span>&#125;,</span><br><span class="line">      body: () <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          commandResult = <span class="keyword">await</span> verifyThenRunCommand(commandPath); <span class="comment">//验证命令并调用runCommand方法</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">          <span class="comment">//...</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>BuildApkCommand</code>的<code>runCommand</code>方法：通过<code>androidBuilder.buildApk</code>执行构建，<code>AndroidBuilder</code>从<code>context.get&lt;AndroidBuilder&gt;()</code>中获取，使用箭头函数，在调用的时候才会创建对象实现了懒加载。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildApkCommand</span> <span class="keyword">extends</span> <span class="title">BuildSubCommand</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (globals.androidSdk == <span class="keyword">null</span>) &#123;</span><br><span class="line">      exitWithNoSdkMessage();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> BuildInfo buildInfo = <span class="keyword">await</span> getBuildInfo();</span><br><span class="line">    <span class="comment">//解析参数</span></span><br><span class="line">    <span class="keyword">final</span> AndroidBuildInfo androidBuildInfo = AndroidBuildInfo(</span><br><span class="line">      buildInfo,</span><br><span class="line">      splitPerAbi: boolArg(<span class="string">&#x27;split-per-abi&#x27;</span>),</span><br><span class="line">      targetArchs: stringsArg(<span class="string">&#x27;target-platform&#x27;</span>).map&lt;AndroidArch&gt;(getAndroidArchForName),</span><br><span class="line">    );</span><br><span class="line">    validateBuild(androidBuildInfo);</span><br><span class="line">    displayNullSafetyMode(androidBuildInfo.buildInfo);</span><br><span class="line">    <span class="keyword">await</span> androidBuilder.buildApk(</span><br><span class="line">      project: FlutterProject.current(),</span><br><span class="line">      target: targetFile,</span><br><span class="line">      androidBuildInfo: androidBuildInfo,</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> FlutterCommandResult.success();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终会调用<code>AndroidGradleBuilder</code>的<code>buildGradleApp</code>方法，内部就是拼接<code>gradle</code>命令，指定不同的参数，然后执行。例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;project_path&#125;/gradlew -q -Ptarget=lib/main.dart -Ptrack-widget-creation=<span class="literal">false</span> -Ptarget-platform=android-arm  -Psplit-per-abi=<span class="literal">true</span> assembleRelease</span><br></pre></td></tr></table></figure>
+
+<h3 id="flutter-gradle"><a href="#flutter-gradle" class="headerlink" title="flutter.gradle"></a>flutter.gradle</h3><p>Android本身的代码构建基本没什么疑问，这里主要关心Flutter项目中的dart代码如何构建打包成so的。</p>
+<p>查看<code>build.gradle</code>文件，主要是引入了<code>flutter.gradle</code>，位于<code>flutter_tools</code>中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply from: &quot;$flutterRoot&#x2F;packages&#x2F;flutter_tools&#x2F;gradle&#x2F;flutter.gradle&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>flutter.gradle</code>自定义了gradle插件，解析gradle命令参数，并添加自定义task完成flutter项目的构建和打包。分析几段关键代码</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">void</span> apply(Project project) &#123;</span><br><span class="line">    <span class="comment">//添加自定义task</span></span><br><span class="line">    <span class="built_in">this</span>.addFlutterTasks(project)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//so分包构建，否则会将多个架构的so打包到一个apk中</span></span><br><span class="line">    <span class="keyword">if</span> (shouldSplitPerAbi()) &#123;</span><br><span class="line">      project.android &#123;</span><br><span class="line">        splits &#123;</span><br><span class="line">          abi &#123;</span><br><span class="line">            <span class="comment">// Enables building multiple APKs per ABI.</span></span><br><span class="line">            enable <span class="literal">true</span></span><br><span class="line">            <span class="comment">// Resets the list of ABIs that Gradle should create APKs for to none.</span></span><br><span class="line">            reset()</span><br><span class="line">            <span class="comment">// Specifies that we do not want to also generate a universal APK that includes all ABIs.</span></span><br><span class="line">            universalApk <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//解析target-platform参数，指定编译目标平台的so</span></span><br><span class="line">    getTargetPlatforms().each &#123; targetArch -&gt;</span><br><span class="line">      String abiValue = PLATFORM_ARCH_MAP[targetArch]</span><br><span class="line">      project.android &#123;</span><br><span class="line">        <span class="keyword">if</span> (shouldSplitPerAbi()) &#123;</span><br><span class="line">          splits &#123;</span><br><span class="line">            abi &#123;</span><br><span class="line">              include abiValue</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//添加引擎库：io.flutter:xxx，即libflutter.so</span></span><br><span class="line">    <span class="comment">//添加嵌入层库：io.flutter:flutter_embedding_xxx，即FlutterActivity、FlutterView等</span></span><br><span class="line">    project.android.buildTypes.all <span class="built_in">this</span>.&amp;addFlutterDependencies</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>addFlutterTask</code>方法：主要是添加compileTask用于编译Flutter，生成so库。再通过其他Task对产物进行重命名、移动、合并，最终打包出apk</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> addFlutterTasks(Project project) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">def</span> targetPlatforms = getTargetPlatforms()</span><br><span class="line">    <span class="keyword">def</span> addFlutterDeps = &#123; variant -&gt;</span><br><span class="line">      </span><br><span class="line">      String taskName = toCammelCase([<span class="string">&quot;compile&quot;</span>, FLUTTER_BUILD_PREFIX, variant.name])</span><br><span class="line">      FlutterTask compileTask = project.tasks.create(<span class="attr">name:</span> taskName, <span class="attr">type:</span> FlutterTask) &#123;</span><br><span class="line">        <span class="comment">//创建Flutter编译Task：如compileFlutterRelease，编译Flutter代码</span></span><br><span class="line">      &#125;</span><br><span class="line">      File libJar = project.file(<span class="string">&quot;$&#123;project.buildDir&#125;/$&#123;AndroidProject.FD_INTERMEDIATES&#125;/flutter/$&#123;variant.name&#125;/libs.jar&quot;</span>)</span><br><span class="line">      <span class="comment">//创建Flutter打包Task，并dependsOn等待编译Task执行完成</span></span><br><span class="line">      Task packFlutterAppAotTask = project.tasks.create(<span class="attr">name:</span> <span class="string">&quot;packLibs$&#123;FLUTTER_BUILD_PREFIX&#125;$&#123;variant.name.capitalize()&#125;&quot;</span>, <span class="attr">type:</span> Jar) &#123;</span><br><span class="line">        destinationDir libJar.parentFile</span><br><span class="line">        archiveName libJar.name <span class="comment">//打包到/build/intermediates/flutter/debug/libs.jar中</span></span><br><span class="line">        dependsOn compileTask</span><br><span class="line">        targetPlatforms.each &#123; targetPlatform -&gt;</span><br><span class="line">          String abi = PLATFORM_ARCH_MAP[targetPlatform]</span><br><span class="line">          from(<span class="string">&quot;$&#123;compileTask.intermediateDir&#125;/$&#123;abi&#125;&quot;</span>) &#123;</span><br><span class="line">            include <span class="string">&quot;*.so&quot;</span></span><br><span class="line">            <span class="comment">// Move `app.so` to `lib/&lt;abi&gt;/libapp.so`</span></span><br><span class="line">            <span class="comment">//Flutter项目代码最终会转换成目标平台的libapp.so文件，将so文件打包到libs.jar中</span></span><br><span class="line">            rename &#123; String filename -&gt;</span><br><span class="line">              <span class="keyword">return</span> <span class="string">&quot;lib/$&#123;abi&#125;/lib$&#123;filename&#125;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//将Flutter项目编译打包好的libs.jar包添加到项目依赖中</span></span><br><span class="line">      addApiDependencies(project, variant.name, project.files &#123;</span><br><span class="line">        packFlutterAppAotTask</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">      <span class="comment">//这里定义了三个Task：packageAssets、cleanPackageAssets、copyFlutterAssets，将Flutter产物移到/build/app/intermediates/merged_assets/release/out目录下</span></span><br><span class="line">      Task packageAssets = project.tasks.findByPath(<span class="string">&quot;:flutter:package$&#123;variant.name.capitalize()&#125;Assets&quot;</span>)</span><br><span class="line">      Task cleanPackageAssets = project.tasks.findByPath(<span class="string">&quot;:flutter:cleanPackage$&#123;variant.name.capitalize()&#125;Assets&quot;</span>)</span><br><span class="line">      Task copyFlutterAssetsTask = project.tasks.create(</span><br><span class="line">        <span class="symbol">name:</span> <span class="string">&quot;copyFlutterAssets$&#123;variant.name.capitalize()&#125;&quot;</span>,</span><br><span class="line">        <span class="symbol">type:</span> Copy,</span><br><span class="line">      ) &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> copyFlutterAssetsTask</span><br><span class="line">    &#125; <span class="comment">// end def addFlutterDeps</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isFlutterAppProject()) &#123;</span><br><span class="line">      project.android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">        Task assembleTask = getAssembleTask(variant)</span><br><span class="line">        <span class="keyword">if</span> (!shouldConfigureFlutterTask(assembleTask)) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        Task copyFlutterAssetsTask = addFlutterDeps(variant)</span><br><span class="line">        <span class="keyword">def</span> variantOutput = variant.outputs.first()</span><br><span class="line">        <span class="keyword">def</span> processResources = variantOutput.hasProperty(<span class="string">&quot;processResourcesProvider&quot;</span>) ?</span><br><span class="line">          variantOutput.processResourcesProvider.get() : variantOutput.processResources</span><br><span class="line">        <span class="comment">//先编译生成Flutter产物，将Flutter任务加到Android构建流程中</span></span><br><span class="line">        processResources.dependsOn(copyFlutterAssetsTask)</span><br><span class="line"></span><br><span class="line">        variant.outputs.all &#123; output -&gt;</span><br><span class="line">          assembleTask.doLast &#123; <span class="comment">//将生成的apk拷贝到对应路径，并重命名：app&lt;-abi&gt;?&lt;-flavor-name&gt;?-&lt;build-mode&gt;.apk</span></span><br><span class="line">            <span class="comment">//...</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      configurePlugins()</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...其他模块编译类似</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>FlutterTask</code>源码如何编译Flutter代码生成so：调用<code>flutter assemble</code>命令编译flutter资源</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterTask</span> <span class="keyword">extends</span> <span class="title">BaseFlutterTask</span> &#123;</span></span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="meta">@TaskAction</span></span><br><span class="line">  <span class="keyword">void</span> build() &#123;</span><br><span class="line">    <span class="comment">//调用父类方法</span></span><br><span class="line">    buildBundle()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseFlutterTask</span> <span class="keyword">extends</span> <span class="title">DefaultTask</span> &#123;</span></span><br><span class="line">  <span class="keyword">void</span> buildBundle() &#123;</span><br><span class="line">    <span class="keyword">if</span> (!sourceDir.isDirectory()) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> GradleException(<span class="string">&quot;Invalid Flutter source directory: $&#123;sourceDir&#125;&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    intermediateDir.mkdirs()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compute the rule name for flutter assemble. To speed up builds that contain</span></span><br><span class="line">    <span class="comment">// multiple ABIs, the target name is used to communicate which ones are required</span></span><br><span class="line">    <span class="comment">// rather than the TargetPlatform. This allows multiple builds to share the same</span></span><br><span class="line">    <span class="comment">// cache.</span></span><br><span class="line">    <span class="comment">//根据ruleNames找到对应的编译目标</span></span><br><span class="line">    String[] ruleNames;</span><br><span class="line">    <span class="keyword">if</span> (buildMode == <span class="string">&quot;debug&quot;</span>) &#123;</span><br><span class="line">      ruleNames = [<span class="string">&quot;debug_android_application&quot;</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (deferredComponents) &#123;</span><br><span class="line">      ruleNames = targetPlatformValues.collect &#123; <span class="string">&quot;android_aot_deferred_components_bundle_$&#123;buildMode&#125;_$it&quot;</span> &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      ruleNames = targetPlatformValues.collect &#123; <span class="string">&quot;android_aot_bundle_$&#123;buildMode&#125;_$it&quot;</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    project.exec &#123; <span class="comment">//执行命令flutter assemble命令，加上各种参数，旧版本使用的可能是flutter build aot/bundle命令</span></span><br><span class="line">      logging.captureStandardError LogLevel.ERROR</span><br><span class="line">      executable flutterExecutable.absolutePath</span><br><span class="line">      workingDir sourceDir</span><br><span class="line">      <span class="keyword">if</span> (localEngine != <span class="literal">null</span>) &#123;</span><br><span class="line">        args <span class="string">&quot;--local-engine&quot;</span>, localEngine</span><br><span class="line">        args <span class="string">&quot;--local-engine-src-path&quot;</span>, localEngineSrcPath</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (verbose) &#123;</span><br><span class="line">        args <span class="string">&quot;--verbose&quot;</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args <span class="string">&quot;--quiet&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">      args <span class="string">&quot;assemble&quot;</span></span><br><span class="line">      args <span class="string">&quot;--no-version-check&quot;</span></span><br><span class="line">      args <span class="string">&quot;--depfile&quot;</span>, <span class="string">&quot;$&#123;intermediateDir&#125;/flutter_build.d&quot;</span></span><br><span class="line">      args <span class="string">&quot;--output&quot;</span>, <span class="string">&quot;$&#123;intermediateDir&#125;&quot;</span></span><br><span class="line">      <span class="comment">//省略其他参数...</span></span><br><span class="line">      args ruleNames</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Deferred Component延迟组件：可以在运行时下载Dart代码编译，减少包大小。目前只在Android上可用，利用Android和Google Play商店的动态功能模块实现延迟加载。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://flutter.cn/docs/perf/deferred-components">Flutter延迟加载组件</a></p>
+</blockquote>
+<h3 id="flutter-assemble编译"><a href="#flutter-assemble编译" class="headerlink" title="flutter assemble编译"></a>flutter assemble编译</h3><p>有了上面flutter命令执行经验，直接找到<code>AssembleCommand</code>类的<code>runCommand</code>方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AssembleCommand</span> <span class="keyword">extends</span> <span class="title">FlutterCommand</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; targets = createTargets(); <span class="comment">//根据ruleNames创建编译目标</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; nonDeferredTargets = &lt;Target&gt;[];</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; deferredTargets = &lt;AndroidAotDeferredComponentsBundle&gt;[]; <span class="comment">//延迟组件</span></span><br><span class="line">    Target target;</span><br><span class="line">    <span class="comment">//省略deferredComponents目标判断...</span></span><br><span class="line">    <span class="comment">//调用buildSystem.build方法对target进行编译</span></span><br><span class="line">    <span class="keyword">final</span> BuildResult result = <span class="keyword">await</span> _buildSystem.build(</span><br><span class="line">      target,</span><br><span class="line">      environment,</span><br><span class="line">      buildSystemConfig: BuildSystemConfig(</span><br><span class="line">        resourcePoolSize: argResults.wasParsed(<span class="string">&#x27;resource-pool-size&#x27;</span>)</span><br><span class="line">          ? <span class="built_in">int</span>.tryParse(stringArg(<span class="string">&#x27;resource-pool-size&#x27;</span>))</span><br><span class="line">          : <span class="keyword">null</span>,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> FlutterCommandResult.success();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//创建编译目标</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; createTargets() &#123;</span><br><span class="line">    <span class="keyword">if</span> (argResults.rest.isEmpty) &#123;</span><br><span class="line">      throwToolExit(<span class="string">&#x27;missing target name for flutter assemble.&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> name = argResults.rest.first;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, Target&gt; targetMap = &lt;<span class="built_in">String</span>, Target&gt;&#123; <span class="comment">//_kDefaultTargets预定义了一堆默认编译目标，存到map中</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">final</span> Target target <span class="keyword">in</span> _kDefaultTargets)</span><br><span class="line">        target.name: target <span class="comment">//目标名作为key</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Target&gt; results = &lt;Target&gt;[</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">final</span> <span class="built_in">String</span> targetName <span class="keyword">in</span> argResults.rest)</span><br><span class="line">        <span class="comment">//根据rest参数（除了options和flags之外的参数），从map中获取编译目标对象</span></span><br><span class="line">        <span class="comment">//此处的rest即上文中的ruleNames，可以是一个数组，如：[android_aot_bundle_$&#123;buildMode&#125;_$it]，$it指目标平台</span></span><br><span class="line">        <span class="keyword">if</span> (targetMap.containsKey(targetName))</span><br><span class="line">          targetMap[targetName]</span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">if</span> (results.isEmpty) &#123;</span><br><span class="line">      throwToolExit(<span class="string">&#x27;No target named &quot;<span class="subst">$name</span>&quot; defined.&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FlutterBuildSystem</code>继承自<code>BuildSystem</code>，源码较长，简单来说就是将编译目标Target和其依赖的编译目标，组成一个个编译节点，依次调用Target的build方法。默认的编译目标如下</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//编译目标之间可以有依赖关系</span></span><br><span class="line"><span class="built_in">List</span>&lt;Target&gt; _kDefaultTargets = &lt;Target&gt;[</span><br><span class="line">  <span class="comment">// Shared targets</span></span><br><span class="line">  <span class="keyword">const</span> CopyAssets(),</span><br><span class="line">  <span class="keyword">const</span> KernelSnapshot(), <span class="comment">//生成kernel文件，即app.dill</span></span><br><span class="line">  <span class="keyword">const</span> AotElfProfile(TargetPlatform.android_arm),</span><br><span class="line">  <span class="keyword">const</span> AotElfRelease(TargetPlatform.android_arm), <span class="comment">//将dart kernel生成elf文件</span></span><br><span class="line">  <span class="keyword">const</span> AotAssemblyProfile(), <span class="comment">//将dart kernel生成汇编文件</span></span><br><span class="line">  <span class="keyword">const</span> AotAssemblyRelease(),</span><br><span class="line">  <span class="comment">// macOS targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugMacOSFramework(),</span><br><span class="line">  <span class="keyword">const</span> DebugMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="keyword">const</span> ProfileMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseMacOSBundleFlutterAssets(),</span><br><span class="line">  <span class="comment">// Linux targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> DebugBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleLinuxAssets(TargetPlatform.linux_x64),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleLinuxAssets(TargetPlatform.linux_arm64),</span><br><span class="line">  <span class="comment">// Web targets</span></span><br><span class="line">  <span class="keyword">const</span> WebServiceWorker(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseAndroidApplication(),</span><br><span class="line">  <span class="comment">// This is a one-off rule for bundle and aot compat.</span></span><br><span class="line">  <span class="keyword">const</span> CopyFlutterBundle(),</span><br><span class="line">  <span class="comment">// Android targets,</span></span><br><span class="line">  <span class="keyword">const</span> DebugAndroidApplication(),</span><br><span class="line">  <span class="keyword">const</span> ProfileAndroidApplication(),</span><br><span class="line">  <span class="comment">// Android ABI specific AOT rules.</span></span><br><span class="line">  androidArmProfileBundle,</span><br><span class="line">  androidArm64ProfileBundle,</span><br><span class="line">  androidx64ProfileBundle,</span><br><span class="line">  androidArmReleaseBundle,</span><br><span class="line">  androidArm64ReleaseBundle,</span><br><span class="line">  androidx64ReleaseBundle,</span><br><span class="line">  <span class="comment">// Deferred component enabled AOT rules</span></span><br><span class="line">  androidArmProfileDeferredComponentsBundle,</span><br><span class="line">  androidArm64ProfileDeferredComponentsBundle,</span><br><span class="line">  androidx64ProfileDeferredComponentsBundle,</span><br><span class="line">  androidArmReleaseDeferredComponentsBundle,</span><br><span class="line">  androidArm64ReleaseDeferredComponentsBundle,</span><br><span class="line">  androidx64ReleaseDeferredComponentsBundle,</span><br><span class="line">  <span class="comment">// iOS targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugIosApplicationBundle(),</span><br><span class="line">  <span class="keyword">const</span> ProfileIosApplicationBundle(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseIosApplicationBundle(),</span><br><span class="line">  <span class="comment">// Windows targets</span></span><br><span class="line">  <span class="keyword">const</span> UnpackWindows(),</span><br><span class="line">  <span class="keyword">const</span> DebugBundleWindowsAssets(),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleWindowsAssets(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleWindowsAssets(),</span><br><span class="line">  <span class="comment">// Windows UWP targets</span></span><br><span class="line">  <span class="keyword">const</span> DebugBundleWindowsAssetsUwp(),</span><br><span class="line">  <span class="keyword">const</span> ProfileBundleWindowsAssetsUwp(),</span><br><span class="line">  <span class="keyword">const</span> ReleaseBundleWindowsAssetsUwp(),</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>挑一个<code>androidArmReleaseBundle</code>编译目标的源码：依赖<code>androidArmRelease</code>编译目标生成<code>.so</code>文件，依赖<code>AotAndroidAssetBundle</code>生成<code>flutter_assets</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> AndroidAotBundle androidArmReleaseBundle = AndroidAotBundle(androidArmRelease); <span class="comment">//依赖androidArmRelease</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidAotBundle</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Create an [AndroidAotBundle] implementation for a given [targetPlatform] and [buildMode].</span></span></span><br><span class="line">  <span class="keyword">const</span> AndroidAotBundle(<span class="keyword">this</span>.dependency);</span><br><span class="line">  <span class="comment">//ruleNames匹配的名称</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;android_aot_bundle_<span class="subst">$&#123;getNameForBuildMode(dependency.buildMode)&#125;</span>_&#x27;</span></span><br><span class="line">    <span class="string">&#x27;<span class="subst">$&#123;getNameForTargetPlatform(dependency.targetPlatform)&#125;</span>&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Source&gt; <span class="keyword">get</span> inputs =&gt; &lt;Source&gt;[</span><br><span class="line">    Source.pattern(<span class="string">&#x27;&#123;BUILD_DIR&#125;/<span class="subst">$_androidAbiName</span>/app.so&#x27;</span>),</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//可以看出AndroidAotBundle只是将app.so移动打包而已</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Source&gt; <span class="keyword">get</span> outputs =&gt; &lt;Source&gt;[</span><br><span class="line">    Source.pattern(<span class="string">&#x27;&#123;OUTPUT_DIR&#125;/<span class="subst">$_androidAbiName</span>/app.so&#x27;</span>),</span><br><span class="line">  ];</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//依赖androidArmRelease和AotAndroidAssetBundle编译目标</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; <span class="keyword">get</span> dependencies =&gt; &lt;Target&gt;[</span><br><span class="line">    dependency,</span><br><span class="line">    <span class="keyword">const</span> AotAndroidAssetBundle(),</span><br><span class="line">  ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>AotAndroidAssetBundle</code>目标：<code>copyAssets</code>中生成Flutter静态资源并拷贝，如果是Debug模式，还会拷贝JIT快照文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidAssetBundle</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">final</span> Directory outputDirectory = environment.outputDir</span><br><span class="line">      .childDirectory(<span class="string">&#x27;flutter_assets&#x27;</span>)</span><br><span class="line">      ..createSync(recursive: <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Only copy the prebuilt runtimes and kernel blob in debug mode.</span></span><br><span class="line">    <span class="keyword">if</span> (buildMode == BuildMode.debug) &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> vmSnapshotData = environment.artifacts.getArtifactPath(Artifact.vmSnapshotData, mode: BuildMode.debug);</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> isolateSnapshotData = environment.artifacts.getArtifactPath(Artifact.isolateSnapshotData, mode: BuildMode.debug);</span><br><span class="line">      environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;kernel_blob.bin&#x27;</span>).path);</span><br><span class="line">      environment.fileSystem.file(vmSnapshotData)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;vm_snapshot_data&#x27;</span>).path);</span><br><span class="line">      environment.fileSystem.file(isolateSnapshotData)</span><br><span class="line">          .copySync(outputDirectory.childFile(<span class="string">&#x27;isolate_snapshot_data&#x27;</span>).path);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//调用copyAssets</span></span><br><span class="line">    <span class="keyword">final</span> Depfile assetDepfile = <span class="keyword">await</span> copyAssets(</span><br><span class="line">      environment,</span><br><span class="line">      outputDirectory,</span><br><span class="line">      targetPlatform: TargetPlatform.android,</span><br><span class="line">      buildMode: buildMode,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>androidArmRelease</code>编译目标：依赖<code>KernelSnapshot</code>编译目标生成<code>.dill</code>文件，可以将<code>.dill</code>文件编译成<code>.so</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> AndroidAot androidArmRelease = AndroidAot(TargetPlatform.android_arm,  BuildMode.release);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidAot</span> <span class="keyword">extends</span> <span class="title">AotElfBase</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;android_aot_<span class="subst">$&#123;getNameForBuildMode(buildMode)&#125;</span>_&#x27;</span></span><br><span class="line">    <span class="string">&#x27;<span class="subst">$&#123;getNameForTargetPlatform(targetPlatform)&#125;</span>&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//依赖KernelSnapshot编译目标</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; <span class="keyword">get</span> dependencies =&gt; <span class="keyword">const</span> &lt;Target&gt;[</span><br><span class="line">    KernelSnapshot(),</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> snapshotExitCode = <span class="keyword">await</span> snapshotter.build(</span><br><span class="line">      platform: targetPlatform,</span><br><span class="line">      buildMode: buildMode,</span><br><span class="line">      mainPath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      outputPath: output.path,</span><br><span class="line">      bitcode: <span class="keyword">false</span>,</span><br><span class="line">      extraGenSnapshotOptions: extraGenSnapshotOptions,</span><br><span class="line">      splitDebugInfo: splitDebugInfo,</span><br><span class="line">      dartObfuscation: dartObfuscation,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AOTSnapshotter</code>内部调用<code>_genSnapshot.run</code>方法，将<code>.dill</code>文件生成<code>.so</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AOTSnapshotter</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Builds an architecture-specific ahead-of-time compiled snapshot of the specified script.</span></span></span><br><span class="line">  Future&lt;<span class="built_in">int</span>&gt; build(</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  ) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//添加genSnapshot参数...</span></span><br><span class="line">    <span class="comment">//iOS编译出.S文件</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> assembly = _fileSystem.path.join(outputDir.path, <span class="string">&#x27;snapshot_assembly.S&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (platform == TargetPlatform.ios || platform == TargetPlatform.darwin) &#123;</span><br><span class="line">      genSnapshotArgs.addAll(&lt;<span class="built_in">String</span>&gt;[</span><br><span class="line">        <span class="string">&#x27;--snapshot_kind=app-aot-assembly&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--assembly=<span class="subst">$assembly</span>&#x27;</span>,</span><br><span class="line">      ]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//Android编译出elf文件，.so文件</span></span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> aotSharedLibrary = _fileSystem.path.join(outputDir.path, <span class="string">&#x27;app.so&#x27;</span>);</span><br><span class="line">      genSnapshotArgs.addAll(&lt;<span class="built_in">String</span>&gt;[</span><br><span class="line">        <span class="string">&#x27;--snapshot_kind=app-aot-elf&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--elf=<span class="subst">$aotSharedLibrary</span>&#x27;</span>,</span><br><span class="line">      ]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> SnapshotType snapshotType = SnapshotType(platform, buildMode);</span><br><span class="line">    <span class="comment">//执行gen_snapshot程序</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> genSnapshotExitCode = <span class="keyword">await</span> _genSnapshot.run(</span><br><span class="line">      snapshotType: snapshotType,</span><br><span class="line">      additionalArgs: genSnapshotArgs,</span><br><span class="line">      darwinArch: darwinArch,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//iOS上将.S文件再通过XCode编译出.O文件</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终是调用对应架构引擎的<code>gen_snapshot</code>程序，命令如下，省略部分参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter/bin/cache/artifacts/engine/android-arm-release/darwin-x64/gen_snapshot </span><br><span class="line">--snapshot_kind=app-aot-elf</span><br><span class="line">--elf=&#123;output_path&#125;/app.so</span><br></pre></td></tr></table></figure>
+
+<p><code>KernelSnapshot</code>目标调用<code>KernelCompiler.compile</code>方法，将Flutter代码编译为<code>app.dill</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KernelSnapshot</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;kernel_snapshot&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> KernelCompiler compiler = KernelCompiler(</span><br><span class="line">      fileSystem: environment.fileSystem,</span><br><span class="line">      logger: environment.logger,</span><br><span class="line">      processManager: environment.processManager,</span><br><span class="line">      artifacts: environment.artifacts,</span><br><span class="line">      fileSystemRoots: &lt;<span class="built_in">String</span>&gt;[],</span><br><span class="line">      fileSystemScheme: <span class="keyword">null</span>,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//执行frontend_server.dart.snapshot程序</span></span><br><span class="line">    <span class="keyword">final</span> CompilerOutput output = <span class="keyword">await</span> compiler.compile(</span><br><span class="line">      sdkRoot: environment.artifacts.getArtifactPath(</span><br><span class="line">        Artifact.flutterPatchedSdkPath,</span><br><span class="line">        platform: targetPlatform,</span><br><span class="line">        mode: buildMode,</span><br><span class="line">      ),</span><br><span class="line">      outputFilePath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      <span class="comment">//....</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终是执行<code>frontend_server.dart.snapshot</code>程序，命令如下，省略部分参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">flutter/bin/cache/dart-sdk/bin/dart /path-to-flutter-sdk/flutter/bin/cache/artifacts/engine/darwin-x64/frontend_server.dart.snapshot </span><br><span class="line">--sdk-root flutter/bin/cache/artifacts/engine/common/flutter_patched_sdk/ </span><br><span class="line">--target=flutter </span><br><span class="line">--aot --tfa </span><br><span class="line">--packages .packages </span><br><span class="line">--output-dill &#123;build_dir&#125;/app.dill </span><br><span class="line">--depfile &#123;build_dir&#125;/kernel_snapshot.d </span><br><span class="line">mainUri</span><br></pre></td></tr></table></figure>
+
+<p>FlutterTask用于编译Flutter资源，实际是执行<code>flutter assemble</code>命令。编译流程如下：</p>
+<p><img src="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/FlutterTask%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B.png"></p>
+<blockquote>
+<p><code>frontend_server.dart.snapshot</code>是一个dart程序，作为Dart编译前端，可以将dart源码编译成<code>.dill</code>中间代码文件。源码入口为<code>&#123;flutter_engine&#125;/flutter_frontend_server/bin/starter.dart</code>，内部会调用Dart SDK中的<code>frontend_server</code>，源码位于<code>&#123;dart_sdk&#125;/pkg/frontend_server</code>中</p>
+<p><code>gen_snapshot</code>是一个可执行程序，可以将<code>.dill</code>文件编译成目标代码，生成<code>.so</code>或者<code>App.framework</code>，源码入口为<code>&#123;dart_sdk&#125;/runtime/bin/gen_snapshot.cc</code></p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>Flutter命令脚本会启动一个dart虚拟机，执行<code>flutter_tools</code>的dart程序。</li>
+<li><code>flutter_tools</code>封装了不同的命令类，通过解析参数，执行对应的Command类，例如<code>BuildApkCommand.runCommand()</code></li>
+<li>Command类中解析参数，最终调用相应平台的构建工具进行构建，例如<code>gradlew assembleRelease</code></li>
+<li><code>flutter_tools</code>中自定义了一个gradle脚本<code>flutter.gradle</code>，将FlutterTask编译任务加到Android构建中，生成so库，合并打包生成最终的apk</li>
+<li>FlutterTask执行<code>flutter assemble</code>命令编译Flutter代码和资源。依次构建多个编译目标，关键的编译目标如下：<ol>
+<li><code>KernelSnapshot</code>目标：调用<code>KernelCompiler.compile()</code>方法，执行<code>dart frontend_server.dart.snapshot</code>命令，生成<code>.dill</code>文件</li>
+<li><code>AndroidAot</code>目标：调用<code>AOTSnapshotter.build()</code>方法，执行<code>gen_snapshot</code>命令，生成<code>app.so</code>文件</li>
+<li><code>AotAndroidAssetBundle</code>目标：调用<code>AssetBundle.build()</code>，生成<code>flutter_assets</code>资源</li>
+</ol>
+</li>
+</ol>
+<p>Flutter构建源码分析流程如下：</p>
+<p><img src="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/Flutter%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E6%B5%81%E7%A8%8B.png"></p>
+<p>Android中的Flutter Release产物编译总体流程如下：</p>
+<p>![](2022-01-12-Flutter构建流程分析/Android Flutter Release产物编译流程.png)</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>关于Dart前端编译（生成Dart Kernel文件，即<code>.dill</code>）和AOT编译（生成目标代码）可以参考：<a href="/2022/01/03/Dart%E7%AE%80%E4%BB%8B/">Dart简介</a></p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4e8ccb02e92d">研读Flutter——打包编译流程详解</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" rel="prev" title="Flutter架构和源码编译">
+      <i class="fa fa-chevron-left"></i> Flutter架构和源码编译
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">Flutter构建流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">构建模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">Flutter项目构建源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flutter%E5%91%BD%E4%BB%A4%E8%84%9A%E6%9C%AC"><span class="nav-number">1.2.1.</span> <span class="nav-text">Flutter命令脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter-tools%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.2.</span> <span class="nav-text">flutter_tools流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter-gradle"><span class="nav-number">1.2.3.</span> <span class="nav-text">flutter.gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter-assemble%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.4.</span> <span class="nav-text">flutter assemble编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">2.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">397k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:01</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

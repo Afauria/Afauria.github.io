@@ -22,24 +22,28 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Flutter架构说明，源码下载和编译">
+  <meta name="description" content="Flutter架构说明，SDK和Engine源码下载和编译。暂不涉及嵌入层的定制和交叉编译">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flutter源码初探">
-<meta property="og:url" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:title" content="Flutter架构和源码编译">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="Flutter架构说明，源码下载和编译">
+<meta property="og:description" content="Flutter架构说明，SDK和Engine源码下载和编译。暂不涉及嵌入层的定制和交叉编译">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/Flutter架构.png">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/FlutterWeb架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/FlutterWeb架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置DartSDK.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png">
 <meta property="article:published_time" content="2022-01-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-10T13:21:00.764Z">
+<meta property="article:modified_time" content="2022-01-21T03:04:43.420Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="跨平台">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/Flutter架构.png">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter架构.png">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/">
+<link rel="canonical" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">
 
 
 <script id="page-configurations">
@@ -52,7 +56,7 @@
   };
 </script>
 
-  <title>Flutter源码初探 | Afauria's Blog</title>
+  <title>Flutter架构和源码编译 | Afauria's Blog</title>
   
 
 
@@ -211,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -224,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Flutter源码初探
+          Flutter架构和源码编译
         </h1>
 
         <div class="post-meta">
@@ -242,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-10 21:21:00" itemprop="dateModified" datetime="2022-01-10T21:21:00+08:00">2022-01-10</time>
+                <time title="修改时间：2022-01-21 11:04:43" itemprop="dateModified" datetime="2022-01-21T11:04:43+08:00">2022-01-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,7 +259,7 @@
             </span>
 
           
-            <span id="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter源码初探" title="阅读次数">
+            <span id="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter架构和源码编译" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -270,8 +274,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -281,16 +285,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>10 分钟</span>
             </span>
-            <div class="post-description">Flutter架构说明，源码下载和编译</div>
+            <div class="post-description">Flutter架构说明，SDK和Engine源码下载和编译。暂不涉及嵌入层的定制和交叉编译</div>
 
         </div>
       </header>
@@ -301,24 +305,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Flutter介绍"><a href="#Flutter介绍" class="headerlink" title="Flutter介绍"></a>Flutter介绍</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
-<p>支持移动平台（Android、iOS），桌面平台（Windows、Linux、MacOS），Web平台（浏览器），其他嵌入式平台（如车载、IoT设备、树莓派等，需要自行扩展适配）</p>
-<p>支持多屏幕设备、折叠设备等</p>
-<h2 id="构建模式"><a href="#构建模式" class="headerlink" title="构建模式"></a>构建模式</h2><ul>
-<li>Debug模式下，Flutter应用在VM上运行，能够保存应用状态，提供热重载能力。支持断点，调试信息等。</li>
-<li>Release模式下，Flutter会编译成目标平台的机器代码，针对web平台，会编译成JavaScript代码。进行了编译优化、压缩等。</li>
-<li>Profile模式下，支持调试和跟踪，同时进行了一些优化，使性能更接近Release模式。模拟器上无法使用该模式</li>
-</ul>
-<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>Flutter源码包含两部分：</p>
+        <h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。会下载flutter默认构建的engine，包括各种架构的版本，位于<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine</code>下</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
 </ol>
+<blockquote>
+<p>Flutter SDK默认会下载和使用官方构建好的engine，打包到应用中</p>
+</blockquote>
 <p>架构如下：</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/Flutter架构.png" style="zoom: 33%;">
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter架构.png" style="zoom: 33%;">
 
 <ol>
-<li><p>嵌入层：源码包含在Engine中。提供程序入口，程序通过嵌入层与底层操作系统交互，访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。不同平台包含特定的嵌入层，使用当前平台语言编写。</p>
+<li><p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供营养程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
 </li>
 <li><p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
 </li>
@@ -362,9 +361,54 @@
 </ul>
 <h2 id="Web上的Flutter"><a href="#Web上的Flutter" class="headerlink" title="Web上的Flutter"></a>Web上的Flutter</h2><p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
 <p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/FlutterWeb架构.png" style="zoom: 33%;">
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/FlutterWeb架构.png" style="zoom: 33%;">
 
-<h1 id="源码下载和编译"><a href="#源码下载和编译" class="headerlink" title="源码下载和编译"></a>源码下载和编译</h1><h2 id="depot-tools介绍"><a href="#depot-tools介绍" class="headerlink" title="depot_tools介绍"></a>depot_tools介绍</h2><p>Google用python开发的git仓库管理工具，用于管理chromium源码。包括gclient、repo、gn和ninja等工具。是对Git的增强，大项目由几十个独立的git仓库构成，不便于下载、提交和管理。</p>
+<h1 id="SDK下载和编译"><a href="#SDK下载和编译" class="headerlink" title="SDK下载和编译"></a>SDK下载和编译</h1><p>目的：</p>
+<ol>
+<li>学习源码</li>
+<li>定制框架：如修改<code>flutter_tools</code>编译工具等</li>
+</ol>
+<p>方法和搭建Flutter开发环境类似</p>
+<ol>
+<li><p>直接clone或先fork到本地：<code>git clone git@github.com:&lt;github_username&gt;/flutter.git</code></p>
+</li>
+<li><p>设置环境变量：也可以直接进入bin目录执行flutter命令</p>
+</li>
+<li><p>安装依赖包：<code>&#123;flutter_framework&#125;/bin/flutter update-packages</code></p>
+</li>
+<li><p>检查环境：<code>&#123;flutter_framework&#125;/bin/flutter doctor</code></p>
+</li>
+<li><p>Android Studio打开<code>&#123;flutter_framework&#125;/packages/</code>下的项目，默认会当做Android工程，IDE提示<code>Dart SDK is not configured</code>或者<code>Dart support is not enabled for the module &#39;flutter_tools&#39;</code>，如下</p>
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png"></p>
+</li>
+<li><p>配置Flutter工程：直接点击上图的<code>Open Dart Settings</code>或者打开<code>Prefereneces&gt;Language&gt;Dart/Flutter</code>。配置Dart SDK和Flutter SDK路径，对照下Flutter应用项目的配置即可。如下</p>
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置DartSDK.png" style="zoom: 67%;">
+
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png" style="zoom:67%;"></li>
+<li><p>配置完之后即可在IDE查看和修改源码</p>
+</li>
+<li><p>编译源码</p>
+<ol>
+<li>删除<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.snapshot</code>（Dart快照文件）和<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.stamp</code>（当前SDK的commit id文件）</li>
+<li>运行flutter命令的时候会自动编译源码，重新生成dart快照文件（下面会介绍flutter命令执行过程）</li>
+</ol>
+</li>
+</ol>
+<h1 id="Engine下载和编译"><a href="#Engine下载和编译" class="headerlink" title="Engine下载和编译"></a>Engine下载和编译</h1><p>这里只演示了官方支持的平台编译，还不涉及嵌入层的定制和交叉编译（用于定制的嵌入式平台运行Engine）。</p>
+<p>主要有几个目的</p>
+<ol>
+<li>学习源码</li>
+<li>定制引擎，使得Flutter能够在其他目标平台运行，例如树莓派，鸿蒙系统等</li>
+<li>通过压缩、裁剪引擎优化包体积</li>
+</ol>
+<p>推荐使用macOS，桌面应用需要在对应的平台上编译，暂不支持交叉编译</p>
+<ul>
+<li>macOS支持Android和iOS的交叉编译</li>
+<li>Linux支持Android和Fuchsia的交叉编译，不支持iOS</li>
+<li>Windows不支持Android、Fuchsia或iOS交叉编译</li>
+</ul>
+<p>x64主机交叉编译arm目标平台应用：参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
+<h2 id="depot-tools介绍"><a href="#depot-tools介绍" class="headerlink" title="depot_tools介绍"></a>depot_tools介绍</h2><p>Google用python开发的git仓库管理工具，用于管理chromium源码。包括gclient、repo、gn和ninja等工具。是对Git的增强，大项目由几十个独立的git仓库构成，不便于下载、提交和管理。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/tools/depot_tools.git">下载地址</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.chromium.org/developers/how-tos/depottools">简介</a></li>
@@ -384,7 +428,7 @@
 </ul>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://ninja-build.org/">ninja</a>：编译工具，负责编译最终的可执行文件。依赖其他构建工具进行高级语言编译。</p>
-<p><a target="_blank" rel="noopener" href="https://gn.googlesource.com/gn">gn</a>：生成ninja所需的构建文件，可以针对不同平台生成不同的ninja构建文件</p>
+<p><a target="_blank" rel="noopener" href="https://gn.googlesource.com/gn">gn</a>：生成ninja所需的构建文件，可以针对不同平台生成不同的ninja构建文件。<code>gn help</code>查看帮助</p>
 <p><code>depot_tools</code>安装：</p>
 <ol>
 <li>clone仓库：<code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</code></li>
@@ -396,13 +440,29 @@
 <p>也可以手动创建文件填写。这里直接使用官方仓库地址，如果要修改提交源码，则需要fork到自己的仓库下载。</p>
 </blockquote>
 <p>下载源码和依赖项目（大概10个G，不要中断下载）：<code>gclient sync --verbose</code></p>
-<p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
-<h2 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Compiling-the-engine">官方文档</a></p>
-<p>使用<code>gn</code>生成ninja构建文件（参数参考官方文档）：<code>./src/flutter/tools/gn --unoptimized --android --runtime-mode debug --android-cpu arm</code></p>
 <blockquote>
+<p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
+</blockquote>
+<p>切分支：默认获取master分支的版本，如果需要切到指定engine版本，需要进入<code>src/flutter</code>目录执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 切分支，commitId可以使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
+<h2 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Compiling-the-engine">官方文档</a></p>
+<p>使用<code>gn</code>生成ninja构建文件（参数参考官方文档）：<code>&#123;engine_path&#125;/src/flutter/tools/gn --unoptimized --android --runtime-mode debug --android-cpu arm</code></p>
+<blockquote>
+<p>这里的gn只是一个shell脚本，内部调用<code>gn gen</code>命令执行</p>
+<p>对应的构建产物会有多种组合：</p>
+<ul>
+<li>平台：iOS, Android, macOS, Linux, Windows</li>
+<li>构建模式：debug, release, profile</li>
+<li>是否优化：opt, unopt</li>
+<li>cpu架构：arm、arm64、x86、x64</li>
+</ul>
+<p>产物命名格式：<code>android/ios/host_debug/profile/release_unoptimized/optimized_cpu架构</code></p>
+<p>除此之外还可以根据图形后端进行编译：如OpenGL、Vulkan、software</p>
+</blockquote>
 <p>构建完之后生成<code>out</code>目录，根据参数生成不同文件夹，如<code>android_debug_unopt</code>、<code>ios_debug_unopt</code>等。</p>
 <p>内部包括ninja构建文件、<code>compile_commands.json</code>文件（Intellisense，用于编辑器索引）、xcode项目文件等</p>
-</blockquote>
 <p>使用<code>ninja</code>编译：<code>ninja -C out/android_debug_unopt</code></p>
 <blockquote>
 <p>编译生成的文件在<code>out/android_debug_unopt</code>目录下，主要产物如下：</p>
@@ -411,11 +471,17 @@
 <li><code>libflutter.so</code>：flutter引擎层代码</li>
 </ul>
 <p>二者最终会合并到<code>flutter.jar</code>中</p>
+<p>iOS引擎编译主要产物是<code>Flutter.framework</code>，其中包含<code>icudtl.dat</code>国际化数据文件和<code>FlutterEmbedder.framework</code>嵌入层代码</p>
 </blockquote>
-<h2 id="替换Engine"><a href="#替换Engine" class="headerlink" title="替换Engine"></a>替换Engine</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Debugging-the-engine">官方文档</a></p>
-<p>Flutter默认会下载和使用官方构建好的engine。要替换自己编译出来的引擎，使用<code>--local-engine</code>选项。</p>
-<p>例如运行Mac主机应用：<code>flutter run --local-engine-src-path &#123;path&#125;/engine/src --local-engine=host_debug_unopt</code></p>
-<p>AndroidStudio中替换：<code>gradle.properties</code>添加变量<code>localEngineOut=&#123;path&#125;/engine/src/out/android_debug_unopt</code></p>
+<h2 id="替换Engine"><a href="#替换Engine" class="headerlink" title="替换Engine"></a>替换Engine</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/The-flutter-tool#using-a-locally-built-engine-with-the-flutter-tool">官方文档</a></p>
+<p><strong>Flutter默认会下载和使用官方构建好的engine</strong>，包括各种架构的版本，位于<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine</code>下。要替换自己编译出来的引擎，使用<code>local-engine-src-path</code>和<code>--local-engine</code>选项。如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定的引擎需要与构建模式对应：debug版的引擎编译debug版的应用</span></span><br><span class="line">flutter run --local-engine-src-path &#123;path&#125;/engine/src --local-engine=&#123;path&#125;/engine/src/out/host_debug_unopt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果flutter引擎和sdk在同级目录下，或者<code>-local-engine</code>使用绝对路径，可以省略<code>--local-engine-src-path</code>参数。</p>
+<p>下面会分析<code>flutter_tools</code>解析该参数过程</p>
+</blockquote>
+<p>为Web应用构建，使用主机引擎即可：<code>flutter run --local-engine=host_debug_unopt -d chrome</code></p>
 <h2 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">官方文档</a></p>
 <h3 id="Clion"><a href="#Clion" class="headerlink" title="Clion"></a>Clion</h3><p>将gn生成的<code>compile_commands.json</code>文件复制到<code>src/flutter</code>中，使用Clion打开，indexing之后就可以跟踪和跳转代码</p>
 <blockquote>
@@ -453,18 +519,46 @@
 </ol>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//相当于配置settings.json如下</span></span><br><span class="line">&quot;java.project.referencedLibraries&quot;: [</span><br><span class="line">  <span class="string">&quot;&#123;path to engine&#125;/src/third_party/android_embedding_dependencies/lib/**/*.jar&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
+<h1 id="flutter命令执行原理"><a href="#flutter命令执行原理" class="headerlink" title="flutter命令执行原理"></a>flutter命令执行原理</h1><p>分析下<code>flutter_tools</code>和本地编译引擎替换的原理。关于Flutter命令执行过程可以参考<a href="/2022/01/12/Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%92%8C%E4%BA%A7%E7%89%A9%E5%88%86%E6%9E%90/">Flutter构建流程和产物分析</a>，这里直接定位到关键代码。</p>
+<h2 id="替换flutter-tools"><a href="#替换flutter-tools" class="headerlink" title="替换flutter_tools"></a>替换flutter_tools</h2><p>上一篇文档已经介绍了Flutter命令执行过程：主要通过dart运行<code>&#123;flutter_sdk&#125;/bin/cache/flutter_tools.snapshot</code>程序解析参数，调用不同平台工具进行构建。</p>
+<p><code>flutter_tools.snapshot</code>对应的源码位于<code>&#123;flutter_framework&#125;/packages/flutter_tools/</code>中，可以直接修改。</p>
+<p>修改了<code>flutter_tools</code>源码之后如何编译并替换呢？</p>
+<p>查看<code>bin/internal/shared.sh</code>脚本的<code>upgrade_flutter</code>方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function upgrade_flutter () (</span><br><span class="line">  mkdir -p &quot;$FLUTTER_ROOT/bin/cache&quot;</span><br><span class="line"></span><br><span class="line">  local revision=&quot;$(cd &quot;$FLUTTER_ROOT&quot;; git rev-parse HEAD)&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">  #</span><span class="bash"> Invalidate cache <span class="keyword">if</span>:</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * SNAPSHOT_PATH is not a file, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * STAMP_PATH is not a file with nonzero size, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * Contents of STAMP_PATH is not our <span class="built_in">local</span> git HEAD revision, or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash">  * pubspec.yaml last modified after pubspec.lock</span></span><br><span class="line">  if [[ ! -f &quot;$SNAPSHOT_PATH&quot; || ! -s &quot;$STAMP_PATH&quot; || &quot;$(cat &quot;$STAMP_PATH&quot;)&quot; != &quot;$revision&quot; || &quot;$FLUTTER_TOOLS_DIR/pubspec.yaml&quot; -nt &quot;$FLUTTER_TOOLS_DIR/pubspec.lock&quot; ]]; then</span><br><span class="line">    # 等待锁</span><br><span class="line">    _wait_for_lock</span><br><span class="line">    # 获取锁之后再次判断，防止并发</span><br><span class="line">    # A different shell process might have updated the tool/SDK.</span><br><span class="line">    if [[ -f &quot;$SNAPSHOT_PATH&quot; &amp;&amp; -s &quot;$STAMP_PATH&quot; &amp;&amp; &quot;$(cat &quot;$STAMP_PATH&quot;)&quot; == &quot;$revision&quot; &amp;&amp; &quot;$FLUTTER_TOOLS_DIR/pubspec.yaml&quot; -ot &quot;$FLUTTER_TOOLS_DIR/pubspec.lock&quot; ]]; then</span><br><span class="line">      exit $?</span><br><span class="line">    fi</span><br><span class="line">    </span><br><span class="line">    #...</span><br><span class="line">    </span><br><span class="line">    # 重新编译生成快照文件snapshot</span><br><span class="line">    &quot;$DART&quot; --verbosity=error --disable-dart-dev $FLUTTER_TOOL_ARGS --snapshot=&quot;$SNAPSHOT_PATH&quot; --packages=&quot;$FLUTTER_TOOLS_DIR/.packages&quot; --no-enable-mirrors &quot;$SCRIPT_PATH&quot;</span><br><span class="line">    echo &quot;$revision&quot; &gt; &quot;$STAMP_PATH&quot;</span><br><span class="line">  fi</span><br><span class="line">  exit $?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>  什么时候会重新编译<code>flutter_tools</code>？</p>
+<blockquote>
+<p>注释已经写的很清楚了：</p>
+<ol>
+<li>snapshot或者stamp文件不存在</li>
+<li>stamp的commit id不是当前的HEAD id</li>
+<li>pubspec.yaml文件被修改</li>
+</ol>
+</blockquote>
+<h2 id="替换本地引擎"><a href="#替换本地引擎" class="headerlink" title="替换本地引擎"></a>替换本地引擎</h2><p>Flutter可以指定<code>local-engine</code>和<code>local-engine-src-path</code>选项来替换本地引擎，这是如何生效的呢？</p>
+<p>上一篇文档已经介绍了Flutter命令执行过程，这里我们直接找到解析<code>local-engine-src-path</code>参数的地方</p>
+<p>查看<code>lib/src/runner/flutter_command_runner</code>源码，获取<code>local-engine</code>相关参数，查找本地构建引擎路径</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterCommandRunner</span> <span class="keyword">extends</span> <span class="title">CommandRunner</span>&lt;<span class="title">void</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; runCommand(ArgResults topLevelResults) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//传入参数，执行命令，根据local-engine参数获取本地构建的引擎</span></span><br><span class="line">    <span class="comment">// Set up the tooling configuration.</span></span><br><span class="line">    <span class="keyword">final</span> EngineBuildPaths engineBuildPaths = <span class="keyword">await</span> globals.localEngineLocator.findEnginePath(</span><br><span class="line">      topLevelResults[<span class="string">&#x27;local-engine-src-path&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">      topLevelResults[<span class="string">&#x27;local-engine&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">      topLevelResults[<span class="string">&#x27;packages&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>lib/src/runner/local_engine.dart</code>源码<code>findEnginePath</code>方法，如何获取引擎路径</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalEngineLocator</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">Returns the engine build path of a local engine if one is located, otherwise <span class="code">`null`</span>.</span></span></span><br><span class="line">  Future&lt;EngineBuildPaths?&gt; findEnginePath(<span class="built_in">String?</span> engineSourcePath, <span class="built_in">String?</span> localEngine, <span class="built_in">String?</span> packagePath) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">//如果没有指定参数，从系统环境变量$FLUTTER_ENGINE读取</span></span><br><span class="line">    engineSourcePath ??= _platform.environment[kFlutterEngineEnvironmentVariableName];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (engineSourcePath == <span class="keyword">null</span> &amp;&amp; localEngine != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//如果local-engine参数是绝对路径，且父文件夹为src/out/，则使用src目录</span></span><br><span class="line">        engineSourcePath = _findEngineSourceByLocalEngine(localEngine);</span><br><span class="line">        <span class="comment">//从配置中读取</span></span><br><span class="line">        engineSourcePath ??= <span class="keyword">await</span> _findEngineSourceByPackageConfig(packagePath);</span><br><span class="line">      &#125; <span class="keyword">on</span> FileSystemException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        _logger.printTrace(<span class="string">&#x27;Local engine auto-detection file exception: <span class="subst">$e</span>&#x27;</span>);</span><br><span class="line">        engineSourcePath = <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//判断如果engine源码和flutter sdk目录同级，则不需要该参数</span></span><br><span class="line">      engineSourcePath ??= _tryEnginePath(</span><br><span class="line">        _fileSystem.path.join(_fileSystem.directory(_flutterRoot).parent.path, <span class="string">&#x27;engine&#x27;</span>, <span class="string">&#x27;src&#x27;</span>),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">String?</span> _findEngineSourceByLocalEngine(<span class="built_in">String</span> localEngine) &#123;</span><br><span class="line">    <span class="comment">// When the local engine is an absolute path to a variant inside the</span></span><br><span class="line">    <span class="comment">// out directory, parse the engine source.</span></span><br><span class="line">    <span class="comment">// --local-engine /path/to/cache/builder/src/out/host_debug_unopt</span></span><br><span class="line">    <span class="keyword">if</span> (_fileSystem.path.isAbsolute(localEngine)) &#123;</span><br><span class="line">      <span class="keyword">final</span> Directory localEngineDirectory = _fileSystem.directory(localEngine);</span><br><span class="line">      <span class="keyword">final</span> Directory outDirectory = localEngineDirectory.parent;</span><br><span class="line">      <span class="keyword">final</span> Directory srcDirectory = outDirectory.parent;</span><br><span class="line">      <span class="keyword">if</span> (localEngineDirectory.existsSync() &amp;&amp; outDirectory.basename == <span class="string">&#x27;out&#x27;</span> &amp;&amp; srcDirectory.basename == <span class="string">&#x27;src&#x27;</span>) &#123;</span><br><span class="line">        _logger.printTrace(<span class="string">&#x27;Parsed engine source from local engine as <span class="subst">$&#123;srcDirectory.path&#125;</span>.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> srcDirectory.path;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Future&lt;<span class="built_in">String?</span>&gt; _findEngineSourceByPackageConfig(<span class="built_in">String?</span> packagePath) <span class="keyword">async</span> &#123;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//判断out文件夹是否存在</span></span><br><span class="line">  <span class="built_in">String?</span> _tryEnginePath(<span class="built_in">String</span> enginePath) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_fileSystem.isDirectorySync(_fileSystem.path.join(enginePath, <span class="string">&#x27;out&#x27;</span>))) &#123;</span><br><span class="line">      <span class="keyword">return</span> enginePath;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如何获取Flutter编译引擎源码路径？<code>--local-engine-src-path</code>什么时候可以省略？</p>
+<blockquote>
+<p>流程如下</p>
+<ol>
+<li>如果没有指定该参数，从系统环境变量<code>$FLUTTER_ENGINE</code>读取源码路径</li>
+<li>如果<code>--local-engine</code>参数是绝对路径，且父文件夹为src/out/，则使用src目录</li>
+<li>根据<code>--packages</code>参数加载<code>package_config.json</code>文件，读取<code>sky_engine</code>配置路径，例如<code>&#123;flutter-engine-local-path&#125;/src/out/host_debug_unopt/gen/dart-pkg/sky_engine/lib/</code></li>
+<li>如果engine源码和flutter sdk目录同级，且存在<code>src/out</code>文件夹，则使用src目录</li>
+</ol>
+</blockquote>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">Flutter Wiki官方文档</a></li>
 </ul>
 <p>gclient使用可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xl2432/p/11596695.html">chromium开发工具–gclient</a>、<a target="_blank" rel="noopener" href="https://keyou.github.io/blog/2017/11/02/gclient/">gclient 介绍</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/394560540">https://zhuanlan.zhihu.com/p/394560540</a></p>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000037683839?utm_source=tag-newest">https://segmentfault.com/a/1190000037683839?utm_source=tag-newest</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3e5d181ddf79">https://www.jianshu.com/p/3e5d181ddf79</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/07bd34831f92">https://www.jianshu.com/p/07bd34831f92</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9536ffd7bbbc">https://www.jianshu.com/p/9536ffd7bbbc</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xl2432/p/11596695.html">https://www.cnblogs.com/xl2432/p/11596695.html</a></p>
 
     </div>
 
@@ -507,7 +601,10 @@
     <a href="/2022/01/05/basic-2022-01-05-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" rel="prev" title="GNU和构建工具介绍">
       <i class="fa fa-chevron-left"></i> GNU和构建工具介绍
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" rel="next" title="Flutter构建流程分析">
+      Flutter构建流程分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -568,7 +665,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Flutter介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">构建模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E5%B5%8C%E5%85%A5%E5%B1%82"><span class="nav-number">1.4.</span> <span class="nav-text">平台嵌入层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E4%B8%8A%E7%9A%84Flutter"><span class="nav-number">1.5.</span> <span class="nav-text">Web上的Flutter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">源码下载和编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#depot-tools%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.1.</span> <span class="nav-text">depot_tools介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.2.</span> <span class="nav-text">源码下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91"><span class="nav-number">2.3.</span> <span class="nav-text">源码编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2Engine"><span class="nav-number">2.4.</span> <span class="nav-text">替换Engine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">2.5.</span> <span class="nav-text">源码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clion"><span class="nav-number">2.5.1.</span> <span class="nav-text">Clion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xcode%E3%80%90Objective-C-%E3%80%91"><span class="nav-number">2.5.2.</span> <span class="nav-text">Xcode【Objective-C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90C-C-%E3%80%91"><span class="nav-number">2.5.3.</span> <span class="nav-text">VSCode【C&#x2F;C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90Java%E3%80%91"><span class="nav-number">2.5.4.</span> <span class="nav-text">VSCode【Java】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Flutter架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E5%B5%8C%E5%85%A5%E5%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">平台嵌入层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E4%B8%8A%E7%9A%84Flutter"><span class="nav-number">1.2.</span> <span class="nav-text">Web上的Flutter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SDK%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">SDK下载和编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Engine%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">Engine下载和编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#depot-tools%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.</span> <span class="nav-text">depot_tools介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.2.</span> <span class="nav-text">源码下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91"><span class="nav-number">3.3.</span> <span class="nav-text">源码编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2Engine"><span class="nav-number">3.4.</span> <span class="nav-text">替换Engine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">3.5.</span> <span class="nav-text">源码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clion"><span class="nav-number">3.5.1.</span> <span class="nav-text">Clion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xcode%E3%80%90Objective-C-%E3%80%91"><span class="nav-number">3.5.2.</span> <span class="nav-text">Xcode【Objective-C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90C-C-%E3%80%91"><span class="nav-number">3.5.3.</span> <span class="nav-text">VSCode【C&#x2F;C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90Java%E3%80%91"><span class="nav-number">3.5.4.</span> <span class="nav-text">VSCode【Java】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flutter%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">flutter命令执行原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2flutter-tools"><span class="nav-number">4.1.</span> <span class="nav-text">替换flutter_tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E6%9C%AC%E5%9C%B0%E5%BC%95%E6%93%8E"><span class="nav-number">4.2.</span> <span class="nav-text">替换本地引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -584,20 +681,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -678,13 +775,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">360k</span>
+    <span title="站点总字数">397k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:27</span>
+    <span title="站点阅读时长">6:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
