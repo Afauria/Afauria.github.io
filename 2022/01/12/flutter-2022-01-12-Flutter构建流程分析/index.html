@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/gen_snapshot%E6%BA%90%E7%A0%81%E6%B5%81%E7%A8%8B.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/Flutter%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E6%B5%81%E7%A8%8B.png">
 <meta property="article:published_time" content="2022-01-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-30T06:33:15.232Z">
+<meta property="article:modified_time" content="2022-02-09T08:49:57.061Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-30 14:33:15" itemprop="dateModified" datetime="2022-01-30T14:33:15+08:00">2022-01-30</time>
+                <time title="修改时间：2022-02-09 16:49:57" itemprop="dateModified" datetime="2022-02-09T16:49:57+08:00">2022-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,7 +320,8 @@
 <blockquote>
 <p>类似java执行jar文件：<code>java -jar main.jar</code>，jar运行在java环境，snapshot运行在dart环境。</p>
 </blockquote>
-<h2 id="flutter-tools流程"><a href="#flutter-tools流程" class="headerlink" title="flutter_tools流程"></a>flutter_tools流程</h2><p><code>flutter_tools.snapshot</code>类似jar文件，也有对应的main函数入口，位于<code>flutter/packages/flutter_tools/lib/executable.dart</code>中，代码如下：</p>
+<h2 id="flutter-tools流程"><a href="#flutter-tools流程" class="headerlink" title="flutter_tools流程"></a>flutter_tools流程</h2><p>在AS中打开<code>flutter/packages/flutter_tools/</code>源码，配置Dart SDK，支持代码跳转。</p>
+<p><code>flutter_tools.snapshot</code>类似jar文件，也有对应的main函数入口，位于<code>flutter/packages/flutter_tools/lib/executable.dart</code>中，代码如下：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_tools/executable.dart&#x27;</span> <span class="keyword">as</span> executable;</span><br><span class="line"><span class="keyword">void</span> main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; args) &#123;</span><br><span class="line">  executable.main(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>查看<code>executable.dart</code>源码：<code>runner.run</code>比较复杂，我们只需要知道<code>flutter build</code>命令会匹配到<code>BuildCommand</code>类即可</p>
@@ -381,7 +382,7 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KernelSnapshot</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;kernel_snapshot&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> KernelCompiler compiler = KernelCompiler(</span><br><span class="line">      fileSystem: environment.fileSystem,</span><br><span class="line">      logger: environment.logger,</span><br><span class="line">      processManager: environment.processManager,</span><br><span class="line">      artifacts: environment.artifacts,</span><br><span class="line">      fileSystemRoots: &lt;<span class="built_in">String</span>&gt;[],</span><br><span class="line">      fileSystemScheme: <span class="keyword">null</span>,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">//执行frontend_server.dart.snapshot程序</span></span><br><span class="line">    <span class="keyword">final</span> CompilerOutput output = <span class="keyword">await</span> compiler.compile(</span><br><span class="line">      sdkRoot: environment.artifacts.getArtifactPath(</span><br><span class="line">        Artifact.flutterPatchedSdkPath,</span><br><span class="line">        platform: targetPlatform,</span><br><span class="line">        mode: buildMode,</span><br><span class="line">      ),</span><br><span class="line">      outputFilePath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      <span class="comment">//....</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>compile内部实际是执行<code>frontend_server.dart.snapshot</code>程序，命令如下，省略部分参数（亲测：修改路径之后可以直接执行，生成app.dill文件）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;flutter_sdk&#125;/bin/cache/dart-sdk/bin/dart &#123;flutter_sdk&#125;/bin/cache/artifacts/engine/darwin-x64/frontend_server.dart.snapshot </span><br><span class="line">--sdk-root &#123;flutter_sdk&#125;/bin/cache/artifacts/engine/common/flutter_patched_sdk/ </span><br><span class="line">--target=flutter </span><br><span class="line">--aot --tfa </span><br><span class="line">-Ddart.vm.profile=false </span><br><span class="line">-Ddart.vm.product=true </span><br><span class="line">--packages .packages </span><br><span class="line">--output-dill &#123;build_dir&#125;/app.dill </span><br><span class="line">--depfile &#123;build_dir&#125;/kernel_snapshot.d </span><br><span class="line">&#123;project&#125;/main.dart</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dart &#123;flutter_sdk&#125;/bin/cache/artifacts/engine/darwin-x64/frontend_server.dart.snapshot </span><br><span class="line">--sdk-root &#123;flutter_sdk&#125;/bin/cache/artifacts/engine/common/flutter_patched_sdk/ </span><br><span class="line">--target=flutter </span><br><span class="line">--aot --tfa </span><br><span class="line">-Ddart.vm.profile=false </span><br><span class="line">-Ddart.vm.product=true </span><br><span class="line">--packages .packages </span><br><span class="line">--output-dill &#123;build_dir&#125;/app.dill </span><br><span class="line">--depfile &#123;build_dir&#125;/kernel_snapshot.d </span><br><span class="line">&#123;project&#125;/main.dart</span><br></pre></td></tr></table></figure>
 
 <p>再查看<code>AndroidAot</code>编译目标：可以将<code>app.dill</code>文件编译成<code>app.so</code>文件</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> AndroidAot androidArmRelease = AndroidAot(TargetPlatform.android_arm,  BuildMode.release);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidAot</span> <span class="keyword">extends</span> <span class="title">AotElfBase</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name =&gt; <span class="string">&#x27;android_aot_<span class="subst">$&#123;getNameForBuildMode(buildMode)&#125;</span>_&#x27;</span></span><br><span class="line">    <span class="string">&#x27;<span class="subst">$&#123;getNameForTargetPlatform(targetPlatform)&#125;</span>&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//依赖KernelSnapshot编译目标</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Target&gt; <span class="keyword">get</span> dependencies =&gt; <span class="keyword">const</span> &lt;Target&gt;[</span><br><span class="line">    KernelSnapshot(),</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; build(Environment environment) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> AOTSnapshotter snapshotter = AOTSnapshotter(</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> snapshotExitCode = <span class="keyword">await</span> snapshotter.build(</span><br><span class="line">      platform: targetPlatform,</span><br><span class="line">      buildMode: buildMode,</span><br><span class="line">      mainPath: environment.buildDir.childFile(<span class="string">&#x27;app.dill&#x27;</span>).path,</span><br><span class="line">      outputPath: output.path,</span><br><span class="line">      bitcode: <span class="keyword">false</span>,</span><br><span class="line">      extraGenSnapshotOptions: extraGenSnapshotOptions,</span><br><span class="line">      splitDebugInfo: splitDebugInfo,</span><br><span class="line">      dartObfuscation: dartObfuscation,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -445,7 +446,7 @@
 </ol>
 </li>
 </ol>
-<p>Flutter构建源码分析流程如下：</p>
+<p>Flutter构建源码分析整体流程如下：</p>
 <p><img src="/2022/01/12/flutter-2022-01-12-Flutter%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/Flutter%E6%9E%84%E5%BB%BA%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E6%B5%81%E7%A8%8B.png"></p>
 <p>Android中的Flutter Release产物编译总体流程如下：</p>
 <p>![](2022-01-12-Flutter构建流程分析/Android Flutter Release产物编译流程.png)</p>
@@ -453,9 +454,16 @@
 <ol>
 <li>便于分析定位构建错误，一般报错之后可以在<code>flutter_tools</code>中搜索关键字，找到报错的地方，分析代码上下文。</li>
 <li>可以修改<code>flutter_tools</code>流程，定制构建命令，修改编译和打包流程</li>
-<li>了解Flutter代码的编译，如何生成产物，然后合并打包</li>
+<li>了解Flutter代码的编译，如何生成产物，合并打包</li>
 </ol>
-<p>关于Dart前端编译（生成Dart Kernel文件，即<code>.dill</code>）和AOT编译（生成目标代码）可以参考：<a href="/2022/01/03/flutter-2022-01-03-Dart%E7%AE%80%E4%BB%8B/">Dart简介</a></p>
+<p>Flutter SDK包含框架代码、脚手架、编译工具、调试工具和各种脚本等。</p>
+<p>Flutter只是一个框架，不是一门语言，Flutter使用了Dart语言，Flutter引擎中的嵌入层（UI渲染、输入输出、以及PlatformChannel等）使用了平台原生语言（如C++，Java等）。</p>
+<p>Flutter的编译和跨平台执行实际是Dart代码的编译和跨平台执行，可以看到<code>front_end</code>、<code>gen_snapshot</code>都是Dart SDK中的代码，Flutter只是对编译命令进行了一些封装，并且将Flutter框架代码也加入编译。</p>
+<blockquote>
+<p>通过ninja实现Dart SDK的多平台编译，生成不同平台的gen_snapshot程序，使用不同平台的gen_snapshot程序，可以生成不同平台的目标代码。</p>
+<p>要定制Flutter引擎，交叉编译到不同嵌入式平台运行，可以先研究理解纯Dart程序的交叉编译和运行。</p>
+</blockquote>
+<p>关于Dart编译前端（生成Dart Kernel文件，即<code>.dill</code>）和编译后端（生成目标代码）过程可以参考：<a href="/2022/01/03/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/">Dart的编译和执行</a></p>
 <p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4e8ccb02e92d">研读Flutter——打包编译流程详解</a></li>
@@ -675,13 +683,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">404k</span>
+    <span title="站点总字数">421k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:08</span>
+    <span title="站点阅读时长">6:23</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
