@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="总结图形系统概念，介绍OpenGL、X Window和Wayland（窗口协议），KDE和GNOME（窗口管理器）等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图形系统概念扫盲">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="总结图形系统概念，介绍OpenGL、X Window和Wayland（窗口协议），KDE和GNOME（窗口管理器）等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow工作流程.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland工作流程.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston工作流程.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland渲染流水线.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png">
+<meta property="article:published_time" content="2022-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-15T11:51:32.555Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="跨平台">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>图形系统概念扫盲 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图形系统概念扫盲
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-12T00:00:00+08:00">2022-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-15 19:51:32" itemprop="dateModified" datetime="2022-02-15T19:51:32+08:00">2022-02-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/" class="post-meta-item leancloud_visitors" data-flag-title="图形系统概念扫盲" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">总结图形系统概念，介绍OpenGL、X Window和Wayland（窗口协议），KDE和GNOME（窗口管理器）等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h1><p>OpenGL（Open Grapics Library） 是一套图形操作与渲染规范，它定义了一套 API；一般由显卡商进行实现。OpenGL只负责图形绘制，不包含窗口。</p>
+<ul>
+<li>OpenGL ES（OpenGL for Embedded Systems）</li>
+<li>GLEW（OpenGL Extension Wrangler Library）：对底层OpenGL接口的封装，实现了跨平台。</li>
+<li><a target="_blank" rel="noopener" href="https://www.glfw.org/">GLFW</a>（Graphics Library Framework，图形库框架） 是配合 OpenGL 使用的轻量级工具程序库。GLFW 的主要功能是创建并管理窗口和 OpenGL 上下文，同时还提供了处理手柄、键盘、鼠标输入的功能。有类似功能的库还有 <a target="_blank" rel="noopener" href="https://www.opengl.org/resources/libraries/glut/">GLUT</a>（OpenGL Utility Toolkit）和 <a target="_blank" rel="noopener" href="https://www.libsdl.org/">SDL</a>（Simple DirectMedia Layer）。</li>
+</ul>
+<p>各种相关的库介绍如下</p>
+<p><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png"></p>
+<p>窗口库：OpenGL和本地窗口系统之间的通信接口，实现了OpenGL的平台无关性。</p>
+<p>例如EGL提供本地窗口相关的API，创建渲染表面EGLSurface，同时提供渲染上下文EGLContext，用来进行状态管理。接下来OpenGL ES可以在这个Surface上进行绘制。</p>
+<ul>
+<li>Display（EGLDisplay）：对实际显示设备的抽象</li>
+<li>Surface（EGLSurface）：对存储图形的内存区域FrameBuffer的抽象，包括Color Buffer（颜色缓冲区）、Stencil Buffer（模版缓冲区）、Depth Buffer（深度缓冲区）</li>
+<li>Context（EGLContext）：存储OpenGL ES绘图的状态信息</li>
+</ul>
+<blockquote>
+<p>Android中的GLSurfaceView内部实现了对EGL的封装，不需要直接调用EGL库</p>
+</blockquote>
+<p>Mesa是OpenGL的一种开源实现，由两部分组成：</p>
+<ul>
+<li>LibGL：实现了OpenGL的编程接口，提供给用户进行开发</li>
+<li>DRI（Direct Rendering Infrastructure）驱动：直接访问和操作硬件（显卡、显存、GPU），利用硬件加速，实现绘图操作</li>
+</ul>
+<h2 id="绘图引擎"><a href="#绘图引擎" class="headerlink" title="绘图引擎"></a>绘图引擎</h2><p>3D绘图引擎，图形API接口，可以直接操作GPU，主要为GPU硬件加速设计，由显卡厂商实现：</p>
+<ul>
+<li>OpenGL：传统的图形API接口，支持跨平台，主要用于3D绘制</li>
+<li>DirectX：用于Windows系统，是一个多媒体处理框架，不是单纯的图形API，分为显示、声音、输入、网络四部分。显示部分分为Direct2D和Direct3D</li>
+<li>Vulkan：跨平台的2D和3D绘图API，15年发布，为取代OpenGL</li>
+<li>Metal：14年推出，为Apple游戏开发设计</li>
+</ul>
+<p>2D绘图引擎，一般是软件实现：</p>
+<ul>
+<li>Cairo：FireFox和GTK+底层使用Cairo绘图引擎</li>
+<li>Skia（SGL）：Google的Android绘图引擎</li>
+<li>GDI、GDI+：微软推出的二维绘图引擎</li>
+<li>Direct2D：微软推出的二维绘图引擎，取代GDI、GDI+</li>
+</ul>
+<blockquote>
+<p>图形API可以通过软件（CPU）实现，也可以使用硬件加速（GPU）</p>
+</blockquote>
+<h2 id="GTK和QT"><a href="#GTK和QT" class="headerlink" title="GTK和QT"></a>GTK和QT</h2><p>GTK+（GIMP ToolKit）和QT是图形开发套件（GUI Toolkits），提供了很多控件，有不同的backend，例如在X11上是对XLib的封装，QT支持OpenGL的backend。</p>
+<p>GTK2+不直接使用XLib，而是使用GDK和GLib函数库，通过GDK调用XLib，提高了可移植性。</p>
+<p>GTK3+使用Cairo作为绘图引擎，Cairo支持不同的backend</p>
+<blockquote>
+<p>GTK+最初是为GIMP（GNU Image Manipulation Program，GNU图像处理程序）设计的，用于GNU/Linux下图形界面应用程序的开发，也有Winodws版和Mac版</p>
+</blockquote>
+<p><strong>前端向上层提供统一的编程接口，屏蔽底层绘图细节，后端（Backend）指底层的绘图引擎</strong>，例如</p>
+<ul>
+<li>XLib后端：使用XLib接口，向X Server发送绘图请求，由X Server完成图形绘制</li>
+<li>OpenGL后端：通过OpenGL接口（LibGL），操作GPU完成绘制</li>
+<li>DRM后端：直接调用DRM接口（LibDRM）或者通过DRI或DDX调用</li>
+</ul>
+<blockquote>
+<p>后端是相对的概念，例如X Server内部也能调用OpenGL后端，DRM后端</p>
+</blockquote>
+<h1 id="窗口系统"><a href="#窗口系统" class="headerlink" title="窗口系统"></a>窗口系统</h1><p>Linux是一个基于命令行的操作系统，不包含图形界面，很多Linux服务器不装X服务器，只有命令行界面。而Windows在内核中就实现了图形界面。</p>
+<p>GUI界面要呈现给用户，主要分为两个步骤：</p>
+<ol>
+<li>渲染：通过图形API接口绘制图形（包括软件/硬件，2D/3D，直接/间接，客户端渲染/服务端渲染），保存到Buffer中（操作内存MMIO、DMA）</li>
+<li>送显：将Buffer中的UI数据，呈现到显示设备上。</li>
+</ol>
+<p>由于每个应用都有自己的界面，这些应用共用一个显示设备，或是并列显示，或是层叠显示。因此需要一个程序来管理这些应用界面：负责将各个界面排列、合并最终显示到显示设备，即显示服务器。</p>
+<blockquote>
+<p>如X Window中的X Server、Wayland中的Wayland Server，Android中的Surface Flinger。</p>
+</blockquote>
+<p>显示服务器（Display Server）：直接和硬件交互（输入设备管理，输出画面到显示器等），需要将事件传递给应用处理，并获取每个应用的绘制信息，因此需要一套通信协议，即窗口系统协议。</p>
+<h2 id="XWindow"><a href="#XWindow" class="headerlink" title="XWindow"></a>XWindow</h2><p>X Window是窗口系统协议，用来显示图形界面，<strong>定义了服务端（X Server）和客户端（X Client）通信以及内核通信的机制，是一种协议，不是软件</strong>。</p>
+<p><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow%E6%9E%B6%E6%9E%84.png"></p>
+<ul>
+<li>X Server：负责屏幕绘制，并将图像输出到屏幕；并且接收设备输入，分给对应的窗口处理。直接与硬件交互。</li>
+<li>X Client：指不同的应用程序，负责处理事件，处理绘图数据，并将绘制结果传给X Server。不和硬件交互。</li>
+<li>X Window Manager（窗口管理器）：特殊的X Client，负责管理所有Client窗口大小、位置等，合成所有窗口内容传给X Server。</li>
+</ul>
+<p>优点：</p>
+<ol>
+<li>X Client不需要知道X Server的硬件配备和操作系统，只负责处理绘图数据。</li>
+<li>客户端和服务端可以是同一台主机的两个进程，也可以不在一台机器上，使用网络通信。</li>
+<li>可以有多个X Server，Linux服务器被多个用户使用，每个用户都有一个显示器需要显示画面。</li>
+</ol>
+<p><strong>注：这里的Server/Client不同于计算机概念上的Server/Client。</strong></p>
+<ul>
+<li>在计算机本身的意义上：Server指远程的机器，Client指用户端本地机器，性能和功能较弱。</li>
+<li>在显示的意义上：Server指显示服务器，一般在用户端，将画面显示到用户端的设备上，而Client运行在远程服务器上。</li>
+</ul>
+<p>常用的X Server服务器软件有XFree86、Xorg、Xnest等。</p>
+<blockquote>
+<p>X11R6（XProtocol Version 11 Release 6）是X协议的版本，XFree86 3.3.6是软件的版本</p>
+</blockquote>
+<p><strong>Xlib由Xorg提供，封装了X通信协议内容</strong>，供客户端使用。</p>
+<h3 id="X-Window由来"><a href="#X-Window由来" class="headerlink" title="X Window由来"></a>X Window由来</h3><p>终端概念的提出：一台计算机可以被多个用户共享，通过终端连接到同一台计算机，而不需要在计算机旁边，多用户、多任务的概念也是诞生于此。</p>
+<blockquote>
+<p>终端只是显示和操作接口，并不包含逻辑处理。</p>
+<ul>
+<li>例如字符终端（也叫CLI）输入<code>ls</code>，传给计算机，应用程序处理之后将结果传回来，终端显示字符。</li>
+<li>例如图形界面终端（也叫GUI）点击一个按钮，告诉计算机，应用程序处理之后将绘图数据传回，终端显示画面。</li>
+</ul>
+</blockquote>
+<p>由于每个GUI应用都要显示界面，而显示设备只有一个，因此需要为每个应用分配一个窗口，再对画面进行合成，最终输出到显示设备。</p>
+<p>但由于早期RAM内存不足，如果为每个窗口分配一块Buffer，打开几个窗口内存就满了。X Window的做法是只使用一块屏幕大小的Buffer，每个窗口可以减去自己被盖住部分的Buffer，当窗口位置发生变化时，发一个重绘信号给窗口，窗口将绘制数据传给X Server的Buffer。</p>
+<p>要实现半透明的窗口，需要对上层窗口和下层窗口做alpha混合，但是由于X Server中的Buffer只有一层，无法进行alpha混合。因此X Window扩展了协议，由Compositor合成之后再将整个屏幕的结果传给X Server渲染（内存够了，但X Window不想变更原来的机制）。</p>
+<p>随着时间发展，越来越多的Client和Server程序运行在同一台机器，Client和Server频繁通信导致性能较低，特别是针对3D渲染。因此出现了DRI框架，客户端可以直接利用显卡处理图形（<strong>直接渲染</strong>）。</p>
+<p>随着客户端做的事越来越多，X Server做的事越来越少。并且有很多问题不好修改原有机制，而是在X协议基础上打洞和扩展，导致X协议越来越复杂。</p>
+<ul>
+<li>直接渲染（Direct Rendering）：客户端直接渲染本地窗口内容。显示步骤还是交给显示服务器统一管理</li>
+<li>间接渲染（Indirect Rendeing）：将绘制指令打包发给Server，通过Server进行窗口的渲染和合成。</li>
+</ul>
+<blockquote>
+<p>GLX实现了直接渲染和间接渲染，可以通过OpenGL直接访问GPU绘制，也可以将OpenGL绘制指令发给X Server，由X Server执行OpenGL指令。</p>
+</blockquote>
+<h3 id="XWindow工作机制"><a href="#XWindow工作机制" class="headerlink" title="XWindow工作机制"></a>XWindow工作机制</h3><p>XWindow工作机制如下：</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow工作流程.png" style="zoom:60%;">
+
+<ol>
+<li>鼠标点击按钮，内核收到事件，通过evdev输入驱动发送到XServer</li>
+<li>XServer将事件发给对应的XClient（实际上XServer不知道窗口信息是否正确，无法将屏幕坐标转为窗口坐标，因为所有的窗口都由Compositor进行管理，例如Compositor可能将窗口缩放或最小化了）</li>
+<li>客户端处理事件，决定绘制的效果，比如按压效果，将绘制指令发给请求服务端</li>
+<li>服务端告诉显卡驱动进行绘制，并且计算变更区域，告诉窗口管理器</li>
+<li>窗口管理器重新合成图像，请求服务端进行渲染</li>
+<li>服务端告诉显卡驱动进行绘制</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>窗口管理器也是一个X Client，这个过程中包含多次Client/Server通信。</li>
+<li>尽管Compositor已经掌管了最终桌面呈现效果，但是Compositor请求X Server渲染时，X Server还会进行一些<strong>重复工作</strong>，例如窗口计算等。</li>
+</ol>
+<h2 id="Wayland"><a href="#Wayland" class="headerlink" title="Wayland"></a>Wayland</h2><p>Wayland的出现就是为了去掉X中不必要的设计，减少Client和Server频繁交互和数据传递，提高效率。</p>
+<p>Wayland工作机制如下：去掉了X Server中间层，直接将渲染工作交给了Compositor（相当于X Server+WindowManager），减少了Client/Server通信和X Server的重复工作。</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland工作流程.png" style="zoom:60%;">
+
+
+
+<p>Wayland和XWindow的主要区别在于</p>
+<ul>
+<li>X Window在服务端绘制：XClient调用XLib绘制指令，传给X Server，X Server进行绘制计算存入Buffer，通知合成器（Compositor）合成图像，再将合成的图像渲染到屏幕。当然现代的X Client也可以做渲染（通过Cairo、GTK+、QT等）</li>
+<li>Wayland在客户端绘制：客户端自行计算绘制的图形，放到Buffer中（可以是共享内存，也可以是显存），请求服务端Wayland Compositor合成图像，渲染到屏幕上。</li>
+</ul>
+<h2 id="Wayland-Weston"><a href="#Wayland-Weston" class="headerlink" title="Wayland/Weston"></a>Wayland/Weston</h2><p>Wayland和X Window System一样，是一种协议。Weston是Wayland的参考实现，类似X Window中的Xorg。</p>
+<h3 id="Weston架构"><a href="#Weston架构" class="headerlink" title="Weston架构"></a>Weston架构</h3><p>Weston模块和工作流程如下</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston工作流程.png" style="zoom:80%;">
+
+<p>Weston Server内部分为输入管理（InputManager）、窗口管理（Shell）、合成器（Compositor）几个部分。类似于Android的InputManagerService、WindowManagerService和SurfaceFlinger。</p>
+<p>Server主循环通过epoll机制等待文件fd（文件描述符），例如监听设备fd输入，listener fd监听Client连接等。</p>
+<p>Client和Server之间通过Domain Socket连接通信。</p>
+<blockquote>
+<p>Domain Socket是UNIX的一种IPC机制，通过绑定socket文件接收和发送数据</p>
+</blockquote>
+<p>Weston自带了一些核心Client和简单用例，如下：</p>
+<ol>
+<li>weston-desktop-shell：负责一些系统全局界面，如桌面图标、状态栏等</li>
+<li>weston-keyboard：软键盘面板</li>
+<li>weston-screenshooter：截屏</li>
+<li>weston-screensaver：屏保</li>
+</ol>
+<p>Weston Server启动过程中会加载几个backend，backend可以有不同的实现，可以以动态链接库的形式被加载，如下：</p>
+<ol>
+<li>shell backend（桌面后端）：实现窗口管理功能，如desktop-shell、fullscreen-shell、ivi-shell（车载桌面）</li>
+<li>renderer backend（渲染后端）：处理Client渲染后的内容，负责合成所有窗口，如pixman（软件渲染）、gl（GPU硬件渲染）、noop</li>
+<li>compositor backend（合成后端）：处理合成之后的内容<ol>
+<li>DRM（Direct Rendering Module），一般用于Linux桌面系统</li>
+<li>fbdev（FrameBuffer设备驱动）：直接输出到Linux的FrameBuffer</li>
+<li>RPI（Raspberry PI）：用于树莓派平台</li>
+<li>RDP（Remote Desktop Protocal，远程桌面协议）：合成后通过RDP传输到远程桌面</li>
+<li>x11：Wayland Compositor作为X Server的Client，运行在X11上</li>
+<li>Wayland：Wayland Compositor作为Server的同时，也作为另一个Wayland Compositor的Client</li>
+<li>…</li>
+</ol>
+</li>
+</ol>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston架构.png" style="zoom:70%;">
+
+<h3 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h3><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland渲染流水线.png" style="zoom:80%;">
+
+<ol>
+<li>Client申请一块Graphic Buffer（可以是共享内存、DRM中的GEM、gralloc分配的显存）</li>
+<li>客户端自行绘制，存入BufferQueue</li>
+<li>通过Wayland协议（Domain Socket连接）将Buffer的handle（fd）传给Server</li>
+<li>Server生成z-order序的窗口栈</li>
+<li>Server使用renderer backend将Buffer转为纹理，并与其他窗口内容合成最终图像</li>
+<li>通过compositor backend输出到屏幕</li>
+</ol>
+<blockquote>
+<p>移动平台上一般没有专门的显存，实际是系统内存，区别在于图形加速硬件一般要求物理连续且符合要求的内存，普通共享内存一般是物理不连续的</p>
+</blockquote>
+<p>Android SurfaceFlinger由服务端分配Buffer。而Wayland中buffer默认是由Client端分配，理论上可以始终只用一块Buffer，但是由于Client和Server同时访问会产生竞争，所以一般Client端都会实现BufferQueue。</p>
+<p><strong>Client和Server都会发生绘制：Client绘制本地窗口内容，Server用于合成时渲染。两边都可以选择软件或者硬件渲染</strong>。软件渲染如Direct Painting，Cairo，硬件渲染如OpenGL等</p>
+<h2 id="窗口管理器"><a href="#窗口管理器" class="headerlink" title="窗口管理器"></a>窗口管理器</h2><p>在现代的合成桌面系统中，X服务器只提供了生成窗口的方法，真正负责窗口控制（标题栏、边框、移动、缩放等功能）和多窗口合成的是窗口管理器（Window Manager），一般由桌面环境提供。</p>
+<p>KDE（K Desktop Enviorment）和GNOME（The GNU Network Object Model Environment）是桌面环境（类似于Window桌面、手机桌面等）。除了窗口管理器的功能外，还包括任务栏，开始菜单、桌面图标等。<strong>本质是一个X Client应用程序，与其他应用同级</strong>。</p>
+<blockquote>
+<p>KDE基于QT开发，GNOME基于GTK+开发。</p>
+<p>XFree86中自带了一个窗口管理器twm（Tab Window Manager）。</p>
+<ul>
+<li>GNOME桌面使用GDM（The GNOME Display Manager）作为窗口管理器。</li>
+<li>GNOME3桌面使用Mutter作为窗口管理器，Mutter基于Clutter库开发</li>
+<li>Ubuntu Unity桌面在10.10时使用Mutter，后来使用Compiz作为窗口管理器，Compiz基于OpenGL开发</li>
+<li>KDE桌面使用KWin作为窗口管理器</li>
+</ul>
+</blockquote>
+<p>开机启动X服务器，X服务器启动桌面应用，进入图形界面，桌面显示任务栏，开始菜单、桌面图标等。可以打开关闭其他应用，控制窗口大小、移动、关闭等。</p>
+<blockquote>
+<p>如果不使用窗口管理器，直接打开X应用程序（如浏览器），此时浏览器不能移动、不能最小化、最大化，没有边框。</p>
+<p>演示：</p>
+<ol>
+<li>开机进入图形界面</li>
+<li>打开XTerm，输入<code>init 3</code>，回到字符界面</li>
+<li>输入<code>startx</code>，启动X服务器，同时启动了一个窗口管理器。进入桌面，和正常开机一样，可以操作窗口</li>
+<li>按<code>ctrl+alt+backspace</code>退出</li>
+<li>输入<code>xinit</code>，启动X服务器，此时可以看到一个XTerm应用，但是不能移动</li>
+<li>在这个XTerm中输入<code>mozilla</code>，打开浏览器，由于没有窗口浏览器，无法移动，不能最小化、最大化，没有边框</li>
+</ol>
+</blockquote>
+<h1 id="图形系统架构"><a href="#图形系统架构" class="headerlink" title="图形系统架构"></a>图形系统架构</h1><p>X Window窗口管理器和X Server分开，通信繁琐，且存在重复工作。</p>
+<p>Wayland更简单一些，窗口管理器内置在Wayland Compositor中，基于EGL接口。</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png" style="zoom:100%;">
+
+<p>X Server使用OpenGL的扩展GLX也可以渲染3D，但是3D绘制信息多，通过X协议传输绘制性能较低。因此出现了使用DRI框架，由客户端直接渲染到Buffer中，再交给显示服务器的Compositor进行合成。</p>
+<p>Client可以支持不同的协议，使用不同的后端，选择直接渲染或者间接渲染，开发套件已经封装好了，例如QT支持OpenGL、XLib、Wayland EGL等后端，Cairo支持Skia、DRM、GL、XLib等后端</p>
+<p>X Server和Wayland Server本质也是应用程序，可以使用不同的渲染引擎</p>
+<p>其他概念解释：</p>
+<ul>
+<li>DIX（Device Independent X，设备无关层）：为X Server提供统一的接口，与底层设备无关</li>
+<li>DDX（Device Dependent X，设备相关层）：X Server的2D硬件驱动，用于访问显卡硬件，实现2D加速，由显卡厂商实现。</li>
+<li>DRI（Direct Rendering Infrastructure，直接渲染框架）：是一套软件架构，不是单个软件或库。用于为用户态程序提供直接渲染功能，涉及Kernel层、XServer层、应用层。</li>
+<li>DRM（Direct Rendering Moudle，直接渲染模块）：Linux内核模块，是DRI框架的一个组件。分为两层：通用DRM接口和显卡驱动实现<ul>
+<li>libDRM：DRM接口封装，用于用户态程序管理显存（例如分配显存、DMA操作、访问FrameBuffer等），由显卡厂商实现接口。例如libDRM-intel（Intel显卡）、libDRM-radeon（AMD镭龙显卡）、libDRM-nouveau（Nvidia显卡）、libDRM-freedreno（高通Adreno显卡）</li>
+</ul>
+</li>
+<li>KMS（Kernel Mode Setting）：负责分辨率、刷新率等相关参数设置和显示画面切换</li>
+<li>GEM（Graphic Execution Manager）：负责Buffer管理，通过DMA机制</li>
+<li>DMA（Direct Memory Access，直接存储器访问）：外部设备直接与系统内存交换数据，不经过CPU。解决批量数据传输的问题。</li>
+<li>MMIO（Memory-mapped I/O，内存映射I/O）：将I/O设备空间映射到内存空间中，可以像访问内存一样访问外部设备资源</li>
+<li>OpenVG（Open Vector Graphics）：2D矢量图形库</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>查看Flutter嵌入层相关的项目介绍时，出现很多陌生的名词Wayland、X11、DRM等，越搜越懵，涉及到GLX、GLFW、KDE、GNOME等概念、工具。结合多篇文章，反复看，终于简单理解了这些名词之间的关系，在此做个总结。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://happyseeker.github.io/graphic/2016/01/25/Graphic-stack.html">图形栈&amp;架构</a></li>
+<li><a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/">Learn OpenGL CN</a></li>
+<li><a target="_blank" rel="noopener" href="https://sh.alynx.one/posts/Difference-between-X-and-Wayland/">X和Wayland的主要区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://magcius.github.io/xplain/article/">xplain</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/jinzhuojun/article/details/47290707">Wayland与Weston简介</a></li>
+<li><a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0590xwindow_1.php">X Window配置介绍</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.it610.com/article/1290551243260895232.htm">OpenGL/Vulkan/Cairo/Skia/angle/VTK/OpenVG/GIMP/Krita等开源绘图库或软件收集</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+              <a href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 跨平台</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/14/flutter-2022-01-14-Flutter%E4%BA%A7%E7%89%A9%E5%88%86%E6%9E%90/" rel="prev" title="Flutter产物分析">
+      <i class="fa fa-chevron-left"></i> Flutter产物分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenGL"><span class="nav-number">1.</span> <span class="nav-text">OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%98%E5%9B%BE%E5%BC%95%E6%93%8E"><span class="nav-number">1.1.</span> <span class="nav-text">绘图引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GTK%E5%92%8CQT"><span class="nav-number">1.2.</span> <span class="nav-text">GTK和QT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">窗口系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#XWindow"><span class="nav-number">2.1.</span> <span class="nav-text">XWindow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#X-Window%E7%94%B1%E6%9D%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">X Window由来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XWindow%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.2.</span> <span class="nav-text">XWindow工作机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wayland"><span class="nav-number">2.2.</span> <span class="nav-text">Wayland</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wayland-Weston"><span class="nav-number">2.3.</span> <span class="nav-text">Wayland&#x2F;Weston</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Weston%E6%9E%B6%E6%9E%84"><span class="nav-number">2.3.1.</span> <span class="nav-text">Weston架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="nav-number">2.3.2.</span> <span class="nav-text">渲染流水线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">窗口管理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">图形系统架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">430k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

@@ -5871,11 +5871,8 @@ end</pre>
 <p>可以修改镜像的所属仓库：<br><code>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</code></p>
 <h2 id="登录docker账号"><a href="#登录docker账号" class="headerlink" title="登录docker账号"></a>登录docker账号</h2><p>输入<code>docker login</code>，接着输入用户名和密码<br>或者在docker图形界面登录</p>
 <h2 id="本地镜像上传到镜像仓库"><a href="#本地镜像上传到镜像仓库" class="headerlink" title="本地镜像上传到镜像仓库"></a>本地镜像上传到镜像仓库</h2><p><code>docker push username/my-hello-world:v1</code><br>上传成功后可以到hub上查看是否创建成功</p>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
-<li><p>遇到一个问题：原先我在windows上用的终端时Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>原先在windows上用的终端是Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
 <p>这是由于终端和linux不一样，网上有很多解决办法，说的有点多，弄了一会没弄好就没耐心了，正好我觉得Git Bash不太好用了，如复制粘贴快捷键（一点都不快捷，笔记本的键盘可能会好点）是<code>Ctrl+ins</code>和<code>Shift+ins</code>，且命令提示也不是很友好，于是趁此机会换了cmder命令行工具，顺便学习了一下，结果很满意，想看的可以移步<a href="/2018/12/14/tool-2018-12-14-Cmder/">这里</a>。</p>
-</li>
-</ul>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料</p>
 <ul>
 <li><a href="https://www.cnblogs.com/wherein/p/6862911.html">Docker 如何把镜像上传到docker hub</a></li>
@@ -8761,7 +8758,7 @@ end</pre>
 <td>cli</td>
 <td>command-line interface</td>
 <td>命令行界面</td>
-<td>终端</td>
+<td>相对应的是GUI（图形界面接口）</td>
 </tr>
 <tr>
 <td>CR</td>
@@ -12690,8 +12687,8 @@ end</pre>
 <blockquote>
 <p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
 </blockquote>
-<p>切换版本：默认获取master分支的版本，如果需要切到指定engine版本，需要进入<code>src/flutter</code>目录执行以下命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 切分支，commitId可以使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
+<p>切换版本：默认获取master分支的版本，建议切换engine版本，与Flutter SDK保持一致，需要进入<code>src/flutter</code>目录执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> commitId使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
 <blockquote>
@@ -12911,10 +12908,10 @@ end</pre>
 <p><code>_genSnapshot.run</code>内部实际是调用对应CPU架构引擎的<code>gen_snapshot</code>程序，命令如下，省略部分参数（亲测：修改路径之后可以直接执行，将上步生成的<code>app.dill</code>文件生成<code>app.so</code>文件）</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;flutter_sdk&#125;/bin/cache/artifacts/engine/android-arm-release/darwin-x64/gen_snapshot </span><br><span class="line">--deterministic </span><br><span class="line">--snapshot_kind=app-aot-elf</span><br><span class="line">--elf=&#123;output_path&#125;/app.so</span><br><span class="line">app.dill</span><br></pre></td></tr></table></figure>
 
-<p>查看<code>AotAndroidAssetBundle</code>目标：调用<code>copyAssets</code>生成Flutter静态资源文件（如图片、字体文件，配置文件等）并拷贝，如果是Debug模式，会拷贝快照文件到flutter_assets中，而不是打包成<code>libapp.so</code>。</p>
+<p>查看<code>AotAndroidAssetBundle</code>目标：调用<code>copyAssets</code>生成Flutter静态资源文件（如图片、字体文件，配置文件等）并拷贝，如果是Debug模式，还会拷贝快照文件到<code>flutter_assets</code>中，而不是打包成<code>libapp.so</code>。Debug模式下产物如下：</p>
 <ul>
-<li><code>kernel_blob.bin</code>是Dart编译前端生成的Kernel快照文件，即<code>app.dill</code></li>
-<li><code>vm_snapshot_data</code>和<code>isolate_snapshot_data</code>包含Flutter引擎的虚拟机和特定isolate的Dart堆的初始状态，用于快速启动Dart虚拟机。分别对应引擎产物<code>vm_isolate_snapshot.bin</code>、<code>isolate_snapshot.bin</code>。<ul>
+<li><code>kernel_blob.bin</code>：Dart编译前端Debug模式（不带<code>--aot --tfa</code>参数）生成的Kernel快照文件，即<code>app.dill</code>（aot编译的Kernel文件无法直接运行）</li>
+<li><code>vm_snapshot_data</code>和<code>isolate_snapshot_data</code>：包含Flutter引擎的虚拟机和特定isolate的Dart堆的初始状态，用于快速启动Dart虚拟机。分别对应引擎产物<code>vm_isolate_snapshot.bin</code>、<code>isolate_snapshot.bin</code>。<ul>
 <li>位于缓存引擎路径<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine/darwin-x64</code>下</li>
 <li>或者本地编译引擎路径下<code>&#123;flutter_engine&#125;/src/out/host_debug_unopt/gen/flutter/lib/snapshot/</code>下</li>
 </ul>
@@ -13613,6 +13610,261 @@ end</pre>
       <tags>
         <tag>Flutter</tag>
         <tag>Dart</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图形系统概念扫盲</title>
+    <url>/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h1 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h1><p>OpenGL（Open Grapics Library） 是一套图形操作与渲染规范，它定义了一套 API；一般由显卡商进行实现。OpenGL只负责图形绘制，不包含窗口。</p>
+<ul>
+<li>OpenGL ES（OpenGL for Embedded Systems）</li>
+<li>GLEW（OpenGL Extension Wrangler Library）：对底层OpenGL接口的封装，实现了跨平台。</li>
+<li><a href="https://www.glfw.org/">GLFW</a>（Graphics Library Framework，图形库框架） 是配合 OpenGL 使用的轻量级工具程序库。GLFW 的主要功能是创建并管理窗口和 OpenGL 上下文，同时还提供了处理手柄、键盘、鼠标输入的功能。有类似功能的库还有 <a href="https://www.opengl.org/resources/libraries/glut/">GLUT</a>（OpenGL Utility Toolkit）和 <a href="https://www.libsdl.org/">SDL</a>（Simple DirectMedia Layer）。</li>
+</ul>
+<p>各种相关的库介绍如下</p>
+<p><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png"></p>
+<p>窗口库：OpenGL和本地窗口系统之间的通信接口，实现了OpenGL的平台无关性。</p>
+<p>例如EGL提供本地窗口相关的API，创建渲染表面EGLSurface，同时提供渲染上下文EGLContext，用来进行状态管理。接下来OpenGL ES可以在这个Surface上进行绘制。</p>
+<ul>
+<li>Display（EGLDisplay）：对实际显示设备的抽象</li>
+<li>Surface（EGLSurface）：对存储图形的内存区域FrameBuffer的抽象，包括Color Buffer（颜色缓冲区）、Stencil Buffer（模版缓冲区）、Depth Buffer（深度缓冲区）</li>
+<li>Context（EGLContext）：存储OpenGL ES绘图的状态信息</li>
+</ul>
+<blockquote>
+<p>Android中的GLSurfaceView内部实现了对EGL的封装，不需要直接调用EGL库</p>
+</blockquote>
+<p>Mesa是OpenGL的一种开源实现，由两部分组成：</p>
+<ul>
+<li>LibGL：实现了OpenGL的编程接口，提供给用户进行开发</li>
+<li>DRI（Direct Rendering Infrastructure）驱动：直接访问和操作硬件（显卡、显存、GPU），利用硬件加速，实现绘图操作</li>
+</ul>
+<h2 id="绘图引擎"><a href="#绘图引擎" class="headerlink" title="绘图引擎"></a>绘图引擎</h2><p>3D绘图引擎，图形API接口，可以直接操作GPU，主要为GPU硬件加速设计，由显卡厂商实现：</p>
+<ul>
+<li>OpenGL：传统的图形API接口，支持跨平台，主要用于3D绘制</li>
+<li>DirectX：用于Windows系统，是一个多媒体处理框架，不是单纯的图形API，分为显示、声音、输入、网络四部分。显示部分分为Direct2D和Direct3D</li>
+<li>Vulkan：跨平台的2D和3D绘图API，15年发布，为取代OpenGL</li>
+<li>Metal：14年推出，为Apple游戏开发设计</li>
+</ul>
+<p>2D绘图引擎，一般是软件实现：</p>
+<ul>
+<li>Cairo：FireFox和GTK+底层使用Cairo绘图引擎</li>
+<li>Skia（SGL）：Google的Android绘图引擎</li>
+<li>GDI、GDI+：微软推出的二维绘图引擎</li>
+<li>Direct2D：微软推出的二维绘图引擎，取代GDI、GDI+</li>
+</ul>
+<blockquote>
+<p>图形API可以通过软件（CPU）实现，也可以使用硬件加速（GPU）</p>
+</blockquote>
+<h2 id="GTK和QT"><a href="#GTK和QT" class="headerlink" title="GTK和QT"></a>GTK和QT</h2><p>GTK+（GIMP ToolKit）和QT是图形开发套件（GUI Toolkits），提供了很多控件，有不同的backend，例如在X11上是对XLib的封装，QT支持OpenGL的backend。</p>
+<p>GTK2+不直接使用XLib，而是使用GDK和GLib函数库，通过GDK调用XLib，提高了可移植性。</p>
+<p>GTK3+使用Cairo作为绘图引擎，Cairo支持不同的backend</p>
+<blockquote>
+<p>GTK+最初是为GIMP（GNU Image Manipulation Program，GNU图像处理程序）设计的，用于GNU/Linux下图形界面应用程序的开发，也有Winodws版和Mac版</p>
+</blockquote>
+<p><strong>前端向上层提供统一的编程接口，屏蔽底层绘图细节，后端（Backend）指底层的绘图引擎</strong>，例如</p>
+<ul>
+<li>XLib后端：使用XLib接口，向X Server发送绘图请求，由X Server完成图形绘制</li>
+<li>OpenGL后端：通过OpenGL接口（LibGL），操作GPU完成绘制</li>
+<li>DRM后端：直接调用DRM接口（LibDRM）或者通过DRI或DDX调用</li>
+</ul>
+<blockquote>
+<p>后端是相对的概念，例如X Server内部也能调用OpenGL后端，DRM后端</p>
+</blockquote>
+<h1 id="窗口系统"><a href="#窗口系统" class="headerlink" title="窗口系统"></a>窗口系统</h1><p>Linux是一个基于命令行的操作系统，不包含图形界面，很多Linux服务器不装X服务器，只有命令行界面。而Windows在内核中就实现了图形界面。</p>
+<p>GUI界面要呈现给用户，主要分为两个步骤：</p>
+<ol>
+<li>渲染：通过图形API接口绘制图形（包括软件/硬件，2D/3D，直接/间接，客户端渲染/服务端渲染），保存到Buffer中（操作内存MMIO、DMA）</li>
+<li>送显：将Buffer中的UI数据，呈现到显示设备上。</li>
+</ol>
+<p>由于每个应用都有自己的界面，这些应用共用一个显示设备，或是并列显示，或是层叠显示。因此需要一个程序来管理这些应用界面：负责将各个界面排列、合并最终显示到显示设备，即显示服务器。</p>
+<blockquote>
+<p>如X Window中的X Server、Wayland中的Wayland Server，Android中的Surface Flinger。</p>
+</blockquote>
+<p>显示服务器（Display Server）：直接和硬件交互（输入设备管理，输出画面到显示器等），需要将事件传递给应用处理，并获取每个应用的绘制信息，因此需要一套通信协议，即窗口系统协议。</p>
+<h2 id="XWindow"><a href="#XWindow" class="headerlink" title="XWindow"></a>XWindow</h2><p>X Window是窗口系统协议，用来显示图形界面，<strong>定义了服务端（X Server）和客户端（X Client）通信以及内核通信的机制，是一种协议，不是软件</strong>。</p>
+<p><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow%E6%9E%B6%E6%9E%84.png"></p>
+<ul>
+<li>X Server：负责屏幕绘制，并将图像输出到屏幕；并且接收设备输入，分给对应的窗口处理。直接与硬件交互。</li>
+<li>X Client：指不同的应用程序，负责处理事件，处理绘图数据，并将绘制结果传给X Server。不和硬件交互。</li>
+<li>X Window Manager（窗口管理器）：特殊的X Client，负责管理所有Client窗口大小、位置等，合成所有窗口内容传给X Server。</li>
+</ul>
+<p>优点：</p>
+<ol>
+<li>X Client不需要知道X Server的硬件配备和操作系统，只负责处理绘图数据。</li>
+<li>客户端和服务端可以是同一台主机的两个进程，也可以不在一台机器上，使用网络通信。</li>
+<li>可以有多个X Server，Linux服务器被多个用户使用，每个用户都有一个显示器需要显示画面。</li>
+</ol>
+<p><strong>注：这里的Server/Client不同于计算机概念上的Server/Client。</strong></p>
+<ul>
+<li>在计算机本身的意义上：Server指远程的机器，Client指用户端本地机器，性能和功能较弱。</li>
+<li>在显示的意义上：Server指显示服务器，一般在用户端，将画面显示到用户端的设备上，而Client运行在远程服务器上。</li>
+</ul>
+<p>常用的X Server服务器软件有XFree86、Xorg、Xnest等。</p>
+<blockquote>
+<p>X11R6（XProtocol Version 11 Release 6）是X协议的版本，XFree86 3.3.6是软件的版本</p>
+</blockquote>
+<p><strong>Xlib由Xorg提供，封装了X通信协议内容</strong>，供客户端使用。</p>
+<h3 id="X-Window由来"><a href="#X-Window由来" class="headerlink" title="X Window由来"></a>X Window由来</h3><p>终端概念的提出：一台计算机可以被多个用户共享，通过终端连接到同一台计算机，而不需要在计算机旁边，多用户、多任务的概念也是诞生于此。</p>
+<blockquote>
+<p>终端只是显示和操作接口，并不包含逻辑处理。</p>
+<ul>
+<li>例如字符终端（也叫CLI）输入<code>ls</code>，传给计算机，应用程序处理之后将结果传回来，终端显示字符。</li>
+<li>例如图形界面终端（也叫GUI）点击一个按钮，告诉计算机，应用程序处理之后将绘图数据传回，终端显示画面。</li>
+</ul>
+</blockquote>
+<p>由于每个GUI应用都要显示界面，而显示设备只有一个，因此需要为每个应用分配一个窗口，再对画面进行合成，最终输出到显示设备。</p>
+<p>但由于早期RAM内存不足，如果为每个窗口分配一块Buffer，打开几个窗口内存就满了。X Window的做法是只使用一块屏幕大小的Buffer，每个窗口可以减去自己被盖住部分的Buffer，当窗口位置发生变化时，发一个重绘信号给窗口，窗口将绘制数据传给X Server的Buffer。</p>
+<p>要实现半透明的窗口，需要对上层窗口和下层窗口做alpha混合，但是由于X Server中的Buffer只有一层，无法进行alpha混合。因此X Window扩展了协议，由Compositor合成之后再将整个屏幕的结果传给X Server渲染（内存够了，但X Window不想变更原来的机制）。</p>
+<p>随着时间发展，越来越多的Client和Server程序运行在同一台机器，Client和Server频繁通信导致性能较低，特别是针对3D渲染。因此出现了DRI框架，客户端可以直接利用显卡处理图形（<strong>直接渲染</strong>）。</p>
+<p>随着客户端做的事越来越多，X Server做的事越来越少。并且有很多问题不好修改原有机制，而是在X协议基础上打洞和扩展，导致X协议越来越复杂。</p>
+<ul>
+<li>直接渲染（Direct Rendering）：客户端直接渲染本地窗口内容。显示步骤还是交给显示服务器统一管理</li>
+<li>间接渲染（Indirect Rendeing）：将绘制指令打包发给Server，通过Server进行窗口的渲染和合成。</li>
+</ul>
+<blockquote>
+<p>GLX实现了直接渲染和间接渲染，可以通过OpenGL直接访问GPU绘制，也可以将OpenGL绘制指令发给X Server，由X Server执行OpenGL指令。</p>
+</blockquote>
+<h3 id="XWindow工作机制"><a href="#XWindow工作机制" class="headerlink" title="XWindow工作机制"></a>XWindow工作机制</h3><p>XWindow工作机制如下：</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/XWindow工作流程.png" style="zoom:60%;">
+
+<ol>
+<li>鼠标点击按钮，内核收到事件，通过evdev输入驱动发送到XServer</li>
+<li>XServer将事件发给对应的XClient（实际上XServer不知道窗口信息是否正确，无法将屏幕坐标转为窗口坐标，因为所有的窗口都由Compositor进行管理，例如Compositor可能将窗口缩放或最小化了）</li>
+<li>客户端处理事件，决定绘制的效果，比如按压效果，将绘制指令发给请求服务端</li>
+<li>服务端告诉显卡驱动进行绘制，并且计算变更区域，告诉窗口管理器</li>
+<li>窗口管理器重新合成图像，请求服务端进行渲染</li>
+<li>服务端告诉显卡驱动进行绘制</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>窗口管理器也是一个X Client，这个过程中包含多次Client/Server通信。</li>
+<li>尽管Compositor已经掌管了最终桌面呈现效果，但是Compositor请求X Server渲染时，X Server还会进行一些<strong>重复工作</strong>，例如窗口计算等。</li>
+</ol>
+<h2 id="Wayland"><a href="#Wayland" class="headerlink" title="Wayland"></a>Wayland</h2><p>Wayland的出现就是为了去掉X中不必要的设计，减少Client和Server频繁交互和数据传递，提高效率。</p>
+<p>Wayland工作机制如下：去掉了X Server中间层，直接将渲染工作交给了Compositor（相当于X Server+WindowManager），减少了Client/Server通信和X Server的重复工作。</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland工作流程.png" style="zoom:60%;">
+
+
+
+<p>Wayland和XWindow的主要区别在于</p>
+<ul>
+<li>X Window在服务端绘制：XClient调用XLib绘制指令，传给X Server，X Server进行绘制计算存入Buffer，通知合成器（Compositor）合成图像，再将合成的图像渲染到屏幕。当然现代的X Client也可以做渲染（通过Cairo、GTK+、QT等）</li>
+<li>Wayland在客户端绘制：客户端自行计算绘制的图形，放到Buffer中（可以是共享内存，也可以是显存），请求服务端Wayland Compositor合成图像，渲染到屏幕上。</li>
+</ul>
+<h2 id="Wayland-Weston"><a href="#Wayland-Weston" class="headerlink" title="Wayland/Weston"></a>Wayland/Weston</h2><p>Wayland和X Window System一样，是一种协议。Weston是Wayland的参考实现，类似X Window中的Xorg。</p>
+<h3 id="Weston架构"><a href="#Weston架构" class="headerlink" title="Weston架构"></a>Weston架构</h3><p>Weston模块和工作流程如下</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston工作流程.png" style="zoom:80%;">
+
+<p>Weston Server内部分为输入管理（InputManager）、窗口管理（Shell）、合成器（Compositor）几个部分。类似于Android的InputManagerService、WindowManagerService和SurfaceFlinger。</p>
+<p>Server主循环通过epoll机制等待文件fd（文件描述符），例如监听设备fd输入，listener fd监听Client连接等。</p>
+<p>Client和Server之间通过Domain Socket连接通信。</p>
+<blockquote>
+<p>Domain Socket是UNIX的一种IPC机制，通过绑定socket文件接收和发送数据</p>
+</blockquote>
+<p>Weston自带了一些核心Client和简单用例，如下：</p>
+<ol>
+<li>weston-desktop-shell：负责一些系统全局界面，如桌面图标、状态栏等</li>
+<li>weston-keyboard：软键盘面板</li>
+<li>weston-screenshooter：截屏</li>
+<li>weston-screensaver：屏保</li>
+</ol>
+<p>Weston Server启动过程中会加载几个backend，backend可以有不同的实现，可以以动态链接库的形式被加载，如下：</p>
+<ol>
+<li>shell backend（桌面后端）：实现窗口管理功能，如desktop-shell、fullscreen-shell、ivi-shell（车载桌面）</li>
+<li>renderer backend（渲染后端）：处理Client渲染后的内容，负责合成所有窗口，如pixman（软件渲染）、gl（GPU硬件渲染）、noop</li>
+<li>compositor backend（合成后端）：处理合成之后的内容<ol>
+<li>DRM（Direct Rendering Module），一般用于Linux桌面系统</li>
+<li>fbdev（FrameBuffer设备驱动）：直接输出到Linux的FrameBuffer</li>
+<li>RPI（Raspberry PI）：用于树莓派平台</li>
+<li>RDP（Remote Desktop Protocal，远程桌面协议）：合成后通过RDP传输到远程桌面</li>
+<li>x11：Wayland Compositor作为X Server的Client，运行在X11上</li>
+<li>Wayland：Wayland Compositor作为Server的同时，也作为另一个Wayland Compositor的Client</li>
+<li>…</li>
+</ol>
+</li>
+</ol>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston架构.png" style="zoom:70%;">
+
+<h3 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h3><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland渲染流水线.png" style="zoom:80%;">
+
+<ol>
+<li>Client申请一块Graphic Buffer（可以是共享内存、DRM中的GEM、gralloc分配的显存）</li>
+<li>客户端自行绘制，存入BufferQueue</li>
+<li>通过Wayland协议（Domain Socket连接）将Buffer的handle（fd）传给Server</li>
+<li>Server生成z-order序的窗口栈</li>
+<li>Server使用renderer backend将Buffer转为纹理，并与其他窗口内容合成最终图像</li>
+<li>通过compositor backend输出到屏幕</li>
+</ol>
+<blockquote>
+<p>移动平台上一般没有专门的显存，实际是系统内存，区别在于图形加速硬件一般要求物理连续且符合要求的内存，普通共享内存一般是物理不连续的</p>
+</blockquote>
+<p>Android SurfaceFlinger由服务端分配Buffer。而Wayland中buffer默认是由Client端分配，理论上可以始终只用一块Buffer，但是由于Client和Server同时访问会产生竞争，所以一般Client端都会实现BufferQueue。</p>
+<p><strong>Client和Server都会发生绘制：Client绘制本地窗口内容，Server用于合成时渲染。两边都可以选择软件或者硬件渲染</strong>。软件渲染如Direct Painting，Cairo，硬件渲染如OpenGL等</p>
+<h2 id="窗口管理器"><a href="#窗口管理器" class="headerlink" title="窗口管理器"></a>窗口管理器</h2><p>在现代的合成桌面系统中，X服务器只提供了生成窗口的方法，真正负责窗口控制（标题栏、边框、移动、缩放等功能）和多窗口合成的是窗口管理器（Window Manager），一般由桌面环境提供。</p>
+<p>KDE（K Desktop Enviorment）和GNOME（The GNU Network Object Model Environment）是桌面环境（类似于Window桌面、手机桌面等）。除了窗口管理器的功能外，还包括任务栏，开始菜单、桌面图标等。<strong>本质是一个X Client应用程序，与其他应用同级</strong>。</p>
+<blockquote>
+<p>KDE基于QT开发，GNOME基于GTK+开发。</p>
+<p>XFree86中自带了一个窗口管理器twm（Tab Window Manager）。</p>
+<ul>
+<li>GNOME桌面使用GDM（The GNOME Display Manager）作为窗口管理器。</li>
+<li>GNOME3桌面使用Mutter作为窗口管理器，Mutter基于Clutter库开发</li>
+<li>Ubuntu Unity桌面在10.10时使用Mutter，后来使用Compiz作为窗口管理器，Compiz基于OpenGL开发</li>
+<li>KDE桌面使用KWin作为窗口管理器</li>
+</ul>
+</blockquote>
+<p>开机启动X服务器，X服务器启动桌面应用，进入图形界面，桌面显示任务栏，开始菜单、桌面图标等。可以打开关闭其他应用，控制窗口大小、移动、关闭等。</p>
+<blockquote>
+<p>如果不使用窗口管理器，直接打开X应用程序（如浏览器），此时浏览器不能移动、不能最小化、最大化，没有边框。</p>
+<p>演示：</p>
+<ol>
+<li>开机进入图形界面</li>
+<li>打开XTerm，输入<code>init 3</code>，回到字符界面</li>
+<li>输入<code>startx</code>，启动X服务器，同时启动了一个窗口管理器。进入桌面，和正常开机一样，可以操作窗口</li>
+<li>按<code>ctrl+alt+backspace</code>退出</li>
+<li>输入<code>xinit</code>，启动X服务器，此时可以看到一个XTerm应用，但是不能移动</li>
+<li>在这个XTerm中输入<code>mozilla</code>，打开浏览器，由于没有窗口浏览器，无法移动，不能最小化、最大化，没有边框</li>
+</ol>
+</blockquote>
+<h1 id="图形系统架构"><a href="#图形系统架构" class="headerlink" title="图形系统架构"></a>图形系统架构</h1><p>X Window窗口管理器和X Server分开，通信繁琐，且存在重复工作。</p>
+<p>Wayland更简单一些，窗口管理器内置在Wayland Compositor中，基于EGL接口。</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png" style="zoom:100%;">
+
+<p>X Server使用OpenGL的扩展GLX也可以渲染3D，但是3D绘制信息多，通过X协议传输绘制性能较低。因此出现了使用DRI框架，由客户端直接渲染到Buffer中，再交给显示服务器的Compositor进行合成。</p>
+<p>Client可以支持不同的协议，使用不同的后端，选择直接渲染或者间接渲染，开发套件已经封装好了，例如QT支持OpenGL、XLib、Wayland EGL等后端，Cairo支持Skia、DRM、GL、XLib等后端</p>
+<p>X Server和Wayland Server本质也是应用程序，可以使用不同的渲染引擎</p>
+<p>其他概念解释：</p>
+<ul>
+<li>DIX（Device Independent X，设备无关层）：为X Server提供统一的接口，与底层设备无关</li>
+<li>DDX（Device Dependent X，设备相关层）：X Server的2D硬件驱动，用于访问显卡硬件，实现2D加速，由显卡厂商实现。</li>
+<li>DRI（Direct Rendering Infrastructure，直接渲染框架）：是一套软件架构，不是单个软件或库。用于为用户态程序提供直接渲染功能，涉及Kernel层、XServer层、应用层。</li>
+<li>DRM（Direct Rendering Moudle，直接渲染模块）：Linux内核模块，是DRI框架的一个组件。分为两层：通用DRM接口和显卡驱动实现<ul>
+<li>libDRM：DRM接口封装，用于用户态程序管理显存（例如分配显存、DMA操作、访问FrameBuffer等），由显卡厂商实现接口。例如libDRM-intel（Intel显卡）、libDRM-radeon（AMD镭龙显卡）、libDRM-nouveau（Nvidia显卡）、libDRM-freedreno（高通Adreno显卡）</li>
+</ul>
+</li>
+<li>KMS（Kernel Mode Setting）：负责分辨率、刷新率等相关参数设置和显示画面切换</li>
+<li>GEM（Graphic Execution Manager）：负责Buffer管理，通过DMA机制</li>
+<li>DMA（Direct Memory Access，直接存储器访问）：外部设备直接与系统内存交换数据，不经过CPU。解决批量数据传输的问题。</li>
+<li>MMIO（Memory-mapped I/O，内存映射I/O）：将I/O设备空间映射到内存空间中，可以像访问内存一样访问外部设备资源</li>
+<li>OpenVG（Open Vector Graphics）：2D矢量图形库</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>查看Flutter嵌入层相关的项目介绍时，出现很多陌生的名词Wayland、X11、DRM等，越搜越懵，涉及到GLX、GLFW、KDE、GNOME等概念、工具。结合多篇文章，反复看，终于简单理解了这些名词之间的关系，在此做个总结。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="http://happyseeker.github.io/graphic/2016/01/25/Graphic-stack.html">图形栈&amp;架构</a></li>
+<li><a href="https://learnopengl-cn.github.io/">Learn OpenGL CN</a></li>
+<li><a href="https://sh.alynx.one/posts/Difference-between-X-and-Wayland/">X和Wayland的主要区别</a></li>
+<li><a href="https://magcius.github.io/xplain/article/">xplain</a></li>
+<li><a href="https://blog.csdn.net/jinzhuojun/article/details/47290707">Wayland与Weston简介</a></li>
+<li><a href="http://cn.linux.vbird.org/linux_basic/0590xwindow_1.php">X Window配置介绍</a></li>
+<li><a href="https://www.it610.com/article/1290551243260895232.htm">OpenGL/Vulkan/Cairo/Skia/angle/VTK/OpenVG/GIMP/Krita等开源绘图库或软件收集</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+        <tag>跨平台</tag>
       </tags>
   </entry>
 </search>
