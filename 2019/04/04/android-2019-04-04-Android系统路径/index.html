@@ -24,16 +24,18 @@
 
   <meta name="description" content="Android系统常用路径">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android系统路径">
+<meta property="og:title" content="Android系统常用路径">
 <meta property="og:url" content="https://blog.afauria.xyz/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="Android系统常用路径">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/Android%E8%AE%BE%E5%A4%87%E5%AD%98%E5%82%A8.png">
 <meta property="article:published_time" content="2019-04-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-16T07:33:31.590Z">
+<meta property="article:modified_time" content="2022-03-01T06:36:56.295Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/Android%E8%AE%BE%E5%A4%87%E5%AD%98%E5%82%A8.png">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/">
 
@@ -48,7 +50,7 @@
   };
 </script>
 
-  <title>Android系统路径 | Afauria's Blog</title>
+  <title>Android系统常用路径 | Afauria's Blog</title>
   
 
 
@@ -220,7 +222,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android系统路径
+          Android系统常用路径
         </h1>
 
         <div class="post-meta">
@@ -238,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-16 15:33:31" itemprop="dateModified" datetime="2021-12-16T15:33:31+08:00">2021-12-16</time>
+                <time title="修改时间：2022-03-01 14:36:56" itemprop="dateModified" datetime="2022-03-01T14:36:56+08:00">2022-03-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,7 +253,7 @@
             </span>
 
           
-            <span id="/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/" class="post-meta-item leancloud_visitors" data-flag-title="Android系统路径" title="阅读次数">
+            <span id="/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/" class="post-meta-item leancloud_visitors" data-flag-title="Android系统常用路径" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -277,14 +279,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>893</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">Android系统常用路径</div>
 
@@ -297,23 +299,140 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>可以通过<code>find . -name &lt;文件名&gt;</code>查找文件</p>
-<ol>
+        <p>可以通过<code>find . -name &lt;文件名&gt;</code>在系统中查找文件，大部分文件夹需要root才能访问</p>
+<h1 id="Android应用路径"><a href="#Android应用路径" class="headerlink" title="Android应用路径"></a>Android应用路径</h1><h2 id="内部存储和外部存储"><a href="#内部存储和外部存储" class="headerlink" title="内部存储和外部存储"></a>内部存储和外部存储</h2><ul>
+<li>内部存储（Internal storage）：<code>/data/</code>路径下，需要root之后才能查看</li>
+<li>外部存储（External storage）：<code>/storage/</code>路径下，需要申请读写权限。包括机身存储和外部SD卡。<ul>
+<li>机身存储：<code>/storage/emulated/0/</code></li>
+<li>SD卡存储：<code>/storage/SD卡/</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>以前的手机都要插SD卡，机身存储就是内部存储，SD卡就是外部存储。</p>
+<p>现在的手机基本都扩充了机身存储，不需要插SD卡，因此把机身存储从概念上划分为内部存储和外部存储。</p>
+</blockquote>
+<p><img src="/2019/04/04/android-2019-04-04-Android%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84/Android%E8%AE%BE%E5%A4%87%E5%AD%98%E5%82%A8.png"></p>
+<p><strong>Android的内部存储和外部存储只是外存的两个分区。</strong></p>
+<ul>
+<li>ROM（Read-Only Memory，只读存储器）：断电后数据还在。也叫外存。</li>
+<li>RAM（Random Access Memory，随机存取存储器）：断电之后数据丢失。也叫主存、内存。</li>
+</ul>
+<p>外部存储可能有多个，如何获取SD卡路径？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">File[] files;</span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">    files = getExternalFilesDirs(Environment.MEDIA_MOUNTED);</span><br><span class="line">    <span class="keyword">for</span>(File file: files)&#123;</span><br><span class="line">        Log.e(TAG, file);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="外部存储公共目录"><a href="#外部存储公共目录" class="headerlink" title="外部存储公共目录"></a>外部存储公共目录</h2><p>根据type返回不同路径：<code>Environment.getExternalStoragePublicDirectory(type);</code></p>
+<ul>
+<li><code>Environment.DIRECTORY_DCIM：/storage/emulated/0/DCIM</code></li>
+<li><code>DIRECTORY_MUSIC：/storage/emulated/0/Music</code></li>
+<li><code>DIRECTORY_PODCASTS：/storage/emulated/0/Podcasts</code></li>
+<li><code>DIRECTORY_RINGTONES：/storage/emulated/0/Ringtones</code></li>
+<li><code>DIRECTORY_ALARMS：/storage/emulated/0/Alarms</code></li>
+<li><code>DIRECTORY_NOTIFICATIONS：/storage/emulated/0/Notifications</code></li>
+<li><code>DIRECTORY_PICTURES：/storage/emulated/0/Pictures</code></li>
+<li><code>DIRECTORY_MOVIES：/storage/emulated/0/Movies</code></li>
+<li><code>DIRECTORY_DOWNLOADS：/storage/emulated/0/Downloads</code></li>
+<li><code>DIRECTORY_DOCUMENTS：/storage/emulated/0/Documents</code></li>
+</ul>
+<h2 id="APP私有目录"><a href="#APP私有目录" class="headerlink" title="APP私有目录"></a>APP私有目录</h2><p>APP私有目录（专属文件）：只有应用本身可访问，其他应用不可访问，应用卸载时会自动删除，也可以手动清除应用数据。</p>
+<p>APP在内部存储和外部存储都有对应的私有目录：内部存储更安全，但是存储空间有限，建议大文件使用外部存储。</p>
+<ul>
+<li><code>/data/data/包名/</code>：内部存储APP私有目录<ul>
+<li><code>/data/data/包名/cache</code>：临时缓存信息，存储空间不足时会自动被清除，<code>context.getCacheDir()</code></li>
+<li><code>/data/data/包名/files</code>：文件信息，<code>context.getFilesDir()</code></li>
+<li><code>/data/data/包名/databases</code>：数据库信息</li>
+<li><code>/data/data/包名/shared_prefss</code>：SharedPreferences信息</li>
+</ul>
+</li>
+<li><code>/storage/emulated/0/Android/data/包名/</code>：外部存储APP私有目录<ul>
+<li><code>/storage/emulated/0/Android/包名/cache</code>：临时缓存信息，存储空间不足时会自动被清除，<code>context.getExternalCacheDir()</code></li>
+<li><code>/storage/emulated/0/Android/包名/files</code>：文件信息，<code>context.getExternalFilesDir()</code></li>
+<li><code>/storage/emulated/0/Android/包名/databases</code>：数据库信息</li>
+<li><code>/storage/emulated/0/Android/包名/shared_prefss</code>：SharedPreferences信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="其他路径"><a href="#其他路径" class="headerlink" title="其他路径"></a>其他路径</h2><ul>
+<li><code>/data/app/包名</code>：普通应用安装路径，存放apk和解压文件，<code>context.getPackageCodePath()</code>、<code>context.getPackageResourcePath()</code></li>
+<li><code>/system/app/包名</code>：系统应用安装路径，比<code>/data/app</code>权限更高，需要root之后才能卸载</li>
+<li><code>/data/dalvik-cache</code>：存储dex优化的缓存文件，提升应用效率</li>
+<li><code>/mnt/sdcard</code>、<code>/storage/sdcard0</code>、<code>/sdcard</code>、<code>/storage/emulated/0</code>、<code>/storage/emulated/legacy</code>：通过挂载和链接指向同一个路径，为了兼容不同Android版本路径名称。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>绝对路径</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>context.getCacheDir()</code></td>
+<td><code>/data/data/包名/cache</code></td>
+<td>内部存储APP私有路径</td>
+</tr>
+<tr>
+<td><code>context.getFilesDir()</code></td>
+<td><code>/data/data/包名/files</code></td>
+<td>内部存储APP私有路径</td>
+</tr>
+<tr>
+<td><code>context.getExternalCacheDir()</code></td>
+<td><code>/storage/emulated/0/Android/data/包名/cache</code></td>
+<td>外部存储APP私有路径</td>
+</tr>
+<tr>
+<td><code>context.getExternalFilesDir()</code></td>
+<td><code>/storage/emulated/0/Android/data/包名/files</code></td>
+<td>外部存储APP私有路径</td>
+</tr>
+<tr>
+<td><code>Environment.getExternalStorageDirectory()</code></td>
+<td><code>/storage/emulated/0</code></td>
+<td>外部存储根目录</td>
+</tr>
+<tr>
+<td><code>Environment.getDataDirectory()</code></td>
+<td><code>/data</code></td>
+<td>内部存储根目录</td>
+</tr>
+<tr>
+<td><code>Environment.getRootDirectory()</code></td>
+<td><code>/system</code></td>
+<td>系统路径</td>
+</tr>
+<tr>
+<td><code>Environment.getDownloadCacheDirectory() </code></td>
+<td><code>/cache</code></td>
+<td>公共缓存路径</td>
+</tr>
+<tr>
+<td><code>context.getObbDir()</code></td>
+<td><code>/storage/0/Android/obb/包名</code></td>
+<td>OBB（Opaque Binary Blob），一般用于安卓游戏，</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>Context获取的路径一般都和APP有关，卸载APP会清除。Environment获取的路径和APP无关。</li>
+<li>内部存储更安全，但是存储空间有限。建议大文件使用外部存储。</li>
+<li>APP在内部存储和外部存储都有对应的私有目录</li>
+</ul>
+<h1 id="常用系统路径"><a href="#常用系统路径" class="headerlink" title="常用系统路径"></a>常用系统路径</h1><ol>
+<li>Settings provider属性：<code>/data/system/users/0/settings_global.xml</code></li>
+<li><code>/system/etc/sysconfig/hiddenapi-package-whitelist.xml</code>：高版本无法调用hidden api，添加白名单</li>
 <li>appops权限路径：<code>/data/system/appops.xml</code></li>
+<li>所有应用权限：<code>/data/system/packages.xml</code></li>
 <li>运行时权限：<code>/data/system/users/0/runtime-permissions.xml</code></li>
 <li><code>/system/etc/permissions</code>、<code>/vendor/etc/permissions</code></li>
 <li><code>/system/etc/default_permissions/default-permissions.xml</code>、<code>/system/etc/default_permissions/open app-permissions.xml</code></li>
-<li>settings provider属性：<code>/data/system/users/0/settings_global.xml</code></li>
-<li>所有应用权限：<code>/data/system/packages.xml</code></li>
-<li><code>/system/etc/sysconfig/hiddenapi-package-whitelist.xml</code>：无法调用hidden api，添加白名单</li>
 <li>uri访问权限：<code>/data/system/urigrants.xml</code></li>
 </ol>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27; standalone=&#x27;yes&#x27; ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uri-grants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uri-grant</span> <span class="attr">sourceUserId</span>=<span class="string">&quot;0&quot;</span> <span class="attr">targetUserId</span>=<span class="string">&quot;0&quot;</span> <span class="attr">sourcePkg</span>=<span class="string">&quot;com.cvte.tv.media&quot;</span> <span class="attr">targetPkg</span>=<span class="string">&quot;com.android.htmlviewer&quot;</span> <span class="attr">uri</span>=<span class="string">&quot;content://com.cvte.tv.media.fileProvider&quot;</span> <span class="attr">prefix</span>=<span class="string">&quot;true&quot;</span> <span class="attr">modeFlags</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">uri-grants</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-
-
-<h1 id="异常文件"><a href="#异常文件" class="headerlink" title="异常文件"></a>异常文件</h1><p>墓碑文件：/data/tombstones</p>
-<p>anr文件：/data/anr</p>
+<h1 id="异常文件"><a href="#异常文件" class="headerlink" title="异常文件"></a>异常文件</h1><ul>
+<li>墓碑文件：<code>/data/tombstones</code></li>
+<li>anr文件：<code>/data/anr</code></li>
+</ul>
 
     </div>
 
@@ -419,7 +538,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">异常文件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android%E5%BA%94%E7%94%A8%E8%B7%AF%E5%BE%84"><span class="nav-number">1.</span> <span class="nav-text">Android应用路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E5%AD%98%E5%82%A8%E5%92%8C%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8"><span class="nav-number">1.1.</span> <span class="nav-text">内部存储和外部存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8%E5%85%AC%E5%85%B1%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.</span> <span class="nav-text">外部存储公共目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP%E7%A7%81%E6%9C%89%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">APP私有目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%B7%AF%E5%BE%84"><span class="nav-number">1.4.</span> <span class="nav-text">其他路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%B3%BB%E7%BB%9F%E8%B7%AF%E5%BE%84"><span class="nav-number">2.</span> <span class="nav-text">常用系统路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">异常文件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -435,7 +554,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -448,7 +567,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -529,13 +648,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">430k</span>
+    <span title="站点总字数">447k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:31</span>
+    <span title="站点阅读时长">6:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

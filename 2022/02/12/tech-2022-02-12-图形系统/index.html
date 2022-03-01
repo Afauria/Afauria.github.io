@@ -37,11 +37,13 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston架构.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Wayland渲染流水线.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构层级.png">
 <meta property="article:published_time" content="2022-02-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-15T11:51:32.555Z">
+<meta property="article:modified_time" content="2022-02-24T08:51:06.862Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
-<meta property="article:tag" content="跨平台">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="图形">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png">
 
@@ -248,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-15 19:51:32" itemprop="dateModified" datetime="2022-02-15T19:51:32+08:00">2022-02-15</time>
+                <time title="修改时间：2022-02-24 16:51:06" itemprop="dateModified" datetime="2022-02-24T16:51:06+08:00">2022-02-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,7 +258,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
                 </span>
             </span>
 
@@ -287,14 +289,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.2k</span>
+              <span>8.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>8 分钟</span>
             </span>
             <div class="post-description">总结图形系统概念，介绍OpenGL、X Window和Wayland（窗口协议），KDE和GNOME（窗口管理器）等。</div>
 
@@ -316,7 +318,7 @@
 <p>各种相关的库介绍如下</p>
 <p><img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/OpenGL%E5%BA%93%E6%A6%82%E8%A7%88.png"></p>
 <p>窗口库：OpenGL和本地窗口系统之间的通信接口，实现了OpenGL的平台无关性。</p>
-<p>例如EGL提供本地窗口相关的API，创建渲染表面EGLSurface，同时提供渲染上下文EGLContext，用来进行状态管理。接下来OpenGL ES可以在这个Surface上进行绘制。</p>
+<p>例如EGL提供本地窗口相关的API，创建渲染表面EGLSurface（和Buffer绑定），管理渲染上下文EGLContext、渲染同步等。OpenGL ES可以在这个Surface上进行绘制。</p>
 <ul>
 <li>Display（EGLDisplay）：对实际显示设备的抽象</li>
 <li>Surface（EGLSurface）：对存储图形的内存区域FrameBuffer的抽象，包括Color Buffer（颜色缓冲区）、Stencil Buffer（模版缓冲区）、Depth Buffer（深度缓冲区）</li>
@@ -407,8 +409,8 @@
 <p>由于每个GUI应用都要显示界面，而显示设备只有一个，因此需要为每个应用分配一个窗口，再对画面进行合成，最终输出到显示设备。</p>
 <p>但由于早期RAM内存不足，如果为每个窗口分配一块Buffer，打开几个窗口内存就满了。X Window的做法是只使用一块屏幕大小的Buffer，每个窗口可以减去自己被盖住部分的Buffer，当窗口位置发生变化时，发一个重绘信号给窗口，窗口将绘制数据传给X Server的Buffer。</p>
 <p>要实现半透明的窗口，需要对上层窗口和下层窗口做alpha混合，但是由于X Server中的Buffer只有一层，无法进行alpha混合。因此X Window扩展了协议，由Compositor合成之后再将整个屏幕的结果传给X Server渲染（内存够了，但X Window不想变更原来的机制）。</p>
-<p>随着时间发展，越来越多的Client和Server程序运行在同一台机器，Client和Server频繁通信导致性能较低，特别是针对3D渲染。因此出现了DRI框架，客户端可以直接利用显卡处理图形（<strong>直接渲染</strong>）。</p>
-<p>随着客户端做的事越来越多，X Server做的事越来越少。并且有很多问题不好修改原有机制，而是在X协议基础上打洞和扩展，导致X协议越来越复杂。</p>
+<p>随着时间发展，越来越多的Client和Server程序运行在同一台机器，<strong>Client和Server频繁通信导致性能较低</strong>，特别是针对3D渲染。因此出现了DRI框架，客户端可以直接利用显卡处理图形（<strong>直接渲染</strong>）。</p>
+<p>随着客户端做的事越来越多，X Server做的事越来越少。并且有很多问题不好修改原有机制，而是在X协议基础上打洞和扩展，<strong>导致X协议越来越复杂</strong>。</p>
 <ul>
 <li>直接渲染（Direct Rendering）：客户端直接渲染本地窗口内容。显示步骤还是交给显示服务器统一管理</li>
 <li>间接渲染（Indirect Rendeing）：将绘制指令打包发给Server，通过Server进行窗口的渲染和合成。</li>
@@ -443,6 +445,10 @@
 <li>X Window在服务端绘制：XClient调用XLib绘制指令，传给X Server，X Server进行绘制计算存入Buffer，通知合成器（Compositor）合成图像，再将合成的图像渲染到屏幕。当然现代的X Client也可以做渲染（通过Cairo、GTK+、QT等）</li>
 <li>Wayland在客户端绘制：客户端自行计算绘制的图形，放到Buffer中（可以是共享内存，也可以是显存），请求服务端Wayland Compositor合成图像，渲染到屏幕上。</li>
 </ul>
+<p>其他区别：</p>
+<ul>
+<li>X提供了网络协议，Wayland本身不提供网络传输，但是合成器可以实现不同的后端（X11、RDP等）</li>
+</ul>
 <h2 id="Wayland-Weston"><a href="#Wayland-Weston" class="headerlink" title="Wayland/Weston"></a>Wayland/Weston</h2><p>Wayland和X Window System一样，是一种协议。Weston是Wayland的参考实现，类似X Window中的Xorg。</p>
 <h3 id="Weston架构"><a href="#Weston架构" class="headerlink" title="Weston架构"></a>Weston架构</h3><p>Weston模块和工作流程如下</p>
 <img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/Weston工作流程.png" style="zoom:80%;">
@@ -460,7 +466,7 @@
 <li>weston-screenshooter：截屏</li>
 <li>weston-screensaver：屏保</li>
 </ol>
-<p>Weston Server启动过程中会加载几个backend，backend可以有不同的实现，可以以动态链接库的形式被加载，如下：</p>
+<p>Weston Server启动过程中会加载几个backend，<strong>backend可以有不同的实现，可以以动态链接库的形式被加载</strong>，如下：</p>
 <ol>
 <li>shell backend（桌面后端）：实现窗口管理功能，如desktop-shell、fullscreen-shell、ivi-shell（车载桌面）</li>
 <li>renderer backend（渲染后端）：处理Client渲染后的内容，负责合成所有窗口，如pixman（软件渲染）、gl（GPU硬件渲染）、noop</li>
@@ -493,7 +499,7 @@
 <p>Android SurfaceFlinger由服务端分配Buffer。而Wayland中buffer默认是由Client端分配，理论上可以始终只用一块Buffer，但是由于Client和Server同时访问会产生竞争，所以一般Client端都会实现BufferQueue。</p>
 <p><strong>Client和Server都会发生绘制：Client绘制本地窗口内容，Server用于合成时渲染。两边都可以选择软件或者硬件渲染</strong>。软件渲染如Direct Painting，Cairo，硬件渲染如OpenGL等</p>
 <h2 id="窗口管理器"><a href="#窗口管理器" class="headerlink" title="窗口管理器"></a>窗口管理器</h2><p>在现代的合成桌面系统中，X服务器只提供了生成窗口的方法，真正负责窗口控制（标题栏、边框、移动、缩放等功能）和多窗口合成的是窗口管理器（Window Manager），一般由桌面环境提供。</p>
-<p>KDE（K Desktop Enviorment）和GNOME（The GNU Network Object Model Environment）是桌面环境（类似于Window桌面、手机桌面等）。除了窗口管理器的功能外，还包括任务栏，开始菜单、桌面图标等。<strong>本质是一个X Client应用程序，与其他应用同级</strong>。</p>
+<p>KDE（K Desktop Enviorment）和GNOME（The GNU Network Object Model Environment）是桌面环境（类似于Window桌面、手机桌面等）。除了窗口管理器的功能外，还包括任务栏，开始菜单、桌面图标，以及一系列自带的GUI程序（如gnome-help、gnome-calculator等）等。<strong>本质是一个X Client应用程序，与其他应用同级</strong>。</p>
 <blockquote>
 <p>KDE基于QT开发，GNOME基于GTK+开发。</p>
 <p>XFree86中自带了一个窗口管理器twm（Tab Window Manager）。</p>
@@ -503,6 +509,7 @@
 <li>Ubuntu Unity桌面在10.10时使用Mutter，后来使用Compiz作为窗口管理器，Compiz基于OpenGL开发</li>
 <li>KDE桌面使用KWin作为窗口管理器</li>
 </ul>
+<p>其他桌面环境如：LXDE（Lightweight X11 Desktop Environment）、Xfce等</p>
 </blockquote>
 <p>开机启动X服务器，X服务器启动桌面应用，进入图形界面，桌面显示任务栏，开始菜单、桌面图标等。可以打开关闭其他应用，控制窗口大小、移动、关闭等。</p>
 <blockquote>
@@ -521,9 +528,12 @@
 <p>Wayland更简单一些，窗口管理器内置在Wayland Compositor中，基于EGL接口。</p>
 <img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png" style="zoom:100%;">
 
-<p>X Server使用OpenGL的扩展GLX也可以渲染3D，但是3D绘制信息多，通过X协议传输绘制性能较低。因此出现了使用DRI框架，由客户端直接渲染到Buffer中，再交给显示服务器的Compositor进行合成。</p>
-<p>Client可以支持不同的协议，使用不同的后端，选择直接渲染或者间接渲染，开发套件已经封装好了，例如QT支持OpenGL、XLib、Wayland EGL等后端，Cairo支持Skia、DRM、GL、XLib等后端</p>
-<p>X Server和Wayland Server本质也是应用程序，可以使用不同的渲染引擎</p>
+<p>X Server使用OpenGL的扩展GLX也可以渲染3D，但是3D绘制信息多，通过X协议传输绘制性能较低。因此出现了使用DRI框架，由客户端直接渲染到Buffer中，再交给Compositor进行合成。</p>
+<p>Client可以支持不同的协议，使用不同的后端，选择直接渲染或者间接渲染，开发套件已经封装好了，例如QT支持OpenGL、XLib等后端，Cairo支持Skia、DRM、GL、XLib等后端。</p>
+<p>X Server和Wayland Server本质也是应用程序，可以使用不同的渲染引擎。</p>
+<p>借用一下网上的图片：</p>
+<img src="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构层级.png" style="zoom:100%;">
+
 <p>其他概念解释：</p>
 <ul>
 <li>DIX（Device Independent X，设备无关层）：为X Server提供统一的接口，与底层设备无关</li>
@@ -545,9 +555,9 @@
 <li><a target="_blank" rel="noopener" href="http://happyseeker.github.io/graphic/2016/01/25/Graphic-stack.html">图形栈&amp;架构</a></li>
 <li><a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/">Learn OpenGL CN</a></li>
 <li><a target="_blank" rel="noopener" href="https://sh.alynx.one/posts/Difference-between-X-and-Wayland/">X和Wayland的主要区别</a></li>
-<li><a target="_blank" rel="noopener" href="https://magcius.github.io/xplain/article/">xplain</a></li>
+<li><a target="_blank" rel="noopener" href="https://magcius.github.io/xplain/article/">xplain</a>：XWindow介绍，包含大量演示案例</li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/jinzhuojun/article/details/47290707">Wayland与Weston简介</a></li>
-<li><a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0590xwindow_1.php">X Window配置介绍</a></li>
+<li><a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0590xwindow_1.php">X Window配置介绍</a>：鸟哥的Linux私房菜</li>
 <li><a target="_blank" rel="noopener" href="https://www.it610.com/article/1290551243260895232.htm">OpenGL/Vulkan/Cairo/Skia/angle/VTK/OpenVG/GIMP/Krita等开源绘图库或软件收集</a></li>
 </ul>
 
@@ -580,7 +590,8 @@
           
           <div class="post-tags">
               <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
-              <a href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 跨平台</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/%E5%9B%BE%E5%BD%A2/" rel="tag"><i class="fa fa-tag"></i> 图形</a>
           </div>
 
         
@@ -589,8 +600,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/01/14/flutter-2022-01-14-Flutter%E4%BA%A7%E7%89%A9%E5%88%86%E6%9E%90/" rel="prev" title="Flutter产物分析">
-      <i class="fa fa-chevron-left"></i> Flutter产物分析
+    <a href="/2022/01/14/flutter-2022-01-14-Flutter%E4%BA%A7%E7%89%A9%E5%88%86%E6%9E%90/" rel="prev" title="Flutter应用构建产物分析">
+      <i class="fa fa-chevron-left"></i> Flutter应用构建产物分析
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -669,7 +680,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -682,7 +693,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -763,13 +774,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">430k</span>
+    <span title="站点总字数">447k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:31</span>
+    <span title="站点阅读时长">6:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍交叉编译，工具链，编译环境等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="交叉编译">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍交叉编译，工具链，编译环境等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%B8%8D%E5%90%8C%E6%9E%B6%E6%9E%84Ubuntu%E9%95%9C%E5%83%8F%E5%B7%AE%E5%BC%82.png">
+<meta property="article:published_time" content="2021-11-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-01T07:19:09.069Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="程序基础">
+<meta property="article:tag" content="编译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>交叉编译 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          交叉编译
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2021-11-07T00:00:00+08:00">2021-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-01 15:19:09" itemprop="dateModified" datetime="2022-03-01T15:19:09+08:00">2022-03-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">程序基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" class="post-meta-item leancloud_visitors" data-flag-title="交叉编译" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+            <div class="post-description">介绍交叉编译，工具链，编译环境等</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="交叉编译概念"><a href="#交叉编译概念" class="headerlink" title="交叉编译概念"></a>交叉编译概念</h1><p>一支编译程序只生成一种机器代码。不同架构使用的编译器不同，并且生成不同的目标代码，例如x86，x64架构上的GCC是不一样的。要在一种CPU架构上生成另一个平台的目标代码，需要使用<strong>交叉编译</strong>。</p>
+<ul>
+<li>本地编译（native compile）：本机编译出来的程序在本机上运行</li>
+<li>交叉编译（cross compile）：在一个平台上生成另一个平台的可执行代码，即编译环境和运行环境不一样。常用于嵌入式开发</li>
+</ul>
+<p>编译用的机器叫宿主机（Host），软件运行的机器叫目标机（Target）。宿主机和目标机通过串口或网络通讯。</p>
+<p>为何需要交叉编译？</p>
+<blockquote>
+<p>单片机或嵌入式设备功能较少，硬件资源和性能有限，只能供嵌入式系统运行，难以再提供编译资源。</p>
+</blockquote>
+<p>嵌入式系统一般也比PC系统要轻量，CPU种类更多（如x86、arm、armv7、arm64、mips等），各家的指令集也存在差异，因此嵌入式操作系统一般要针对芯片分别进行编译。应用软件也需要分别编译。</p>
+<blockquote>
+<ul>
+<li>Android使用Java，运行在虚拟机上，因此不需要分别编译，但是如果使用了so库，则需要分别编译</li>
+<li>iPhone不同版本使用不同CPU架构，编译的时候可以选择目标版本系统和目标架构。</li>
+</ul>
+</blockquote>
+<h1 id="交叉编译工具链"><a href="#交叉编译工具链" class="headerlink" title="交叉编译工具链"></a>交叉编译工具链</h1><p>交叉编译工具链（交叉编译器）：交叉编译用到的<strong>一系列工具、库和头文件</strong>等。一般命名为<code>arch-[-vendor][-os][-(gnu)eabi][-tool]</code>，如<code>arm-none-linux-gnueabi-gcc</code>、<code>arm-linux-ld</code>等。</p>
+<blockquote>
+<p>除了编译器之外，还需要提供对应架构的平台库</p>
+</blockquote>
+<p>注：交叉编译工具本身也是应用程序，需要针对主机编译才能运行。因此可能会出现命名如下</p>
+<ul>
+<li><code>x86_64-aarch64-none-linux-gnueabihf</code>：在Linux x86_64主机上运行，目标平台是aarch64架构的Linux系统</li>
+<li><code>aarch64-arm-none-linux-gnueabihf</code>：在Linux aarch64主机运行，目标平台是arm架构的Linux系统</li>
+<li><code>aarch64-aarch64-none-elf</code>：在Linux aarch64主机运行，目标平台是aarch64架构的裸机系统</li>
+</ul>
+<blockquote>
+<ul>
+<li>aarch32=arm</li>
+<li>aarch64=arm64</li>
+</ul>
+</blockquote>
+<p>交叉编译示意图如下：</p>
+<p><img src="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.png"></p>
+<p>Android和Java代码编译只需要编译成dex或class，不需要编译成目标代码，因此不需要交叉编译。但是Android中的Native开发还是需要使用交叉编译工具链，NDK中做了封装。</p>
+<p>ABI（Application Binary Interface）和EABI（Embedded ABI）区别</p>
+<blockquote>
+<p>前者是计算机上的，后者是嵌入式平台上（arm、mips等）</p>
+</blockquote>
+<p><code>arm-none-eabi</code>和<code>arm-none-linux-eabi</code>区别</p>
+<blockquote>
+<p>前者指目标平台为aarch32架构的裸机系统（ELF bare-metal，没有操作系统），后者指目标平台为aarch32架构的Linux系统（GNU/Linux）</p>
+</blockquote>
+<p><code>arm-linux-gnueabi</code>和<code>arm-linux-gnueabihf</code>区别</p>
+<blockquote>
+<p>前者适用于armel架构，后者适用于armhf架构。二者的<code>--mfloat-abi</code>编译选项不同。</p>
+</blockquote>
+<p>gcc编译选项<code>-mfloat-abi</code>有三种值：</p>
+<ul>
+<li>soft：不用fpu进行浮点运算，使用软件模式。</li>
+<li>softfp：armel架构采用的默认值，用fpu计算，传参数用普通寄存器传。</li>
+<li>hard：armhf架构采用的默认值，用fpu计算，传参数也用fpu的浮点寄存器传。</li>
+</ul>
+<blockquote>
+<p>el表示little-endian</p>
+<p>hf表示hard float，需要fpu浮点运算单元支持</p>
+<p>arm64默认是hf，因此不需要hf后缀</p>
+<p>be表示big-endian</p>
+</blockquote>
+<p>交叉编译工具链获取方式：</p>
+<ol>
+<li>获取源码，自行编译制作：<a target="_blank" rel="noopener" href="https://github.com/llvm/llvm-project">LLVM-Project</a>、<a target="_blank" rel="noopener" href="https://clang.llvm.org/get_started.html">Clang构建</a>、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Charles-Zhang-Blog/archive/2013/02/21/2920999.html">Linux ARM交叉编译工具链制作过程</a></li>
+<li>使用现成的编译好的工具链：<a target="_blank" rel="noopener" href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/">ARM</a>、<a target="_blank" rel="noopener" href="https://www.linaro.org/downloads/">Linaro</a>、<a target="_blank" rel="noopener" href="https://www.plm.automation.siemens.com/global/en/products/embedded-software/sourcery-codebench-lite-downloads.html">Codesourcery</a>。</li>
+<li>使用包管理器直接下载，如apt、rpm、yum等</li>
+</ol>
+<h1 id="sysroot"><a href="#sysroot" class="headerlink" title="sysroot"></a>sysroot</h1><p>指定编译时的逻辑根目录，只在链接过程中起作用，作为交叉编译工具链搜索库文件的根路径。</p>
+<blockquote>
+<p>编译过程中默认会在<code>/usr/include</code>、<code>/usr/lib</code>下查找引用的库和头文件，指定sysroot为dir之后会在<code>dir/usr/include</code>、<code>dir/usr/lib</code>下查找。</p>
+</blockquote>
+<p><strong>sysroot本质是目标平台的依赖库，交叉编译时需要链接对应架构的平台库，通过sysroot在主机上找到目标平台的库和头文件。</strong></p>
+<p>关于程序链接可以参考<a href="/2022/01/03/tool-2022-01-03-GNU%E5%92%8C%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/">构建工具</a></p>
+<h2 id="制作sysroot"><a href="#制作sysroot" class="headerlink" title="制作sysroot"></a>制作sysroot</h2><p>sysroot本质是目标平台的依赖库，只要想办法下载到编译需要的依赖库即可。</p>
+<ol>
+<li>网上下载</li>
+<li>使用BuildRoot构建系统</li>
+<li>使用Yocto构建系统</li>
+<li>使用Docker+QEMU创建</li>
+</ol>
+<p>以Docker+QEMU为例，创建arm64 sysroot</p>
+<ol>
+<li><p>在Linux主机上安装交叉构建工具：<code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++-8-dev-arm64-cross</code></p>
+</li>
+<li><p>在Linux主机上安装Docker</p>
+</li>
+<li><p>安装QEMU，用于运行arm架构容器：<code>apt install qemu-user-static</code></p>
+</li>
+<li><p>运行Docker官方<code>arm64v8/ubuntu</code>容器：<code>docker run -it --name ubuntu-arm64 arm64v8/ubuntu:18.04</code></p>
+</li>
+<li><p>在容器中安装依赖库：根据需要安装，这里以Flutter eLinux为例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt update</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install clang cmake build-essential pkg-config libegl1-mesa-dev libxkbcommon-dev libgles2-mesa-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install libwayland-dev wayland-protocols</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install libdrm-dev libgbm-dev libinput-dev libudev-dev libsystemd-dev</span></span><br></pre></td></tr></table></figure></li>
+<li><p>将arm64平台的依赖库拷贝到Linux主机：<code>docker cp ubuntu-arm64:/ ubuntu-arm64-sysroot</code></p>
+</li>
+<li><p>此时可以在Linux主机使用flutter构建命令<code>--target-sysroot=ubuntu-arm64-sysroot</code>构建arm64位应用</p>
+</li>
+</ol>
+<blockquote>
+<p>直接在主机用apt安装只会安装当前平台的库，所以需要利用对应架构容器的包管理工具（apt）下载目标架构的平台库。</p>
+<p>例如在arm64容器中和x86_64容器中分别使用apt安装依赖库，二者的目标平台不同（如下图对比）。</p>
+</blockquote>
+<p><img src="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%B8%8D%E5%90%8C%E6%9E%B6%E6%9E%84Ubuntu%E9%95%9C%E5%83%8F%E5%B7%AE%E5%BC%82.png"></p>
+<h1 id="pkg-config"><a href="#pkg-config" class="headerlink" title="pkg-config"></a><code>pkg-config</code></h1><p>通过<code>.pc</code>文件查找软件的头文件和库文件位置，用于C/C++程序链接。</p>
+<p>例如<code>/usr/lib/arm-linux-gnueabihf/pkgconfig/x11.pc</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /usr/lib/arm-linux-gnueabihf/pkgconfig/x11.pc</span></span><br><span class="line">prefix=/usr</span><br><span class="line">exec_prefix=$&#123;prefix&#125;</span><br><span class="line">libdir=$&#123;prefix&#125;/lib/arm-linux-gnueabihf</span><br><span class="line">includedir=$&#123;prefix&#125;/include</span><br><span class="line"></span><br><span class="line">xthreadlib=-lpthread</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件简介</span></span><br><span class="line">Name: X11</span><br><span class="line">Description: X Library</span><br><span class="line">Version: 1.6.9</span><br><span class="line">Requires: xproto kbproto</span><br><span class="line">Requires.private: xcb &gt;= 1.11.1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 头文件路径</span></span><br><span class="line">Cflags: -I$&#123;includedir&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 库目录</span></span><br><span class="line">Libs: -L$&#123;libdir&#125; -lX11</span><br><span class="line">Libs.private: -lpthread</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看已知的软件包：<code>pkg-config --list-all</code></li>
+<li>查看软件头文件路径：<code>pkg-config --cflags &lt;software&gt;</code></li>
+<li>查看软件库路径：<code>pkg-config --libs &lt;software&gt;</code></li>
+</ul>
+<p>输出的格式可以直接用于gcc链接选项，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> pkg-config --cflags --libs cairo</span></span><br><span class="line">-I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -lcairo</span><br><span class="line"><span class="meta">$</span><span class="bash"> g++ -o main.out $(pkg-config --cflags --libs cairo) main.cc</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="CMake配置"><a href="#CMake配置" class="headerlink" title="CMake配置"></a>CMake配置</h1><p>CMake编译过程中遇到一些问题，做个记录。</p>
+<p>CMakeList.txt中添加打印：<code>message(WARNING $&#123;变量名&#125;)</code></p>
+<p>查看CMake变量</p>
+<ul>
+<li><code>cmake --help-variable-list</code></li>
+<li><code>cmake --help-variable CMAKE_SYSROOT_COMPILE</code></li>
+</ul>
+<h2 id="编译工具链指定"><a href="#编译工具链指定" class="headerlink" title="编译工具链指定"></a>编译工具链指定</h2><p>交叉编译时主机可能会包含本地编译工具链，以及多个目标平台的交叉编译工具链，因此需要指定编译工具链。</p>
+<p>方式一：执行命令的时候添加参数选项。</p>
+<p>例如：<code>-DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++</code></p>
+<p>方式二：通过文件配置变量</p>
+<p>例如创建<code>gcc_arm_toolchain.cmake</code>文件：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定目标系统</span></span><br><span class="line">SET(CMAKE_SYSTEM_NAME Linux)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定编译器</span></span><br><span class="line">SET(CMAKE_C_COMPILER aarch64-none-linux-gnu-gcc)</span><br><span class="line">SET(CMAKE_CXX_COMPILER aarch64-none-linux-gnu-g++)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定搜索的根路径</span></span><br><span class="line">SET(CMAKE_FIND_ROOT_PATH /opt/gcc-arm-11.2-2022.02-x86_64-aarch64-none-linux-gnu/)</span><br><span class="line">SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER) <span class="comment"># 使用本机程序</span></span><br><span class="line">SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)  <span class="comment"># 仅使用 FIND_ROOT 下的库</span></span><br><span class="line">SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)  <span class="comment"># 仅使用 FIND_ROOT 下的头文件</span></span><br></pre></td></tr></table></figure>
+
+<p>执行命令的时候使用<code>-DCMAKE_TOOLCHAIN_FILE=gcc_arm_toolchain.cmake</code>选项指定配置文件，或者在CMakeList.txt中使用<code>include(gcc_arm_toolchain.cmake)</code>引入文件</p>
+<h2 id="include-directories"><a href="#include-directories" class="headerlink" title="include_directories"></a>include_directories</h2><p>编译过程中如果提示找不到头文件，需要添加头文件查找路径：</p>
+<ul>
+<li>方式一：编译命令添加<code>-I dir</code>参数</li>
+<li>方式二：配置<code>CMakeList.txt</code>文件，添加命令<code>include_directories([AFTER|BEFORE][SYSTEM] dir1 [dir2...])</code></li>
+</ul>
+<p>BEFORE和AFTER表示将路径添加到列表前面还是后面。SYSTEM表示当成系统搜索目录。</p>
+<p>举例：<code>test.h</code>头文件放到sub目录下，<code>main.cpp</code>引用头文件如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;sub/test.h&quot;</span></span></span><br><span class="line"><span class="comment">//不指定sub路径</span></span><br><span class="line"><span class="comment">//#include &quot;test.h&quot;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello, World!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CMakeList.txt</span></span><br><span class="line">cmake_minimum_required(VERSION 3.18.2)</span><br><span class="line">project(cmake_test)</span><br><span class="line"><span class="comment"># 引入头文件路径</span></span><br><span class="line"><span class="comment"># include_directories(sub) </span></span><br><span class="line">add_executable(test main.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>cmake --build .</code>，生成test程序，执行输出Hello World!</p>
+<p>如果直接<code>#include &quot;test.h&quot;</code>，构建的时候会提示找不到头文件：<code>fatal error: &#39;test.h&#39; file not found </code></p>
+<p>此时可以在CMakeList.txt中添加<code>include_directories(sub) </code>，引入头文件路径，编译成功。</p>
+<h2 id="target-include-directories"><a href="#target-include-directories" class="headerlink" title="target_include_directories"></a>target_include_directories</h2><p><code>target_include_directories(target PRIVATE|INTERFACE|PUBLIC dir)</code>：指定目标包含的头文件路径。<code>include_directories()</code>会对其子目录起作用，导致整个工程编译时都会增加<code>-I dir</code></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82244559">cmake：target_**</a></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sony/flutter-elinux/wiki/Building-flutter-apps#case-1-use-docker--qemu">Cross-building from x64 to arm64</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.loliot.net/docs/lang/flutter/engine/flutter-engine-for-linux-arm64/">flutter-engine-for-linux-arm64</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/flutter/flutter-on-raspberry-pi-mostly-from-scratch-2824c5e7dcb1">Flutter on Raspberry Pi (mostly) from scratch</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/oloroso/p/13995309.html">Linux 下交叉编译 ARM64-linux 版本 GDAL-3.2.0</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/" rel="tag"><i class="fa fa-tag"></i> 程序基础</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91/" rel="tag"><i class="fa fa-tag"></i> 编译</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/05/basic-2021-11-05-%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80/" rel="prev" title="编程语言、编译器和Android虚拟机">
+      <i class="fa fa-chevron-left"></i> 编程语言、编译器和Android虚拟机
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/27/basic-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/" rel="next" title="网络基础之IP地址">
+      网络基础之IP地址 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">交叉编译概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">交叉编译工具链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysroot"><span class="nav-number">3.</span> <span class="nav-text">sysroot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9Csysroot"><span class="nav-number">3.1.</span> <span class="nav-text">制作sysroot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pkg-config"><span class="nav-number">4.</span> <span class="nav-text">pkg-config</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">CMake配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E6%8C%87%E5%AE%9A"><span class="nav-number">5.1.</span> <span class="nav-text">编译工具链指定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-number">5.2.</span> <span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-number">5.3.</span> <span class="nav-text">target_include_directories</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">447k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:46</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

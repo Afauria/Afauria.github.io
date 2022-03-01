@@ -22,21 +22,24 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释">
+  <meta name="description" content="GNU介绍和名词解释。介绍Make、Makefile、CMake、Gradle、GCC、LLVM等构建工具的区别和联系，介绍gcc和g++编译过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GNU和构建工具介绍">
-<meta property="og:url" content="https://blog.afauria.xyz/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:title" content="GNU和编译工具介绍">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释">
+<meta property="og:description" content="GNU介绍和名词解释。介绍Make、Makefile、CMake、Gradle、GCC、LLVM等构建工具的区别和联系，介绍gcc和g++编译过程。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E8%AF%81.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gcc%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5.png">
 <meta property="article:published_time" content="2022-01-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-09T11:25:21.068Z">
+<meta property="article:modified_time" content="2022-02-26T01:28:50.789Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="笔记">
-<meta property="article:tag" content="gradle">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E8%AF%81.png">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
+<link rel="canonical" href="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
 
 
 <script id="page-configurations">
@@ -49,7 +52,7 @@
   };
 </script>
 
-  <title>GNU和构建工具介绍 | Afauria's Blog</title>
+  <title>GNU和编译工具介绍 | Afauria's Blog</title>
   
 
 
@@ -208,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -221,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          GNU和构建工具介绍
+          GNU和编译工具介绍
         </h1>
 
         <div class="post-meta">
@@ -239,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-09 19:25:21" itemprop="dateModified" datetime="2022-02-09T19:25:21+08:00">2022-02-09</time>
+                <time title="修改时间：2022-02-26 09:28:50" itemprop="dateModified" datetime="2022-02-26T09:28:50+08:00">2022-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,7 +255,7 @@
             </span>
 
           
-            <span id="/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" class="post-meta-item leancloud_visitors" data-flag-title="GNU和构建工具介绍" title="阅读次数">
+            <span id="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" class="post-meta-item leancloud_visitors" data-flag-title="GNU和编译工具介绍" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -267,8 +270,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -278,16 +281,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.7k</span>
+              <span>6.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>6 分钟</span>
             </span>
-            <div class="post-description">介绍Make、Makefile、CMake、Gradle等构建工具的区别和联系，介绍gcc和g++s。GNU介绍和名词解释</div>
+            <div class="post-description">GNU介绍和名词解释。介绍Make、Makefile、CMake、Gradle、GCC、LLVM等构建工具的区别和联系，介绍gcc和g++编译过程。</div>
 
         </div>
       </header>
@@ -311,7 +314,7 @@
 <p>GNU官方核心是GNU Hurd，GNU/Linux是变种，除了Linux之外，还有FreeBSD内核、NetBSD内核等</p>
 <p>Google在Linux内核的基础上，开发了bionic库，替换了glibc库，用于Android系统</p>
 </blockquote>
-<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>GNU（GNU’s Not Unix!）：是一个自由的操作系统，是由多个应用程序、系统库、开发工具组成的程序集合。模仿Unix界面和使用方式（类Unix），做的一个开源的版本。</p>
+<p>GNU（GNU’s Not Unix!）：是一个自由的操作系统，是由多个应用程序、系统库、开发工具组成的程序集合。模仿Unix界面和使用方式（类Unix），做的一个开源的版本。</p>
 <blockquote>
 <p>自由软件：</p>
 <ol>
@@ -322,21 +325,124 @@
 </ol>
 </blockquote>
 <p>GNU计划：又称“革奴计划”，在这个计划下做了很多工作和项目，如GCC、glibc、bash shell、emacs等，并成立了FSF，起草了GPL协议条款。</p>
-<p>FSF：（Free Software Foundation，自由软件基金会）</p>
-<p>GPL：（GNU General Public License，GNU通用公共许可证）</p>
-<p>LGPL：(GNU Lesser General Public License，GNU较宽松公共许可证 ) ，旧称 GNU Library General Public License (GNU 库通用公共许可证)；</p>
-<p>GFDL：（GNU Free Documentation License，GNU自由文档许可证）</p>
-<p>BSD：（Berkeley Software Distribution，伯克利软件套件），Unix的衍生系统（类Unix）</p>
-<p>BSD许可证：允许软件闭源发布</p>
-<h1 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h1><ul>
-<li>GCC：GNU编译套件。只有一个文件的时候使用gcc编译器比较方便。当有多个文件时，编译顺序以及依赖关系处理使用gcc很麻烦</li>
-<li>Clang：C语言、C++、Objective-C的编译器前端，使用底层虚拟机（LLVM，Low Level Virtual Machine）作为编译器后端</li>
+<h2 id="常见开源许可协议"><a href="#常见开源许可协议" class="headerlink" title="常见开源许可协议"></a>常见开源许可协议</h2><ul>
+<li>FSF：（Free Software Foundation，自由软件基金会）</li>
+<li>GPL：（GNU General Public License，GNU通用公共许可证）</li>
+<li>LGPL：(GNU Lesser General Public License，GNU较宽松公共许可证 ) ，旧称 GNU Library General Public License (GNU 库通用公共许可证)；</li>
+<li>GFDL：（GNU Free Documentation License，GNU自由文档许可证）</li>
+<li>BSD：（Berkeley Software Distribution，伯克利软件套件），Unix的衍生系统（类Unix）</li>
+<li>BSD许可证：允许软件闭源发布</li>
+</ul>
+<p>借用一下阮一峰老师的图片：</p>
+<p><img src="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E8%AF%81.png"></p>
+<h1 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h1><p>完整的GNU工具链包括Binutils（包括Assembler汇编器、Linker链接器）、GCC编译器、C库</p>
+<h2 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h2><ol>
+<li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，生成.i文件。<code>gcc -E file.c -o file.i</code></li>
+<li>编译（compile）[编译器egcs]：语法分析、词法分析、语义分析等，生成汇编代码.s文件。<code>gcc -S file.i -o file.s</code></li>
+<li>汇编（assembly）[汇编器as]：汇编代码转为机器代码.o文件。<code>gcc -c file.s -o file.o</code></li>
+<li>链接（link）[链接器ld]：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。生成可执行文件。<ol>
+<li>静态链接：目标文件直接进入可执行文件<ol>
+<li>编译静态库源码，生成.o目标文件：<code>gcc -c lib.c -o lib.o</code></li>
+<li>打包生成<code>.a</code>归档文件：<code>ar -q lib.a lib.o</code></li>
+<li>使用静态库编译，生成<code>.out</code>可执行文件：<code>gcc main.c lib.a -o main.out</code></li>
+</ol>
+</li>
+<li>动态链接：可执行程序运行时加载目标文件<ol>
+<li>编译动态库源码，生成<code>.so</code>文件：<code>gcc -shared dlib.c -o dlib.so</code></li>
+<li>使用动态库编译：<code>gcc main -ldl -o main.out</code></li>
+<li>代码调用<ol>
+<li><code>dlopen</code>打开动态库文件</li>
+<li><code>dlsym</code>查找动态库中的函数并返回调用地址</li>
+<li><code>dlclose</code>关闭动态库文件</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>反汇编：使用<code>objdump</code>反汇编，输出机器码和对应的汇编代码</li>
+</ol>
+<p><img src="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gcc%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png"></p>
+<p>也可以直接一条命令执行：<code>gcc -o hello.out hello.c</code>，将<code>hello.c</code>编译，生成<code>hello.out</code>文件，默认生成<code>a.out</code></p>
+<h3 id="静态链接：编译时链接"><a href="#静态链接：编译时链接" class="headerlink" title="静态链接：编译时链接"></a>静态链接：编译时链接</h3><p>作用：由于开发过程存在多个源代码文件（<code>.c</code>文件），且存在依赖关系，每个源文件都会生成一个目标文件（<code>.o</code>文件），因此需要将这些目标文件链接打包。</p>
+<p>优点：可执行程序包含所有执行程序需要的东西，运行速度快。</p>
+<p>缺点：</p>
+<ul>
+<li>目标文件打包在可执行程序中，多个程序依赖同一份目标文件时，造成空间浪费</li>
+<li>库函数修改时，需要重新编译链接生成可执行程序。</li>
+</ul>
+<p>静态库：编译时链接的库。一般是<code>.a</code>文件。</p>
+<p>静态链接步骤如下：</p>
+<ol>
+<li><code>gcc -c xxx.c</code>编译生成<code>.o</code>文件</li>
+<li>使用<code>ar</code>归档工具将所有<code>.o</code>文件打包生成<code>.a</code>文件：<code>ar -q libfoo xxx.o yyy.o </code></li>
+<li>链接：<code>gcc -o main main.c -static -l -L. -lfoo</code></li>
+</ol>
+<blockquote>
+<p><code>-L</code>：静态链接库搜索路径</p>
+</blockquote>
+<p><img src="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5.png"></p>
+<h3 id="动态链接：运行时链接"><a href="#动态链接：运行时链接" class="headerlink" title="动态链接：运行时链接"></a>动态链接：运行时链接</h3><p>作用：解决静态链接的缺陷，将各个模块拆分成相对独立的部分，运行时才链接形成完整的程序。</p>
+<p>动态库（共享库）：程序运行时链接的库。可以被多个程序共享。一般是<code>.so</code>文件。</p>
+<p>动态链接步骤如下：</p>
+<ol>
+<li><code>gcc -c xxx.c</code>编译生成<code>.o</code>文件</li>
+<li><code>gcc --shared -fPIC -o libfoo.so xxx.o yyy.o</code>编译生成<code>.so</code>文件</li>
+<li><code>gcc -o main main.c -lfoo </code>链接生成可执行程序（去掉lib和so前后缀）</li>
+<li>运行时从<code>/lib</code>、<code>/usr/lib</code>等路径下搜索</li>
+</ol>
+<blockquote>
+<p><code>-fPIC</code>：使用地址无关代码（Position Independent Code）技术来生成文件。不加这个选项的话无法让其他程序共享。</p>
+<p>原理：告诉GCC目标代码不要包含对具体内存位置的引用，运行时才确定具体的内存地址空间，由每个进程自行决定。</p>
+</blockquote>
+<h3 id="链接库搜索路径"><a href="#链接库搜索路径" class="headerlink" title="链接库搜索路径"></a>链接库搜索路径</h3><p>ld链接时有两个选项：</p>
+<ul>
+<li><code>-rpath-link=dir</code>：指定编译链接时查找的路径</li>
+<li><code>-rpath=dir</code>：指定的路径会被记录在生成的可执行程序中，用于运行时查找.so文件。</li>
+</ul>
+<p>此外，还可以通过环境变量设置链接查找路径</p>
+<ul>
+<li><code>export LIBRARY_PATH=xxx</code>：添加gcc编译时查找链接库的路径。</li>
+<li><code>export LD_LIBRARY_PATH=xxx</code>：添加程序加载运行时查找链接库的路径</li>
+</ul>
+<p>查找链接库路径整体顺序如下：</p>
+<ol>
+<li>编译时<code>rpath</code>指定的路径</li>
+<li><code>LD_LIBRARY_PATH</code>环境变量配置的路径</li>
+<li>ldconfig指定的路径：<code>cat /etc/ld.so.cache</code></li>
+<li><code>/lib</code>目录</li>
+<li><code>usr/lib</code>目录</li>
+</ol>
+<p>如何查看ld链接时的搜索路径：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ld --verbose | grep SEARCH_DIR | tr -s <span class="string">&#x27; ;&#x27;</span> \\012</span></span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib/x86_64-linux-gnu64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/x86_64-linux-gnu/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/x86_64-linux-gnu/lib&quot;)</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> gcc -print-search-dirs | sed <span class="string">&#x27;/^lib/b 1;d;:1;s,/[^/.][^/]*/\.\./,/,;t 1;s,:[^=]*=,:;,;s,;,;  ,g&#x27;</span> | tr \; \\012</span></span><br><span class="line">libraries:</span><br><span class="line">  /usr/lib/gcc/x86_64-linux-gnu/9/:/usr/x86_64-linux-gnu/lib/x86_64-linux-gnu/9/:/usr/x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/x86_64-linux-gnu/lib/:/usr/lib/x86_64-linux-gnu/9/:/usr/lib/x86_64-linux-gnu/:/usr/lib/:/lib/x86_64-linux-gnu/9/:/lib/x86_64-linux-gnu/:/lib/:/usr/lib/x86_64-linux-gnu/9/:/usr/lib/x86_64-linux-gnu/:/usr/lib/:/usr/x86_64-linux-gnu/lib/:/usr/lib/:/lib/:/usr/lib/</span><br></pre></td></tr></table></figure>
+
+<h2 id="gcc和GCC"><a href="#gcc和GCC" class="headerlink" title="gcc和GCC"></a>gcc和GCC</h2><p><strong>gcc和GCC是不同的东西</strong></p>
+<ul>
+<li>GCC：（GNU Compiler Collection，GNU编译器套件），为GNU操作系统开发的编译器，可以编译C、C++、Java、Go、Object-c等。</li>
+<li>gcc（GNU C Compiler，C 编译器）</li>
+<li>g++（GNU C++ Compiler，C++编译器）</li>
+</ul>
+<blockquote>
+<p>最早GCC是GNU C语言编译器（GNU C Compiler），只能处理C语言，后来扩展支持更多编程语言。</p>
+<p>也可以理解为gcc只是一个执行入口，不是编译器，通过调用GNU C compiler进行编译。</p>
+</blockquote>
+<h2 id="gcc和g-区别"><a href="#gcc和g-区别" class="headerlink" title="gcc和g++区别"></a>gcc和g++区别</h2><ol>
+<li>对于.c后缀的文件，gcc把它当做是C程序；g++当做是C++程序；</li>
+<li>对于.cpp后缀的文件，gcc和g++都会当做c++程序。</li>
+<li>编译阶段，g++会调用gcc;</li>
+<li>链接阶段，通常会用g++来完成，因为gcc命令不能自动和c++程序使用的库连接。</li>
+</ol>
+<h1 id="GCC和Make"><a href="#GCC和Make" class="headerlink" title="GCC和Make"></a>GCC和Make</h1><ul>
+<li>GCC：GNU编译套件。只有一个文件的时候使用gcc编译器比较方便。当有多个文件时，编译顺序以及依赖关系处理使用gcc很麻烦。</li>
 <li>make工具：批处理工具。makefile中规定了编译和链接的顺序，make根据makefile文件进行编译，比直接调用gcc逐个编译文件方便。手写makefile文件较麻烦，并且不同平台makefile不一样。<ul>
 <li>Makefile定义了多个规则，每个规则由目标、依赖、命令构成</li>
 </ul>
 </li>
 <li>CMake工具：更加方便的生成makefile文件，并且能够跨平台，解决不同平台手写makefile较麻烦的问题，但仍然需要手写<code>CMakelist.txt</code>文件。</li>
 </ul>
+<blockquote>
+<p>cmake除了生成makefile之外，还可以生成ninja、Xcode等构建配置文件。例如<code>cmake -G Ninja xxx</code></p>
+</blockquote>
 <pre class="mermaid">graph LR
 编辑器--编写-->源文件-->cmakelist--cmake生成-->makefile--make批处理-->可执行程序</pre>
 
@@ -358,38 +464,6 @@
 <li>由于不同项目配置上存在差异，因此Gradle提供了一些自定义配置项：如项目id、sdk版本等</li>
 </ul>
 </blockquote>
-<p>Clang与GCC</p>
-<blockquote>
-<ul>
-<li>Clang采用BSD协议，GCC采用GPL协议</li>
-<li>Clang高度更轻量，编译提示更友好</li>
-<li>GCC使用<code>libstdc++</code>标准库，Clang使用<code>libc++</code>标准库</li>
-<li>Android NDK<ul>
-<li>r11：建议使用Clang编译</li>
-<li>r13：默认使用Clang编译</li>
-<li>r18：移除GCC</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>Clang与LLVM</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://llvm.org/">LLVM</a>项目是模块化、可重用的编译器和工具链集合。虽然全称是Low Level Virtual Machine（底层虚拟机），但它实际与虚拟机并没有关系。</p>
-<p>Clang是LLVM项目下的一个子项目</p>
-<ul>
-<li>广义的LLVM指LLVM编译器框架系统，包括前端（源码转为中间代码）、优化器、后端（中间代码转为汇编代码）以及相关的库或模块。如下<ul>
-<li>核心库：源代码到中间代码的优化，与目标平台无关</li>
-<li>Clang：C/C++/Objective-C的编译器</li>
-<li>LLDB：基于Clang的调试库</li>
-<li>libc++：LLVM提供的c++标准库</li>
-<li>libclc：OpenCL标准库</li>
-<li>LLD：链接器</li>
-<li>…</li>
-</ul>
-</li>
-<li>狭义的LLVM聚焦于编译后端，Clang对应编译前端。</li>
-</ul>
-</blockquote>
 <p>make和ninja、cmake与gn</p>
 <blockquote>
 <ul>
@@ -407,49 +481,35 @@
 <li>Android 9.0强制使用Android.bp配置文件</li>
 </ul>
 </blockquote>
-<h1 id="gcc和g"><a href="#gcc和g" class="headerlink" title="gcc和g++"></a>gcc和g++</h1><h2 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h2><ol>
-<li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，生成.i文件。<code>gcc -E file.c -o file.i</code></li>
-<li>编译（compile）[编译器egcs]：语法分析、词法分析、语义分析等，生成汇编代码.s文件。<code>gcc -S file.i -o file.s</code></li>
-<li>汇编（assembly）[汇编器as]：汇编代码转为机器代码.o文件。<code>gcc -c file.s -o file.o</code></li>
-<li>链接（link）[链接器ld]：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。生成可执行文件。<ol>
-<li>静态链接：目标文件直接进入可执行文件<ol>
-<li>编译静态库源码，生成.o文件：<code>gcc -c lib.c -o lib.o</code></li>
-<li>生成静态库文件，归档，生成.a文件：<code>ar -q lib.a lib.o</code></li>
-<li>使用静态库编译，生成.out可执行文件：<code>gcc main.c lib.a -o main.out</code></li>
-</ol>
-</li>
-<li>动态链接：可执行程序运行时加载目标文件<ol>
-<li>编译动态库源码，生成.so文件：<code>gcc -shared dlib.c -o dlib.so</code></li>
-<li>使用动态库编译：<code>gcc main -ldl -o main.out</code></li>
-<li>代码调用<ol>
-<li><code>dlopen</code>打开动态库文件</li>
-<li><code>dlsym</code>查找动态库中的函数并返回调用地址</li>
-<li><code>dlclose</code>关闭动态库文件</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>反汇编：使用<code>objdump</code>反汇编，输出机器码和对应的汇编代码</li>
-</ol>
-<p>也可以直接一条命令执行：<code>gcc -o hello.out hello.c</code>，将<code>hello.c</code>编译，生成<code>hello.out</code>文件，默认生成<code>a.out</code></p>
-<h2 id="gcc和GCC"><a href="#gcc和GCC" class="headerlink" title="gcc和GCC"></a>gcc和GCC</h2><p><strong>gcc和GCC是不同的东西</strong></p>
+<h1 id="LLVM"><a href="#LLVM" class="headerlink" title="LLVM"></a>LLVM</h1><p>经典的编译器设计分为三段：前端、优化、后端，当需要支持多种语言时，只需要添加不同的前端，当需要支持多个目标机器时，只需要添加不同的后端，优化器只处理通用的中间代码。GCC、LLVM、Java都是该模型的一种实现</p>
+<p>由于GCC模块化分层做的不好，编译器代码重用难度大，需要生成完整的编译器。</p>
+<p><a target="_blank" rel="noopener" href="https://llvm.org/">LLVM</a>（Low Level Virtual Machine，底层虚拟机）的出现是为了解决编译器代码重用问题，采用接口和模块化的设计，便于添加定制功能，开发者只需要关注编译前端。<a target="_blank" rel="noopener" href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications: LLVM</a></p>
+<p>LLVM是模块化、可重用的编译器和工具链集合，用于取代GCC。虽然全称是Low Level Virtual Machine（底层虚拟机），但它实际与虚拟机并没有关系。</p>
 <ul>
-<li>GCC：（GNU Compiler Collection，GNU编译器套件），为GNU操作系统开发的编译器，可以编译C、C++、Java、Go、Object-c等。</li>
-<li>gcc（GNU C Compiler，C 编译器）</li>
-<li>g++（GNU C++ Compiler，C++编译器）</li>
+<li>LLVM采用BSD协议，GCC采用GPL协议</li>
+<li>Clang更轻量，编译提示更友好</li>
+<li>GCC使用<code>libstdc++</code>标准库，Clang使用<code>libc++</code>标准库</li>
+<li>Android NDK<ul>
+<li>r11：建议使用Clang编译</li>
+<li>r13：默认使用Clang编译</li>
+<li>r18：移除GCC</li>
 </ul>
-<blockquote>
-<p>最早GCC是GNU C语言编译器（GNU C Compiler），只能处理C语言，后来扩展支持更多编程语言。</p>
-<p>也可以理解为gcc只是一个执行入口，不是编译器，通过调用GNU C compiler进行编译。</p>
-</blockquote>
-<h2 id="gcc和g-区别"><a href="#gcc和g-区别" class="headerlink" title="gcc和g++区别"></a>gcc和g++区别</h2><ol>
-<li>对于.c后缀的文件，gcc把它当做是C程序；g++当做是C++程序；</li>
-<li>对于.cpp后缀的文件，gcc和g++都会当做c++程序。</li>
-<li>编译阶段，g++会调用gcc;</li>
-<li>链接阶段，通常会用g++来完成，因为gcc命令不能自动和c++程序使用的库连接。</li>
-</ol>
+</li>
+</ul>
+<h2 id="Clang与LLVM"><a href="#Clang与LLVM" class="headerlink" title="Clang与LLVM"></a>Clang与LLVM</h2><p>Clang是LLVM项目下的一个子项目</p>
+<ul>
+<li>广义的LLVM指LLVM编译器框架系统，包括前端（源码转为LLVM IR中间代码）、优化器、后端（中间代码转为汇编代码）以及相关的库或模块。如下<ul>
+<li>核心库：源代码到中间代码的优化，与目标平台无关</li>
+<li>Clang：C/C++/Objective-C的编译器，转换为LLVM IR（Intermediate Representation）中间语言</li>
+<li>LLDB：基于Clang的调试库</li>
+<li>libc++：LLVM提供的c++标准库</li>
+<li>libclc：OpenCL标准库</li>
+<li>LLD：链接器</li>
+<li>…</li>
+</ul>
+</li>
+<li>狭义的LLVM聚焦于编译后端，Clang对应编译前端。</li>
+</ul>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>操作系统不太了解，简单学习下，扩宽视野。</p>
 <ul>
 <li>CMake使用可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/kai_zone/article/details/82656964">cmake快速入门</a></li>
@@ -485,7 +545,6 @@
           
           <div class="post-tags">
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
-              <a href="/tags/gradle/" rel="tag"><i class="fa fa-tag"></i> gradle</a>
           </div>
 
         
@@ -498,8 +557,8 @@
       <i class="fa fa-chevron-left"></i> 提问的智慧
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/" rel="next" title="Dart的编译和执行">
-      Dart的编译和执行 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/01/04/tool-2022-01-04-depot-tools/" rel="next" title="depot_tools工具介绍">
+      depot_tools工具介绍 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -561,7 +620,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GNU%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">GNU介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">1.1.</span> <span class="nav-text">名词解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">构建工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc%E5%92%8Cg"><span class="nav-number">3.</span> <span class="nav-text">gcc和g++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc-g-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">gcc&#x2F;g++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8CGCC"><span class="nav-number">3.2.</span> <span class="nav-text">gcc和GCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8Cg-%E5%8C%BA%E5%88%AB"><span class="nav-number">3.3.</span> <span class="nav-text">gcc和g++区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GNU%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">GNU介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.1.</span> <span class="nav-text">常见开源许可协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GCC"><span class="nav-number">2.</span> <span class="nav-text">GCC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc-g-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">gcc&#x2F;g++编译过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%9A%E7%BC%96%E8%AF%91%E6%97%B6%E9%93%BE%E6%8E%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">静态链接：编译时链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%9A%E8%BF%90%E8%A1%8C%E6%97%B6%E9%93%BE%E6%8E%A5"><span class="nav-number">2.1.2.</span> <span class="nav-text">动态链接：运行时链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E5%BA%93%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-number">2.1.3.</span> <span class="nav-text">链接库搜索路径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8CGCC"><span class="nav-number">2.2.</span> <span class="nav-text">gcc和GCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E5%92%8Cg-%E5%8C%BA%E5%88%AB"><span class="nav-number">2.3.</span> <span class="nav-text">gcc和g++区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GCC%E5%92%8CMake"><span class="nav-number">3.</span> <span class="nav-text">GCC和Make</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LLVM"><span class="nav-number">4.</span> <span class="nav-text">LLVM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Clang%E4%B8%8ELLVM"><span class="nav-number">4.1.</span> <span class="nav-text">Clang与LLVM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -577,7 +636,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -590,7 +649,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -671,13 +730,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">430k</span>
+    <span title="站点总字数">447k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:31</span>
+    <span title="站点阅读时长">6:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

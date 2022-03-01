@@ -24,7 +24,7 @@
 
   <meta name="description" content="介绍Dart虚拟机，Dart程序的编译和执行。Dart SDK源码下载和编译。语言基础不做详细介绍，直接引用官网资料">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dart的编译和执行">
+<meta property="og:title" content="Dart的编译和执行原">
 <meta property="og:url" content="https://blog.afauria.xyz/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="介绍Dart虚拟机，Dart程序的编译和执行。Dart SDK源码下载和编译。语言基础不做详细介绍，直接引用官网资料">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/dart%E7%BC%96%E8%AF%91%E4%BA%A7%E7%89%A9%E6%96%87%E4%BB%B6.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/dart%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9.png">
 <meta property="article:published_time" content="2022-01-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-10T01:41:25.873Z">
+<meta property="article:modified_time" content="2022-02-24T01:10:24.784Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Dart">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>Dart的编译和执行 | Afauria's Blog</title>
+  <title>Dart的编译和执行原 | Afauria's Blog</title>
   
 
 
@@ -226,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Dart的编译和执行
+          Dart的编译和执行原
         </h1>
 
         <div class="post-meta">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-10 09:41:25" itemprop="dateModified" datetime="2022-02-10T09:41:25+08:00">2022-02-10</time>
+                <time title="修改时间：2022-02-24 09:10:24" itemprop="dateModified" datetime="2022-02-24T09:10:24+08:00">2022-02-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
             </span>
 
           
-            <span id="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/" class="post-meta-item leancloud_visitors" data-flag-title="Dart的编译和执行" title="阅读次数">
+            <span id="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/" class="post-meta-item leancloud_visitors" data-flag-title="Dart的编译和执行原" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -522,7 +522,7 @@
 <p>踩坑：FlutterEngine中下载的Dart SDK（<code>&#123;flutter_engine&#125;/src/third_party/dart</code>）不包含编译需要的依赖项目，无法直接用于编译，因此需要使用<code>gclient</code>重新下载Dart源码。</p>
 <p>应该也可以手动创建<code>.gclient</code>文件，执行<code>gclient sync</code>下载依赖</p>
 </blockquote>
-<h2 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h2><h3 id="编译Dart虚拟机"><a href="#编译Dart虚拟机" class="headerlink" title="编译Dart虚拟机"></a>编译Dart虚拟机</h3><p>交叉编译Android平台的Dart VM，可以在Android平台执行Dart应用程序</p>
+<h2 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h2><h3 id="编译生成Dart虚拟机"><a href="#编译生成Dart虚拟机" class="headerlink" title="编译生成Dart虚拟机"></a>编译生成Dart虚拟机</h3><p>交叉编译Android平台的Dart VM，可以在Android平台执行Dart应用程序</p>
 <ol>
 <li>下载Android需要的依赖，如NDK，SDK等<ol>
 <li>修改dart-sdk目录下的<code>.gclient</code>文件：最后一行添加<code>target_os = [&#39;android&#39;]</code></li>
@@ -537,7 +537,7 @@
 <blockquote>
 <p>踩坑：这里无法使用adb shell进入Android终端执行，会报错，缺少工具和库。</p>
 </blockquote>
-<h3 id="编译Dart-SDK"><a href="#编译Dart-SDK" class="headerlink" title="编译Dart SDK"></a>编译Dart SDK</h3><p>可以将编译出来的整个SDK归档文件push到Android平台中并设置环境变量，此时可以像在主机上一样使用Dart SDK，编译和执行Dart应用。如下</p>
+<h3 id="编译生成Dart-SDK"><a href="#编译生成Dart-SDK" class="headerlink" title="编译生成Dart SDK"></a>编译生成Dart SDK</h3><p>可以将编译出来的整个SDK归档文件push到Android平台中并设置环境变量，此时可以像在主机上一样使用Dart SDK，编译和执行Dart应用。如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 交叉编译Android平台的Dart SDK</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./tools/build.py --no-goma -a=arm64 --mode=release --os=android create_sdk</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb push ./xcodebuild/ReleaseAndroidARM64/dart-sdk/ /data/<span class="built_in">local</span>/tmp/dart-sdk/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb shell</span></span><br><span class="line">HWAUM-Q:/ $ cd /data/local/tmp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置环境变量</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ export PATH=&quot;$PATH:$PWD/dart-sdk/bin&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> Dart虚拟机执行，输出Hello World</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dart run main.dart</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译aot快照</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dart compile aot-snapshot main.dart</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行aot文件，输出Hello World</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dartaotruntime main.aot</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译exe可执行程序</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dart compile exe main.dart</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行exe程序，输出Hello World</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ ./main.exe</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> dart编译前端，生成main.dill</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dart dart-sdk/bin/snapshots/frontend_server.dart.snapshot --sdk-root dart-sdk/lib/_internal/ --platform vm_platform_strong.dill --aot --tfa -Ddart.vm.product=true --output-dill main.dill main.dart</span><br><span class="line"><span class="meta">#</span><span class="bash"> dart编译后端，生成main.aot</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ ./dart-sdk/bin/utils/gen_snapshot --snapshot_kind=app-aot-elf --elf=main.aot main.dill</span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行main.aot文件，输出Hello World</span></span><br><span class="line">HWAUM-Q:/data/local/tmp $ dartaotruntime main.aot</span><br></pre></td></tr></table></figure>
 
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>了解Dart编译方式和不同产物，以及执行原理，主要有以下场景</p>
@@ -592,8 +592,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/01/03/basic-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" rel="prev" title="GNU和构建工具介绍">
-      <i class="fa fa-chevron-left"></i> GNU和构建工具介绍
+    <a href="/2022/01/04/tool-2022-01-04-depot-tools/" rel="prev" title="depot_tools工具介绍">
+      <i class="fa fa-chevron-left"></i> depot_tools工具介绍
     </a></div>
       <div class="post-nav-item">
     <a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" rel="next" title="Flutter架构和源码编译">
@@ -659,7 +659,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Dart简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-SDK%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">Dart SDK安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">Dart语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">Dart库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">Dart项目文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E5%B7%A5%E5%85%B7"><span class="nav-number">1.5.</span> <span class="nav-text">Dart工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">Dart的编译和执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">Dart虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E7%BC%96%E8%AF%91"><span class="nav-number">2.3.</span> <span class="nav-text">Dart编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#compile%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.1.</span> <span class="nav-text">compile命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dart-%E2%80%93snapshot"><span class="nav-number">2.3.2.</span> <span class="nav-text">dart –snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CompileSnapshotCommand"><span class="nav-number">2.3.3.</span> <span class="nav-text">CompileSnapshotCommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CompileNativeCommand"><span class="nav-number">2.3.4.</span> <span class="nav-text">CompileNativeCommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.5.</span> <span class="nav-text">编译流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel%E6%96%87%E4%BB%B6%E8%B8%A9%E5%9D%91"><span class="nav-number">2.3.6.</span> <span class="nav-text">Kernel文件踩坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-SDK%E7%89%88%E6%9C%AC%E4%B8%80%E8%87%B4"><span class="nav-number">2.3.7.</span> <span class="nav-text">Dart SDK版本一致</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.4.</span> <span class="nav-text">Web平台</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">Dart源码下载和编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">3.1.</span> <span class="nav-text">源码下载和编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.</span> <span class="nav-text">交叉编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91Dart%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">3.2.1.</span> <span class="nav-text">编译Dart虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91Dart-SDK"><span class="nav-number">3.2.2.</span> <span class="nav-text">编译Dart SDK</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Dart简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-SDK%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">Dart SDK安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">Dart语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">Dart库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">Dart项目文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E5%B7%A5%E5%85%B7"><span class="nav-number">1.5.</span> <span class="nav-text">Dart工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">Dart的编译和执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">Dart虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart%E7%BC%96%E8%AF%91"><span class="nav-number">2.3.</span> <span class="nav-text">Dart编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#compile%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.1.</span> <span class="nav-text">compile命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dart-%E2%80%93snapshot"><span class="nav-number">2.3.2.</span> <span class="nav-text">dart –snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CompileSnapshotCommand"><span class="nav-number">2.3.3.</span> <span class="nav-text">CompileSnapshotCommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CompileNativeCommand"><span class="nav-number">2.3.4.</span> <span class="nav-text">CompileNativeCommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.5.</span> <span class="nav-text">编译流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel%E6%96%87%E4%BB%B6%E8%B8%A9%E5%9D%91"><span class="nav-number">2.3.6.</span> <span class="nav-text">Kernel文件踩坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-SDK%E7%89%88%E6%9C%AC%E4%B8%80%E8%87%B4"><span class="nav-number">2.3.7.</span> <span class="nav-text">Dart SDK版本一致</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.4.</span> <span class="nav-text">Web平台</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">Dart源码下载和编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">3.1.</span> <span class="nav-text">源码下载和编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.</span> <span class="nav-text">交叉编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E7%94%9F%E6%88%90Dart%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">3.2.1.</span> <span class="nav-text">编译生成Dart虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E7%94%9F%E6%88%90Dart-SDK"><span class="nav-number">3.2.2.</span> <span class="nav-text">编译生成Dart SDK</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -675,7 +675,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -688,7 +688,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -769,13 +769,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">430k</span>
+    <span title="站点总字数">447k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:31</span>
+    <span title="站点阅读时长">6:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

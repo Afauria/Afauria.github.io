@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2018/11/04/tool-2018-11-04-Docker/docker05.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2018/11/04/tool-2018-11-04-Docker/docker06.png">
 <meta property="article:published_time" content="2018-11-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-14T07:46:09.282Z">
+<meta property="article:modified_time" content="2022-02-22T11:05:46.222Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="工具">
 <meta property="article:tag" content="笔记">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-14 15:46:09" itemprop="dateModified" datetime="2022-02-14T15:46:09+08:00">2022-02-14</time>
+                <time title="修改时间：2022-02-22 19:05:46" itemprop="dateModified" datetime="2022-02-22T19:05:46+08:00">2022-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -338,14 +338,21 @@
 </tr>
 </tbody></table>
 <p>镜像资源分为两类：</p>
-<p>官方提供的，名称不带前缀，如：<code>hello-world</code></p>
-<p>docker用户创建并维护的,名称带用户名前缀，如：<code>username/hello-world</code></p>
-<p>镜像名完整组成：<br><code>registryhost/username/repository:tag</code>即<br><code>服务主机/用户名/仓库名:版本号</code><br>registryhost不填，则默认为DockerHub<br>username不填，则表示docker官方提供的镜像<br>tag不填，则默认为latest</p>
+<ul>
+<li>官方提供的，名称不带前缀，如：<code>hello-world</code></li>
+<li>docker用户创建并维护的,名称带用户名前缀，如：<code>username/hello-world</code></li>
+</ul>
+<p>镜像名完整组成：<code>registryhost/username/repository:tag</code>即<code>服务主机/用户名/仓库名:版本号</code></p>
+<ul>
+<li>registryhost不填，则默认为DockerHub</li>
+<li>username不填，则表示docker官方提供的镜像</li>
+<li>tag不填，则默认为latest</li>
+</ul>
 <h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a target="_blank" rel="noopener" href="https://www.docker.com/get-started">官网</a>下载安装，按提示一步步完成，国内下载速度慢的话可以使用迅雷。</p>
 <p><strong>注：windows下默认安装在C盘，镜像多的话可能会导致C盘越来越大，可以修改镜像存储路径，<a target="_blank" rel="noopener" href="https://blog.csdn.net/stemq/article/details/53150939">参考博客</a></strong></p>
 <ul>
-<li>windows上安装的docker其实本质上还是借助与windows平台的hyper-v技术来创建一个linux虚拟机，你执行的所有命令其实都是在这个虚拟机里执行的，所以所有pull到本地的image都会在虚拟机的Virtual hard disks目录的文件中，这个文件就是虚拟硬盘文件。如果要想改变路径只需要在hyper-v管理器里设置就可以了。默认的安装路径是C:\Users\Public\Documents\Hyper-V\Virtual hard disks下。</li>
-<li>将默认C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx的文件拷贝到想要改变的路径</li>
+<li>windows上安装的docker其实本质上还是借助与windows平台的hyper-v技术来创建一个linux虚拟机，你执行的所有命令其实都是在这个虚拟机里执行的，所以所有pull到本地的image都会在虚拟机的Virtual hard disks目录的文件中，这个文件就是虚拟硬盘文件。如果要想改变路径只需要在hyper-v管理器里设置就可以了。默认的安装路径是<code>C:\Users\Public\Documents\Hyper-V\Virtual hard disks</code>下。</li>
+<li>将默认<code>C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx</code>的文件拷贝到想要改变的路径</li>
 <li>控制面板-&gt;管理工具-&gt;Hyper-V管理器-&gt;右键设置-&gt;硬盘驱动器-&gt;虚拟硬盘输入为想要保存的路径</li>
 </ul>
 <p><img src="/2018/11/04/tool-2018-11-04-Docker/docker03.png" alt="docker修改镜像路径"></p>
@@ -357,18 +364,21 @@
 <p><img src="/2018/11/04/tool-2018-11-04-Docker/docker06.png" alt="docker修改镜像路径"></p>
 <h2 id="镜像服务器设置"><a href="#镜像服务器设置" class="headerlink" title="镜像服务器设置"></a>镜像服务器设置</h2><p>Perferences… -&gt; Daemon -&gt; Registry mirrors配置</p>
 <p>windows：在setting -&gt; Daemon -&gt; Registry mirrors中配置</p>
-<p>镜像地址：<br>网易加速器：<a target="_blank" rel="noopener" href="http://hub-mirror.c.163.com/">http://hub-mirror.c.163.com</a>  </p>
-<p>官方中国加速器：<a target="_blank" rel="noopener" href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></p>
-<p>ustc的镜像：<a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></p>
-<p>daocloud：<a target="_blank" rel="noopener" href="https://www.daocloud.io/mirror#accelerator-doc%EF%BC%88%E6%B3%A8%E5%86%8C%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89">https://www.daocloud.io/mirror#accelerator-doc（注册后使用）</a></p>
+<p>镜像地址：</p>
+<ul>
+<li>网易加速器：<a target="_blank" rel="noopener" href="http://hub-mirror.c.163.com/">http://hub-mirror.c.163.com</a>  </li>
+<li>官方中国加速器：<a target="_blank" rel="noopener" href="https://registry.docker-cn.com/">https://registry.docker-cn.com</a></li>
+<li>ustc的镜像：<a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></li>
+<li>daocloud：<a target="_blank" rel="noopener" href="https://www.daocloud.io/mirror#accelerator-doc%EF%BC%88%E6%B3%A8%E5%86%8C%E5%90%8E%E4%BD%BF%E7%94%A8%EF%BC%89">https://www.daocloud.io/mirror#accelerator-doc（注册后使用）</a></li>
+</ul>
 <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><p>可视化工具：<a target="_blank" rel="noopener" href="https://kitematic.com/">Kitematic</a></p>
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><ul>
-<li>容器生命周期管理 — docker [run|start|stop| restart|kill|rm|pause|unpause]  </li>
-<li>容器操作运维 — docker [ps|inspect|top|attach|events|logs|wait|export|port]  </li>
-<li>容器rootfs命令 — docker [commit|cp|diff]  </li>
-<li>镜像仓库 — docker [login|pull|push|search]  </li>
-<li>本地镜像管理 — docker [images|rmi|tag|build|history|save|import]  </li>
-<li>其他命令 — docker [info|version]</li>
+<li>容器生命周期管理： <code>docker [run|start|stop| restart|kill|rm|pause|unpause]</code></li>
+<li>容器操作运维：<code>docker [ps|inspect|top|attach|events|logs|wait|export|port]</code></li>
+<li>容器rootfs命令： <code>docker [commit|cp|diff]</code></li>
+<li>镜像仓库： <code>docker [login|pull|push|search]</code></li>
+<li>本地镜像管理：<code>docker [images|rmi|tag|build|history|save|import]</code></li>
+<li>其他命令：<code>docker [info|version]</code></li>
 </ul>
 <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>CONTAINER:：可以是容器名也可以是容器id<br>REPOSITORY：仓库名<br>REGISTRYHOST：服务主机地址<br>IMAGE：镜像名<br>TAG：版本号，不填则默认为latest</p>
 <h3 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h3><ul>
@@ -387,8 +397,11 @@
 </ul>
 <h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ul>
 <li><p><code>docker container ls</code>或<code>docker ps</code>：列出运行的容器，加-a或–all可列出所有容器</p>
+<ul>
+<li>COMMAND列表示容器启动时执行的命令，加<code>--no-trunc</code>选项显示完整命令</li>
+</ul>
 </li>
-<li><p>`docker create [OPTIONS] 镜像名：创建新容器，但不启动</p>
+<li><p><code>docker create [OPTIONS]</code> 镜像名：创建新容器，但不启动</p>
 </li>
 <li><p><code>docker run [OPTIONS] 镜像名</code>：创建新容器并运行<br>会从本地查找镜像，若不存在，则从默认公共镜像源(DockerHub)下载<br>常用OPTIONS： </p>
 </li>
@@ -431,26 +444,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-f :强制删除；</span><br><span class="line">--no-prune :不移除该镜像的过程镜像，默认移除；</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h1 id="把镜像上传到Docker-Hub"><a href="#把镜像上传到Docker-Hub" class="headerlink" title="把镜像上传到Docker Hub"></a>把镜像上传到Docker Hub</h1><h2 id="注册docker账号"><a href="#注册docker账号" class="headerlink" title="注册docker账号"></a>注册docker账号</h2><p><a href="(https://hub.docker.com/)">DockerHub</a></p>
-<p>（1）输入DockerId（即用户名，英文小写和数字），邮箱，密码<br>（2）邮箱验证</p>
-<h2 id="在hub上创建仓库"><a href="#在hub上创建仓库" class="headerlink" title="在hub上创建仓库"></a>在hub上创建仓库</h2><p>Create Repository，起名，如hello-world，<br>则路径为username/hello-word</p>
+<ul>
+<li>输入DockerId（即用户名，英文小写和数字），邮箱，密码</li>
+<li>邮箱验证</li>
+</ul>
+<h2 id="在hub上创建仓库"><a href="#在hub上创建仓库" class="headerlink" title="在hub上创建仓库"></a>在hub上创建仓库</h2><p>Create Repository，起名，如hello-world，则路径为username/hello-word</p>
 <h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><p>搜索镜像：<code>docker search hello-world</code></p>
 <p>拉取镜像：<code>docker pull hello-world</code></p>
 <h2 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h2><p>创建新容器并运行：<code>docker run --name my-hello-world -d hello-world</code></p>
-<p>注：</p>
-<ul>
-<li>加<code>-d</code>返回容器id</li>
-<li>加<code>--name</code>命名为’my-hello-world’</li>
-</ul>
 <h2 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h2><p><code>docker ps</code>，<code>docker container ls</code>：可以看到容器id，容器名称等信息。</p>
 <h2 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h2><h3 id="基于Dockerfile构建新镜像"><a href="#基于Dockerfile构建新镜像" class="headerlink" title="基于Dockerfile构建新镜像"></a>基于Dockerfile构建新镜像</h3><p>待补充//todo</p>
 <h3 id="使用commit从容器创建镜像"><a href="#使用commit从容器创建镜像" class="headerlink" title="使用commit从容器创建镜像"></a>使用commit从容器创建镜像</h3><p><code>docker commit -p 容器id/容器名 my-hello-world:v1</code></p>
-<h3 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h3><p>查看本地镜像：<code>docker images</code><br>看看镜像仓库是否存在</p>
+<h3 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h3><p>查看本地镜像：<code>docker images</code></p>
 <p>可以修改镜像的所属仓库：<br><code>docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</code></p>
 <h2 id="登录docker账号"><a href="#登录docker账号" class="headerlink" title="登录docker账号"></a>登录docker账号</h2><p>输入<code>docker login</code>，接着输入用户名和密码<br>或者在docker图形界面登录</p>
-<h2 id="本地镜像上传到镜像仓库"><a href="#本地镜像上传到镜像仓库" class="headerlink" title="本地镜像上传到镜像仓库"></a>本地镜像上传到镜像仓库</h2><p><code>docker push username/my-hello-world:v1</code><br>上传成功后可以到hub上查看是否创建成功</p>
+<h2 id="本地镜像上传到镜像仓库"><a href="#本地镜像上传到镜像仓库" class="headerlink" title="本地镜像上传到镜像仓库"></a>本地镜像上传到镜像仓库</h2><p><code>docker push username/my-hello-world:v1</code>：上传成功后可以到hub上查看是否创建成功</p>
 <h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>原先在windows上用的终端是Git Bash，在使用docker的jenkins容器时，需要<code>docker exec -it jenkins /bin/bash</code>，进入交互解释器，提示<code>the input device is not a TTY.  If you are using mintty, try prefixing the command with &#39;winpty&#39;</code></p>
 <p>这是由于终端和linux不一样，网上有很多解决办法，说的有点多，弄了一会没弄好就没耐心了，正好我觉得Git Bash不太好用了，如复制粘贴快捷键（一点都不快捷，笔记本的键盘可能会好点）是<code>Ctrl+ins</code>和<code>Shift+ins</code>，且命令提示也不是很友好，于是趁此机会换了cmder命令行工具，顺便学习了一下，结果很满意，想看的可以移步<a href="/2018/12/14/tool-2018-12-14-Cmder/">这里</a>。</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wherein/p/6862911.html">Docker 如何把镜像上传到docker hub</a></li>
 <li><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1593010515480468898&wfr=spider&for=pc">Docker新手入门之四：Docker镜像和仓库的基本使用</a></li>
@@ -578,7 +589,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -591,7 +602,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -672,13 +683,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">430k</span>
+    <span title="站点总字数">447k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:31</span>
+    <span title="站点阅读时长">6:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
