@@ -9,43 +9,50 @@ description: 命令行笔记
 keywords: [mac , cli]
 ---
 
-windows命令行工具推荐cmder
-
-windows和mac下命令有所区别，使用cmder的别名功能可以进行统一
-
 mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别
 
-| 作用                 | Linux/Mac         | windows                              |
-| -------------------- | ----------------- | ------------------------------------ |
-| 打开文件或文件夹     | open [path]       | explorer.exe [path]、explorer [path] |
-| 列出当前目录文件     | ls                | ls                                   |
-| 列出当前目录文件详情 | ll                | ls -alF、dir。（-R：递归遍历）       |
-| 打印当前目录路径     | pwd               | pwd                                  |
-| 拷贝文本             | pbcopy（mac专有） | 无                                   |
-| 查看系统信息         | sw_vers           | winver                               |
-| 计算器               | bc                | calc                                 |
-| 查看ip               | ifconfig          | ipconfig                             |
-| 匹配字符串           | grep              | find                                 |
-| 创建文件夹           | mkdir             | mkdir、md                            |
-| 创建文件             | touch             | type、touch                          |
-| 查看应用安装路径     | which             | where                                |
-| 查看系统磁盘使用情况 | df                | df                                   |
-| 查看目录或文件大小   | du                | du                                   |
-|                      |                   |                                      |
-|                      |                   |                                      |
-|                      |                   |                                      |
-|                      |                   |                                      |
-|                      |                   |                                      |
+| 作用                 | Linux/Mac         |
+| -------------------- | ----------------- |
+| 打开文件或文件夹     | open [path]       |
+| 列出当前目录文件     | ls、ll -h         |
+| 打印当前目录路径     | pwd               |
+| 拷贝文本             | pbcopy（mac专有） |
+| 查看系统信息         | sw_vers           |
+| 计算器               | bc                |
+| 查看ip               | ifconfig          |
+| 匹配字符串           | grep              |
+| 创建文件夹           | mkdir             |
+| 创建文件             | touch             |
+| 查看应用安装路径     | which             |
+| 查看系统磁盘使用情况 | df                |
+| 查看目录或文件大小   | du -sh 文件夹路径 |
 
 常用命令：
 
-* `cd /d c:\Users\41001\Desktop`：`/d`表示直接进入该盘符
 * `find . -name '文件名'`：在当前路径下查找文件，需要完整的文件名，或者使用通配符
 * `grep [options] PATTERN FILE`：`grep -inR enable_global_input *`
   * -i：忽略大小写
   * -n：输出匹配的行号
   * -R：递归遍历文件夹
   * -E：可以输入多个：`grep -E "word1|word2|word3" file.txt `
+
+Linux查看系统版本：
+
+* `cat /proc/version`和`uname -a`查看内核版本
+* `lsb_release -a`和`cat /etc/issue`：查看发行版本信息
+
+# Windows常用命令
+
+windows命令行工具推荐cmder
+
+windows和mac下命令有所区别，使用cmder的别名功能可以进行统一
+
+常用命令
+
+* 打开文件或文件夹：`explorer [path]`
+* 查看系统信息：`winver`
+* 计算器：`calc`
+* 进入文件夹：`cd /d c:\Users\41001\Desktop`：`/d`表示直接进入该盘符
 
 # 别名
 
