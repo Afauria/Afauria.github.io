@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%B8%8D%E5%90%8C%E6%9E%B6%E6%9E%84Ubuntu%E9%95%9C%E5%83%8F%E5%B7%AE%E5%BC%82.png">
 <meta property="article:published_time" content="2021-11-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-01T07:19:09.069Z">
+<meta property="article:modified_time" content="2022-03-03T09:30:20.079Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="程序基础">
 <meta property="article:tag" content="编译">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-01 15:19:09" itemprop="dateModified" datetime="2022-03-01T15:19:09+08:00">2022-03-01</time>
+                <time title="修改时间：2022-03-03 17:30:20" itemprop="dateModified" datetime="2022-03-03T17:30:20+08:00">2022-03-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,14 +281,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.6k</span>
+              <span>9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>8 分钟</span>
             </span>
             <div class="post-description">介绍交叉编译，工具链，编译环境等</div>
 
@@ -336,7 +336,7 @@
 </blockquote>
 <p>交叉编译示意图如下：</p>
 <p><img src="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.png"></p>
-<p>Android和Java代码编译只需要编译成dex或class，不需要编译成目标代码，因此不需要交叉编译。但是Android中的Native开发还是需要使用交叉编译工具链，NDK中做了封装。</p>
+<p>Android和Java代码编译只需要编译成dex或class，不需要编译成目标代码，因此不需要交叉编译。但是Android中的Native开发还是需要使用交叉编译工具链，只不过NDK中做了封装。</p>
 <p>ABI（Application Binary Interface）和EABI（Embedded ABI）区别</p>
 <blockquote>
 <p>前者是计算机上的，后者是嵌入式平台上（arm、mips等）</p>
@@ -367,7 +367,47 @@
 <li>使用现成的编译好的工具链：<a target="_blank" rel="noopener" href="https://developer.arm.com/tools-and-software/open-source-software/developer-tools/">ARM</a>、<a target="_blank" rel="noopener" href="https://www.linaro.org/downloads/">Linaro</a>、<a target="_blank" rel="noopener" href="https://www.plm.automation.siemens.com/global/en/products/embedded-software/sourcery-codebench-lite-downloads.html">Codesourcery</a>。</li>
 <li>使用包管理器直接下载，如apt、rpm、yum等</li>
 </ol>
-<h1 id="sysroot"><a href="#sysroot" class="headerlink" title="sysroot"></a>sysroot</h1><p>指定编译时的逻辑根目录，只在链接过程中起作用，作为交叉编译工具链搜索库文件的根路径。</p>
+<h1 id="LLVM项目构建"><a href="#LLVM项目构建" class="headerlink" title="LLVM项目构建"></a>LLVM项目构建</h1><p>本地编译器构建比较简单（一般可以直接使用包管理器安装），交叉编译器则需要获取源码自行构建。</p>
+<p>Flutter引擎使用Clang/LLVM工具链编译，这里简单介绍下步骤：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> --branch=llvmorg-11.1.0 --depth=1 https://github.com/llvm/llvm-project.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> llvm-project</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 构建并安装Clang</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake -G Ninja \</span></span><br><span class="line"><span class="bash">    -S llvm \</span></span><br><span class="line"><span class="bash">    -B build_llvm \</span></span><br><span class="line"><span class="bash">    -DCMAKE_BUILD_TYPE=Release \</span></span><br><span class="line"><span class="bash">    -DCMAKE_CROSSCOMPILING=True \</span></span><br><span class="line"><span class="bash">    -DCMAKE_INSTALL_PREFIX=<span class="variable">$HOME</span>/sdk/toolchain \</span></span><br><span class="line"><span class="bash">    -DLLVM_ENABLE_PROJECTS=clang \</span></span><br><span class="line"><span class="bash">    -DLLVM_DEFAULT_TARGET_TRIPLE=arm-linux-gnueabihf \</span></span><br><span class="line"><span class="bash">    -DLLVM_TARGET_ARCH=ARM \</span></span><br><span class="line"><span class="bash">    -DLLVM_TARGETS_TO_BUILD=ARM</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake --build build_llvm &amp;&amp; sudo cmake --install build_llvm</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>-S：源码目录</li>
+<li>-G：使用Ninja构建</li>
+<li>-B：构建目录</li>
+<li>-DCMAKE_INSTALL_PREFIX：LLVM工具和库安装的路径。默认安装在/usr/local，可能会覆盖系统本身的工具</li>
+<li>-DLLVM_ENABLE_PROJECTS：LLVM子项目构建，分号分隔</li>
+<li>-DLLVM_ENABLE_RUNTIMES：运行时库构建，分号分隔</li>
+</ul>
+</blockquote>
+<h2 id="Binutils构建"><a href="#Binutils构建" class="headerlink" title="Binutils构建"></a>Binutils构建</h2><p>GNU Binutils：二进制工具集合：</p>
+<ul>
+<li>ld、gold：GNU链接器</li>
+<li>as：GNU汇编器</li>
+<li>addr2line：地址转代码行数</li>
+<li>ar：归档工具</li>
+<li>objdump：输出目标文件信息</li>
+<li>objcopy：拷贝目标文件</li>
+<li>….</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> --depth=1 git://sourceware.org/git/binutils-gdb.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> binutils-gdb</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 构建并安装Binutils</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./configure --prefix=<span class="string">&quot;<span class="variable">$HOME</span>/sdk/toolchain&quot;</span> \</span></span><br><span class="line"><span class="bash">    --enable-gold \</span></span><br><span class="line"><span class="bash">    --enable-ld \</span></span><br><span class="line"><span class="bash">    --target=arm-linux-gnueabihf</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make -j$(expr $(expr $(nproc) \* 6) \/ 5) &amp;&amp; sudo make install</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>./configure</code>也是用于生成Makefile文件</p>
+</blockquote>
+<h2 id="libcxx和libcxx构建"><a href="#libcxx和libcxx构建" class="headerlink" title="libcxx和libcxx构建"></a>libcxx和libcxx构建</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> llvm-project</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> arm目标平台libcxxabi构建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> [ -d build_libcxxabi ] &amp;&amp; sudo rm -r build_libcxxabi ;\</span></span><br><span class="line"><span class="bash">cmake -G Ninja \</span></span><br><span class="line"><span class="bash">    -S libcxxabi \</span></span><br><span class="line"><span class="bash">    -B build_libcxxabi \</span></span><br><span class="line"><span class="bash">    -DCMAKE_MAKE_PROGRAM=$(<span class="built_in">which</span> ninja) \</span></span><br><span class="line"><span class="bash">    -DCMAKE_BUILD_TYPE=Release \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSROOT=<span class="variable">$HOME</span>/flutter-engine/sdk/sysroot \</span></span><br><span class="line"><span class="bash">    -DCMAKE_INSTALL_PREFIX=<span class="variable">$HOME</span>/sdk/toolchain \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSTEM_NAME=Linux \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSTEM_PROCESSOR=ARM \</span></span><br><span class="line"><span class="bash">    -DCMAKE_C_COMPILER=<span class="variable">$HOME</span>/sdk/toolchain/bin/clang \</span></span><br><span class="line"><span class="bash">    -DCMAKE_CXX_COMPILER=<span class="variable">$HOME</span>/sdk/toolchain/bin/clang++ \</span></span><br><span class="line"><span class="bash">    -DCMAKE_AR=<span class="variable">$HOME</span>/sdk/toolchain/bin/arm-linux-gnueabihf-ar \</span></span><br><span class="line"><span class="bash">    -DCMAKE_RANLIB=<span class="variable">$HOME</span>/sdk/toolchain/bin/arm-linux-gnueabihf-ranlib \</span></span><br><span class="line"><span class="bash">    -DLLVM_TARGETS_TO_BUILD=ARM \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_ENABLE_SHARED=False \</span></span><br><span class="line"><span class="bash">    -DLIBCXXABI_ENABLE_EXCEPTIONS=False</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake --build build_libcxxabi &amp;&amp; sudo cmake --install build_libcxxabi</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> arm目标平台libcxx构建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> [ -d build_libcxx ] &amp;&amp; sudo rm -r build_libcxx ;\</span></span><br><span class="line"><span class="bash">cmake -G Ninja \</span></span><br><span class="line"><span class="bash">    -S libcxx \</span></span><br><span class="line"><span class="bash">    -B build_libcxx \</span></span><br><span class="line"><span class="bash">    -DCMAKE_MAKE_PROGRAM=$(<span class="built_in">which</span> ninja) \</span></span><br><span class="line"><span class="bash">    -DCMAKE_BUILD_TYPE=Release \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSROOT=<span class="variable">$HOME</span>/sdk/sysroot \</span></span><br><span class="line"><span class="bash">    -DCMAKE_INSTALL_PREFIX=<span class="variable">$HOME</span>/sdk/toolchain \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSTEM_NAME=Linux \</span></span><br><span class="line"><span class="bash">    -DCMAKE_SYSTEM_PROCESSOR=ARM \</span></span><br><span class="line"><span class="bash">    -DCMAKE_C_COMPILER=<span class="variable">$HOME</span>/sdk/toolchain/bin/clang \</span></span><br><span class="line"><span class="bash">    -DCMAKE_CXX_COMPILER=<span class="variable">$HOME</span>/sdk/toolchain/bin/clang++ \</span></span><br><span class="line"><span class="bash">    -DCMAKE_AR=<span class="variable">$HOME</span>/sdk/toolchain/bin/arm-linux-gnueabihf-ar \</span></span><br><span class="line"><span class="bash">    -DCMAKE_RANLIB=<span class="variable">$HOME</span>/sdk/toolchain/bin/arm-linux-gnueabihf-ranlib \</span></span><br><span class="line"><span class="bash">    -DLLVM_TARGETS_TO_BUILD=ARM \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_ENABLE_EXCEPTIONS=False \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_ENABLE_SHARED=False \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_ENABLE_RTTI=False \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_CXX_ABI=libcxxabi \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_CXX_ABI_INCLUDE_PATHS=<span class="variable">$HOME</span>/llvm-project/libcxxabi/include \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_CXX_ABI_LIBRARY_PATH=<span class="variable">$HOME</span>/sdk/toolchain/lib \</span></span><br><span class="line"><span class="bash">    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=True</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake --build build_libcxx &amp;&amp; sudo cmake --install build_libcxx</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>[-d path]</code>：判断目录是否存在，存在则条件成立</p>
+<p><code>[-n 变量]</code>：判断变量是否为空，为空则条件成立</p>
+</blockquote>
+<p>踩坑：<code>libcxx</code>和<code>libcxxabi</code>构建报错，网上说是Glibc版本太高，折腾了一下没搞定。<a target="_blank" rel="noopener" href="http://blog.fpliu.com/it/software/GNU/glibc">glibc</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/flutter-engine/sdk/toolchain/bin/arm-linux-gnueabihf-ld: /root/flutter-engine/sdk/sysroot/lib/gcc/arm-linux-gnueabihf/9/libstdc++.so: undefined reference to `acos@GLIBC_2.4&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用gn编译Flutter"><a href="#使用gn编译Flutter" class="headerlink" title="使用gn编译Flutter"></a>使用gn编译Flutter</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn \</span></span><br><span class="line"><span class="bash">    --target-sysroot <span class="variable">$HOME</span>/sdk/sysroot \</span></span><br><span class="line"><span class="bash">    --target-toolchain <span class="variable">$HOME</span>/sdk/toolchain \</span></span><br><span class="line"><span class="bash">    --target-triple arm-linux-gnueabihf \</span></span><br><span class="line"><span class="bash">    --linux-cpu arm \</span></span><br><span class="line"><span class="bash">    --runtime-mode release \</span></span><br><span class="line"><span class="bash">    --embedder-for-target \</span></span><br><span class="line"><span class="bash">    --no-lto \</span></span><br><span class="line"><span class="bash">    --target-os linux \</span></span><br><span class="line"><span class="bash">    --arm-float-abi hard</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="sysroot"><a href="#sysroot" class="headerlink" title="sysroot"></a>sysroot</h1><p>指定编译时的逻辑根目录，<strong>只在链接过程中起作用</strong>，作为交叉编译工具链搜索库文件的根路径。</p>
 <blockquote>
 <p>编译过程中默认会在<code>/usr/include</code>、<code>/usr/lib</code>下查找引用的库和头文件，指定sysroot为dir之后会在<code>dir/usr/include</code>、<code>dir/usr/lib</code>下查找。</p>
 </blockquote>
@@ -402,7 +442,7 @@
 <p>例如在arm64容器中和x86_64容器中分别使用apt安装依赖库，二者的目标平台不同（如下图对比）。</p>
 </blockquote>
 <p><img src="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/%E4%B8%8D%E5%90%8C%E6%9E%B6%E6%9E%84Ubuntu%E9%95%9C%E5%83%8F%E5%B7%AE%E5%BC%82.png"></p>
-<h1 id="pkg-config"><a href="#pkg-config" class="headerlink" title="pkg-config"></a><code>pkg-config</code></h1><p>通过<code>.pc</code>文件查找软件的头文件和库文件位置，用于C/C++程序链接。</p>
+<h1 id="pkg-config"><a href="#pkg-config" class="headerlink" title="pkg-config"></a>pkg-config</h1><p>通过<code>.pc</code>文件查找软件的头文件和库文件位置，用于C/C++程序链接。</p>
 <p>例如<code>/usr/lib/arm-linux-gnueabihf/pkgconfig/x11.pc</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /usr/lib/arm-linux-gnueabihf/pkgconfig/x11.pc</span></span><br><span class="line">prefix=/usr</span><br><span class="line">exec_prefix=$&#123;prefix&#125;</span><br><span class="line">libdir=$&#123;prefix&#125;/lib/arm-linux-gnueabihf</span><br><span class="line">includedir=$&#123;prefix&#125;/include</span><br><span class="line"></span><br><span class="line">xthreadlib=-lpthread</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件简介</span></span><br><span class="line">Name: X11</span><br><span class="line">Description: X Library</span><br><span class="line">Version: 1.6.9</span><br><span class="line">Requires: xproto kbproto</span><br><span class="line">Requires.private: xcb &gt;= 1.11.1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 头文件路径</span></span><br><span class="line">Cflags: -I$&#123;includedir&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 库目录</span></span><br><span class="line">Libs: -L$&#123;libdir&#125; -lX11</span><br><span class="line">Libs.private: -lpthread</span><br></pre></td></tr></table></figure>
 
@@ -421,6 +461,11 @@
 <li><code>cmake --help-variable-list</code></li>
 <li><code>cmake --help-variable CMAKE_SYSROOT_COMPILE</code></li>
 </ul>
+<h2 id="保存临时文件夹"><a href="#保存临时文件夹" class="headerlink" title="保存临时文件夹"></a>保存临时文件夹</h2><p>cmake执行时会使用测试项目进行检查。执行完之后会自动删除。</p>
+<p>添加<code>--debug-trycompile</code>选项可以保留临时目录。</p>
+<blockquote>
+<p>cmake会调用多个命令，有时候cmake执行失败，我们想调试具体的报错命令，需要用到临时目录。</p>
+</blockquote>
 <h2 id="编译工具链指定"><a href="#编译工具链指定" class="headerlink" title="编译工具链指定"></a>编译工具链指定</h2><p>交叉编译时主机可能会包含本地编译工具链，以及多个目标平台的交叉编译工具链，因此需要指定编译工具链。</p>
 <p>方式一：执行命令的时候添加参数选项。</p>
 <p>例如：<code>-DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++</code></p>
@@ -558,7 +603,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">交叉编译概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">交叉编译工具链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysroot"><span class="nav-number">3.</span> <span class="nav-text">sysroot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9Csysroot"><span class="nav-number">3.1.</span> <span class="nav-text">制作sysroot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pkg-config"><span class="nav-number">4.</span> <span class="nav-text">pkg-config</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">CMake配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E6%8C%87%E5%AE%9A"><span class="nav-number">5.1.</span> <span class="nav-text">编译工具链指定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-number">5.2.</span> <span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-number">5.3.</span> <span class="nav-text">target_include_directories</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">交叉编译概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">交叉编译工具链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LLVM%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">LLVM项目构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Binutils%E6%9E%84%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">Binutils构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#libcxx%E5%92%8Clibcxx%E6%9E%84%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">libcxx和libcxx构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8gn%E7%BC%96%E8%AF%91Flutter"><span class="nav-number">3.3.</span> <span class="nav-text">使用gn编译Flutter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysroot"><span class="nav-number">4.</span> <span class="nav-text">sysroot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9Csysroot"><span class="nav-number">4.1.</span> <span class="nav-text">制作sysroot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pkg-config"><span class="nav-number">5.</span> <span class="nav-text">pkg-config</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">CMake配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">6.1.</span> <span class="nav-text">保存临时文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E6%8C%87%E5%AE%9A"><span class="nav-number">6.2.</span> <span class="nav-text">编译工具链指定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-number">6.3.</span> <span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-number">6.4.</span> <span class="nav-text">target_include_directories</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">7.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -574,7 +619,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -668,13 +713,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">447k</span>
+    <span title="站点总字数">454k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:46</span>
+    <span title="站点阅读时长">6:53</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

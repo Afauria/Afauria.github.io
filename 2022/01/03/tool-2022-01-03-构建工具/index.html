@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/gcc%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5.png">
 <meta property="article:published_time" content="2022-01-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-26T01:28:50.789Z">
+<meta property="article:modified_time" content="2022-03-04T04:34:39.055Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-26 09:28:50" itemprop="dateModified" datetime="2022-02-26T09:28:50+08:00">2022-02-26</time>
+                <time title="修改时间：2022-03-04 12:34:39" itemprop="dateModified" datetime="2022-03-04T12:34:39+08:00">2022-03-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +281,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.2k</span>
+              <span>6.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -337,27 +337,12 @@
 <p><img src="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/%E5%BC%80%E6%BA%90%E8%AE%B8%E5%8F%AF%E8%AF%81.png"></p>
 <h1 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h1><p>完整的GNU工具链包括Binutils（包括Assembler汇编器、Linker链接器）、GCC编译器、C库</p>
 <h2 id="gcc-g-编译过程"><a href="#gcc-g-编译过程" class="headerlink" title="gcc/g++编译过程"></a>gcc/g++编译过程</h2><ol>
-<li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，生成.i文件。<code>gcc -E file.c -o file.i</code></li>
-<li>编译（compile）[编译器egcs]：语法分析、词法分析、语义分析等，生成汇编代码.s文件。<code>gcc -S file.i -o file.s</code></li>
-<li>汇编（assembly）[汇编器as]：汇编代码转为机器代码.o文件。<code>gcc -c file.s -o file.o</code></li>
-<li>链接（link）[链接器ld]：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。生成可执行文件。<ol>
-<li>静态链接：目标文件直接进入可执行文件<ol>
-<li>编译静态库源码，生成.o目标文件：<code>gcc -c lib.c -o lib.o</code></li>
-<li>打包生成<code>.a</code>归档文件：<code>ar -q lib.a lib.o</code></li>
-<li>使用静态库编译，生成<code>.out</code>可执行文件：<code>gcc main.c lib.a -o main.out</code></li>
-</ol>
-</li>
-<li>动态链接：可执行程序运行时加载目标文件<ol>
-<li>编译动态库源码，生成<code>.so</code>文件：<code>gcc -shared dlib.c -o dlib.so</code></li>
-<li>使用动态库编译：<code>gcc main -ldl -o main.out</code></li>
-<li>代码调用<ol>
-<li><code>dlopen</code>打开动态库文件</li>
-<li><code>dlsym</code>查找动态库中的函数并返回调用地址</li>
-<li><code>dlclose</code>关闭动态库文件</li>
-</ol>
-</li>
-</ol>
-</li>
+<li>预处理（pre-compile）[预处理器cpp]：删除#define并展开宏定义，处理#include等，<strong>生成.i预处理文件</strong>。<code>gcc -E file.c -o file.i</code></li>
+<li>编译（compile）[编译器egcs]：语法分析、词法分析、语义分析等，<strong>生成.s汇编代码文件</strong>。<code>gcc -S file.i -o file.s</code></li>
+<li>汇编（assembly）[汇编器as]：<strong>生成.o可重定位目标代码文件</strong>。<code>gcc -c file.s -o file.o</code></li>
+<li>链接（link）[链接器ld]：处理各个模块之间的引用和依赖，将目标文件链接到可执行文件或其他目标文件。<strong>生成可执行文件</strong>。<code>gcc hello.o –o hello</code><ol>
+<li>静态链接：目标文件直接包含到可执行文件中</li>
+<li>动态链接：可执行程序运行时加载目标文件</li>
 </ol>
 </li>
 <li>反汇编：使用<code>objdump</code>反汇编，输出机器码和对应的汇编代码</li>
@@ -374,9 +359,9 @@
 <p>静态库：编译时链接的库。一般是<code>.a</code>文件。</p>
 <p>静态链接步骤如下：</p>
 <ol>
-<li><code>gcc -c xxx.c</code>编译生成<code>.o</code>文件</li>
-<li>使用<code>ar</code>归档工具将所有<code>.o</code>文件打包生成<code>.a</code>文件：<code>ar -q libfoo xxx.o yyy.o </code></li>
-<li>链接：<code>gcc -o main main.c -static -l -L. -lfoo</code></li>
+<li>编译静态库源码，生成.o目标文件：<code>gcc -c lib.c -o lib1.o</code></li>
+<li>打包生成<code>.a</code>归档文件：<code>ar -q libfoo.a lib1.o lib2.o </code></li>
+<li>链接生成<code>.out</code>可执行文件：<code>gcc -o main main.c -static -L. -lfoo</code></li>
 </ol>
 <blockquote>
 <p><code>-L</code>：静态链接库搜索路径</p>
@@ -386,15 +371,53 @@
 <p>动态库（共享库）：程序运行时链接的库。可以被多个程序共享。一般是<code>.so</code>文件。</p>
 <p>动态链接步骤如下：</p>
 <ol>
-<li><code>gcc -c xxx.c</code>编译生成<code>.o</code>文件</li>
-<li><code>gcc --shared -fPIC -o libfoo.so xxx.o yyy.o</code>编译生成<code>.so</code>文件</li>
-<li><code>gcc -o main main.c -lfoo </code>链接生成可执行程序（去掉lib和so前后缀）</li>
-<li>运行时从<code>/lib</code>、<code>/usr/lib</code>等路径下搜索</li>
+<li>编译动态库源码，生成<code>.so</code>文件：<code>gcc -shared -fPIC dlib1.c dlib2.c -o libfoo.so</code></li>
+<li>链接动态库生成可执行程序：<code>gcc main.c -lfoo -o main.out</code>（去掉lib和so前后缀）</li>
+<li>运行时在特定目录下搜索动态链接库</li>
 </ol>
 <blockquote>
 <p><code>-fPIC</code>：使用地址无关代码（Position Independent Code）技术来生成文件。不加这个选项的话无法让其他程序共享。</p>
-<p>原理：告诉GCC目标代码不要包含对具体内存位置的引用，运行时才确定具体的内存地址空间，由每个进程自行决定。</p>
+<p>原理：告诉GCC目标代码不要包含对函数和变量具体内存位置的引用，运行时才确定具体的内存地址空间，由每个进程自行决定。</p>
 </blockquote>
+<p>动态链接除了编译时指定路径外，还可以通过代码加载：</p>
+<ol>
+<li>使用<code>-ldl</code>选项编译（链接<code>libdl.so</code>库）：<code>gcc file.c -ldl -o file.out</code></li>
+<li>代码调用<ol>
+<li><code>dlopen</code>：打开动态库文件，返回句柄</li>
+<li><code>dlsym</code>：查找动态库中的函数并返回调用地址</li>
+<li><code>dlclose</code>：关闭动态库文件</li>
+<li><code>dlerror</code>：返回动态库函数出错信息</li>
+</ol>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>操作系统</th>
+<th>目标文件</th>
+<th>静态链接库</th>
+<th>动态链接库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td>obj</td>
+<td>lib</td>
+<td>dll</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>o</td>
+<td>a</td>
+<td>so</td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td>o</td>
+<td>a</td>
+<td>dylib</td>
+</tr>
+</tbody></table>
 <h3 id="链接库搜索路径"><a href="#链接库搜索路径" class="headerlink" title="链接库搜索路径"></a>链接库搜索路径</h3><p>ld链接时有两个选项：</p>
 <ul>
 <li><code>-rpath-link=dir</code>：指定编译链接时查找的路径</li>
@@ -405,14 +428,29 @@
 <li><code>export LIBRARY_PATH=xxx</code>：添加gcc编译时查找链接库的路径。</li>
 <li><code>export LD_LIBRARY_PATH=xxx</code>：添加程序加载运行时查找链接库的路径</li>
 </ul>
-<p>查找链接库路径整体顺序如下：</p>
+<p>静态链接时搜索路径顺序：</p>
 <ol>
-<li>编译时<code>rpath</code>指定的路径</li>
-<li><code>LD_LIBRARY_PATH</code>环境变量配置的路径</li>
-<li>ldconfig指定的路径：<code>cat /etc/ld.so.cache</code></li>
-<li><code>/lib</code>目录</li>
-<li><code>usr/lib</code>目录</li>
+<li><code>-L</code>和<code>-rpath-link</code>参数指定的路径</li>
+<li><code>LIBRARY_PATH</code>环境变量配置的路径</li>
+<li>默认目录：<code>/lib</code>、<code>usr/lib</code>、<code>/usr/local/lib</code></li>
 </ol>
+<p>动态链接搜索路径顺序：</p>
+<ol>
+<li>编译时<code>-rpath</code>指定的路径</li>
+<li><code>LD_LIBRARY_PATH</code>环境变量配置的路径</li>
+<li>ldconfig指定的路径：<code>/etc/ld.so.conf</code>中配置<ol>
+<li>查看缓存的链接路径：<code>cat /etc/ld.so.cache</code></li>
+<li><code>/etc/ld.so.conf</code>中配置一般是<code>include /etc/ld.so.conf.d/*.conf</code></li>
+<li>因此可以在<code>/etc/ld.so.conf.d/</code>目录下创建<code>xxx.conf</code>文件，配置链接路径</li>
+<li>添加完之后执行下<code>ldconfig</code>更新缓存</li>
+</ol>
+</li>
+<li>默认目录：<code>/lib</code>、<code>usr/lib</code></li>
+</ol>
+<blockquote>
+<p>自己编译链接库时，可以直接将链接库拷贝到<code>/lib</code>目录下。</p>
+<p>为了不和系统混淆，可以通过环境变量或者ldconfig配置链接库搜索路径</p>
+</blockquote>
 <p>如何查看ld链接时的搜索路径：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ld --verbose | grep SEARCH_DIR | tr -s <span class="string">&#x27; ;&#x27;</span> \\012</span></span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib/x86_64-linux-gnu&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib/x86_64-linux-gnu64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/local/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/lib&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/x86_64-linux-gnu/lib64&quot;)</span><br><span class="line">SEARCH_DIR(&quot;=/usr/x86_64-linux-gnu/lib&quot;)</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> gcc -print-search-dirs | sed <span class="string">&#x27;/^lib/b 1;d;:1;s,/[^/.][^/]*/\.\./,/,;t 1;s,:[^=]*=,:;,;s,;,;  ,g&#x27;</span> | tr \; \\012</span></span><br><span class="line">libraries:</span><br><span class="line">  /usr/lib/gcc/x86_64-linux-gnu/9/:/usr/x86_64-linux-gnu/lib/x86_64-linux-gnu/9/:/usr/x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/x86_64-linux-gnu/lib/:/usr/lib/x86_64-linux-gnu/9/:/usr/lib/x86_64-linux-gnu/:/usr/lib/:/lib/x86_64-linux-gnu/9/:/lib/x86_64-linux-gnu/:/lib/:/usr/lib/x86_64-linux-gnu/9/:/usr/lib/x86_64-linux-gnu/:/usr/lib/:/usr/x86_64-linux-gnu/lib/:/usr/lib/:/lib/:/usr/lib/</span><br></pre></td></tr></table></figure>
 
@@ -514,6 +552,10 @@
 <ul>
 <li>CMake使用可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/kai_zone/article/details/82656964">cmake快速入门</a></li>
 <li>gcc和g++具体区别可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/samewang/p/4774180.html">GCC的gcc和g++区别</a></li>
+</ul>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.gnu.org/gnu/linux-and-gnu.html">Linux和GNU系统</a></li>
 </ul>
 
     </div>
@@ -636,7 +678,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -730,13 +772,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">447k</span>
+    <span title="站点总字数">454k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:46</span>
+    <span title="站点阅读时长">6:53</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
