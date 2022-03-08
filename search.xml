@@ -8,13 +8,482 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Yocto嵌入式平台运行Flutter应用</title>
+    <url>/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ol>
+<li><p>使用Yocto编译嵌入式Linux系统，原厂提供系统代码，内置支持Wayland协议</p>
+</li>
+<li><p>使用<a href="https://github.com/rdkcmf/westeros">westeros</a>作为Wayland Compositor，由<a href="https://rdkcentral.com/">RDK（Reference Design Kit）</a>提供</p>
+</li>
+<li><p>使用丰田开发的<a href="https://github.com/toyota-connected/ivi-homescreen">ivi-homescreen</a>作为Flutter嵌入层，基于Waylannd+EGL</p>
+<blockquote>
+<p>RDK（Reference Design Kit）是管理嵌入式应用参考设计套件的开源联盟</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="Yocto介绍"><a href="#Yocto介绍" class="headerlink" title="Yocto介绍"></a>Yocto介绍</h1><p>Yocto是一个开源项目，用于构建嵌入式Linux系统。类似于<a href="https://buildroot.org/">BuildRoot</a>（基于Makefile和Kconfig配置）</p>
+<p>关键概念：</p>
+<ul>
+<li>Poky：指整个构建系统，包括BitBake工具、编译工具链、BSP，以及诸多程序包和层</li>
+<li>Metadata：元数据集<ul>
+<li>Recipes：<code>.bb/.bbappend</code>配方文件，配置源码下载路径、如何编译等。一个配方（Recipe）可以包含多个软件包（Package）</li>
+<li>Class：<code>.bbclass</code>文件，抽象的公共代码，给各个package使用</li>
+<li>Configuration：<code>.conf</code>配置文件，构建配置</li>
+</ul>
+</li>
+<li>Layers：即各种<code>meta-xxx</code>目录，包含Metadata的存储库，可以单独发布、下载，便于项目维护，例如<code>meta-flutter</code>、<code>meta-clang</code>等。<a href="https://layers.openembedded.org/layerindex/branch/krogoth/layers/">官方支持的层级包和配方文件</a></li>
+<li>BitBake：任务执行引擎，解析Metadata，执行软件包的Task</li>
+</ul>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png" style="zoom:67%;">
+
+<p>在Yocto环境中构建Flutter：依赖<a href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>项目，包含devtools工具项目、Flutter引擎项目、Flutter应用案例项目，以及各种定制嵌入层（sony、toyota、树莓派等）项目等，通过BitBake统一构建</p>
+<p>对于Yocto，个人理解是类似于AOSP项目：</p>
+<ul>
+<li>Yocto使用Bitbake工具执行构建任务，AOSP使用make或者ninja构建</li>
+<li>Yocto的<code>.bb/.bbappend</code>配方文件和<code>.conf</code>配置文件，类似于AOSP的<code>.mk/.bp</code>配置文件</li>
+<li>Yocto项目只包含构建Metadata，代码从网上下载，AOSP需要下载所有代码进行编译。</li>
+</ul>
+<p>Yocto的发行版：zeus（3.0）、dunfell（3.1）、gatesgarth（3.2）、hardknott（3.3）、honister（3.4）</p>
+<h2 id="Yocto目录结构说明"><a href="#Yocto目录结构说明" class="headerlink" title="Yocto目录结构说明"></a>Yocto目录结构说明</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── build</span><br><span class="line">│   ├── buildhistory</span><br><span class="line">│   ├── cache</span><br><span class="line">│   ├── conf</span><br><span class="line">│   │   ├── local.conf # 定制化配置文件，变量定义</span><br><span class="line">│   │   ├── bblayers.conf # bblayers决定哪些模块被编译</span><br><span class="line">│   └── tmp # 构建的输出目录</span><br><span class="line">├── downloads # build/downloads：构建过程中下载的所有源码，放到公共目录下，提高每次的编译效率</span><br><span class="line">├── sstate-cache # build/sstate-cache：构建状态缓存，放到公共目录下，提高每次的编译效率</span><br><span class="line">├── meta-clang</span><br><span class="line">├── meta-flutter # 自己添加的Metadata项目</span><br><span class="line">│   ├── conf</span><br><span class="line">│   ├── recipes-devtools</span><br><span class="line">│   ├── recipes-graphics</span><br><span class="line">│   └── recipes-support</span><br><span class="line">├── meta-meson</span><br><span class="line">├── meta-openembedded</span><br><span class="line">├── meta-python2</span><br><span class="line">├── meta-thunder</span><br><span class="line">└── poky # Poky工程通用目录结构，顶级目录$&#123;TOPDIR&#125;</span><br><span class="line">    ├── bitbake # bitbake工具目录，解析Metadata、recipes、config，执行task</span><br><span class="line">    ├── contrib</span><br><span class="line">    ├── documentation</span><br><span class="line">    ├── meta # OE Core（Open Embedded）的Metadata，包括recipes、common、classes等</span><br><span class="line">    ├── meta-poky # poky发行版配置数据</span><br><span class="line">    ├── meta-selftest # OE自测的recipes和append文件</span><br><span class="line">    ├── meta-skeleton # BSP和Kernel开发用的临时recipes</span><br><span class="line">    ├── meta-yocto-bsp # 参考的BSP配置，厂商可以增加自己的bsp目录</span><br><span class="line">    ├── scripts # 脚本文件</span><br><span class="line">    └── oe-init-build-env  # 脚本文件，构建OE环境</span><br></pre></td></tr></table></figure>
+
+<p><code>build/tmp</code>目录说明：构建的输出目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">└── build</span><br><span class="line">    └── tmp # 构建的输出目录</span><br><span class="line">        ├── deploy # 最终部署需要的文件</span><br><span class="line">        │   ├── deb # deb类型的安装包</span><br><span class="line">        │   ├── ipk # ipk类型的安装包</span><br><span class="line">        │   ├── rpm # rpm类型的安装包</span><br><span class="line">        │   ├── licenses # 各种软件的许可信息</span><br><span class="line">        │   ├── images # image、rootfs（根文件系统）、boot等文件</span><br><span class="line">        │   ├── sdk # 工具链安装脚本</span><br><span class="line">        ├── work # 包含所有软件包的工作目录，根据CPU架构、厂商等分为多个子目录</span><br><span class="line">        ├── work-share # 工作信息缓存，提高效率</span><br><span class="line">        ├── sysroots-component # 制作sysroots前需要添加的组件</span><br><span class="line">        ├── sysroots # 构建出的sysroots</span><br><span class="line">        ├── log # 日志信息</span><br><span class="line">        ├── cache # Bitbake缓存解析结果，提高后续编译效率</span><br><span class="line">        ├── buildstats # 构建信息统计，每次构建都会生成一个日期目录</span><br><span class="line">        └── stamps # 记录Bitbake跟踪task执行时间信息</span><br></pre></td></tr></table></figure>
+
+<p><code>poky/meta/</code>目录说明：OE Core构建配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">└── poky # Poky工程通用目录结构</span><br><span class="line">    └── meta # OE Core（Open Embedded）的Metadata，包括recipes、common、classes等</span><br><span class="line">        ├── classes # 包含所有的.bbclass</span><br><span class="line">        ├── conf # 配置文件</span><br><span class="line">        ├── files # 包含license文件和系统构建的一些文件</span><br><span class="line">        ├── lib # 构建需要的python库文件</span><br><span class="line">        ├── recipes-bsp # uboot等硬件相关的配方</span><br><span class="line">        ├── recipes-connectivity # 和其他设备通信相关的库和应用，例如ssh</span><br><span class="line">        ├── recipes-core # 构建基本的Linux image所需的依赖</span><br><span class="line">        ├── recipes-devtools # 构建时需要的开发工具，在目标平台也能使用</span><br><span class="line">        ├── recipes-extended # 扩展的应用，例如wget、tar、zip、grep、which等</span><br><span class="line">        ├── recipes-gnome # GTK+框架相关的应用</span><br><span class="line">        ├── recipes-graphics # 绘图相关的库，例如vulkan、cairo、wayland、xorg、drm等</span><br><span class="line">        ├── recipes-kernel # Kernel以及内核依赖的库</span><br><span class="line">        ├── recipes-lsb # LSB（Linux Standard Base）需要的</span><br><span class="line">        ├── recipes-multimedia # 多媒体（图片、声音、视频）支持，例如ffmpeg、webp、libpng等</span><br><span class="line">        ├── recipes-support # 通用的recipes</span><br><span class="line">        ├── recipes-rt # PREEMPT_RT需要的包和recipes</span><br><span class="line">        ├── recipes-sato # Sato Demo</span><br><span class="line">        ├── recipes.txt # recpies目录说明文件</span><br><span class="line">        └── site  # 不同架构下的缓存结果</span><br></pre></td></tr></table></figure>
+
+<h2 id="local-conf配置"><a href="#local-conf配置" class="headerlink" title="local.conf配置"></a>local.conf配置</h2><p>保存通用配置、全局变量等。</p>
+<ul>
+<li>配置downloads目录：<code>DL_DIR ?= &quot;$&#123;TOPDIR&#125;/../downloads&quot;</code></li>
+<li>配置使用的包管理器：<code>PACKAGE_CLASSES ?= &quot;package_ipk/package_rpm/package_deb&quot;</code></li>
+<li>镜像中安装软件：IMAGE_INSTALL_append = “ openjdk-8”</li>
+<li>排除软件：PACKAGE_EXCLUDE = “ openjdk-8”</li>
+</ul>
+<h2 id="Bitbake笔记"><a href="#Bitbake笔记" class="headerlink" title="Bitbake笔记"></a>Bitbake笔记</h2><p><code>bitbake [options] [recipename/target recipe:do_task ...]</code></p>
+<p><code>bitbake -s</code>：列出可用的recipes。</p>
+<blockquote>
+<p>原理：解析<code>bblayers.conf</code>中配置的Layer路径，从Layer中找到bb文件，解析出需要编译的recipe。</p>
+<p>可以修改<code>bblayers.conf</code>文件，添加或移除模块。也可以使用以下命令</p>
+<p><code>bitbake-layers show-layers/add-layer/remove-layer</code>：查看/添加/移除可用的Layers</p>
+</blockquote>
+<p><code>bitbake -e &lt;recipe&gt; | grep ^S=</code>：查看Package编译工作目录</p>
+<p><code>bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</code>：查看软件源码下载路径</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 32位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 64位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/aarch64-poky-linux/flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件源码下载路径</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</span></span><br><span class="line">SRC_URI=&quot;git://github.com/flutter/flutter.git;protocol=https;nobranch=1&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>bitbake下载软件源码失败：可以手动下载到本地，切到期望的分支和commit，修改对应的<code>.bb</code>文件，将远程Git仓库改为本地路径。</p>
+</blockquote>
+<p>每个软件包都有自己的工作目录，包括源码、编译配置、编译输出、交叉编译需要的目标平台sysroot等。其中temp临时目录中包含软件的Task脚本（例如<code>run.do_compile</code>、<code>run.do_fetch</code>等），Task执行log（例如<code>log.do_fetch</code>、<code>log.do_compile</code>）等。</p>
+<blockquote>
+<p>可以查看和修改Task脚本</p>
+</blockquote>
+<p>不同的Package有不同的Task，Yocto有一些通用的Task，例如fetch、clean、build、listtasks等。</p>
+<ul>
+<li><code>bitbake &lt;recipe&gt; -c &lt;CMD&gt;</code>执行特定Task。默认执行build任务。</li>
+<li><code>bitbake &lt;recipe&gt; -c listtasks</code>：查看软件包可执行的Task。<ul>
+<li>fetch：下载源码</li>
+<li>unpack：将源码解包到工作目录</li>
+<li>compile：编译</li>
+<li>install：安装</li>
+<li>package_write_ipk：打包ipk</li>
+</ul>
+</li>
+</ul>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png" style="zoom:100%;">
+
+<h1 id="Yocto编译Linux系统"><a href="#Yocto编译Linux系统" class="headerlink" title="Yocto编译Linux系统"></a>Yocto编译Linux系统</h1><h2 id="原始系统"><a href="#原始系统" class="headerlink" title="原始系统"></a>原始系统</h2><p>公司服务器已经搭建好了编译的Docker环境，并且提供了编译的脚本。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ssh登录服务器</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取系统源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo init -u <span class="string">&quot;ssh://<span class="variable">$USER</span>@tvgit.gz.xxx.cn:29418/AMLT950D4_Linux/source/repo_manifest&quot;</span> -b dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo sync</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> &lt;代码根目录&gt;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入Docker容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker_aml_u16_build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> OPENLINUX_BUILD=1</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过脚本设置编译目标</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> meta-meson/aml-setenv.sh mesont5d-lib32-am301</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 整包编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-amlogic-yocto</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成的镜像位置：code/build/tmp/deploy/images/mesont5d-lib32-am301/aml_upgrade_package.img</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="加入meta-flutter"><a href="#加入meta-flutter" class="headerlink" title="加入meta-flutter"></a>加入meta-flutter</h2><p><a href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>是Yocto Layer，用于Yocto编译。recipes包括：</p>
+<ul>
+<li><a href="https://github.com/flutter/flutter">flutter-sdk</a>：默认使用最新版，通过<code>FLUTTER_SDK_TAG</code>变量设置版本</li>
+<li><a href="https://github.com/flutter/engine">flutter-engine</a>：默认使用和Flutter SDK对应的版本</li>
+<li><a href="https://github.com/flutter/gallery">flutter-gallery</a>：Sample应用</li>
+<li><a href="https://github.com/toyota-connected/ivi-homescreen">ivi-homescreen</a>：Toyota/AGL - Wayland嵌入层</li>
+<li><a href="https://github.com/ardera/flutter-pi">flutter-pi</a>：树莓派DRM嵌入层</li>
+<li><a href="https://github.com/sony/flutter-embedded-linux">sony</a>：Sony嵌入层flutter-eLinux</li>
+<li><a href="https://github.com/jwinarske/flutter_wayland">flutter-wayland</a>、<a href="https://github.com/NilsBrause/waylandpp">waylandpp</a>：基于Wayland的嵌入层，类似ivi-homescreen。最新的meta-flutter已经去除</li>
+</ul>
+<p>步骤如下：</p>
+<ol>
+<li>下载Layer到源码根目录：<code>git clone https://github.com/meta-flutter/meta-flutter.git</code></li>
+<li><code>bblayers.conf</code>中配置Layer路径，或者执行<code>bitbake-layers add-layer /home/code/meta-flutter</code></li>
+<li>设置Flutter SDK版本：添加变量<code>FLUTTER_SDK_TAG = &quot;2.8.1&quot;</code></li>
+<li>整包编译，安装软件包：添加变量<code>IMAGE_INSTALL_append = &quot;lib32-flutter-engine-release lib32-ivi-homescreen-release lib32-flutter-gallery-release&quot;</code></li>
+<li><code>git checkout -b dunfell origin/dunfell</code></li>
+</ol>
+<h2 id="局部编译"><a href="#局部编译" class="headerlink" title="局部编译"></a>局部编译</h2><p>也可以局部编译<code>ivi-homescreen</code>和<code>flutter-engine</code>，再将生成的库手动push到系统中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-ivi-homescreen</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-flutter-engine</span></span><br></pre></td></tr></table></figure>
+
+<p><code>ivi-homescreen</code>运行只需要几个关键的库，这里收集起来放到一起，避免去构建目录中查找</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">aml_armv7at2hf_yocto$</span><span class="bash"> tree</span></span><br><span class="line">├── aml_upgrade_package.img # 系统软件包</span><br><span class="line">├── sdk # Flutter引擎编译生成，由engine_sdk.zip解压而来</span><br><span class="line">│   ├── clang_x64</span><br><span class="line">│   │   └── gen_snapshot # Flutter引擎编译生成的后端编译器</span><br><span class="line">│   ├── engine.version</span><br><span class="line">│   ├── platform_strong.dill</span><br><span class="line">│   ├── platform_strong.dill.d</span><br><span class="line">│   └── vm_outline_strong.dill</span><br><span class="line">└── usr</span><br><span class="line">    ├── bin</span><br><span class="line">    │   └── homescreen # ivi-homescreen嵌入层程序入口</span><br><span class="line">    ├── lib # ivi-homescreen需要的链接库</span><br><span class="line">    │   ├── libc++.so.1 # llvm编译生成</span><br><span class="line">    │   ├── libc++abi.so.1 # llvm编译生成</span><br><span class="line">    │   └── libflutter_engine.so # Flutter引擎编译生成</span><br><span class="line">    └── share</span><br><span class="line">        ├── flutter</span><br><span class="line">        │   ├── engine_sdk.zip</span><br><span class="line">        │   └── icudtl.dat # Flutter运行需要的国际化数据文件</span><br><span class="line">        └── homescreen # Flutter Samples编译产物，包括flutter_assets和libapp.so</span><br><span class="line">            ├── image_list</span><br><span class="line">            ├── particle_background</span><br><span class="line">            ├── platform_view</span><br><span class="line">            └── testing_app</span><br></pre></td></tr></table></figure>
+
+<h1 id="Flutter-Linux-ARM应用编译"><a href="#Flutter-Linux-ARM应用编译" class="headerlink" title="Flutter Linux ARM应用编译"></a>Flutter Linux ARM应用编译</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 前端编译生成app.dill</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> dart frontend_server.dart.snapshot \</span></span><br><span class="line"><span class="bash">--target=flutter \</span></span><br><span class="line"><span class="bash">--aot --tfa \</span></span><br><span class="line"><span class="bash">-Ddart.vm.profile=<span class="literal">false</span> -Ddart.vm.product=<span class="literal">true</span> \</span></span><br><span class="line"><span class="bash">--sdk-root flutter_patched_sdk \</span></span><br><span class="line"><span class="bash">--output-dill app.dill \</span></span><br><span class="line"><span class="bash">demo/lib/main.dart</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后端编译生成libapp.so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sdk/clang_x64/gen_snapshot \</span></span><br><span class="line"><span class="bash">--snapshot_kind=app-aot-elf \</span></span><br><span class="line"><span class="bash">--elf=libapp.so \</span></span><br><span class="line"><span class="bash">app.dill</span></span><br></pre></td></tr></table></figure>
+
+<p>文件和路径说明：</p>
+<ul>
+<li><code>dart</code>：使用Flutter SDK自带的Dart。<strong>Flutter SDK版本要和Flutter引擎版本对应</strong><ul>
+<li><code>flutter/bin/dart</code></li>
+</ul>
+</li>
+<li><code>frontend_server.dart.snapshot</code>：使用Flutter SDK缓存的前端编译器，或者引擎编译生成的前端编译器<ul>
+<li><code>flutter/bin/cache/artifacts/engine/linux-x64/frontend_server.dart.snapshot</code></li>
+<li><code>out/linux_release_arm/frontend_server.dart.snapshot</code></li>
+</ul>
+</li>
+<li><code>flutter_patched_sdk</code>：使用Flutter SDK缓存的文件，或者引擎编译生成的文件<ul>
+<li><code>flutter/bin/cache/artifacts/engine/common/flutter_patched_sdk</code></li>
+<li><code>out/linux_release_arm/flutter_patched_sdk</code></li>
+</ul>
+</li>
+<li><code>gen_snapshot</code>：引擎编译生成的后端编译器，用于在Linux x86_64平台上交叉编译出ARM平台目标代码。<ul>
+<li><code>out/linux_release_arm/clang_x64/gen_snapshot</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="Flutter应用启动"><a href="#Flutter应用启动" class="headerlink" title="Flutter应用启动"></a>Flutter应用启动</h1><ol>
+<li>升级软件开机</li>
+<li>杀掉WPExxx的进程（有两个进程）</li>
+<li><code>su</code>进入root，或者<code>export XDG_RUNTIME_DIR=/run</code></li>
+<li><code>westeros-init &amp;</code>：启动westeros服务端</li>
+<li><code>westeros_test</code>：启动westeros示例客户端，运行成功显示UI</li>
+<li>将<code>aml_armv7at2hf_yocto</code>下的文件夹push到板卡对应路径下（整包编译的话，直接homescreen运行即可）</li>
+<li><code>homescreen --a=/usr/share/homescreen/image_list/flutter_assets</code>：运行Flutter程序，提前编了4个sample</li>
+</ol>
+<blockquote>
+<p><code>--a</code>指定应用路径，不指定的话默认会找<code>/usr/share/homescreen/bundle</code>目录。可以将应用路径链接到bundle目录，如下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /usr/share/homescreen</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将程序链接到bundle</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ln -sf particle_background/ bundle</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> homescreen查找默认目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> homescreen</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>默认系统环境：AML 950D4 Linux平台，版本如下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sh-5.0# uname -a</span><br><span class="line">Linux mesont5d-lib32-am301 5.4.125-amlogic #1 SMP PREEMPT Fri Mar 4 18:02:24 CST 2022 aarch64</span><br><span class="line">sh-5.0# cat /proc/version</span><br><span class="line">Linux version 5.4.125-amlogic (oe-user@oe-host) (aarch64-poky-linux-gcc (GCC) 9.3.0, GNU ld (GNU Binutils) 2.34.0.20200220) #1 SMP PREEMPT Fri Mar 4 18:02:24 CST 2022</span><br></pre></td></tr></table></figure>
+
+<p>系统默认使用WPEFramework运行应用。<a href="https://webkit.org/wpe/">WPEFramework</a>是嵌入式设备的WebKit引擎，能够运行Web应用。执行以下命令可以打开WPE Launcher应用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 启动WPEFramework引擎，开启了一个网络端口</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wpeframework.sh &amp;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过curl请求端口，传入参数启动Launcher应用</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> launcher.sh &amp;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+        <tag>Docker</tag>
+        <tag>Linux</tag>
+        <tag>Yocto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flutter编译环境搭建探索</title>
+    <url>/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/</url>
+    <content><![CDATA[<h1 id="探索过程总结"><a href="#探索过程总结" class="headerlink" title="探索过程总结"></a>探索过程总结</h1><p>由于环境配置较复杂，遇到的问题、涉及到的技术栈较多，导致文章内容比较零散，因此这里先放总结，记录一下探索的过程和思路。</p>
+<blockquote>
+<p>探索过程中最麻烦的是编译问题的实验和记录，不确定缺少了哪些库，遇到一个问题就去网上搜索解决，做了很多尝试，有时候误打误撞成功了，但是无法确定真正起作用的是哪一步操作。因此需要不断回退，重置环境，有时候重置环境之后又复现不到之前的问题。。。</p>
+</blockquote>
+<h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>目标：解决Flutter交叉编译Linux ARM平台应用，在TV嵌入式设备上运行。</p>
+<p>任务：使用Flutter开发Linux TV应用，研究Flutter应用和引擎编译，搭建编译环境，Flutter嵌入层定制和适配。</p>
+<p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此上面编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
+<p>Flutter桌面应用编译只能在对应的平台上（Linux应用只能在Linux平台上编译），由于没有Linux电脑，无法编译和运行Linux程序（x86_64、arm、arm64）。参考<a href="https://flutter.cn/desktop">Flutter桌面支持</a></p>
+<blockquote>
+<p>解决思路：利用Docker Ubuntu容器环境。</p>
+<ol>
+<li>容器内本地编译Flutter Linux桌面应用，并尝试在容器内运行显示界面。</li>
+<li>容器内交叉编译arm/arm64平台应用，并安装到嵌入式Linux设备运行。</li>
+</ol>
+<p>使用Docker有几个明显的好处：</p>
+<ul>
+<li>尝试过程中需要装各种乱七八糟的环境，很容易破坏主机环境，且不知道真正缺少的是哪些环境，使用Docker可以随时删除容器重新验证。</li>
+<li>准备好环境之后可以方便的进行打包和移植</li>
+</ul>
+</blockquote>
+<h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>环境：（下文不再赘述）</p>
+<ul>
+<li>主机（Host）：<ul>
+<li>远程服务器：Linux CentOS，没有root权限（无法安装编译环境），但是可以使用Docker（容器中可以root）。</li>
+<li>本地机器/主机：MacOS</li>
+</ul>
+</li>
+<li>目标平台：Linux嵌入式平台（ARM架构）、Android嵌入式平台（ARM、ARMv8架构）</li>
+<li>实验镜像：<ul>
+<li><a href="https://hub.docker.com/_/ubuntu"><code>ubuntu</code>（amd64架构）</a>：作为Flutter交叉编译主机，默认不带图形界面，无法运行Flutter GUI界面</li>
+<li><code>ubuntu</code>（arm和arm64架构）：用于生成arm和arm64架构的sysroot平台库</li>
+</ul>
+</li>
+<li>容器：本地机器和远程服务器都可以运行Docker容器。<ul>
+<li>本地Docker容器：通过QEMU可以运行Ubuntu ARM镜像和ARM64镜像</li>
+<li>远程Docker容器：没有QEMU，只能运行x86_64 Ubuntu镜像</li>
+</ul>
+</li>
+</ul>
+<p>分别对比主机和容器系统版本差异，如下：</p>
+<p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%B8%BB%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82.png"></p>
+<p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/Docker%E5%AE%B9%E5%99%A8%E7%8E%AF%E5%A2%83%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82.png"></p>
+<p>本地和远程Docker容器使用相同的Ubuntu官方镜像，但是查看版本有一定差异。本地Docker容器应该是QEMU模拟器运行Linux环境。</p>
+<p><strong>注意这里有个坑，下文会提到</strong>：同一个gen_snapshot程序，在本地Linux容器可以运行，在远程Linux容器无法运行，都是x86_64架构</p>
+<p>结论：<strong>不同系统的主机上即使使用相同的镜像，容器环境也存在差异</strong></p>
+<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>总结一下几个主要的探索过程：</p>
+<p>编译Linux x86_64桌面应用</p>
+<blockquote>
+<p>问题不大，根据Flutter官方文档构建即可。</p>
+</blockquote>
+<p>编译Linux ARM64应用：</p>
+<p>使用Flutter官方提供的ARM 64位引擎和编译器后端（gen_snapshot），在Linux x86_64容器中交叉编译ARM64应用。</p>
+<blockquote>
+<ol>
+<li>修改<code>flutter_tools</code>源码，下载官方Linux ARM64引擎。</li>
+<li>安装交叉编译工具链：<code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></li>
+<li>使用<code>flutter build</code>命令构建</li>
+</ol>
+</blockquote>
+<p>使用Flutter官方提供的ARM 64位引擎，gen_snapshot程序无法在Linux x86_64容器中运行</p>
+<blockquote>
+<p>同样的gen_snapshot可以在本地Docker容器（x86_64）上执行，但是无法在远程Docker容器（x86_64）上执行。</p>
+<p>目标平台不正确。需要自行<strong>交叉编译</strong>Flutter ARM64引擎。</p>
+</blockquote>
+<p>sysroot制作</p>
+<blockquote>
+<p>由于远程Linux主机没有权限使用apt，无法安装QEMU，因此在本地Mac主机上运行ARM64容器，下载平台库制作sysroot，再上传到Linux X86_64的容器中进行编译。</p>
+<p>如果可能的话也可以直接在ARM64容器中直接本地编译ARM64的Flutter应用。</p>
+</blockquote>
+<p>编译Linux ARM应用：</p>
+<p>运行应用：下载的Ubuntu镜像没有界面，无法运行GUI程序。</p>
+<blockquote>
+<p>使用VNC容器（有x86_64和ARM64镜像，但是没有ARM镜像）运行Flutter应用：<a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></p>
+</blockquote>
+<h1 id="通用问题"><a href="#通用问题" class="headerlink" title="通用问题"></a>通用问题</h1><p><strong>关于交叉编译、sysroot等问题参考<a href="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></strong></p>
+<p>进入容器后首次使用<code>apt-get</code>安装软件报错：<code>&quot;E: Unable to locate package&quot;</code></p>
+<blockquote>
+<p>Linux的发行版维护了一个软件仓库，存储常用的软件，仓库地址存储在<code>/etc/apt/sources.list</code>文件中，使用<code>apt-get</code>工具会从该文件中读取仓库地址，下载并安装软件。</p>
+<p>解决：执行下<code>apt update</code>，更新软件源地址列表</p>
+<p><code>apt</code>命令是对<code>apt-get</code>、<code>apt-cache</code>等命令的封装，提供了统一的入口。</p>
+</blockquote>
+<p>使用apt安装的交叉编译工具链可能有多个版本，可以搜索，例如：<code>apt-cache search gcc | grep -E &quot;arm|aarch64&quot;</code></p>
+<p>查看IP地址：<code>ifconfig en0 | grep inet | awk &#39;$1==&quot;inet&quot; &#123;print $2&#125;</code></p>
+<p>Git clone仓库提示Permission denied：生成SSH Key，并在GitHub上配置Git SSH Key。或者将本地配置好的key拷贝到容器中使用。</p>
+<h1 id="Docker操作"><a href="#Docker操作" class="headerlink" title="Docker操作"></a>Docker操作</h1><p>关于Docker介绍和使用可以参考我的其他文章，这里简单介绍下涉及到的操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 获取Ubuntu镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull ubuntu</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台运行容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -itd --name ubuntu-env ubuntu /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器环境</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker <span class="built_in">exec</span> -it ubuntu-env /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Flutter编译环境搭建好之后生成镜像，方便移植</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker commit ubuntu-env ubuntu-flutter-image</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 打包镜像，使用scp拷贝到其他服务器上</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker save -o image.tar ubuntu-flutter-image:latest</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 其他服务器加载镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker load &lt; image.tar</span></span><br></pre></td></tr></table></figure>
+
+<p>容器中下载Flutter引擎和SDK源码会导致生成镜像很大，可以让用户自己在主机下载好源码，运行的时候再挂载到容器中。</p>
+<p>Docker容器中配置<code>.bash_profile</code>环境变量，退出容器再进入失效。</p>
+<blockquote>
+<p>可以通过DockerFile配置镜像环境变量，或者执行<code>docker run</code>和<code>docker exec</code>时使用-e参数。</p>
+</blockquote>
+<p>查看Docker镜像和容器大小：<code>docker system df -v</code></p>
+<p>主机和Docker容器间文件拷贝：<code>docker cp 主机路径 容器名:容器内路径</code></p>
+<h1 id="本地编译Linux桌面应用"><a href="#本地编译Linux桌面应用" class="headerlink" title="本地编译Linux桌面应用"></a>本地编译Linux桌面应用</h1><p>容器内安装Flutter SDK，根据<a href="https://flutter.cn/docs/get-started/install/linux">官方文档</a>配置环境即可，问题不大。国内网络下载不了的话参考<a href="https://docs.flutter.dev/community/china">Using Flutter in China</a></p>
+<ol>
+<li>下载Flutter SDK：<code>git clone https://github.com/flutter/flutter.git</code></li>
+<li>配置环境变量</li>
+<li>安装Linux编译环境：<code>apt install unzip git curl clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev</code></li>
+<li>启用Linux编译：<code>flutter config --enable-linux-desktop</code></li>
+<li>检查Flutter编译工具链：<code>flutter doctor</code></li>
+</ol>
+<p>编译Flutter应用：生成myapp可执行文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建Flutter模版工程</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter create myapp</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> myapp</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果是已有的项目，则需要创建Linux壳工程</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> flutter create --platforms=linux</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译Flutter Linux桌面应用</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter build linux</span></span><br></pre></td></tr></table></figure>
+
+<p>通过<a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a>，可以成功运行myapp应用。</p>
+<h1 id="交叉编译Linux-ARM64平台应用"><a href="#交叉编译Linux-ARM64平台应用" class="headerlink" title="交叉编译Linux ARM64平台应用"></a>交叉编译Linux ARM64平台应用</h1><p>关键步骤如下：</p>
+<ol>
+<li><p>获取ARM64架构的Flutter引擎：包括引擎so库和gen_snapshot编译后端程序</p>
+<ol>
+<li>官方提供：自行从<a href="https://storage.googleapis.com/flutter_infra_release">Flutter引擎artifact</a>下载或者通过Flutter SDK下载（官方提供了Linux ARM64的引擎，没提供Linux ARM的引擎）</li>
+<li>自行编译引擎</li>
+</ol>
+</li>
+<li><p>配置交叉编译工具链</p>
+<ol>
+<li>通过包管理器（apt）或者网上下载</li>
+<li>获取编译器源码自行编译</li>
+</ol>
+</li>
+<li><p>配置<code>--target-sysroot</code>：目标平台库和头文件等</p>
+<ol>
+<li>使用Flutter官方提供的sysroot</li>
+<li>自行制作sysroot：使用Docker+QEMU制作</li>
+</ol>
+</li>
+<li><p>编译应用</p>
+<ol>
+<li>使用<code>flutter build</code>命令编译：需要修改<code>flutter_tools</code>源码</li>
+<li>直接调用<code>frontend_server.dart</code>和<code>gen_snapshot</code>进行编译，再手动链接so库，打包可执行程序。</li>
+</ol>
+</li>
+</ol>
+<p>Linux x64主机交叉编译Linux arm64目标平台应用：参考<a href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
+<h2 id="修改flutter-tools"><a href="#修改flutter-tools" class="headerlink" title="修改flutter_tools"></a>修改flutter_tools</h2><p>Flutter SDK命令默认不支持交叉编译ARM64和ARM应用，需要修改<code>flutter_tools</code>源码：</p>
+<ol>
+<li><p>修改<code>flutter_tools/lib/src/commands/build_linux.dart</code>代码，注释掉交叉编译报错：</p>
+<p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%811.png"></p>
+</li>
+<li><p>修改<code>flutter_tools/lib/src/artifacts.dart</code>代码：</p>
+<p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%812.png"></p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="comment">//flutter_tools/lib/src/artifacts.dart</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CachedArtifacts</span> <span class="keyword">implements</span> <span class="title">Artifacts</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="built_in">String</span> _getDesktopArtifactPath(Artifact artifact, TargetPlatform? platform, BuildMode? mode) &#123;</span><br><span class="line">    <span class="comment">// When platform is null, a generic host platform artifact is being requested</span></span><br><span class="line">    <span class="comment">// and not the gen_snapshot for darwin as a target platform.</span></span><br><span class="line">    <span class="keyword">if</span> (platform != <span class="keyword">null</span> &amp;&amp; artifact == Artifact.genSnapshot) &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> engineDir = _getEngineArtifactsPath(platform, mode)!;</span><br><span class="line"><span class="comment">// 添加代码块</span></span><br><span class="line">      <span class="keyword">if</span> (getNameForHostPlatformArch(getCurrentHostPlatform())</span><br><span class="line">         != getNameForTargetPlatformArch(platform)) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="built_in">String</span> hostPlatform = getNameForHostPlatform(getCurrentHostPlatform());</span><br><span class="line">        <span class="keyword">return</span> _fileSystem.path.join(engineDir, hostPlatform, _artifactToFileName(artifact));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> _fileSystem.path.join(engineDir, _artifactToFileName(artifact));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _getHostArtifactPath(artifact, platform ?? _currentHostPlatform(_platform, _operatingSystemUtils), mode);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>flutter_tools/lib/src/flutter_cache.dart</code>代码（注意代码行数）：用于下载Flutter官方ARM64引擎</p>
+<p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%813.png"></p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="comment">//flutter_tools/lib/src/flutter_cache.dart</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterSdk</span> <span class="keyword">extends</span> <span class="title">EngineCachedArtifact</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt; getBinaryDirs() &#123;</span><br><span class="line">    <span class="comment">// Currently only Linux supports both arm64 and x64.</span></span><br><span class="line">    <span class="keyword">return</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">      &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;common&#x27;</span>, <span class="string">&#x27;flutter_patched_sdk.zip&#x27;</span>],</span><br><span class="line">      &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;common&#x27;</span>, <span class="string">&#x27;flutter_patched_sdk_product.zip&#x27;</span>],</span><br><span class="line">      <span class="keyword">if</span> (cache.includeAllPlatforms) ...&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;windows-x64&#x27;</span>, <span class="string">&#x27;windows-x64/artifacts.zip&#x27;</span>],</span><br><span class="line"><span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;darwin-x64&#x27;</span>, <span class="string">&#x27;darwin-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">      ]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isWindows)</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;windows-x64&#x27;</span>, <span class="string">&#x27;windows-x64/artifacts.zip&#x27;</span>]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isMacOS)</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;darwin-x64&#x27;</span>, <span class="string">&#x27;darwin-x64/artifacts.zip&#x27;</span>]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isLinux) ...&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line"><span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/artifacts.zip&#x27;</span>],</span><br><span class="line">      ],</span><br><span class="line">    ];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinuxEngineArtifacts</span> <span class="keyword">extends</span> <span class="title">EngineCachedArtifact</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt; getBinaryDirs() &#123;</span><br><span class="line">    <span class="keyword">if</span> (_platform.isLinux || ignorePlatformFiltering) &#123;</span><br><span class="line">      <span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">      <span class="keyword">return</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64-profile&#x27;</span>, <span class="string">&#x27;linux-x64-profile/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64-release&#x27;</span>, <span class="string">&#x27;linux-x64-release/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64-profile&#x27;</span>, <span class="string">&#x27;linux-arm64-profile/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64-release&#x27;</span>, <span class="string">&#x27;linux-arm64-release/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">      ];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>删除<code>flutter_tools</code>重新构建：<code>rm flutter/bin/cache/flutter_tools*</code></p>
+</li>
+<li><p>执行编译命令：<code>flutter build linux --target-platform linux-arm64 -v</code></p>
+</li>
+</ol>
+<blockquote>
+<p>-v查看编译具体信息</p>
+</blockquote>
+<p>这里build失败是正常的，但是已经成功下载Flutter官方提供的Linux ARM64引擎的构件，放到了SDK对应路径下，例如：<code>flutter/bin/cache/artifacts/engine/linux-arm64-release/</code>。</p>
+<p>踩坑：下载的Flutter引擎gen_snapshot程序可以在本地Docker容器中执行，但是无法在远程Docker容器中执行。提示<code>cannot execute binary file: Exec format error</code>（二进制可执行程序格式不正确），导致编译失败。</p>
+<blockquote>
+<p>前面介绍环境的时候提到不同主机上即使使用相同镜像，容器环境也存在差异。</p>
+<p>编译器本身也是一个可执行程序，只能在目标平台运行。</p>
+</blockquote>
+<p>既然官方提供的引擎构件无法使用，那只能自己下载引擎源码编译生成gen_snapshot了。</p>
+<h2 id="交叉编译Flutter-ARM64引擎"><a href="#交叉编译Flutter-ARM64引擎" class="headerlink" title="交叉编译Flutter ARM64引擎"></a>交叉编译Flutter ARM64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></p>
+<p>注：Flutter SDK中内置了引擎的<code>artifact</code>，如果自己编译引擎，需要确保Engine源码和Framework源码版本对应。本文使用2.8.1版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> flutter --version</span></span><br><span class="line">Flutter 2.8.1 • channel stable • https://github.com/flutter/flutter.git</span><br><span class="line">Framework • revision 77d935af4d (10 weeks ago) • 2021-12-16 08:37:33 -0800</span><br><span class="line">Engine • revision 890a5fca2e</span><br><span class="line">Tools • Dart 2.15.1</span><br></pre></td></tr></table></figure>
+
+<p>在远程容器中下载好源码之后，开始交叉编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt install python3 git pkg-config vim curl unzip</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --target-os linux --linux-cpu arm64 --runtime-mode release</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/linux_release_arm64</span></span><br></pre></td></tr></table></figure>
+
+<p>ARM 64位引擎编译问题不大，比较顺利。</p>
+<h2 id="交叉编译Linux-ARM64应用"><a href="#交叉编译Linux-ARM64应用" class="headerlink" title="交叉编译Linux ARM64应用"></a>交叉编译Linux ARM64应用</h2><p>按照上文修改<code>flutter_tools</code>，将引擎编译生成的关键产物拷贝到Flutter SDK路径下，替代官方Artifact。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 拷贝gen_snapshot，目录不存在则创建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/clang_x64/gen_snapshot &lt;artifact_path&gt;/linux-arm64-release/linux-x64/gen_snapshot</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝引擎so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/libflutter_linux_gtk.so &lt;artifact_path&gt;/linux-arm64-release/libflutter_linux_gtk.so</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/flutter/shell/platform/linux/public/flutter_linux &lt;artifact_path&gt;/linux-arm64-release/flutter_linux</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 路径如下</span></span><br><span class="line">~/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release $ tree</span><br><span class="line">├── flutter_linux # 位于src/flutter/engine/src/flutter/shell/platform/linux/public/flutter_linux </span><br><span class="line">├── libflutter_linux_gtk.so # 位于src/out/linux_release_arm64/libflutter_linux_gtk.so</span><br><span class="line">└── linux-x64</span><br><span class="line">    └── gen_snapshot # 位于src/out/linux_release_arm64/clang_x64/gen_snapshot</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装gcc和g++交叉编译工具，注意这里安装的是gcc版本是9</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件，由于上一步安装的gcc版本是9，而Flutter官方的debian_sid_arm64-sysroot中的gcc为7，编译的时候从sysroot中找不到头文件，因此手动拷贝到头文件搜索路径。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译Linux arm64应用，指定target-sysroot</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter build linux --target-platform linux-arm64 --target-sysroot /root/flutter/engine/src/build/linux/debian_sid_arm64-sysroot -v</span> </span><br></pre></td></tr></table></figure>
+
+<p><strong>注：最关键的步骤是指定<code>--target-sysroot</code>，否则会遇到很多错误。</strong></p>
+<blockquote>
+<p><strong>这里使用Flutter引擎构建时用的sysroot，也可以自行制作sysroot</strong></p>
+</blockquote>
+<p>查看Flutter引擎编译配置，Linux平台会执行<code>engine/src/build/linux/sysroot_scripts/install-sysroot.py</code>脚本下载对应的sysroot进行构建，例如<code>debian_sid_arm64-sysroot</code>。也可以去<a href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter引擎预构建sysroot下载地址</a>手动下载sysroot。</p>
+<h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><p>一开始<code>flutter build</code>没有指定<code>--target-sysroot</code>一直报错。根据网上的办法解了一个又出现另一个，没完没了。都是弯路，其实问题原因就是缺少目标平台库sysroot，<strong>不应该聚焦单个问题，而是当作整体来看</strong>。</p>
+<blockquote>
+<p><strong>此时Dart代码已经编译成功，<code>app.so</code>位于<code>.dart_tool</code>中。编译Linux壳工程（main.cc等）失败，依赖GTK、X11等目标平台库和头文件。</strong></p>
+<p><strong>如果是定制嵌入层，需要自己创建<code>main.cc</code>入口文件，进行交叉编译。</strong></p>
+</blockquote>
+<p><strong>这里记录下单个问题的踩坑过程，用来参考：无法真正解决，正确的做法参考上面的步骤（Don’t Do It！）</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/bin/ld: unrecognised emulation mode: aarch64linux</span><br><span class="line">Supported emulations: elf_x86_64 elf32_x86_64 elf_i386 elf_iamcu elf_l1om elf_k1om i386pep i386pe</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：缺少GNU交叉编译工具链</p>
+<p>解决：<code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Target aot_elf_release failed: ProcessException: Failed to find &quot;/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot&quot; in the search path</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：官方下载的引擎Artifact解压文件夹不对</p>
+<p>解决：将gen_snapshot放到<code>linux-x64</code>目录下</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot: 1: Syntax error: &quot;(&quot; unexpected</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：官方下载的引擎Artifact的gen_snapshot可执行程序目标格式不正确，可以在</p>
+<p>解决：将自己编译的引擎Artifact拷贝到对应目录下</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//usr/include/limits.h:26:10: fatal error: &#x27;bits/libc-header-start.h&#x27; file not found</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：缺少头文件</p>
+<p>解决：<code>apt install gcc-multilib g++-multilib</code></p>
+<p><strong>备注：没必要执行，下面会拷贝整个头文件目录。</strong></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/cstdlib:41:10: fatal error: &#x27;bits/c++config.h&#x27; file not found</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：系统安装的gcc工具链版本是9，Flutter引擎中的<code>debian_sid_arm64-sysroot</code>中gcc版本是7，导致在<code>--target-sysroot</code>路径中找不到头文件。</p>
+<p>解决：拷贝整个文件夹到头文件搜索路径。<code>cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[        ] FAILED: intermediates_do_not_run/myapp</span><br><span class="line">[        ] : &amp;&amp; /usr/bin/clang++ --target=aarch64-linux-gnu --sysroot=/ubuntu-arm64  -O3 -DNDEBUG   CMakeFiles/myapp.dir/main.cc.o CMakeFiles/myapp.dir/my_application.cc.o</span><br><span class="line">CMakeFiles/myapp.dir/flutter/generated_plugin_registrant.cc.o  -o intermediates_do_not_run/myapp -L/root/Desktop/myapp/linux/flutter/ephemeral</span><br><span class="line">-Wl,-rpath,/root/Desktop/myapp/linux/flutter/ephemeral:/usr/lib/aarch64-linux-gnu:  -lflutter_linux_gtk  -lgtk-3  -lgdk-3  -lpangocairo-1.0  -lpango-1.0  -lharfbuzz  -latk-1.0  -lcairo-gobject</span><br><span class="line">-lcairo  -lgdk_pixbuf-2.0  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgio-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgobject-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libglib-2.0.so &amp;&amp; :</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgtk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpangocairo-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpango-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lharfbuzz</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -latk-1.0</span><br><span class="line">[   +4 ms] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo-gobject</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk_pixbuf-2.0</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：缺少GTK、Cairo等<strong>目标平台</strong>的链接库</p>
+<p>解决思路：apt没有提供arm64的GTK平台库，需要自行下载，或者在arm64机器上使用apt下载，再拷贝出来。（sysroot其实就是这样制作的）</p>
+<p>备注：踩坑到这里解不动了。最后跳出单个问题看，其实就是缺了<code>--target-sysroot</code>。学习了下sysroot制作，验证成功，最后发现其实用Flutter官方的sysroot也可以编译成功。</p>
+</blockquote>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>下面的问题也是探索过程中遇到的，但是后面复现不到了，还是保留下解决过程（应该是因为一开始在本地Mac电脑的Ubuntu容器中进行实验，问题比较多）。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/bin/aarch64-linux-gnu-ld: cannot find -lstdc++</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：找不到链接库</p>
+<p>解决：<code>apt install libstdc++-9-dev-arm64-cross</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ERROR: qemu-aarch64: Could not open &#x27;/lib/ld-linux-aarch64.so.1&#x27;: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：找不到链接库</p>
+<p>解决；<code>cp /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ERROR: /root/flutter/bin/cache/artifacts/engine/linux-arm64-release/gen_snapshot: error while loading shared libraries: libdl.so.2: cannot open shared object file: No such file or directory</span><br><span class="line">ERROR: Dart snapshot generator failed with exit code 127</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：找不到链接库</p>
+<p>解决：export LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib`：添加程序加载运行时查找链接库的路径</p>
+<p><code>LIBRARY_PATH</code>：添加gcc编译时查找链接库的路径。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Target unpack_linux failed: FileSystemException: Cannot open file, path = &#x27;/root/flutter/bin/cache/artifacts/engine/linux-arm64/icudtl.dat&#x27; (OS Error: No such file or directory,</span><br><span class="line">errno = 2)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解决：从Flutter官方仓库下载引擎Artifact，或者自行编译引擎，拷贝到对应目录</p>
+</blockquote>
+<h1 id="交叉编译Linux-ARM应用"><a href="#交叉编译Linux-ARM应用" class="headerlink" title="交叉编译Linux ARM应用"></a>交叉编译Linux ARM应用</h1><p>原理和ARM64编译类似，由于Flutter官方还不支持Linux ARM应用的编译，因此需要修改<code>flutter_tools</code>源码：</p>
+<ol>
+<li>让<code>flutter build</code>命令支持<code>--target-platform=linux-arm</code>参数</li>
+<li>编译时查找对应路径下的引擎产物，例如：<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine/linux-arm-release/</code>）</li>
+</ol>
+<p>可以参考<a href="/2022/01/12/flutter-2022-01-12-Flutter%E5%BA%94%E7%94%A8%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Flutter应用构建流程分析</a>，能读懂源码自然就会修改了。</p>
+<p>这里演示下直接调用前后端编译：</p>
+<p><code>apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++-8-dev-armhf-cross</code></p>
+<h2 id="配置交叉编译工具链和目标平台库"><a href="#配置交叉编译工具链和目标平台库" class="headerlink" title="配置交叉编译工具链和目标平台库"></a>配置交叉编译工具链和目标平台库</h2><ol>
+<li><code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></li>
+<li>制作sysroot：下载目标平台的依赖库</li>
+<li>build时指定<code>--target-sysroot=dir</code>参数</li>
+</ol>
+<p><code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++-8-dev-arm64-cross</code></p>
+<ul>
+<li>arm64 Ubuntu镜像：<code>docker pull arm64v8/ubuntu</code></li>
+<li>arm Ubuntu镜像：<code>docker pull arm32v7/ubuntu</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ERROR Unresolved dependencies.</span><br><span class="line">//:default(//build/toolchain/linux:clang_arm)</span><br><span class="line">  needs //build/toolchain/linux:clang_arm()</span><br></pre></td></tr></table></figure>
+
+<p>ninja编译arm报错：缺少glibc库，需要编译libcxx和libcxxabi</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Using &#x27;dlopen&#x27; in statically linked applications requires at runtime the shared libraries from the glibc version used for linking</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[   +1 ms] /usr/bin/aarch64-linux-gnu-ld: CMakeFiles/myapp.dir/my_application.cc.o: in function `my_application_activate(_GApplication*)&#x27;:</span><br><span class="line">[        ] my_application.cc:(.text+0x36c): undefined reference to `fl_dart_project_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x378): undefined reference to `fl_dart_project_set_dart_entrypoint_arguments&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x380): undefined reference to `fl_view_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x3c0): undefined reference to `fl_plugin_registry_get_type&#x27;</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
+<li>glib：GTK+库</li>
+<li>glibc：GNU C函数库</li>
+</ul>
+<p>交叉编译Linux arm/arm64参考资料：</p>
+<ul>
+<li><a href="https://github.com/sony/flutter-elinux/wiki/Building-flutter-apps#case-1-use-docker--qemu">Flutter eLinux：Cross-building from x64 to arm64</a></li>
+<li><a href="https://wiki.loliot.net/docs/lang/flutter/engine/flutter-engine-for-linux-arm64/">flutter-engine-for-linux-arm64</a></li>
+<li><a href="https://medium.com/flutter/flutter-on-raspberry-pi-mostly-from-scratch-2824c5e7dcb1">Flutter on Raspberry Pi (mostly) from scratch</a></li>
+</ul>
+<h2 id="Linux发行版说明"><a href="#Linux发行版说明" class="headerlink" title="Linux发行版说明"></a>Linux发行版说明</h2><p>搭建环境过程中见到很多库的名词不认识，因此查了一下</p>
+<ul>
+<li>RHEL（Red Hat Enterprise Linux）：Red Hat企业版，更稳定，需要付费，能获得相应的服务和技术支持</li>
+<li>CentOS（Community ENTerprise Operating System）：源于RHEL，不需要付费</li>
+<li>Fedora：相当于RHEL的实验版本，迭代速度快，实验稳定之后可能会应用到RHEL中。<ul>
+<li>Red Hat早期分为普通版（Red Hat Linux）和企业版（RHEL），2003年普通版不再发布，改为Fedora项目，</li>
+</ul>
+</li>
+<li>Ubuntu源于Debian：<a href="https://linux.cn/article-13746-1.html">Debian 和 Ubuntu：有什么不同？应该选择哪一个？</a></li>
+<li>Ubuntu和Debian版本对应关系如下：5是debian、6是squeeze、7是wheezy、8是jessie、9是stretch、10是buster。sid代表开发版本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  Ubuntu      |       Debian  </span><br><span class="line">18.04  bionic     buster  &#x2F; sid   - 10</span><br><span class="line">17.10  artful     stretch &#x2F; sid   - 9</span><br><span class="line">17.04  zesty      stretch &#x2F; sid</span><br><span class="line">16.10  yakkety    stretch &#x2F; sid</span><br><span class="line">16.04  xenial     stretch &#x2F; sid</span><br><span class="line">15.10  wily       jessie  &#x2F; sid   - 8</span><br><span class="line">15.04  vivid      jessie  &#x2F; sid</span><br><span class="line">14.10  utopic     jessie  &#x2F; sid</span><br><span class="line">14.04  trusty     jessie  &#x2F; sid</span><br><span class="line">13.10  saucy      wheezy  &#x2F; sid   - 7</span><br><span class="line">13.04  raring     wheezy  &#x2F; sid</span><br><span class="line">12.10  quantal    wheezy  &#x2F; sid</span><br><span class="line">12.04  precise    wheezy  &#x2F; sid</span><br><span class="line">11.10  oneiric    wheezy  &#x2F; sid</span><br><span class="line">11.04  natty      squeeze &#x2F; sid   - 6</span><br><span class="line">10.10  maverick   squeeze &#x2F; sid</span><br><span class="line">10.04  lucid      squeeze &#x2F; sid</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+        <tag>Docker</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux容器运行GUI程序</title>
     <url>/2022/02/13/tool-2022-02-13-DockerGUI/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>研究Flutter跨平台应用在Linux上运行。由于没有Linux电脑，因此尝试使用Docker容器代替Linux主机环境，将编译好的Flutter应用放到Linux容器中运行。</p>
 <p>Flutter应用需要针对Linux x86_64、ARM64、ARM目标平台分别进行编译和交叉编译。</p>
 <p>最终目标：在Linux ARM嵌入式平台运行Flutter应用。</p>
 <p>本文只介绍如何在Linux容器中运行GUI程序，不介绍Flutter编译相关。只演示x86_64架构Linux容器，ARM和ARM64步骤相同。</p>
-<p>注：Flutter官方的Linux嵌入层使用GTK图形库，因此编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层。</p>
+<p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层。</strong></p>
 <h1 id="Mac上运行Docker-Linux-GUI程序"><a href="#Mac上运行Docker-Linux-GUI程序" class="headerlink" title="Mac上运行Docker Linux GUI程序"></a>Mac上运行Docker Linux GUI程序</h1><p>Linux本身不带图形界面，需要安装桌面环境。有两种方式X Window和VNC：</p>
 <ul>
 <li>X Window System本身支持网络传输，本地开启X Server服务，远程X Client应用通过ssh连接到本地。</li>
@@ -67,10 +536,74 @@
 <li>在VNC桌面上点击图标可以运行Flutter应用（无法用命令直接执行）</li>
 </ol>
 <p><img src="/2022/02/13/tool-2022-02-13-DockerGUI/Linux%E4%BD%BF%E7%94%A8VNC%E8%BF%90%E8%A1%8CFlutter.png"></p>
+<h1 id="其他Docker操作"><a href="#其他Docker操作" class="headerlink" title="其他Docker操作"></a>其他Docker操作</h1><p>本节内容和要实现的目标没有关系，算是走了一些弯路和尝试，不过也是一些比较有用的知识点。</p>
+<h2 id="使用ssh登录Docker-Linux容器环境"><a href="#使用ssh登录Docker-Linux容器环境" class="headerlink" title="使用ssh登录Docker Linux容器环境"></a>使用ssh登录Docker Linux容器环境</h2><p>目标：使用ssh方式直接登录到本地或远程Docker容器。</p>
+<ul>
+<li>本地Docker容器：也可以直接<code>docker exec</code>进入容器</li>
+<li>远程Docker容器：也可以先使用ssh连接到服务器，再使用<code>docker exec</code>进入容器。</li>
+</ul>
+<p>步骤：</p>
+<ol>
+<li><p>下载Docker官方ubuntu镜像：<code>docker pull ubuntu</code></p>
+</li>
+<li><p>创建并运行容器，将主机8022端口映射到容器的22端口：<code>docker run -it --name ubuntu-env -p 8022:22 ubuntu /bin/bash</code></p>
+</li>
+<li><p>此时进入了容器终端。使用<code>-d</code>参数可以后台运行，不进入终端。之后可以通过<code>docker exec -it ubuntu-env /bin/bash</code>命令进入</p>
+</li>
+<li><p>容器中安装ssh服务：<code>apt install openssh-server openssh-client vim</code></p>
+</li>
+<li><p>修改root登录权限：<code>vim /etc/ssh/sshd_config</code>，将PermitRootLogin值改为yes，取消注释</p>
+</li>
+<li><p>修改root密码：<code>passwd root</code></p>
+</li>
+<li><p>生成ssh密钥，如果已有文件则可跳过</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动ssh服务：<code>service ssh start</code></p>
+</li>
+<li><p>输入exit或者<code>control+D</code>退出容器</p>
+</li>
+<li><p>主机通过ssh登陆容器Linux环境：<code>ssh -p 8022 root@localhost</code>（也可以输入IP连接远程机器的Docker容器）</p>
+</li>
+</ol>
+<p>如果连不上的话可以重启下容器<code>docker restart ubuntu-env</code>再进入容器启动ssh服务</p>
+<p>容器创建的时候没有指定端口映射，如何修改？（挂载同理）</p>
 <blockquote>
-<p>ARM64镜像：<code>docker pull dorowu/ubuntu-desktop-lxde-vnc:focal-arm64</code></p>
+<p>方法一：制作新镜像，重新创建容器。（推荐）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 停止容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker stop ubuntu-env</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将容器制作为镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker commit ubuntu-env ubuntu-env</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker rm ubuntu-env</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用新镜像重新创建容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --name ubuntu-env -p 8022:22 ubuntu-env /bin/bashs</span></span><br></pre></td></tr></table></figure>
+
+<p>方法二：修改容器配置，重启Docker服务。（不推荐，会导致其他容器重启）</p>
+<p>方法三：容器运行时修改端口映射：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">iptables -t nat -A DOCKER -p tcp --dport 宿主机端口 -j DNAT --to-destination 容器ip:容器端口</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Docker中运行GUI参考资料：</p>
+<h2 id="打包服务器的Docker镜像到本地机器使用"><a href="#打包服务器的Docker镜像到本地机器使用" class="headerlink" title="打包服务器的Docker镜像到本地机器使用"></a>打包服务器的Docker镜像到本地机器使用</h2><p>目标：将远程Linux服务器的Docker容器打包成镜像，拷贝到本地机器（MacOS）加载，避免重新安装一遍环境（gnome、ssh、git、vim等）。</p>
+<p>步骤：</p>
+<ol>
+<li>将容器制作为镜像：<code>docker commit [container] [image]</code></li>
+<li>服务器打包镜像：<code>docker save -o image.tar ubuntu-env:latest</code></li>
+<li>本地机器开启远程登录：系统偏好设置-共享-远程登录</li>
+<li>拷贝镜像到本地机器：<code>scp image.tar Afauria@ip地址:/Users/Afauria/Desktop/</code></li>
+<li>本地机器下载Docker，加载镜像：<code>docker load &lt; image.tar</code></li>
+<li>使用<code>docker image ls</code>可以看到已经成功加载镜像</li>
+</ol>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p><a href="https://hub.docker.com/_/ubuntu">Ubuntu镜像</a>有不同架构的版本，例如x86_64、ARM64、ARM：</p>
+<ul>
+<li><code>docker pull ubuntu</code></li>
+<li><code>docker pull arm64v8/ubuntu</code></li>
+<li><code>docker pull arm32v7/ubuntu</code></li>
+</ul>
+<p><a href="(https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc)">Ubuntu桌面VNC镜像</a>只有x86_64、ARM64的版本：</p>
+<ul>
+<li><code>docker pull dorowu/ubuntu-desktop-lxde-vnc</code></li>
+<li><code>docker pull dorowu/ubuntu-desktop-lxde-vnc:focal-arm64</code></li>
+</ul>
+<blockquote>
+<p>运行其他架构的容器需要利用QEMU虚拟化技术：</p>
+<ul>
+<li>Mac电脑默认支持</li>
+<li>Linux电脑需要手动安装：<code>apt install qemu-user-static</code></li>
+</ul>
+</blockquote>
+<p>Docker中运行GUI参考资料：</p>
 <ul>
 <li><a href="http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/">running-gui-apps-with-docker</a></li>
 <li><a href="https://blog.jessfraz.com/post/docker-containers-on-the-desktop/">Docker Containers on the Desktop</a>：Docker中运行GUI程序</li>
@@ -923,7 +1456,7 @@
 <p><code>depot_tools</code>安装：参考<a href="/2022/01/04/%E5%B7%A5%E5%85%B7-2022-01-04-depot_tools%E4%BB%8B%E7%BB%8D/">depot_tools介绍</a></p>
 <ol>
 <li>clone仓库：<code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</code></li>
-<li>设置环境变量：<code>.bash_profile</code>文件中添加<code>export PATH=/&#123;your_path&#125;/depot_tools/:$PATH</code></li>
+<li>设置环境变量：<code>.bash_profile</code>文件中添加<code>export PATH=$PATH:&#123;your_path&#125;/depot_tools/</code></li>
 </ol>
 <p>生成<code>.gclient</code>文件：<code>gclient config git@github.com:flutter/engine.git --unmanaged --name=src/flutter</code></p>
 <blockquote>
@@ -1032,7 +1565,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Dart的编译和执行原</title>
+    <title>Dart的编译和执行原理</title>
     <url>/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/</url>
     <content><![CDATA[<h1 id="Dart简介"><a href="#Dart简介" class="headerlink" title="Dart简介"></a>Dart简介</h1><p><a href="https://dart.dev/overview">官方网站</a></p>
 <p>目标是高效地开发多平台应用，提供灵活的运行时环境和编译工具。</p>
@@ -6078,54 +6611,108 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
-
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
-<blockquote>
-<p>除了scp之外，还可以使用rsync同步文件</p>
-</blockquote>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+    <title>前端网站部署</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
 <ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
+<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
+</ol>
+<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
+
+<ol>
+<li>使用python内置服务器开启端口访问文件<ol>
+<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
+<li>Python3：<code>python -m http.server 8081</code></li>
+</ol>
+</li>
+<li>使用node的http server<ol>
+<li>安装http server：<code>npm install http-server -g</code></li>
+<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
 </ol>
 </li>
 </ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
+<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
+<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
+<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
+<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
+<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
+<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
+<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
+<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
+<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
+</ol>
+<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
 
 <ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
+<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
+<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
+<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
 </ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
+<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
 <ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
+<li>使用<code>chmod -R 777</code>修改读写权限</li>
+<li>Nginx用户配置</li>
+<li>Nginx文件路径和网页入口配置</li>
+<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
+<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
+</ol>
+</li>
+</ol>
+<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
+<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像</li>
+<li>启动容器</li>
+<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
+</ol>
+<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<blockquote>
+<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
+</blockquote>
+<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
+<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
+<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
+</ol>
+<p>可以使用docker compose+yml配置文件创建和启动容器</p>
+<ol>
+<li>安装docker compose工具</li>
+<li>编写yml配置文件</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
+<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
+<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
+<li>内部网站使用vite或者node等开发工具部署。</li>
+<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
+<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
 </ol>
 ]]></content>
       <categories>
-        <category>后端</category>
+        <category>前端</category>
       </categories>
       <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
+        <tag>前端</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -6290,108 +6877,54 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>前端网站部署</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
-<ol>
-<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
-<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
-</ol>
-<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
 
-<ol>
-<li>使用python内置服务器开启端口访问文件<ol>
-<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
-<li>Python3：<code>python -m http.server 8081</code></li>
-</ol>
-</li>
-<li>使用node的http server<ol>
-<li>安装http server：<code>npm install http-server -g</code></li>
-<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
-<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
-<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
-<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
-<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
-<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
-<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
-<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
-<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
-<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
-<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
-</ol>
-<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
 
-<ol start="2">
-<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
-<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
-<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
-<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
-</ol>
-<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
-<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
-<ol>
-<li>使用<code>chmod -R 777</code>修改读写权限</li>
-<li>Nginx用户配置</li>
-<li>Nginx文件路径和网页入口配置</li>
-<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
-<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
-</ol>
-</li>
-</ol>
-<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
-<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
 
-<ol start="2">
-<li>打包Docker镜像</li>
-<li>启动容器</li>
-<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
-</ol>
-<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
 <blockquote>
-<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
+<p>除了scp之外，还可以使用rsync同步文件</p>
 </blockquote>
-<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
-<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
-<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
-</ol>
-<p>可以使用docker compose+yml配置文件创建和启动容器</p>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
 <ol>
-<li>安装docker compose工具</li>
-<li>编写yml配置文件</li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
-<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
-<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
 </ol>
 </li>
 </ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
-<li>内部网站使用vite或者node等开发工具部署。</li>
-<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
-<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
 </ol>
 ]]></content>
       <categories>
-        <category>前端</category>
+        <category>后端</category>
       </categories>
       <tags>
-        <tag>前端</tag>
-        <tag>Docker</tag>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
       </tags>
   </entry>
   <entry>
@@ -11474,6 +12007,21 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>快捷键笔记</title>
+    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
+<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
+<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
+<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git笔记</title>
     <url>/2018/10/04/tool-2018-10-04-Git/</url>
     <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
@@ -11597,6 +12145,7 @@ dispatchMessage-->判断是否是通知消息
 </tbody></table>
 <p>常用命令：</p>
 <ul>
+<li>查看IP地址：<code>ifconfig en0 | grep inet | awk &#39;$1==&quot;inet&quot; &#123;print $2&#125;</code></li>
 <li><code>find . -name &#39;文件名&#39;</code>：在当前路径下查找文件，需要完整的文件名，或者使用通配符</li>
 <li><code>grep [options] PATTERN FILE</code>：<code>grep -inR enable_global_input *</code><ul>
 <li>-i：忽略大小写</li>
@@ -11625,21 +12174,6 @@ dispatchMessage-->判断是否是通知消息
 
 
 
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快捷键笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
-<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
-<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
-<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -11727,30 +12261,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>RPC和RPC框架【转载】</title>
-    <url>/2018/07/24/tech-2018-07-24-RPC/</url>
-    <content><![CDATA[<h2 id="转载"><a href="#转载" class="headerlink" title="[转载]"></a>[转载]</h2><p>作者：EnjoyMoving</p>
-<p>链接：<a href="https://www.zhihu.com/question/25536695/answer/285844835">https://www.zhihu.com/question/25536695/answer/285844835</a></p>
-<p>RPC：远程调用。通过RPC框架，使得我们可以像调用本地方法一样地调用远程机器上的方法：</p>
-<p>1、本地调用某个函数方法</p>
-<p>2、本地机器的RPC框架把这个调用信息封装起来（调用的函数、入参等），序列化(json、xml等)后，通过网络传输发送给远程服务器</p>
-<p>3、远程服务器收到调用请求后，远程机器的RPC框架反序列化获得调用信息，并根据调用信息定位到实际要执行的方法，执行完这个方法后，序列化执行结果，通过网络传输把执行结果发送回本地机器</p>
-<p>4、本地机器的RPC框架反序列化出执行结果，函数return这个结果</p>
-<p>服务调用端（本地机器）：</p>
-<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC01.png" alt="img"></p>
-<p>服务提供端（远程机器）：</p>
-<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC02.png" alt="img"></p>
-<p>Java Netty 是在TCP(Socket)层对nio进行封装的框架，在RPC框架中可用于解决网络传输问题。</p>
-<p>现在流行的微服务框架（dubbo、spring cloud等），实际上就是各种各样的RPC框架</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mina心跳检测实现</title>
     <url>/2018/07/24/tech-2018-07-24-MinaHeartbeat/</url>
     <content><![CDATA[<p>上一篇文章讲了Mina的简单使用，这一篇将要讲讲怎么用Mina实现心跳检测。网上有很多相关的文章，但是我觉得比较难理解，自己折腾了好久才明白，所以想用我觉得容易理解的话总结一下。也给自己做个笔记。</p>
@@ -11833,71 +12343,27 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-Mina/</url>
-    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
-<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
-<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
-<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
-</ol>
-<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
-<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
-<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
-<li>长连接和短连接是相对的：但都是TCP连接</li>
-<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
-<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
-<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
-<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
-</ol>
-<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
-<p>除了mina框架外，还有netty框架。</p>
-<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
-<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
-<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
-<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
-<ol>
-<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
-<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
-</li>
-<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
-</li>
-</ol>
-<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
-<ol>
-<li>首先创建IoService</li>
-<li>添加过滤器/拦截器IoFilterChain</li>
-<li>实现IoHandler对数据进行业务逻辑处理</li>
-</ol>
-<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
-<p>Binaries是jar包，Sources是源码</p>
-<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
-<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
-<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
-<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
-<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
-<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
-<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
+    <title>RPC和RPC框架【转载】</title>
+    <url>/2018/07/24/tech-2018-07-24-RPC/</url>
+    <content><![CDATA[<h2 id="转载"><a href="#转载" class="headerlink" title="[转载]"></a>[转载]</h2><p>作者：EnjoyMoving</p>
+<p>链接：<a href="https://www.zhihu.com/question/25536695/answer/285844835">https://www.zhihu.com/question/25536695/answer/285844835</a></p>
+<p>RPC：远程调用。通过RPC框架，使得我们可以像调用本地方法一样地调用远程机器上的方法：</p>
+<p>1、本地调用某个函数方法</p>
+<p>2、本地机器的RPC框架把这个调用信息封装起来（调用的函数、入参等），序列化(json、xml等)后，通过网络传输发送给远程服务器</p>
+<p>3、远程服务器收到调用请求后，远程机器的RPC框架反序列化获得调用信息，并根据调用信息定位到实际要执行的方法，执行完这个方法后，序列化执行结果，通过网络传输把执行结果发送回本地机器</p>
+<p>4、本地机器的RPC框架反序列化出执行结果，函数return这个结果</p>
+<p>服务调用端（本地机器）：</p>
+<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC01.png" alt="img"></p>
+<p>服务提供端（远程机器）：</p>
+<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC02.png" alt="img"></p>
+<p>Java Netty 是在TCP(Socket)层对nio进行封装的框架，在RPC框架中可用于解决网络传输问题。</p>
+<p>现在流行的微服务框架（dubbo、spring cloud等），实际上就是各种各样的RPC框架</p>
 ]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
         <tag>技术</tag>
-        <tag>网络编程</tag>
       </tags>
   </entry>
   <entry>
@@ -11941,6 +12407,74 @@ dispatchMessage-->判断是否是通知消息
 <h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
 <p>Binaries是jar包，Sources是源码</p>
 <p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina02.png" alt="导入包"></p>
+<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
+<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
+<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
+<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
+<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
+<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+        <tag>网络编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络编程和Mina入门</title>
+    <url>/2018/07/23/tech-2018-07-23-Mina/</url>
+    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
+<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
+<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
+<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
+</ol>
+<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
+<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
+<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
+<li>长连接和短连接是相对的：但都是TCP连接</li>
+<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
+<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
+<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
+<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
+</ol>
+<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
+<p>除了mina框架外，还有netty框架。</p>
+<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
+<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
+<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
+<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
+<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
+<ol>
+<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
+<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
+</li>
+<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
+</li>
+</ol>
+<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
+<ol>
+<li>首先创建IoService</li>
+<li>添加过滤器/拦截器IoFilterChain</li>
+<li>实现IoHandler对数据进行业务逻辑处理</li>
+</ol>
+<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
+<p>Binaries是jar包，Sources是源码</p>
+<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
 <h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -12092,145 +12626,44 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>道</title>
-    <url>/2018/04/14/personal-2018-04-14-Think/</url>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
     <content><![CDATA[<ul>
-<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
-</li>
-<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
-</li>
-<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
-<ul>
-<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
 </ul>
 </li>
-<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
-</li>
-<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
-</li>
-<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
-</li>
-<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
-</li>
-<li><p>忍一时越想越气，退一步越想越亏</p>
-<ul>
-<li>同是射手（王者荣耀）</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
 </ul>
 </li>
-<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
-<ul>
-<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
 </ul>
 </li>
-<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
-</li>
-<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
-</li>
-<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
-</li>
-<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
-</li>
-<li><p>自从用了网易云，我把《故事会》退订了</p>
-</li>
-<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
-</li>
-<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
-</li>
-<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
-</li>
-<li><p>心比长相好，懂比爱重要。</p>
-</li>
-<li><p>我从来都不喜欢分享我的朋友给别人</p>
-</li>
-<li><p>爱笑的男孩子运气不会太差</p>
-<ul>
-<li>因为运气差的男孩子笑不出来。</li>
-</ul>
-</li>
-<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
-</li>
-<li><p>买名表算不算缴智商税</p>
-<ul>
-<li>你要是戴着名表去忽悠人，那不是智商税</li>
-<li>你要是被忽悠着去买名表，那就是智商税</li>
-<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
-</ul>
-</li>
-<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
-</li>
-<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
-</li>
-<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
-<ul>
-<li>我tm在上班的时候，他们不是在睡觉吗？</li>
-</ul>
-</li>
-<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
-</li>
-<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
-</li>
-<li><p>这个世上没有感同身受，只有冷暖自知</p>
-</li>
-<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
-</li>
-<li><p>你要的是幸福，还是对错</p>
-</li>
-<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
-</li>
-<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
-</li>
-<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
-</li>
-<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
-</li>
-<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
-</li>
-<li><p>我养了两盆一帆风顺，总是王了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
-</li>
-<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
-</li>
-<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
-</li>
-<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
-</li>
-<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
-</li>
-<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
-</li>
-<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
-</li>
-<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
-</li>
-<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
-</li>
-<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
-</li>
-<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
-</li>
-<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
-</li>
-<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
-<ul>
-<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
 </ul>
 </li>
 </ul>
-<ul>
-<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
-</li>
-<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
-<ol start="2">
-<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
-<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
-<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
-<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
-</ol>
-</li>
-<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
-</li>
-<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
-</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
         <category>其他</category>
@@ -12603,44 +13036,191 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <title>博君一笑图</title>
+    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
+    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
+
+<p>神评：防窥膜，看不见</p>
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
+</ul>
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>道</title>
+    <url>/2018/04/14/personal-2018-04-14-Think/</url>
     <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
+<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
+</li>
+<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
+</li>
+<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
+<ul>
+<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
 </ul>
 </li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
+</li>
+<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
+</li>
+<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
+</li>
+<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
+</li>
+<li><p>忍一时越想越气，退一步越想越亏</p>
+<ul>
+<li>同是射手（王者荣耀）</li>
 </ul>
 </li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
+<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
+<ul>
+<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
 </ul>
 </li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
+</li>
+<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
+</li>
+<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
+</li>
+<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
+</li>
+<li><p>自从用了网易云，我把《故事会》退订了</p>
+</li>
+<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
+</li>
+<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
+</li>
+<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
+</li>
+<li><p>心比长相好，懂比爱重要。</p>
+</li>
+<li><p>我从来都不喜欢分享我的朋友给别人</p>
+</li>
+<li><p>爱笑的男孩子运气不会太差</p>
+<ul>
+<li>因为运气差的男孩子笑不出来。</li>
+</ul>
+</li>
+<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
+</li>
+<li><p>买名表算不算缴智商税</p>
+<ul>
+<li>你要是戴着名表去忽悠人，那不是智商税</li>
+<li>你要是被忽悠着去买名表，那就是智商税</li>
+<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
+</ul>
+</li>
+<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
+</li>
+<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
+</li>
+<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
+<ul>
+<li>我tm在上班的时候，他们不是在睡觉吗？</li>
+</ul>
+</li>
+<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
+</li>
+<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
+</li>
+<li><p>这个世上没有感同身受，只有冷暖自知</p>
+</li>
+<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
+</li>
+<li><p>你要的是幸福，还是对错</p>
+</li>
+<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
+</li>
+<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
+</li>
+<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
+</li>
+<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
+</li>
+<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
+</li>
+<li><p>我养了两盆一帆风顺，总是王了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
+</li>
+<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
+</li>
+<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
+</li>
+<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
+</li>
+<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
+</li>
+<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
+</li>
+<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
+</li>
+<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
+</li>
+<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
+</li>
+<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
+</li>
+<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
+</li>
+<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
+</li>
+<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
+<ul>
+<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
 </ul>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
+<ul>
+<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
+</li>
+<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
+<ol start="2">
+<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
+<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
+<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
+<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
+</ol>
+</li>
+<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
+</li>
+<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -14110,52 +14690,6 @@ dispatchMessage-->判断是否是通知消息
 <li>身不在高，米五就行。胸不在大，有型则灵。斯是萝莉，为吾是侵，洋装猫耳朵，小嘴大眼睛，短发很俏丽，长发也飘逸，可以给糖果，玩亲亲。无八卦之乱耳，无血拼之劳行。学校游泳室，公园小凉亭。孔子云：三年起步，最高死刑。</li>
 <li>之前打排位，一个安其拉突然说：我男朋友想要，我先挂机。她还开着麦，最后我们四个硬生生守了两个小时</li>
 </ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博君一笑图</title>
-    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
-    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
-
-<p>神评：防窥膜，看不见</p>
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
-<ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
-</ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
 ]]></content>
       <categories>
         <category>其他</category>

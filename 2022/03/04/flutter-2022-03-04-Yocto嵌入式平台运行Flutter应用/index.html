@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Yocto项目构建，嵌入式Linux平台运行Flutter应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yocto嵌入式平台运行Flutter应用">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍Yocto项目构建，嵌入式Linux平台运行Flutter应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png">
+<meta property="article:published_time" content="2022-03-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-07T11:34:10.392Z">
+<meta property="article:author" content="丘山月夜">
+<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Yocto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Yocto嵌入式平台运行Flutter应用 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Yocto嵌入式平台运行Flutter应用
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-04 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-04T00:00:00+08:00">2022-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-07 19:34:10" itemprop="dateModified" datetime="2022-03-07T19:34:10+08:00">2022-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="Yocto嵌入式平台运行Flutter应用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">介绍Yocto项目构建，嵌入式Linux平台运行Flutter应用</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ol>
+<li><p>使用Yocto编译嵌入式Linux系统，原厂提供系统代码，内置支持Wayland协议</p>
+</li>
+<li><p>使用<a target="_blank" rel="noopener" href="https://github.com/rdkcmf/westeros">westeros</a>作为Wayland Compositor，由<a target="_blank" rel="noopener" href="https://rdkcentral.com/">RDK（Reference Design Kit）</a>提供</p>
+</li>
+<li><p>使用丰田开发的<a target="_blank" rel="noopener" href="https://github.com/toyota-connected/ivi-homescreen">ivi-homescreen</a>作为Flutter嵌入层，基于Waylannd+EGL</p>
+<blockquote>
+<p>RDK（Reference Design Kit）是管理嵌入式应用参考设计套件的开源联盟</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="Yocto介绍"><a href="#Yocto介绍" class="headerlink" title="Yocto介绍"></a>Yocto介绍</h1><p>Yocto是一个开源项目，用于构建嵌入式Linux系统。类似于<a target="_blank" rel="noopener" href="https://buildroot.org/">BuildRoot</a>（基于Makefile和Kconfig配置）</p>
+<p>关键概念：</p>
+<ul>
+<li>Poky：指整个构建系统，包括BitBake工具、编译工具链、BSP，以及诸多程序包和层</li>
+<li>Metadata：元数据集<ul>
+<li>Recipes：<code>.bb/.bbappend</code>配方文件，配置源码下载路径、如何编译等。一个配方（Recipe）可以包含多个软件包（Package）</li>
+<li>Class：<code>.bbclass</code>文件，抽象的公共代码，给各个package使用</li>
+<li>Configuration：<code>.conf</code>配置文件，构建配置</li>
+</ul>
+</li>
+<li>Layers：即各种<code>meta-xxx</code>目录，包含Metadata的存储库，可以单独发布、下载，便于项目维护，例如<code>meta-flutter</code>、<code>meta-clang</code>等。<a target="_blank" rel="noopener" href="https://layers.openembedded.org/layerindex/branch/krogoth/layers/">官方支持的层级包和配方文件</a></li>
+<li>BitBake：任务执行引擎，解析Metadata，执行软件包的Task</li>
+</ul>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png" style="zoom:67%;">
+
+<p>在Yocto环境中构建Flutter：依赖<a target="_blank" rel="noopener" href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>项目，包含devtools工具项目、Flutter引擎项目、Flutter应用案例项目，以及各种定制嵌入层（sony、toyota、树莓派等）项目等，通过BitBake统一构建</p>
+<p>对于Yocto，个人理解是类似于AOSP项目：</p>
+<ul>
+<li>Yocto使用Bitbake工具执行构建任务，AOSP使用make或者ninja构建</li>
+<li>Yocto的<code>.bb/.bbappend</code>配方文件和<code>.conf</code>配置文件，类似于AOSP的<code>.mk/.bp</code>配置文件</li>
+<li>Yocto项目只包含构建Metadata，代码从网上下载，AOSP需要下载所有代码进行编译。</li>
+</ul>
+<p>Yocto的发行版：zeus（3.0）、dunfell（3.1）、gatesgarth（3.2）、hardknott（3.3）、honister（3.4）</p>
+<h2 id="Yocto目录结构说明"><a href="#Yocto目录结构说明" class="headerlink" title="Yocto目录结构说明"></a>Yocto目录结构说明</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── build</span><br><span class="line">│   ├── buildhistory</span><br><span class="line">│   ├── cache</span><br><span class="line">│   ├── conf</span><br><span class="line">│   │   ├── local.conf # 定制化配置文件，变量定义</span><br><span class="line">│   │   ├── bblayers.conf # bblayers决定哪些模块被编译</span><br><span class="line">│   └── tmp # 构建的输出目录</span><br><span class="line">├── downloads # build/downloads：构建过程中下载的所有源码，放到公共目录下，提高每次的编译效率</span><br><span class="line">├── sstate-cache # build/sstate-cache：构建状态缓存，放到公共目录下，提高每次的编译效率</span><br><span class="line">├── meta-clang</span><br><span class="line">├── meta-flutter # 自己添加的Metadata项目</span><br><span class="line">│   ├── conf</span><br><span class="line">│   ├── recipes-devtools</span><br><span class="line">│   ├── recipes-graphics</span><br><span class="line">│   └── recipes-support</span><br><span class="line">├── meta-meson</span><br><span class="line">├── meta-openembedded</span><br><span class="line">├── meta-python2</span><br><span class="line">├── meta-thunder</span><br><span class="line">└── poky # Poky工程通用目录结构，顶级目录$&#123;TOPDIR&#125;</span><br><span class="line">    ├── bitbake # bitbake工具目录，解析Metadata、recipes、config，执行task</span><br><span class="line">    ├── contrib</span><br><span class="line">    ├── documentation</span><br><span class="line">    ├── meta # OE Core（Open Embedded）的Metadata，包括recipes、common、classes等</span><br><span class="line">    ├── meta-poky # poky发行版配置数据</span><br><span class="line">    ├── meta-selftest # OE自测的recipes和append文件</span><br><span class="line">    ├── meta-skeleton # BSP和Kernel开发用的临时recipes</span><br><span class="line">    ├── meta-yocto-bsp # 参考的BSP配置，厂商可以增加自己的bsp目录</span><br><span class="line">    ├── scripts # 脚本文件</span><br><span class="line">    └── oe-init-build-env  # 脚本文件，构建OE环境</span><br></pre></td></tr></table></figure>
+
+<p><code>build/tmp</code>目录说明：构建的输出目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">└── build</span><br><span class="line">    └── tmp # 构建的输出目录</span><br><span class="line">        ├── deploy # 最终部署需要的文件</span><br><span class="line">        │   ├── deb # deb类型的安装包</span><br><span class="line">        │   ├── ipk # ipk类型的安装包</span><br><span class="line">        │   ├── rpm # rpm类型的安装包</span><br><span class="line">        │   ├── licenses # 各种软件的许可信息</span><br><span class="line">        │   ├── images # image、rootfs（根文件系统）、boot等文件</span><br><span class="line">        │   ├── sdk # 工具链安装脚本</span><br><span class="line">        ├── work # 包含所有软件包的工作目录，根据CPU架构、厂商等分为多个子目录</span><br><span class="line">        ├── work-share # 工作信息缓存，提高效率</span><br><span class="line">        ├── sysroots-component # 制作sysroots前需要添加的组件</span><br><span class="line">        ├── sysroots # 构建出的sysroots</span><br><span class="line">        ├── log # 日志信息</span><br><span class="line">        ├── cache # Bitbake缓存解析结果，提高后续编译效率</span><br><span class="line">        ├── buildstats # 构建信息统计，每次构建都会生成一个日期目录</span><br><span class="line">        └── stamps # 记录Bitbake跟踪task执行时间信息</span><br></pre></td></tr></table></figure>
+
+<p><code>poky/meta/</code>目录说明：OE Core构建配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">└── poky # Poky工程通用目录结构</span><br><span class="line">    └── meta # OE Core（Open Embedded）的Metadata，包括recipes、common、classes等</span><br><span class="line">        ├── classes # 包含所有的.bbclass</span><br><span class="line">        ├── conf # 配置文件</span><br><span class="line">        ├── files # 包含license文件和系统构建的一些文件</span><br><span class="line">        ├── lib # 构建需要的python库文件</span><br><span class="line">        ├── recipes-bsp # uboot等硬件相关的配方</span><br><span class="line">        ├── recipes-connectivity # 和其他设备通信相关的库和应用，例如ssh</span><br><span class="line">        ├── recipes-core # 构建基本的Linux image所需的依赖</span><br><span class="line">        ├── recipes-devtools # 构建时需要的开发工具，在目标平台也能使用</span><br><span class="line">        ├── recipes-extended # 扩展的应用，例如wget、tar、zip、grep、which等</span><br><span class="line">        ├── recipes-gnome # GTK+框架相关的应用</span><br><span class="line">        ├── recipes-graphics # 绘图相关的库，例如vulkan、cairo、wayland、xorg、drm等</span><br><span class="line">        ├── recipes-kernel # Kernel以及内核依赖的库</span><br><span class="line">        ├── recipes-lsb # LSB（Linux Standard Base）需要的</span><br><span class="line">        ├── recipes-multimedia # 多媒体（图片、声音、视频）支持，例如ffmpeg、webp、libpng等</span><br><span class="line">        ├── recipes-support # 通用的recipes</span><br><span class="line">        ├── recipes-rt # PREEMPT_RT需要的包和recipes</span><br><span class="line">        ├── recipes-sato # Sato Demo</span><br><span class="line">        ├── recipes.txt # recpies目录说明文件</span><br><span class="line">        └── site  # 不同架构下的缓存结果</span><br></pre></td></tr></table></figure>
+
+<h2 id="local-conf配置"><a href="#local-conf配置" class="headerlink" title="local.conf配置"></a>local.conf配置</h2><p>保存通用配置、全局变量等。</p>
+<ul>
+<li>配置downloads目录：<code>DL_DIR ?= &quot;$&#123;TOPDIR&#125;/../downloads&quot;</code></li>
+<li>配置使用的包管理器：<code>PACKAGE_CLASSES ?= &quot;package_ipk/package_rpm/package_deb&quot;</code></li>
+<li>镜像中安装软件：IMAGE_INSTALL_append = “ openjdk-8”</li>
+<li>排除软件：PACKAGE_EXCLUDE = “ openjdk-8”</li>
+</ul>
+<h2 id="Bitbake笔记"><a href="#Bitbake笔记" class="headerlink" title="Bitbake笔记"></a>Bitbake笔记</h2><p><code>bitbake [options] [recipename/target recipe:do_task ...]</code></p>
+<p><code>bitbake -s</code>：列出可用的recipes。</p>
+<blockquote>
+<p>原理：解析<code>bblayers.conf</code>中配置的Layer路径，从Layer中找到bb文件，解析出需要编译的recipe。</p>
+<p>可以修改<code>bblayers.conf</code>文件，添加或移除模块。也可以使用以下命令</p>
+<p><code>bitbake-layers show-layers/add-layer/remove-layer</code>：查看/添加/移除可用的Layers</p>
+</blockquote>
+<p><code>bitbake -e &lt;recipe&gt; | grep ^S=</code>：查看Package编译工作目录</p>
+<p><code>bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</code>：查看软件源码下载路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 32位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 64位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/aarch64-poky-linux/flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件源码下载路径</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</span></span><br><span class="line">SRC_URI=&quot;git://github.com/flutter/flutter.git;protocol=https;nobranch=1&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>bitbake下载软件源码失败：可以手动下载到本地，切到期望的分支和commit，修改对应的<code>.bb</code>文件，将远程Git仓库改为本地路径。</p>
+</blockquote>
+<p>每个软件包都有自己的工作目录，包括源码、编译配置、编译输出、交叉编译需要的目标平台sysroot等。其中temp临时目录中包含软件的Task脚本（例如<code>run.do_compile</code>、<code>run.do_fetch</code>等），Task执行log（例如<code>log.do_fetch</code>、<code>log.do_compile</code>）等。</p>
+<blockquote>
+<p>可以查看和修改Task脚本</p>
+</blockquote>
+<p>不同的Package有不同的Task，Yocto有一些通用的Task，例如fetch、clean、build、listtasks等。</p>
+<ul>
+<li><code>bitbake &lt;recipe&gt; -c &lt;CMD&gt;</code>执行特定Task。默认执行build任务。</li>
+<li><code>bitbake &lt;recipe&gt; -c listtasks</code>：查看软件包可执行的Task。<ul>
+<li>fetch：下载源码</li>
+<li>unpack：将源码解包到工作目录</li>
+<li>compile：编译</li>
+<li>install：安装</li>
+<li>package_write_ipk：打包ipk</li>
+</ul>
+</li>
+</ul>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png" style="zoom:100%;">
+
+<h1 id="Yocto编译Linux系统"><a href="#Yocto编译Linux系统" class="headerlink" title="Yocto编译Linux系统"></a>Yocto编译Linux系统</h1><h2 id="原始系统"><a href="#原始系统" class="headerlink" title="原始系统"></a>原始系统</h2><p>公司服务器已经搭建好了编译的Docker环境，并且提供了编译的脚本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ssh登录服务器</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取系统源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo init -u <span class="string">&quot;ssh://<span class="variable">$USER</span>@tvgit.gz.xxx.cn:29418/AMLT950D4_Linux/source/repo_manifest&quot;</span> -b dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo sync</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> &lt;代码根目录&gt;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入Docker容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker_aml_u16_build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> OPENLINUX_BUILD=1</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过脚本设置编译目标</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> meta-meson/aml-setenv.sh mesont5d-lib32-am301</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 整包编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-amlogic-yocto</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成的镜像位置：code/build/tmp/deploy/images/mesont5d-lib32-am301/aml_upgrade_package.img</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="加入meta-flutter"><a href="#加入meta-flutter" class="headerlink" title="加入meta-flutter"></a>加入meta-flutter</h2><p><a target="_blank" rel="noopener" href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>是Yocto Layer，用于Yocto编译。recipes包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">flutter-sdk</a>：默认使用最新版，通过<code>FLUTTER_SDK_TAG</code>变量设置版本</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">flutter-engine</a>：默认使用和Flutter SDK对应的版本</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/gallery">flutter-gallery</a>：Sample应用</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/toyota-connected/ivi-homescreen">ivi-homescreen</a>：Toyota/AGL - Wayland嵌入层</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ardera/flutter-pi">flutter-pi</a>：树莓派DRM嵌入层</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sony/flutter-embedded-linux">sony</a>：Sony嵌入层flutter-eLinux</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jwinarske/flutter_wayland">flutter-wayland</a>、<a target="_blank" rel="noopener" href="https://github.com/NilsBrause/waylandpp">waylandpp</a>：基于Wayland的嵌入层，类似ivi-homescreen。最新的meta-flutter已经去除</li>
+</ul>
+<p>步骤如下：</p>
+<ol>
+<li>下载Layer到源码根目录：<code>git clone https://github.com/meta-flutter/meta-flutter.git</code></li>
+<li><code>bblayers.conf</code>中配置Layer路径，或者执行<code>bitbake-layers add-layer /home/code/meta-flutter</code></li>
+<li>设置Flutter SDK版本：添加变量<code>FLUTTER_SDK_TAG = &quot;2.8.1&quot;</code></li>
+<li>整包编译，安装软件包：添加变量<code>IMAGE_INSTALL_append = &quot;lib32-flutter-engine-release lib32-ivi-homescreen-release lib32-flutter-gallery-release&quot;</code></li>
+<li><code>git checkout -b dunfell origin/dunfell</code></li>
+</ol>
+<h2 id="局部编译"><a href="#局部编译" class="headerlink" title="局部编译"></a>局部编译</h2><p>也可以局部编译<code>ivi-homescreen</code>和<code>flutter-engine</code>，再将生成的库手动push到系统中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-ivi-homescreen</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-flutter-engine</span></span><br></pre></td></tr></table></figure>
+
+<p><code>ivi-homescreen</code>运行只需要几个关键的库，这里收集起来放到一起，避免去构建目录中查找</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">aml_armv7at2hf_yocto$</span><span class="bash"> tree</span></span><br><span class="line">├── aml_upgrade_package.img # 系统软件包</span><br><span class="line">├── sdk # Flutter引擎编译生成，由engine_sdk.zip解压而来</span><br><span class="line">│   ├── clang_x64</span><br><span class="line">│   │   └── gen_snapshot # Flutter引擎编译生成的后端编译器</span><br><span class="line">│   ├── engine.version</span><br><span class="line">│   ├── platform_strong.dill</span><br><span class="line">│   ├── platform_strong.dill.d</span><br><span class="line">│   └── vm_outline_strong.dill</span><br><span class="line">└── usr</span><br><span class="line">    ├── bin</span><br><span class="line">    │   └── homescreen # ivi-homescreen嵌入层程序入口</span><br><span class="line">    ├── lib # ivi-homescreen需要的链接库</span><br><span class="line">    │   ├── libc++.so.1 # llvm编译生成</span><br><span class="line">    │   ├── libc++abi.so.1 # llvm编译生成</span><br><span class="line">    │   └── libflutter_engine.so # Flutter引擎编译生成</span><br><span class="line">    └── share</span><br><span class="line">        ├── flutter</span><br><span class="line">        │   ├── engine_sdk.zip</span><br><span class="line">        │   └── icudtl.dat # Flutter运行需要的国际化数据文件</span><br><span class="line">        └── homescreen # Flutter Samples编译产物，包括flutter_assets和libapp.so</span><br><span class="line">            ├── image_list</span><br><span class="line">            ├── particle_background</span><br><span class="line">            ├── platform_view</span><br><span class="line">            └── testing_app</span><br></pre></td></tr></table></figure>
+
+<h1 id="Flutter-Linux-ARM应用编译"><a href="#Flutter-Linux-ARM应用编译" class="headerlink" title="Flutter Linux ARM应用编译"></a>Flutter Linux ARM应用编译</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 前端编译生成app.dill</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> dart frontend_server.dart.snapshot \</span></span><br><span class="line"><span class="bash">--target=flutter \</span></span><br><span class="line"><span class="bash">--aot --tfa \</span></span><br><span class="line"><span class="bash">-Ddart.vm.profile=<span class="literal">false</span> -Ddart.vm.product=<span class="literal">true</span> \</span></span><br><span class="line"><span class="bash">--sdk-root flutter_patched_sdk \</span></span><br><span class="line"><span class="bash">--output-dill app.dill \</span></span><br><span class="line"><span class="bash">demo/lib/main.dart</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后端编译生成libapp.so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sdk/clang_x64/gen_snapshot \</span></span><br><span class="line"><span class="bash">--snapshot_kind=app-aot-elf \</span></span><br><span class="line"><span class="bash">--elf=libapp.so \</span></span><br><span class="line"><span class="bash">app.dill</span></span><br></pre></td></tr></table></figure>
+
+<p>文件和路径说明：</p>
+<ul>
+<li><code>dart</code>：使用Flutter SDK自带的Dart。<strong>Flutter SDK版本要和Flutter引擎版本对应</strong><ul>
+<li><code>flutter/bin/dart</code></li>
+</ul>
+</li>
+<li><code>frontend_server.dart.snapshot</code>：使用Flutter SDK缓存的前端编译器，或者引擎编译生成的前端编译器<ul>
+<li><code>flutter/bin/cache/artifacts/engine/linux-x64/frontend_server.dart.snapshot</code></li>
+<li><code>out/linux_release_arm/frontend_server.dart.snapshot</code></li>
+</ul>
+</li>
+<li><code>flutter_patched_sdk</code>：使用Flutter SDK缓存的文件，或者引擎编译生成的文件<ul>
+<li><code>flutter/bin/cache/artifacts/engine/common/flutter_patched_sdk</code></li>
+<li><code>out/linux_release_arm/flutter_patched_sdk</code></li>
+</ul>
+</li>
+<li><code>gen_snapshot</code>：引擎编译生成的后端编译器，用于在Linux x86_64平台上交叉编译出ARM平台目标代码。<ul>
+<li><code>out/linux_release_arm/clang_x64/gen_snapshot</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="Flutter应用启动"><a href="#Flutter应用启动" class="headerlink" title="Flutter应用启动"></a>Flutter应用启动</h1><ol>
+<li>升级软件开机</li>
+<li>杀掉WPExxx的进程（有两个进程）</li>
+<li><code>su</code>进入root，或者<code>export XDG_RUNTIME_DIR=/run</code></li>
+<li><code>westeros-init &amp;</code>：启动westeros服务端</li>
+<li><code>westeros_test</code>：启动westeros示例客户端，运行成功显示UI</li>
+<li>将<code>aml_armv7at2hf_yocto</code>下的文件夹push到板卡对应路径下（整包编译的话，直接homescreen运行即可）</li>
+<li><code>homescreen --a=/usr/share/homescreen/image_list/flutter_assets</code>：运行Flutter程序，提前编了4个sample</li>
+</ol>
+<blockquote>
+<p><code>--a</code>指定应用路径，不指定的话默认会找<code>/usr/share/homescreen/bundle</code>目录。可以将应用路径链接到bundle目录，如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /usr/share/homescreen</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将程序链接到bundle</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ln -sf particle_background/ bundle</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> homescreen查找默认目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> homescreen</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>默认系统环境：AML 950D4 Linux平台，版本如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sh-5.0# uname -a</span><br><span class="line">Linux mesont5d-lib32-am301 5.4.125-amlogic #1 SMP PREEMPT Fri Mar 4 18:02:24 CST 2022 aarch64</span><br><span class="line">sh-5.0# cat /proc/version</span><br><span class="line">Linux version 5.4.125-amlogic (oe-user@oe-host) (aarch64-poky-linux-gcc (GCC) 9.3.0, GNU ld (GNU Binutils) 2.34.0.20200220) #1 SMP PREEMPT Fri Mar 4 18:02:24 CST 2022</span><br></pre></td></tr></table></figure>
+
+<p>系统默认使用WPEFramework运行应用。<a target="_blank" rel="noopener" href="https://webkit.org/wpe/">WPEFramework</a>是嵌入式设备的WebKit引擎，能够运行Web应用。执行以下命令可以打开WPE Launcher应用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 启动WPEFramework引擎，开启了一个网络端口</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wpeframework.sh &amp;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过curl请求端口，传入参数启动Launcher应用</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> launcher.sh &amp;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Yocto/" rel="tag"><i class="fa fa-tag"></i> Yocto</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/" rel="prev" title="Flutter编译环境搭建探索">
+      <i class="fa fa-chevron-left"></i> Flutter编译环境搭建探索
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Yocto介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yocto%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Yocto目录结构说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-conf%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">local.conf配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitbake%E7%AC%94%E8%AE%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Bitbake笔记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E7%BC%96%E8%AF%91Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">Yocto编译Linux系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.1.</span> <span class="nav-text">原始系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5meta-flutter"><span class="nav-number">3.2.</span> <span class="nav-text">加入meta-flutter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E7%BC%96%E8%AF%91"><span class="nav-number">3.3.</span> <span class="nav-text">局部编译</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-Linux-ARM%E5%BA%94%E7%94%A8%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">Flutter Linux ARM应用编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">Flutter应用启动</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">480k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:17</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
