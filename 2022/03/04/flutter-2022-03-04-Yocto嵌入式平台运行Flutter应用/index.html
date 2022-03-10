@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png">
 <meta property="article:published_time" content="2022-03-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-07T11:34:10.392Z">
+<meta property="article:modified_time" content="2022-03-10T07:24:18.411Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Docker">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-07 19:34:10" itemprop="dateModified" datetime="2022-03-07T19:34:10+08:00">2022-03-07</time>
+                <time title="修改时间：2022-03-10 15:24:18" itemprop="dateModified" datetime="2022-03-10T15:24:18+08:00">2022-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,14 +283,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.2k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>13 分钟</span>
             </span>
             <div class="post-description">介绍Yocto项目构建，嵌入式Linux平台运行Flutter应用</div>
 
@@ -359,6 +359,10 @@
 <p>可以修改<code>bblayers.conf</code>文件，添加或移除模块。也可以使用以下命令</p>
 <p><code>bitbake-layers show-layers/add-layer/remove-layer</code>：查看/添加/移除可用的Layers</p>
 </blockquote>
+<p><code>bitbake -g lib32-amlogic-yocto &amp;&amp; cat pn-buildlist | grep -ve &quot;native&quot; | sort | uniq</code>：查看镜像包依赖信息。</p>
+<blockquote>
+<p><code>-g</code>保存依赖信息到<code>pn-buildlist</code>文件中</p>
+</blockquote>
 <p><code>bitbake -e &lt;recipe&gt; | grep ^S=</code>：查看Package编译工作目录</p>
 <p><code>bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</code>：查看软件源码下载路径</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 32位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 64位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/aarch64-poky-linux/flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件源码下载路径</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</span></span><br><span class="line">SRC_URI=&quot;git://github.com/flutter/flutter.git;protocol=https;nobranch=1&quot;</span><br></pre></td></tr></table></figure>
@@ -366,26 +370,43 @@
 <blockquote>
 <p>bitbake下载软件源码失败：可以手动下载到本地，切到期望的分支和commit，修改对应的<code>.bb</code>文件，将远程Git仓库改为本地路径。</p>
 </blockquote>
-<p>每个软件包都有自己的工作目录，包括源码、编译配置、编译输出、交叉编译需要的目标平台sysroot等。其中temp临时目录中包含软件的Task脚本（例如<code>run.do_compile</code>、<code>run.do_fetch</code>等），Task执行log（例如<code>log.do_fetch</code>、<code>log.do_compile</code>）等。</p>
+<p>每个软件包都有自己的工作目录，包括源码、编译配置、编译输出、交叉编译需要的目标平台sysroot等。</p>
+<p>其中temp临时目录中包含软件的Task脚本（例如<code>run.do_compile</code>、<code>run.do_fetch</code>等），Task执行log（例如<code>log.do_fetch</code>、<code>log.do_compile</code>）等。</p>
 <blockquote>
-<p>可以查看和修改Task脚本</p>
+<p><strong>注：可以在temp目录下查看和修改Task脚本，分析软件编译过程，手动执行编译命令。</strong></p>
 </blockquote>
 <p>不同的Package有不同的Task，Yocto有一些通用的Task，例如fetch、clean、build、listtasks等。</p>
 <ul>
-<li><code>bitbake &lt;recipe&gt; -c &lt;CMD&gt;</code>执行特定Task。默认执行build任务。</li>
-<li><code>bitbake &lt;recipe&gt; -c listtasks</code>：查看软件包可执行的Task。<ul>
-<li>fetch：下载源码</li>
-<li>unpack：将源码解包到工作目录</li>
-<li>compile：编译</li>
-<li>install：安装</li>
-<li>package_write_ipk：打包ipk</li>
-</ul>
-</li>
+<li><code>bitbake &lt;recipe&gt; -c &lt;CMD&gt;</code>：执行特定Task。默认执行build任务。例如<code>bitbake lib32-flutter-engine-release -c clean</code></li>
+<li><code>bitbake &lt;recipe&gt; -c listtasks</code>：查看软件包可执行的Task。</li>
 </ul>
 <img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png" style="zoom:100%;">
 
+<h2 id="分析flutter-engine构建过程"><a href="#分析flutter-engine构建过程" class="headerlink" title="分析flutter-engine构建过程"></a>分析flutter-engine构建过程</h2><p>查看软件工作目录<code>temp</code>文件夹，分析Task脚本大致过程</p>
+<ol>
+<li><code>do_fetch</code>：根据<code>meta-flutter</code>中的配方文件下载Flutter引擎源代码</li>
+<li><code>do_unpack</code>：将源码解包到工作目录</li>
+<li><code>do_patch</code>：打补丁，修改Flutter引擎源代码，主要是修改引擎编译配置，<code>meta-flutter/recipes-graphics/flutter-engine/files</code></li>
+<li><code>do_prepare_recipe_sysroo</code>t：在workdir目录下创建两个sysroot(recipe-sysroot和recipe-sysroot-native)</li>
+<li><code>do_configure</code>：执行gn命令生成构建配置</li>
+<li><code>do_compile</code>：执行ninja编译</li>
+<li><code>do_install</code>：将Flutter引擎产物拷贝到等候区，一般位于<code>$&#123;WORKDIR&#125;/image</code>目录下，使用<code>$&#123;D&#125;</code>表示</li>
+<li><code>do_package</code>：根据需要打包生成package</li>
+<li><code>do_package_write_ipk</code>：打包ipk</li>
+<li>…</li>
+</ol>
+<blockquote>
+<ul>
+<li><code>$&#123;WORKDIR&#125;</code>：软件构建工作目录</li>
+<li><code>$&#123;D&#125;</code>：<code>$&#123;WORKDIR&#125;/image</code></li>
+<li><code>$&#123;PN&#125;</code>表示PackageName，例如<code>lib32-flutter-engine-release</code></li>
+</ul>
+</blockquote>
+<p>do_package相关：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> pkgdata只存放了包路径信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 一般包括<span class="variable">$PN</span>-src、<span class="variable">$PN</span>-dbg、<span class="variable">$PN</span>-dev、<span class="variable">$PN</span>-staticdev、<span class="variable">$PN</span>-doc、<span class="variable">$PN</span>-locale、<span class="variable">$PN</span></span></span><br><span class="line"><span class="meta">lib32-flutter-engine-release/git-r0/$</span><span class="bash">cat pkgdata/lib32-flutter-engine-release</span></span><br><span class="line">PACKAGES: lib32-flutter-engine-release-src lib32-flutter-engine-release-dbg lib32-flutter-engine-release-sdk-dev lib32-flutter-engine-release-staticdev lib32-flutter-engine-release-dev lib32-flutter-engine-release-doc lib32-flutter-engine-release-locale lib32-flutter-engine-release</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 实际对应packages-split中的目录</span></span><br><span class="line"><span class="meta">lib32-flutter-engine-release/git-r0/$</span><span class="bash">ls -l packages-split</span></span><br><span class="line">drwxr-xr-x 3 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release</span><br><span class="line">drwxr-xr-x 3 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-dbg</span><br><span class="line">drwxr-xr-x 3 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-dev</span><br><span class="line">drwxr-xr-x 2 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-doc</span><br><span class="line">drwxr-xr-x 2 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-locale</span><br><span class="line">drwxr-xr-x 3 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-sdk-dev</span><br><span class="line">-rw-r--r-- 1 builder builder   38 Mar  9 19:47 lib32-flutter-engine-release.shlibdeps</span><br><span class="line">drwxr-xr-x 3 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-src</span><br><span class="line">drwxr-xr-x 2 builder builder 4096 Mar  9 19:47 lib32-flutter-engine-release-staticdev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 最后会合并到package中</span></span><br><span class="line"><span class="meta">lib32-flutter-engine-release/git-r0/$</span><span class="bash">ls -l package</span></span><br><span class="line">drwxr-xr-x 6 builder builder 4096 Mar  9 19:47 usr</span><br></pre></td></tr></table></figure>
+
 <h1 id="Yocto编译Linux系统"><a href="#Yocto编译Linux系统" class="headerlink" title="Yocto编译Linux系统"></a>Yocto编译Linux系统</h1><h2 id="原始系统"><a href="#原始系统" class="headerlink" title="原始系统"></a>原始系统</h2><p>公司服务器已经搭建好了编译的Docker环境，并且提供了编译的脚本。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ssh登录服务器</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取系统源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo init -u <span class="string">&quot;ssh://<span class="variable">$USER</span>@tvgit.gz.xxx.cn:29418/AMLT950D4_Linux/source/repo_manifest&quot;</span> -b dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo sync</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> &lt;代码根目录&gt;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入Docker容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker_aml_u16_build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> OPENLINUX_BUILD=1</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过脚本设置编译目标</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> meta-meson/aml-setenv.sh mesont5d-lib32-am301</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 整包编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-amlogic-yocto</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成的镜像位置：code/build/tmp/deploy/images/mesont5d-lib32-am301/aml_upgrade_package.img</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ssh登录服务器</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取系统源码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo init -u <span class="string">&quot;ssh://<span class="variable">$USER</span>@tvgit.gz.xxx.cn:29418/AMLT950D4_Linux/source/repo_manifest&quot;</span> -b dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> repo sync</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> &lt;代码根目录&gt;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入Docker容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker_aml_u16_build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">export</span> OPENLINUX_BUILD=1</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过脚本设置编译目标，重复设置会导致local.conf增加很多重复的变量</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> meta-meson/aml-setenv.sh mesont5d-lib32-am301</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 整包编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-amlogic-yocto</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 生成的镜像位置：code/build/tmp/deploy/images/mesont5d-lib32-am301/aml_upgrade_package.img</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="加入meta-flutter"><a href="#加入meta-flutter" class="headerlink" title="加入meta-flutter"></a>加入meta-flutter</h2><p><a target="_blank" rel="noopener" href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>是Yocto Layer，用于Yocto编译。recipes包括：</p>
 <ul>
@@ -399,18 +420,56 @@
 </ul>
 <p>步骤如下：</p>
 <ol>
-<li>下载Layer到源码根目录：<code>git clone https://github.com/meta-flutter/meta-flutter.git</code></li>
+<li>下载<code>meta-flutter</code>到源码根目录：<code>git clone https://github.com/meta-flutter/meta-flutter.git</code></li>
+<li>下载<code>meta-clang</code>到源码根目录：<code>git clone https://github.com/kraj/meta-clang.git</code></li>
+<li><code>meta-clang</code>切换分支：<code>git checkout -b dunfell origin/dunfell</code></li>
 <li><code>bblayers.conf</code>中配置Layer路径，或者执行<code>bitbake-layers add-layer /home/code/meta-flutter</code></li>
-<li>设置Flutter SDK版本：添加变量<code>FLUTTER_SDK_TAG = &quot;2.8.1&quot;</code></li>
-<li>整包编译，安装软件包：添加变量<code>IMAGE_INSTALL_append = &quot;lib32-flutter-engine-release lib32-ivi-homescreen-release lib32-flutter-gallery-release&quot;</code></li>
-<li><code>git checkout -b dunfell origin/dunfell</code></li>
+<li>设置Flutter SDK版本：<code>local.conf</code>中添加变量<code>FLUTTER_SDK_TAG = &quot;2.8.1&quot;</code></li>
 </ol>
-<h2 id="局部编译"><a href="#局部编译" class="headerlink" title="局部编译"></a>局部编译</h2><p>也可以局部编译<code>ivi-homescreen</code>和<code>flutter-engine</code>，再将生成的库手动push到系统中。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-ivi-homescreen</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-flutter-engine</span></span><br></pre></td></tr></table></figure>
+<h3 id="整包编译"><a href="#整包编译" class="headerlink" title="整包编译"></a>整包编译</h3><ol>
+<li>整包编译时安装软件包：<code>local.conf</code>中添加变量<code>IMAGE_INSTALL_append = &quot; lib32-flutter-engine-release lib32-ivi-homescreen-release lib32-flutter-gallery-release&quot;</code>（注意开头有空格）</li>
+<li>整包编译：<code>bitbake lib32-amlogic-yocto</code></li>
+</ol>
+<h3 id="局部编译"><a href="#局部编译" class="headerlink" title="局部编译"></a>局部编译</h3><p>局部编译<code>ivi-homescreen</code>和<code>flutter-engine</code>，再将生成的库手动push到系统中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-ivi-homescreen-release</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-flutter-engine-release</span></span><br></pre></td></tr></table></figure>
 
 <p><code>ivi-homescreen</code>运行只需要几个关键的库，这里收集起来放到一起，避免去构建目录中查找</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">aml_armv7at2hf_yocto$</span><span class="bash"> tree</span></span><br><span class="line">├── aml_upgrade_package.img # 系统软件包</span><br><span class="line">├── sdk # Flutter引擎编译生成，由engine_sdk.zip解压而来</span><br><span class="line">│   ├── clang_x64</span><br><span class="line">│   │   └── gen_snapshot # Flutter引擎编译生成的后端编译器</span><br><span class="line">│   ├── engine.version</span><br><span class="line">│   ├── platform_strong.dill</span><br><span class="line">│   ├── platform_strong.dill.d</span><br><span class="line">│   └── vm_outline_strong.dill</span><br><span class="line">└── usr</span><br><span class="line">    ├── bin</span><br><span class="line">    │   └── homescreen # ivi-homescreen嵌入层程序入口</span><br><span class="line">    ├── lib # ivi-homescreen需要的链接库</span><br><span class="line">    │   ├── libc++.so.1 # llvm编译生成</span><br><span class="line">    │   ├── libc++abi.so.1 # llvm编译生成</span><br><span class="line">    │   └── libflutter_engine.so # Flutter引擎编译生成</span><br><span class="line">    └── share</span><br><span class="line">        ├── flutter</span><br><span class="line">        │   ├── engine_sdk.zip</span><br><span class="line">        │   └── icudtl.dat # Flutter运行需要的国际化数据文件</span><br><span class="line">        └── homescreen # Flutter Samples编译产物，包括flutter_assets和libapp.so</span><br><span class="line">            ├── image_list</span><br><span class="line">            ├── particle_background</span><br><span class="line">            ├── platform_view</span><br><span class="line">            └── testing_app</span><br></pre></td></tr></table></figure>
 
+<h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><h3 id="gn不支持-no-build-embedder-examples参数"><a href="#gn不支持-no-build-embedder-examples参数" class="headerlink" title="gn不支持--no-build-embedder-examples参数"></a>gn不支持<code>--no-build-embedder-examples</code>参数</h3><p><code>bitbake lib32-flutter-engine-release -v</code>构建失败，提示gn不支持<code>--no-build-embedder-examples</code>参数</p>
+<blockquote>
+<p>原因：Flutter引擎版本问题</p>
+<p>分析：默认的PACKAGECONFIG包含<code>disable-embedder-examples</code>，导致gn命令会添加<code>--no-build-embedder-examples</code>选项。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> meta-flutter/recipes-graphics/flutter-engine/flutter-engine.inc</span></span><br><span class="line">PACKAGECONFIG ??= &quot;disable-desktop-embeddings \</span><br><span class="line">                   disable-embedder-examples \</span><br><span class="line">                   embedder-for-target \</span><br><span class="line">                   fontconfig \</span><br><span class="line">                   $&#123;FLUTTER_RUNTIME&#125; \</span><br><span class="line">                  &quot;</span><br><span class="line">PACKAGECONFIG[disable-desktop-embeddings] = &quot;--disable-desktop-embeddings&quot;</span><br><span class="line">PACKAGECONFIG[disable-embedder-examples] = &quot;--no-build-embedder-examples&quot;</span><br></pre></td></tr></table></figure>
+
+<p>解决：<code>local.conf</code>中添加如下变量，去掉<code>disable-embedder-examples</code>，覆盖默认的PACKAGECONFIG</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PACKAGECONFIG_pn-flutter-engine-release = &quot;disable-desktop-embeddings embedder-for-target fontconfig release&quot;</span><br><span class="line">PACKAGECONFIG_pn-flutter-engine-debug = &quot;disable-desktop-embeddings embedder-for-target fontconfig debug&quot;</span><br><span class="line">PACKAGECONFIG_pn-flutter-engine-profile = &quot;disable-desktop-embeddings embedder-for-target fontconfig profile&quot;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="无法编译Dart-SDK"><a href="#无法编译Dart-SDK" class="headerlink" title="无法编译Dart SDK"></a>无法编译Dart SDK</h3><p><code>bitbake lib32-flutter-engine-release -v</code>构建失败，报错如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Command failed: /home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/clang_x64/dart </span><br><span class="line">--disable-dart-dev --deterministic </span><br><span class="line">--packages=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/.dart_tool/package_config.json </span><br><span class="line">--snapshot=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/gen/frontend_server.dart.snapshot </span><br><span class="line">--snapshot-depfile=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/gen/frontend_server.dart.snapshot.d </span><br><span class="line">--depfile-output-filename=gen/frontend_server.dart.snapshot </span><br><span class="line">--snapshot-kind=kernel /home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/bin/starter.dart </span><br><span class="line">--train </span><br><span class="line">--sdk-root=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/flutter_patched_sdk </span><br><span class="line">/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/bin/starter.dart</span><br><span class="line">output:</span><br><span class="line">===== CRASH =====</span><br><span class="line">si_signo=Segmentation fault(11), si_code=1, si_addr=0x7f3b9f7dd1fc</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：编译的ARM架构的<code>out/linux_release_arm/clang_x64/dart</code>程序无法执行。导致生成Kernel快照失败，例如<code>frontend_server.dart.snapshot</code>、<code>analysis_server.dart.snapshot</code>、<code>dartdoc.dart.snapshot</code>等</p>
+<p><code>bitbake flutter-engine-release</code>编译正常：ARM64架构的dart程序可以正常执行。</p>
+<p>分析：其实引擎编译的关键产物只有<code>gen_snapshot、libflutter_engine.so</code>。生成的Dart程序是平台无关的，直接用Flutter SDK中现成的即可，没必要编译Dart SDK。</p>
+<p>解决：只要跳过Dart SDK编译即可，<strong>修改<code>src/flutter/BUILD.gn</code>文件，将<code>_build_engine_artifacts</code>改为false</strong></p>
+<p>旧版本<code>meta-flutter</code>还需要修改<code>flutter-engine.bb</code>文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> meta-flutter/recipes-graphics/flutter-engine/flutter-engine.bb</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删掉full-dart-sdk</span></span><br><span class="line">PACKAGECONFIG ?= &quot;disable-desktop-embeddings \</span><br><span class="line">                   embedder-for-target \</span><br><span class="line">                   fontconfig \</span><br><span class="line">                   full-dart-sdk \</span><br><span class="line">                   mode-release \</span><br><span class="line">                  &quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> ...</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删掉下面一行：将编译好的dart前端安装到image中。</span></span><br><span class="line">install -m 644 $&#123;S&#125;/$&#123;OUT_DIR_REL&#125;/dart-sdk/bin/snapshots/frontend_server.dart.snapshot  $&#123;D&#125;/$&#123;datadir&#125;/flutter/sdk/</span><br></pre></td></tr></table></figure>
+
+<p>新版本<code>meta-flutter</code>配置改为了<code>flutter-engine.inc</code>文件：</p>
+<ol>
+<li>去除掉了上面的两个配置：高版本Dart虚拟机不再接收Dart源文件，只接收Kernel代码，将编译前后端分离。因此直接在主机编译Kernel即可，没必要安装编译前端。</li>
+<li>gn命令默认加了<code>--no-stripped</code>选项，可以去掉</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> meta-flutter/recipes-graphics/flutter-engine/flutter-engine.inc</span></span><br><span class="line">GN_ARGS = &quot;$&#123;PACKAGECONFIG_CONFARGS&#125; --clang --lto --no-goma --no-stripped &quot;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="整包编译空间不足"><a href="#整包编译空间不足" class="headerlink" title="整包编译空间不足"></a>整包编译空间不足</h3><p>根据文档预装软件到系统中：<code>IMAGE_INSTALL_append = &quot; lib32-flutter-engine-release lib32-ivi-homescreen-release lib32-flutter-gallery-release&quot;</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 整包编译报错</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake lib32-amlogic-yocto</span></span><br><span class="line">The initramfs size xxx exceeds INITRAMFS_MAXSIZE: 131072</span><br><span class="line">You can set INITRAMFS_MAXSIZE a larger value. Usually, it should</span><br><span class="line">be less than 1/2 of ram size, or you may fail to boot it.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 全局搜索，默认值是128M</span></span><br><span class="line"><span class="meta">/home/code/poky$</span><span class="bash">grep -inR <span class="string">&quot;INITRAMFS_MAXSIZE&quot;</span> *</span></span><br><span class="line">meta/conf/bitbake.conf:789:INITRAMFS_MAXSIZE ??= &quot;131072&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解决：只保留homescreen编译成功，<code>IMAGE_INSTALL_append = &quot; lib32-ivi-homescreen-release&quot;</code></p>
+<p>homescreen依赖flutter-engine，因此引擎也会被打包进去。升级软件之后可以直接运行homescreen</p>
+</blockquote>
 <h1 id="Flutter-Linux-ARM应用编译"><a href="#Flutter-Linux-ARM应用编译" class="headerlink" title="Flutter Linux ARM应用编译"></a>Flutter Linux ARM应用编译</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 前端编译生成app.dill</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> dart frontend_server.dart.snapshot \</span></span><br><span class="line"><span class="bash">--target=flutter \</span></span><br><span class="line"><span class="bash">--aot --tfa \</span></span><br><span class="line"><span class="bash">-Ddart.vm.profile=<span class="literal">false</span> -Ddart.vm.product=<span class="literal">true</span> \</span></span><br><span class="line"><span class="bash">--sdk-root flutter_patched_sdk \</span></span><br><span class="line"><span class="bash">--output-dill app.dill \</span></span><br><span class="line"><span class="bash">demo/lib/main.dart</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后端编译生成libapp.so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sdk/clang_x64/gen_snapshot \</span></span><br><span class="line"><span class="bash">--snapshot_kind=app-aot-elf \</span></span><br><span class="line"><span class="bash">--elf=libapp.so \</span></span><br><span class="line"><span class="bash">app.dill</span></span><br></pre></td></tr></table></figure>
 
 <p>文件和路径说明：</p>
@@ -440,7 +499,7 @@
 <li><code>su</code>进入root，或者<code>export XDG_RUNTIME_DIR=/run</code></li>
 <li><code>westeros-init &amp;</code>：启动westeros服务端</li>
 <li><code>westeros_test</code>：启动westeros示例客户端，运行成功显示UI</li>
-<li>将<code>aml_armv7at2hf_yocto</code>下的文件夹push到板卡对应路径下（整包编译的话，直接homescreen运行即可）</li>
+<li>将<code>aml_armv7at2hf_yocto</code>下的文件夹push到板卡对应路径下（整包编译不需要再push引擎和homescreen，只需要装入应用即可）</li>
 <li><code>homescreen --a=/usr/share/homescreen/image_list/flutter_assets</code>：运行Flutter程序，提前编了4个sample</li>
 </ol>
 <blockquote>
@@ -493,8 +552,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/" rel="prev" title="Flutter编译环境搭建探索">
-      <i class="fa fa-chevron-left"></i> Flutter编译环境搭建探索
+    <a href="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/" rel="prev" title="Flutter引擎源码分析">
+      <i class="fa fa-chevron-left"></i> Flutter引擎源码分析
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -557,7 +616,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Yocto介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yocto%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Yocto目录结构说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-conf%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">local.conf配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitbake%E7%AC%94%E8%AE%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Bitbake笔记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E7%BC%96%E8%AF%91Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">Yocto编译Linux系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.1.</span> <span class="nav-text">原始系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5meta-flutter"><span class="nav-number">3.2.</span> <span class="nav-text">加入meta-flutter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E7%BC%96%E8%AF%91"><span class="nav-number">3.3.</span> <span class="nav-text">局部编译</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-Linux-ARM%E5%BA%94%E7%94%A8%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">Flutter Linux ARM应用编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">Flutter应用启动</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Yocto介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yocto%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Yocto目录结构说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-conf%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">local.conf配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitbake%E7%AC%94%E8%AE%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Bitbake笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90flutter-engine%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">分析flutter-engine构建过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E7%BC%96%E8%AF%91Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">Yocto编译Linux系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.1.</span> <span class="nav-text">原始系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5meta-flutter"><span class="nav-number">3.2.</span> <span class="nav-text">加入meta-flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.1.</span> <span class="nav-text">整包编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.2.</span> <span class="nav-text">局部编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">3.3.</span> <span class="nav-text">踩坑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gn%E4%B8%8D%E6%94%AF%E6%8C%81-no-build-embedder-examples%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.1.</span> <span class="nav-text">gn不支持--no-build-embedder-examples参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E7%BC%96%E8%AF%91Dart-SDK"><span class="nav-number">3.3.2.</span> <span class="nav-text">无法编译Dart SDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3"><span class="nav-number">3.3.3.</span> <span class="nav-text">整包编译空间不足</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-Linux-ARM%E5%BA%94%E7%94%A8%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">Flutter Linux ARM应用编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">Flutter应用启动</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -573,7 +632,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -667,13 +726,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">480k</span>
+    <span title="站点总字数">504k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:17</span>
+    <span title="站点阅读时长">7:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

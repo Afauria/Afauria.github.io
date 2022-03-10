@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="利用Docker容器搭建Flutter编译环境，交叉编译Linux ARM和ARM64嵌入式目标平台应用。">
+  <meta name="description" content="利用Docker容器搭建Flutter编译环境，交叉编译Linux arm和arm64嵌入式目标平台的Flutter引擎和应用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter编译环境搭建探索">
 <meta property="og:url" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="利用Docker容器搭建Flutter编译环境，交叉编译Linux ARM和ARM64嵌入式目标平台应用。">
+<meta property="og:description" content="利用Docker容器搭建Flutter编译环境，交叉编译Linux arm和arm64嵌入式目标平台的Flutter引擎和应用。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%B8%BB%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/Docker%E5%AE%B9%E5%99%A8%E7%8E%AF%E5%A2%83%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%812.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%813.png">
 <meta property="article:published_time" content="2022-02-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-08T01:00:39.722Z">
+<meta property="article:modified_time" content="2022-03-10T13:00:52.248Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Docker">
@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-08 09:00:39" itemprop="dateModified" datetime="2022-03-08T09:00:39+08:00">2022-03-08</time>
+                <time title="修改时间：2022-03-10 21:00:52" itemprop="dateModified" datetime="2022-03-10T21:00:52+08:00">2022-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -285,16 +285,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>16k</span>
+              <span>22k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>20 分钟</span>
             </span>
-            <div class="post-description">利用Docker容器搭建Flutter编译环境，交叉编译Linux ARM和ARM64嵌入式目标平台应用。</div>
+            <div class="post-description">利用Docker容器搭建Flutter编译环境，交叉编译Linux arm和arm64嵌入式目标平台的Flutter引擎和应用。</div>
 
         </div>
       </header>
@@ -305,11 +305,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="探索过程总结"><a href="#探索过程总结" class="headerlink" title="探索过程总结"></a>探索过程总结</h1><p>由于环境配置较复杂，遇到的问题、涉及到的技术栈较多，导致文章内容比较零散，因此这里先放总结，记录一下探索的过程和思路。</p>
+        <h1 id="探索过程总结"><a href="#探索过程总结" class="headerlink" title="探索过程总结"></a>探索过程总结</h1><p>环境配置较复杂，遇到的问题、涉及到的技术栈较多，导致文章内容比较零散。</p>
 <blockquote>
-<p>探索过程中最麻烦的是编译问题的实验和记录，不确定缺少了哪些库，遇到一个问题就去网上搜索解决，做了很多尝试，有时候误打误撞成功了，但是无法确定真正起作用的是哪一步操作。因此需要不断回退，重置环境，有时候重置环境之后又复现不到之前的问题。。。</p>
+<p>探索过程中最麻烦的是编译问题的实验和记录，不确定缺少了哪些库，遇到一个问题就去网上搜索解决，做了很多尝试，有时候误打误撞成功了，但是无法确定真正起作用的是哪一步操作。因此需要不断回退，重置环境。</p>
+<p>有时候为了分析错误原因，验证自己的猜想，明知道有坑还得去踩上一遍。</p>
 </blockquote>
-<h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>目标：解决Flutter交叉编译Linux ARM平台应用，在TV嵌入式设备上运行。</p>
+<h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>目标：解决Flutter交叉编译Linux arm平台应用，在TV嵌入式设备上运行。</p>
 <p>任务：使用Flutter开发Linux TV应用，研究Flutter应用和引擎编译，搭建编译环境，Flutter嵌入层定制和适配。</p>
 <p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此上面编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
 <p>Flutter桌面应用编译只能在对应的平台上（Linux应用只能在Linux平台上编译），由于没有Linux电脑，无法编译和运行Linux程序（x86_64、arm、arm64）。参考<a target="_blank" rel="noopener" href="https://flutter.cn/desktop">Flutter桌面支持</a></p>
@@ -332,14 +333,10 @@
 <li>本地机器/主机：MacOS</li>
 </ul>
 </li>
-<li>目标平台：Linux嵌入式平台（ARM架构）、Android嵌入式平台（ARM、ARMv8架构）</li>
-<li>实验镜像：<ul>
-<li><a target="_blank" rel="noopener" href="https://hub.docker.com/_/ubuntu"><code>ubuntu</code>（amd64架构）</a>：作为Flutter交叉编译主机，默认不带图形界面，无法运行Flutter GUI界面</li>
-<li><code>ubuntu</code>（arm和arm64架构）：用于生成arm和arm64架构的sysroot平台库</li>
-</ul>
-</li>
+<li>目标平台：Linux嵌入式平台（arm架构）、Android嵌入式平台（arm、armv8架构）、Linux桌面平台（x64、arm64架构）</li>
+<li>实验镜像：<a target="_blank" rel="noopener" href="https://hub.docker.com/_/ubuntu">ubuntu（x64架构）</a>：作为Flutter交叉编译主机，默认不带图形界面，无法运行Flutter GUI界面</li>
 <li>容器：本地机器和远程服务器都可以运行Docker容器。<ul>
-<li>本地Docker容器：通过QEMU可以运行Ubuntu ARM镜像和ARM64镜像</li>
+<li>本地Docker容器：通过QEMU可以运行Ubuntu arm镜像和arm64镜像</li>
 <li>远程Docker容器：没有QEMU，只能运行x86_64 Ubuntu镜像</li>
 </ul>
 </li>
@@ -350,37 +347,57 @@
 <p>本地和远程Docker容器使用相同的Ubuntu官方镜像，但是查看版本有一定差异。本地Docker容器应该是QEMU模拟器运行Linux环境。</p>
 <p><strong>注意这里有个坑，下文会提到</strong>：同一个gen_snapshot程序，在本地Linux容器可以运行，在远程Linux容器无法运行，都是x86_64架构</p>
 <p>结论：<strong>不同系统的主机上即使使用相同的镜像，容器环境也存在差异</strong></p>
-<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>总结一下几个主要的探索过程：</p>
-<p>编译Linux x86_64桌面应用</p>
-<blockquote>
-<p>问题不大，根据Flutter官方文档构建即可。</p>
-</blockquote>
-<p>编译Linux ARM64应用：</p>
-<p>使用Flutter官方提供的ARM 64位引擎和编译器后端（gen_snapshot），在Linux x86_64容器中交叉编译ARM64应用。</p>
-<blockquote>
-<ol>
-<li>修改<code>flutter_tools</code>源码，下载官方Linux ARM64引擎。</li>
-<li>安装交叉编译工具链：<code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></li>
-<li>使用<code>flutter build</code>命令构建</li>
+<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><ol>
+<li>编译Linux x86_64桌面应用：问题不大，根据Flutter官方文档构建即可。</li>
+<li>编译Linux arm64引擎：问题不大</li>
+<li>编译Linux arm64应用：<ol>
+<li>修改<code>flutter_tools</code>源码</li>
+<li>指定<code>--target-sysroot</code>参数</li>
 </ol>
-</blockquote>
-<p>使用Flutter官方提供的ARM 64位引擎，gen_snapshot程序无法在Linux x86_64容器中运行</p>
+</li>
+<li>编译Linux arm引擎：<ol>
+<li>修改<code>src/build/toolchain/custom/BUILD.gn</code>，<code>$&#123;custom_target_triple&#125;</code>改为<code>llvm</code></li>
+<li>修改<code>srf/flutter/BUILD.gn</code>，将<code>_build_engine_artifacts</code>改为false，跳过Dart SDK编译</li>
+<li><code>--target-sysroot=$PWD/build/linux/debian_sid_arm-sysroot/</code>：使用<code>install-sysroot.py</code>脚本下载</li>
+<li><code>--target-toolchain=$PWD/buildtools/linux-x64/clang</code>：引擎自带路径</li>
+<li><code>--target-triple=armv7-unknown-linux-gnueabihf</code></li>
+</ol>
+</li>
+<li>编译Linux arm应用：需要修改<code>flutter_tools</code><ol>
+<li>手动进行Dart前后端编译</li>
+<li>手动编译Linux平台代码，链接引擎和应用so库，生成可执行程序</li>
+</ol>
+</li>
+<li>运行应用：下载的Ubuntu镜像没有界面，无法运行GUI程序。</li>
+</ol>
 <blockquote>
-<p>同样的gen_snapshot可以在本地Docker容器（x86_64）上执行，但是无法在远程Docker容器（x86_64）上执行。</p>
-<p>目标平台不正确。需要自行<strong>交叉编译</strong>Flutter ARM64引擎。</p>
+<ul>
+<li>x64和arm64应用使用VNC容器运行：<a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></li>
+<li>arm应用装入嵌入式平台运行：<a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">Yocto嵌入式平台运行Flutter应用</a></li>
+</ul>
 </blockquote>
-<p>sysroot制作</p>
-<blockquote>
-<p>由于远程Linux主机没有权限使用apt，无法安装QEMU，因此在本地Mac主机上运行ARM64容器，下载平台库制作sysroot，再上传到Linux X86_64的容器中进行编译。</p>
-<p>如果可能的话也可以直接在ARM64容器中直接本地编译ARM64的Flutter应用。</p>
-</blockquote>
-<p>编译Linux ARM应用：</p>
-<p>运行应用：下载的Ubuntu镜像没有界面，无法运行GUI程序。</p>
-<blockquote>
-<p>使用VNC容器（有x86_64和ARM64镜像，但是没有ARM镜像）运行Flutter应用：<a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></p>
-</blockquote>
-<h1 id="通用问题"><a href="#通用问题" class="headerlink" title="通用问题"></a>通用问题</h1><p><strong>关于交叉编译、sysroot等问题参考<a href="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></strong></p>
-<p>进入容器后首次使用<code>apt-get</code>安装软件报错：<code>&quot;E: Unable to locate package&quot;</code></p>
+<p>引擎编译和应用编译有各自的sysroot和toolchain</p>
+<ul>
+<li>sysroot是编译需要的一些目标平台库和头文件等。</li>
+<li>toolchain是交叉编译工具链。</li>
+</ul>
+<p>引擎获取方式：主要产物是<code>libflutter_engine.so</code>库和gen_snapshot编译后端程序</p>
+<ol>
+<li>手动下载<a target="_blank" rel="noopener" href="https://storage.googleapis.com/flutter_infra_release">Flutter官方预构建引擎</a>：缺少arm平台</li>
+<li>手动编译引擎</li>
+</ol>
+<p>sysroot和toolchain获取方式：</p>
+<ol>
+<li>手动下载<a target="_blank" rel="noopener" href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter官方预构建引擎sysroot</a></li>
+<li>自行制作：参考<a href="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></li>
+</ol>
+<p>应用编译方式：</p>
+<ol>
+<li>使用<code>flutter build</code>命令：需要修改flutter_tools源码</li>
+<li>手动调用前后端编译</li>
+</ol>
+<h2 id="其他思路"><a href="#其他思路" class="headerlink" title="其他思路"></a>其他思路</h2><p>在arm64容器中直接本地编译arm64的Flutter应用。</p>
+<h1 id="通用问题"><a href="#通用问题" class="headerlink" title="通用问题"></a>通用问题</h1><p>进入容器后首次使用<code>apt-get</code>安装软件报错：<code>&quot;E: Unable to locate package&quot;</code></p>
 <blockquote>
 <p>Linux的发行版维护了一个软件仓库，存储常用的软件，仓库地址存储在<code>/etc/apt/sources.list</code>文件中，使用<code>apt-get</code>工具会从该文件中读取仓库地址，下载并安装软件。</p>
 <p>解决：执行下<code>apt update</code>，更新软件源地址列表</p>
@@ -389,7 +406,7 @@
 <p>使用apt安装的交叉编译工具链可能有多个版本，可以搜索，例如：<code>apt-cache search gcc | grep -E &quot;arm|aarch64&quot;</code></p>
 <p>查看IP地址：<code>ifconfig en0 | grep inet | awk &#39;$1==&quot;inet&quot; &#123;print $2&#125;</code></p>
 <p>Git clone仓库提示Permission denied：生成SSH Key，并在GitHub上配置Git SSH Key。或者将本地配置好的key拷贝到容器中使用。</p>
-<h1 id="Docker操作"><a href="#Docker操作" class="headerlink" title="Docker操作"></a>Docker操作</h1><p>关于Docker介绍和使用可以参考我的其他文章，这里简单介绍下涉及到的操作</p>
+<h2 id="Docker操作"><a href="#Docker操作" class="headerlink" title="Docker操作"></a>Docker操作</h2><p>关于Docker介绍和使用可以参考我的其他文章，这里简单介绍下涉及到的操作</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 获取Ubuntu镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull ubuntu</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台运行容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -itd --name ubuntu-env ubuntu /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器环境</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker <span class="built_in">exec</span> -it ubuntu-env /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Flutter编译环境搭建好之后生成镜像，方便移植</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker commit ubuntu-env ubuntu-flutter-image</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 打包镜像，使用scp拷贝到其他服务器上</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker save -o image.tar ubuntu-flutter-image:latest</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 其他服务器加载镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker load &lt; image.tar</span></span><br></pre></td></tr></table></figure>
 
 <p>容器中下载Flutter引擎和SDK源码会导致生成镜像很大，可以让用户自己在主机下载好源码，运行的时候再挂载到容器中。</p>
@@ -411,35 +428,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建Flutter模版工程</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter create myapp</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> myapp</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果是已有的项目，则需要创建Linux壳工程</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> flutter create --platforms=linux</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译Flutter Linux桌面应用</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter build linux</span></span><br></pre></td></tr></table></figure>
 
 <p>通过<a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a>，可以成功运行myapp应用。</p>
-<h1 id="交叉编译Linux-ARM64平台应用"><a href="#交叉编译Linux-ARM64平台应用" class="headerlink" title="交叉编译Linux ARM64平台应用"></a>交叉编译Linux ARM64平台应用</h1><p>关键步骤如下：</p>
-<ol>
-<li><p>获取ARM64架构的Flutter引擎：包括引擎so库和gen_snapshot编译后端程序</p>
-<ol>
-<li>官方提供：自行从<a target="_blank" rel="noopener" href="https://storage.googleapis.com/flutter_infra_release">Flutter引擎artifact</a>下载或者通过Flutter SDK下载（官方提供了Linux ARM64的引擎，没提供Linux ARM的引擎）</li>
-<li>自行编译引擎</li>
-</ol>
-</li>
-<li><p>配置交叉编译工具链</p>
-<ol>
-<li>通过包管理器（apt）或者网上下载</li>
-<li>获取编译器源码自行编译</li>
-</ol>
-</li>
-<li><p>配置<code>--target-sysroot</code>：目标平台库和头文件等</p>
-<ol>
-<li>使用Flutter官方提供的sysroot</li>
-<li>自行制作sysroot：使用Docker+QEMU制作</li>
-</ol>
-</li>
-<li><p>编译应用</p>
-<ol>
-<li>使用<code>flutter build</code>命令编译：需要修改<code>flutter_tools</code>源码</li>
-<li>直接调用<code>frontend_server.dart</code>和<code>gen_snapshot</code>进行编译，再手动链接so库，打包可执行程序。</li>
-</ol>
-</li>
-</ol>
-<p>Linux x64主机交叉编译Linux arm64目标平台应用：参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
-<h2 id="修改flutter-tools"><a href="#修改flutter-tools" class="headerlink" title="修改flutter_tools"></a>修改flutter_tools</h2><p>Flutter SDK命令默认不支持交叉编译ARM64和ARM应用，需要修改<code>flutter_tools</code>源码：</p>
+<h1 id="交叉编译Linux-arm64平台应用"><a href="#交叉编译Linux-arm64平台应用" class="headerlink" title="交叉编译Linux arm64平台应用"></a>交叉编译Linux arm64平台应用</h1><p>Linux x64主机交叉编译Linux arm64目标平台应用：参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
+<h2 id="修改flutter-tools"><a href="#修改flutter-tools" class="headerlink" title="修改flutter_tools"></a>修改flutter_tools</h2><p>Flutter SDK命令默认不支持交叉编译arm64和arm应用，需要修改<code>flutter_tools</code>源码：</p>
 <ol>
 <li><p>修改<code>flutter_tools/lib/src/commands/build_linux.dart</code>代码，注释掉交叉编译报错：</p>
 <p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%811.png"></p>
@@ -447,7 +437,7 @@
 <li><p>修改<code>flutter_tools/lib/src/artifacts.dart</code>代码：</p>
 <p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%812.png"></p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flutter_tools/lib/src/artifacts.dart</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CachedArtifacts</span> <span class="keyword">implements</span> <span class="title">Artifacts</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="built_in">String</span> _getDesktopArtifactPath(Artifact artifact, TargetPlatform? platform, BuildMode? mode) &#123;</span><br><span class="line">    <span class="comment">// When platform is null, a generic host platform artifact is being requested</span></span><br><span class="line">    <span class="comment">// and not the gen_snapshot for darwin as a target platform.</span></span><br><span class="line">    <span class="keyword">if</span> (platform != <span class="keyword">null</span> &amp;&amp; artifact == Artifact.genSnapshot) &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="built_in">String</span> engineDir = _getEngineArtifactsPath(platform, mode)!;</span><br><span class="line"><span class="comment">// 添加代码块</span></span><br><span class="line">      <span class="keyword">if</span> (getNameForHostPlatformArch(getCurrentHostPlatform())</span><br><span class="line">         != getNameForTargetPlatformArch(platform)) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="built_in">String</span> hostPlatform = getNameForHostPlatform(getCurrentHostPlatform());</span><br><span class="line">        <span class="keyword">return</span> _fileSystem.path.join(engineDir, hostPlatform, _artifactToFileName(artifact));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> _fileSystem.path.join(engineDir, _artifactToFileName(artifact));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _getHostArtifactPath(artifact, platform ?? _currentHostPlatform(_platform, _operatingSystemUtils), mode);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>修改<code>flutter_tools/lib/src/flutter_cache.dart</code>代码（注意代码行数）：用于下载Flutter官方ARM64引擎</p>
+<li><p>修改<code>flutter_tools/lib/src/flutter_cache.dart</code>代码（注意代码行数）：用于下载Flutter官方arm64引擎</p>
 <p><img src="/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%813.png"></p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flutter_tools/lib/src/flutter_cache.dart</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterSdk</span> <span class="keyword">extends</span> <span class="title">EngineCachedArtifact</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt; getBinaryDirs() &#123;</span><br><span class="line">    <span class="comment">// Currently only Linux supports both arm64 and x64.</span></span><br><span class="line">    <span class="keyword">return</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">      &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;common&#x27;</span>, <span class="string">&#x27;flutter_patched_sdk.zip&#x27;</span>],</span><br><span class="line">      &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;common&#x27;</span>, <span class="string">&#x27;flutter_patched_sdk_product.zip&#x27;</span>],</span><br><span class="line">      <span class="keyword">if</span> (cache.includeAllPlatforms) ...&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;windows-x64&#x27;</span>, <span class="string">&#x27;windows-x64/artifacts.zip&#x27;</span>],</span><br><span class="line"><span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;darwin-x64&#x27;</span>, <span class="string">&#x27;darwin-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">      ]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isWindows)</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;windows-x64&#x27;</span>, <span class="string">&#x27;windows-x64/artifacts.zip&#x27;</span>]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isMacOS)</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;darwin-x64&#x27;</span>, <span class="string">&#x27;darwin-x64/artifacts.zip&#x27;</span>]</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (_platform.isLinux) ...&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line"><span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/artifacts.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/artifacts.zip&#x27;</span>],</span><br><span class="line">      ],</span><br><span class="line">    ];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinuxEngineArtifacts</span> <span class="keyword">extends</span> <span class="title">EngineCachedArtifact</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt; getBinaryDirs() &#123;</span><br><span class="line">    <span class="keyword">if</span> (_platform.isLinux || ignorePlatformFiltering) &#123;</span><br><span class="line">      <span class="comment">// 修改代码：Modified to download the artifacts of both linux-x64 and linux-arm64</span></span><br><span class="line">      <span class="keyword">return</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64&#x27;</span>, <span class="string">&#x27;linux-x64/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64-profile&#x27;</span>, <span class="string">&#x27;linux-x64-profile/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-x64-release&#x27;</span>, <span class="string">&#x27;linux-x64-release/linux-x64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64&#x27;</span>, <span class="string">&#x27;linux-arm64/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64-profile&#x27;</span>, <span class="string">&#x27;linux-arm64-profile/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">        &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;linux-arm64-release&#x27;</span>, <span class="string">&#x27;linux-arm64-release/linux-arm64-flutter-gtk.zip&#x27;</span>],</span><br><span class="line">      ];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> &lt;<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt;&gt;[];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li><p>删除<code>flutter_tools</code>重新构建：<code>rm flutter/bin/cache/flutter_tools*</code></p>
@@ -458,74 +448,78 @@
 <blockquote>
 <p>-v查看编译具体信息</p>
 </blockquote>
-<p>这里build失败是正常的，但是已经成功下载Flutter官方提供的Linux ARM64引擎的构件，放到了SDK对应路径下，例如：<code>flutter/bin/cache/artifacts/engine/linux-arm64-release/</code>。</p>
+<p>这里build失败是正常的，但是已经成功下载Flutter官方提供的Linux arm64引擎的构件，放到了SDK对应路径下，例如：<code>flutter/bin/cache/artifacts/engine/linux-arm64-release/</code>。</p>
 <p>踩坑：下载的Flutter引擎gen_snapshot程序可以在本地Docker容器中执行，但是无法在远程Docker容器中执行。提示<code>cannot execute binary file: Exec format error</code>（二进制可执行程序格式不正确），导致编译失败。</p>
 <blockquote>
 <p>前面介绍环境的时候提到不同主机上即使使用相同镜像，容器环境也存在差异。</p>
 <p>编译器本身也是一个可执行程序，只能在目标平台运行。</p>
 </blockquote>
 <p>既然官方提供的引擎构件无法使用，那只能自己下载引擎源码编译生成gen_snapshot了。</p>
-<h2 id="交叉编译Flutter-ARM64引擎"><a href="#交叉编译Flutter-ARM64引擎" class="headerlink" title="交叉编译Flutter ARM64引擎"></a>交叉编译Flutter ARM64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></p>
+<h2 id="交叉编译Flutter-arm64引擎"><a href="#交叉编译Flutter-arm64引擎" class="headerlink" title="交叉编译Flutter arm64引擎"></a>交叉编译Flutter arm64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></p>
 <p>注：Flutter SDK中内置了引擎的<code>artifact</code>，如果自己编译引擎，需要确保Engine源码和Framework源码版本对应。本文使用2.8.1版本</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> flutter --version</span></span><br><span class="line">Flutter 2.8.1 • channel stable • https://github.com/flutter/flutter.git</span><br><span class="line">Framework • revision 77d935af4d (10 weeks ago) • 2021-12-16 08:37:33 -0800</span><br><span class="line">Engine • revision 890a5fca2e</span><br><span class="line">Tools • Dart 2.15.1</span><br></pre></td></tr></table></figure>
 
 <p>在远程容器中下载好源码之后，开始交叉编译：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt install python3 git pkg-config vim curl unzip</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --target-os linux --linux-cpu arm64 --runtime-mode release</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/linux_release_arm64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt install python3 git pkg-config vim curl unzip ninja-build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --target-os linux --linux-cpu arm64 --runtime-mode release</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/linux_release_arm64</span></span><br></pre></td></tr></table></figure>
 
-<p>ARM 64位引擎编译问题不大，比较顺利。</p>
-<h2 id="交叉编译Linux-ARM64应用"><a href="#交叉编译Linux-ARM64应用" class="headerlink" title="交叉编译Linux ARM64应用"></a>交叉编译Linux ARM64应用</h2><p>按照上文修改<code>flutter_tools</code>，将引擎编译生成的关键产物拷贝到Flutter SDK路径下，替代官方Artifact。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 拷贝gen_snapshot，目录不存在则创建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/clang_x64/gen_snapshot &lt;artifact_path&gt;/linux-arm64-release/linux-x64/gen_snapshot</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝引擎so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/libflutter_linux_gtk.so &lt;artifact_path&gt;/linux-arm64-release/libflutter_linux_gtk.so</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/flutter/shell/platform/linux/public/flutter_linux &lt;artifact_path&gt;/linux-arm64-release/flutter_linux</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 路径如下</span></span><br><span class="line">~/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release $ tree</span><br><span class="line">├── flutter_linux # 位于src/flutter/engine/src/flutter/shell/platform/linux/public/flutter_linux </span><br><span class="line">├── libflutter_linux_gtk.so # 位于src/out/linux_release_arm64/libflutter_linux_gtk.so</span><br><span class="line">└── linux-x64</span><br><span class="line">    └── gen_snapshot # 位于src/out/linux_release_arm64/clang_x64/gen_snapshot</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装gcc和g++交叉编译工具，注意这里安装的是gcc版本是9</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件，由于上一步安装的gcc版本是9，而Flutter官方的debian_sid_arm64-sysroot中的gcc为7，编译的时候从sysroot中找不到头文件，因此手动拷贝到头文件搜索路径。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译Linux arm64应用，指定target-sysroot</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter build linux --target-platform linux-arm64 --target-sysroot /root/flutter/engine/src/build/linux/debian_sid_arm64-sysroot -v</span> </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>源码如果已经下载，可以不用安装depot_tools，使用apt安装ninja即可</p>
+</blockquote>
+<p>arm 64位引擎编译问题不大，比较顺利。</p>
+<h2 id="交叉编译Linux-arm64应用"><a href="#交叉编译Linux-arm64应用" class="headerlink" title="交叉编译Linux arm64应用"></a>交叉编译Linux arm64应用</h2><p>按照上文修改<code>flutter_tools</code>，将引擎编译生成的关键产物拷贝到Flutter SDK路径下，替代官方Artifact。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 拷贝gen_snapshot，目录不存在则创建</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/clang_x64/gen_snapshot &lt;artifact_path&gt;/linux-arm64-release/linux-x64/gen_snapshot</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝引擎so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/out/linux_release_arm64/libflutter_linux_gtk.so &lt;artifact_path&gt;/linux-arm64-release/libflutter_linux_gtk.so</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp src/flutter/shell/platform/linux/public/flutter_linux &lt;artifact_path&gt;/linux-arm64-release/flutter_linux</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 最终路径如下</span></span><br><span class="line">~/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release $ tree</span><br><span class="line">├── flutter_linux # 位于src/flutter/engine/src/flutter/shell/platform/linux/public/flutter_linux </span><br><span class="line">├── libflutter_linux_gtk.so # 位于src/out/linux_release_arm64/libflutter_linux_gtk.so</span><br><span class="line">└── linux-x64</span><br><span class="line">    └── gen_snapshot # 位于src/out/linux_release_arm64/clang_x64/gen_snapshot</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装gcc和g++交叉编译工具，注意这里安装的是gcc版本是9</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拷贝头文件，由于上一步安装的gcc版本是9，而Flutter官方的debian_sid_arm64-sysroot中的gcc为7。编译的时候从sysroot中找不到头文件，因此需要手动拷贝到头文件搜索路径。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译Linux arm64应用，指定target-sysroot</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> flutter build linux --target-platform linux-arm64 --target-sysroot /root/flutter/engine/src/build/linux/debian_sid_arm64-sysroot -v</span> </span><br></pre></td></tr></table></figure>
 
 <p><strong>注：最关键的步骤是指定<code>--target-sysroot</code>，否则会遇到很多错误。</strong></p>
 <blockquote>
-<p><strong>这里使用Flutter引擎构建时用的sysroot，也可以自行制作sysroot</strong></p>
+<p>这里使用Flutter引擎构建时用的sysroot，也可以自行制作sysroot</p>
 </blockquote>
-<p>查看Flutter引擎编译配置，Linux平台会执行<code>engine/src/build/linux/sysroot_scripts/install-sysroot.py</code>脚本下载对应的sysroot进行构建，例如<code>debian_sid_arm64-sysroot</code>。也可以去<a target="_blank" rel="noopener" href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter引擎预构建sysroot下载地址</a>手动下载sysroot。</p>
 <h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><p>一开始<code>flutter build</code>没有指定<code>--target-sysroot</code>一直报错。根据网上的办法解了一个又出现另一个，没完没了。都是弯路，其实问题原因就是缺少目标平台库sysroot，<strong>不应该聚焦单个问题，而是当作整体来看</strong>。</p>
 <blockquote>
-<p><strong>此时Dart代码已经编译成功，<code>app.so</code>位于<code>.dart_tool</code>中。编译Linux壳工程（main.cc等）失败，依赖GTK、X11等目标平台库和头文件。</strong></p>
-<p><strong>如果是定制嵌入层，需要自己创建<code>main.cc</code>入口文件，进行交叉编译。</strong></p>
+<p>此时Dart代码可以正常编译，<code>app.so</code>位于<code>.dart_tool</code>中。</p>
+<p>主要是编译Linux壳工程（main.cc等）失败，依赖GTK、X11等目标平台库和头文件。</p>
+<p>如果是定制嵌入层，需要自己创建<code>main.cc</code>入口文件，进行交叉编译。</p>
 </blockquote>
 <p><strong>这里记录下单个问题的踩坑过程，用来参考：无法真正解决，正确的做法参考上面的步骤（Don’t Do It！）</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ld: unrecognised emulation mode: aarch64linux</span><br><span class="line">Supported emulations: elf_x86_64 elf32_x86_64 elf_i386 elf_iamcu elf_l1om elf_k1om i386pep i386pe</span><br></pre></td></tr></table></figure>
+<h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ld: unrecognised emulation mode: aarch64linux</span><br><span class="line">Supported emulations: elf_x86_64 elf32_x86_64 elf_i386 elf_iamcu elf_l1om elf_k1om i386pep i386pe</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：缺少GNU交叉编译工具链</p>
 <p>解决：<code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Target aot_elf_release failed: ProcessException: Failed to find &quot;/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot&quot; in the search path</span><br></pre></td></tr></table></figure>
+<h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Target aot_elf_release failed: ProcessException: Failed to find &quot;/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot&quot; in the search path</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：官方下载的引擎Artifact解压文件夹不对</p>
-<p>解决：将gen_snapshot放到<code>linux-x64</code>目录下</p>
+<p>解决：手动将gen_snapshot放到<code>linux-x64</code>目录下</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot: 1: Syntax error: &quot;(&quot; unexpected</span><br></pre></td></tr></table></figure>
+<h3 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/flutter/flutter/bin/cache/artifacts/engine/linux-arm64-release/linux-x64/gen_snapshot: 1: Syntax error: &quot;(&quot; unexpected</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：官方下载的引擎Artifact的gen_snapshot可执行程序目标格式不正确，可以在</p>
 <p>解决：将自己编译的引擎Artifact拷贝到对应目录下</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//usr/include/limits.h:26:10: fatal error: &#x27;bits/libc-header-start.h&#x27; file not found</span><br></pre></td></tr></table></figure>
+<h3 id="问题4（X）"><a href="#问题4（X）" class="headerlink" title="问题4（X）"></a>问题4（X）</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//usr/include/limits.h:26:10: fatal error: &#x27;bits/libc-header-start.h&#x27; file not found</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：缺少头文件</p>
 <p>解决：<code>apt install gcc-multilib g++-multilib</code></p>
-<p><strong>备注：没必要执行，下面会拷贝整个头文件目录。</strong></p>
+<p><strong>备注：无用的步骤，下面会拷贝整个头文件目录。</strong></p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/cstdlib:41:10: fatal error: &#x27;bits/c++config.h&#x27; file not found</span><br></pre></td></tr></table></figure>
+<h3 id="问题5"><a href="#问题5" class="headerlink" title="问题5"></a>问题5</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/cstdlib:41:10: fatal error: &#x27;bits/c++config.h&#x27; file not found</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：系统安装的gcc工具链版本是9，Flutter引擎中的<code>debian_sid_arm64-sysroot</code>中gcc版本是7，导致在<code>--target-sysroot</code>路径中找不到头文件。</p>
-<p>解决：拷贝整个文件夹到头文件搜索路径。<code>cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</code></p>
+<p>解决：拷贝整个文件夹到头文件搜索路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp -r /usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/bits/ /lib/gcc-cross/aarch64-linux-gnu/9/../../../../include/c++/9/</span></span><br></pre></td></tr></table></figure>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[        ] FAILED: intermediates_do_not_run/myapp</span><br><span class="line">[        ] : &amp;&amp; /usr/bin/clang++ --target=aarch64-linux-gnu --sysroot=/ubuntu-arm64  -O3 -DNDEBUG   CMakeFiles/myapp.dir/main.cc.o CMakeFiles/myapp.dir/my_application.cc.o</span><br><span class="line">CMakeFiles/myapp.dir/flutter/generated_plugin_registrant.cc.o  -o intermediates_do_not_run/myapp -L/root/Desktop/myapp/linux/flutter/ephemeral</span><br><span class="line">-Wl,-rpath,/root/Desktop/myapp/linux/flutter/ephemeral:/usr/lib/aarch64-linux-gnu:  -lflutter_linux_gtk  -lgtk-3  -lgdk-3  -lpangocairo-1.0  -lpango-1.0  -lharfbuzz  -latk-1.0  -lcairo-gobject</span><br><span class="line">-lcairo  -lgdk_pixbuf-2.0  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgio-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgobject-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libglib-2.0.so &amp;&amp; :</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgtk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpangocairo-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpango-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lharfbuzz</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -latk-1.0</span><br><span class="line">[   +4 ms] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo-gobject</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk_pixbuf-2.0</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+<h3 id="问题6"><a href="#问题6" class="headerlink" title="问题6"></a>问题6</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[        ] FAILED: intermediates_do_not_run/myapp</span><br><span class="line">[        ] : &amp;&amp; /usr/bin/clang++ --target=aarch64-linux-gnu --sysroot=/ubuntu-arm64  -O3 -DNDEBUG   CMakeFiles/myapp.dir/main.cc.o CMakeFiles/myapp.dir/my_application.cc.o</span><br><span class="line">CMakeFiles/myapp.dir/flutter/generated_plugin_registrant.cc.o  -o intermediates_do_not_run/myapp -L/root/Desktop/myapp/linux/flutter/ephemeral</span><br><span class="line">-Wl,-rpath,/root/Desktop/myapp/linux/flutter/ephemeral:/usr/lib/aarch64-linux-gnu:  -lflutter_linux_gtk  -lgtk-3  -lgdk-3  -lpangocairo-1.0  -lpango-1.0  -lharfbuzz  -latk-1.0  -lcairo-gobject</span><br><span class="line">-lcairo  -lgdk_pixbuf-2.0  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgio-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libgobject-2.0.so  /ubuntu-arm64/usr/lib/aarch64-linux-gnu/libglib-2.0.so &amp;&amp; :</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgtk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk-3</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpangocairo-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lpango-1.0</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lharfbuzz</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -latk-1.0</span><br><span class="line">[   +4 ms] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo-gobject</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lcairo</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: cannot find -lgdk_pixbuf-2.0</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>原因：缺少GTK、Cairo等<strong>目标平台</strong>的链接库</p>
 <p>解决思路：apt没有提供arm64的GTK平台库，需要自行下载，或者在arm64机器上使用apt下载，再拷贝出来。（sysroot其实就是这样制作的）</p>
-<p>备注：踩坑到这里解不动了。最后跳出单个问题看，其实就是缺了<code>--target-sysroot</code>。学习了下sysroot制作，验证成功，最后发现其实用Flutter官方的sysroot也可以编译成功。</p>
 </blockquote>
-<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>下面的问题也是探索过程中遇到的，但是后面复现不到了，还是保留下解决过程（应该是因为一开始在本地Mac电脑的Ubuntu容器中进行实验，问题比较多）。</p>
+<p>备注：踩坑到这里解不动了。最后跳出单个问题看，其实就是缺了<code>--target-sysroot</code>。学习了下sysroot制作，验证成功，再后来发现其实用Flutter官方的sysroot也可以编译成功。</p>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>下面的问题也是探索过程中遇到的，但是后面复现不到了，还是保留下踩坑过程。（看看就好，没有参考价值）</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/aarch64-linux-gnu-ld: cannot find -lstdc++</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -550,42 +544,86 @@
 <blockquote>
 <p>解决：从Flutter官方仓库下载引擎Artifact，或者自行编译引擎，拷贝到对应目录</p>
 </blockquote>
-<h1 id="交叉编译Linux-ARM应用"><a href="#交叉编译Linux-ARM应用" class="headerlink" title="交叉编译Linux ARM应用"></a>交叉编译Linux ARM应用</h1><p>原理和ARM64编译类似，由于Flutter官方还不支持Linux ARM应用的编译，因此需要修改<code>flutter_tools</code>源码：</p>
+<h1 id="交叉编译Linux-arm应用"><a href="#交叉编译Linux-arm应用" class="headerlink" title="交叉编译Linux arm应用"></a>交叉编译Linux arm应用</h1><h2 id="交叉编译Flutter-arm引擎"><a href="#交叉编译Flutter-arm引擎" class="headerlink" title="交叉编译Flutter arm引擎"></a>交叉编译Flutter arm引擎</h2><ol>
+<li><p>修改<code>src/flutter/BUILD.gn</code>文件，将<code>_build_engine_artifacts</code>改为false，跳过Dart SDK编译</p>
+</li>
+<li><p>修改<code>build/toolchain/custom/BUILD.gn</code>，将<code>$&#123;custom_target_triple&#125;</code>改为<code>llvm</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> build/toolchain/custom/BUILD.gn</span></span><br><span class="line">ar = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-ar&quot;</span><br><span class="line">readelf = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-readelf&quot;</span><br><span class="line">nm = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-nm&quot;</span><br><span class="line">strip = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-strip&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装基础环境</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt install python3 git pkg-config vim curl unzip ninja-build clang</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 手动下载arm平台的sysroot</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> build/linux/sysroot_scripts/install-sysroot.py --arch=arm</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> gn生成构建配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --target-os linux --linux-cpu arm --runtime-mode release \</span></span><br><span class="line"><span class="bash">--target-toolchain=<span class="variable">$PWD</span>/buildtools/linux-x64/clang \</span></span><br><span class="line"><span class="bash">--target-sysroot=<span class="variable">$PWD</span>/build/linux/debian_sid_arm-sysroot/ \</span></span><br><span class="line"><span class="bash">--target-triple=armv7-unknown-linux-gnueabihf \</span></span><br><span class="line"><span class="bash">--arm-float-abi=hard</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ninja编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/linux_release_arm</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="交叉编译Linux-arm应用-1"><a href="#交叉编译Linux-arm应用-1" class="headerlink" title="交叉编译Linux arm应用"></a>交叉编译Linux arm应用</h2><p>由于Flutter官方还不支持Linux arm应用的编译，因此需要修改<code>flutter_tools</code>源码：</p>
 <ol>
 <li>让<code>flutter build</code>命令支持<code>--target-platform=linux-arm</code>参数</li>
 <li>编译时查找对应路径下的引擎产物，例如：<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine/linux-arm-release/</code>）</li>
 </ol>
 <p>可以参考<a href="/2022/01/12/flutter-2022-01-12-Flutter%E5%BA%94%E7%94%A8%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Flutter应用构建流程分析</a>，能读懂源码自然就会修改了。</p>
-<p>这里演示下直接调用前后端编译：</p>
-<p><code>apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++-8-dev-armhf-cross</code></p>
-<h2 id="配置交叉编译工具链和目标平台库"><a href="#配置交叉编译工具链和目标平台库" class="headerlink" title="配置交叉编译工具链和目标平台库"></a>配置交叉编译工具链和目标平台库</h2><ol>
-<li><code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</code></li>
-<li>制作sysroot：下载目标平台的依赖库</li>
-<li>build时指定<code>--target-sysroot=dir</code>参数</li>
-</ol>
-<p><code>apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++-8-dev-arm64-cross</code></p>
+<p>这里直接调用前后端编译，不使用<code>flutter build</code>命令（省略文件路径）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 前端编译生成app.dill</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> dart frontend_server.dart.snapshot \</span></span><br><span class="line"><span class="bash">--target=flutter \</span></span><br><span class="line"><span class="bash">--aot --tfa \</span></span><br><span class="line"><span class="bash">-Ddart.vm.profile=<span class="literal">false</span> -Ddart.vm.product=<span class="literal">true</span> \</span></span><br><span class="line"><span class="bash">--sdk-root flutter_patched_sdk \</span></span><br><span class="line"><span class="bash">--output-dill app.dill \</span></span><br><span class="line"><span class="bash">demo/lib/main.dart</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后端编译生成libapp.so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./clang_x64/gen_snapshot \</span></span><br><span class="line"><span class="bash">--snapshot_kind=app-aot-elf \</span></span><br><span class="line"><span class="bash">--elf=libapp.so \</span></span><br><span class="line"><span class="bash">app.dill</span></span><br></pre></td></tr></table></figure>
+
+<p>linux平台代码使用cmake和ninja编译，并链接<code>libapp.so</code>、<code>libflutter_engine.so</code>，需要修改<code>CMakeList.txt</code>，这里暂时不做介绍。</p>
+<h2 id="踩坑记录-1"><a href="#踩坑记录-1" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><h3 id="找不到交叉编译工具链"><a href="#找不到交叉编译工具链" class="headerlink" title="找不到交叉编译工具链"></a>找不到交叉编译工具链</h3><p><code>./flutter/tools/gn --target-os linux --linux-cpu arm --runtime-mode release --verbose</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Generating GN files in: out/linux_release_arm</span><br><span class="line">ERROR Unresolved dependencies.</span><br><span class="line">//:default(//build/toolchain/linux:clang_arm)</span><br><span class="line">  needs //build/toolchain/linux:clang_arm()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：找不到交叉编译工具链</p>
+<p>分析：参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/55574">Flutter issue</a>，需要添加<code>--target-toolchain</code>参数</p>
+<p>解决：添加<code>--target-toolchain</code>参数，同时需要添加<code>--target-sysroot</code>和<code>--target-triple</code>。否则断言会出错</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#build/config/BUILDCONFIG.gn</span></span><br><span class="line">if (custom_toolchain != <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">  assert(custom_sysroot != <span class="string">&quot;&quot;</span>) <span class="comment"># 496</span></span><br><span class="line">  assert(custom_target_triple != <span class="string">&quot;&quot;</span>) <span class="comment"># 497</span></span><br><span class="line">  host_toolchain = <span class="string">&quot;//build/toolchain/linux:clang_$host_cpu&quot;</span></span><br><span class="line">  set_default_toolchain(<span class="string">&quot;//build/toolchain/custom&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>问题点在于这三个参数应该填什么？试验了很多次，ninja编译会出现各种各样的错。最终是参考<code>meta-flutter</code>项目的Yocto编译配方才解决的。</p>
+<p>错误试验：</p>
 <ul>
-<li>arm64 Ubuntu镜像：<code>docker pull arm64v8/ubuntu</code></li>
-<li>arm Ubuntu镜像：<code>docker pull arm32v7/ubuntu</code></li>
+<li><code>--target-toolchain</code>使用<code>/</code>或者<code>/usr/lib/llvm-10/ </code></li>
+<li>``–target-triple<code>使用</code>arm-linux-gnueabihf<code>或者</code>llvm`。</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR Unresolved dependencies.</span><br><span class="line">//:default(//build/toolchain/linux:clang_arm)</span><br><span class="line">  needs //build/toolchain/linux:clang_arm()</span><br></pre></td></tr></table></figure>
+<h3 id="不带-arm-float-abi-hard选项"><a href="#不带-arm-float-abi-hard选项" class="headerlink" title="不带--arm-float-abi=hard选项"></a>不带<code>--arm-float-abi=hard</code>选项</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ninja: Entering directory `out/linux_release_arm&#x27;</span><br><span class="line">/root/flutter/engine/src/build/linux/debian_sid_arm-sysroot//usr/include/arm-linux-gnueabihf/gnu/stubs.h:7:11: fatal error: &#x27;gnu/stubs-soft.h&#x27; file not found</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>gn命令添加<code>--arm-float-abi=hard</code>。或者修改<code>build/config/compiler/BUILD.gn</code>文件，如下</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># build/config/compiler/BUILD.gn</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="string">&quot;-mfloat-abi=$arm_float_abi&quot;</span>,  <span class="comment"># 默认值为softfp，可以改为hard</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="target-triple使用arm-linux-gnueabihf"><a href="#target-triple使用arm-linux-gnueabihf" class="headerlink" title="--target-triple使用arm-linux-gnueabihf"></a><code>--target-triple</code>使用<code>arm-linux-gnueabihf</code></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ninja: Entering directory `out/linux_release_arm/&#x27;</span><br><span class="line">[552/6691] AR obj/third_party/dart/runtime/bin/libcrashpad.a</span><br><span class="line">FAILED: obj/third_party/dart/runtime/bin/libcrashpad.a</span><br><span class="line">rm -f obj/third_party/dart/runtime/bin/libcrashpad.a &amp;&amp; /usr/lib/llvm-10//bin/arm-linux-gnueabihf-ar rcs obj/third_party/dart/runtime/bin/libcrashpad.a @obj/third_party/dart/runtime/bin/libcrashpad.a.rsp</span><br><span class="line">/bin/sh: 1: /usr/lib/llvm-10//bin/arm-linux-gnueabihf-ar: not found</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：找不到<code>arm-linux-gnueabihf-ar</code>工具。</p>
+<p>解决：修改<code>build/toolchain/custom/BUILD.gn</code>文件，将<code>$&#123;custom_target_triple&#125;</code>替换为<code>llvm</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">FAILED: exe.unstripped/gen_snapshot gen_snapshot</span><br><span class="line"><span class="meta">#</span><span class="bash"> Clang生成./exe.unstripped/gen_snapshot，再通过llvm-strip生成./gen_snapshot</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ...</span></span><br><span class="line">ld.lld: error: unable to find library -lc++</span><br><span class="line">ld.lld: error: cannot open /root/flutter/engine/src/buildtools/linux-x64/clang/lib/clang/14.0.0/lib/linux/libclang_rt.builtins-armhf.a: No such file or directory</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 搜索该文件</span></span><br><span class="line"><span class="meta">~/flutter/engine/src#</span><span class="bash"> find buildtools/ -name <span class="string">&quot;libclang_rt.builtins*&quot;</span></span></span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/aarch64-unknown-fuchsia/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/aarch64-unknown-linux-gnu/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/armv7-unknown-linux-gnueabihf/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/i386-unknown-fuchsia/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/i386-unknown-linux-gnu/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/riscv64-unknown-fuchsia/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/x86_64-unknown-fuchsia/libclang_rt.builtins.a</span><br><span class="line">buildtools/linux-x64/clang/lib/clang/14.0.0/lib/x86_64-unknown-linux-gnu/libclang_rt.builtins.a</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解决：修改<code>--target-triple</code>为<code>armv7-unknown-linux-gnueabihf</code></p>
+</blockquote>
+<h3 id="Dart-SDK编译报错"><a href="#Dart-SDK编译报错" class="headerlink" title="Dart SDK编译报错"></a>Dart SDK编译报错</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Command failed: /home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/clang_x64/dart </span><br><span class="line">--disable-dart-dev --deterministic </span><br><span class="line">--packages=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/.dart_tool/package_config.json </span><br><span class="line">--snapshot=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/gen/frontend_server.dart.snapshot </span><br><span class="line">--snapshot-depfile=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/gen/frontend_server.dart.snapshot.d </span><br><span class="line">--depfile-output-filename=gen/frontend_server.dart.snapshot </span><br><span class="line">--snapshot-kind=kernel /home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/bin/starter.dart </span><br><span class="line">--train </span><br><span class="line">--sdk-root=/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/out/linux_release_arm/flutter_patched_sdk </span><br><span class="line">/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-engine-release/git-r0/src/flutter/flutter_frontend_server/bin/starter.dart</span><br><span class="line">output:</span><br><span class="line">===== CRASH =====</span><br><span class="line">si_signo=Segmentation fault(11), si_code=1, si_addr=0x7f3b9f7dd1fc</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原因：编译的arm架构的<code>out/linux_release_arm/clang_x64/dart</code>程序无法执行。导致生成Kernel快照失败，例如<code>frontend_server.dart.snapshot</code>、<code>analysis_server.dart.snapshot</code>、<code>dartdoc.dart.snapshot</code>等</p>
+<p>分析：这个时候<code>gen_snapshot</code>和<code>libflutter_engine.so</code>已经编译完了，不需要编译Dart SDK，所以也可以不处理该问题。</p>
+<p>解决：只要跳过Dart SDK编译即可，修改<code>src/flutter/BUILD.gn</code>文件，将<code>_build_engine_artifacts</code>改为false</p>
+</blockquote>
+<h2 id="其他问题-1"><a href="#其他问题-1" class="headerlink" title="其他问题"></a>其他问题</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[   +1 ms] /usr/bin/aarch64-linux-gnu-ld: CMakeFiles/myapp.dir/my_application.cc.o: in function `my_application_activate(_GApplication*)&#x27;:</span><br><span class="line">[        ] my_application.cc:(.text+0x36c): undefined reference to `fl_dart_project_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x378): undefined reference to `fl_dart_project_set_dart_entrypoint_arguments&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x380): undefined reference to `fl_view_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x3c0): undefined reference to `fl_plugin_registry_get_type&#x27;</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
 
 <p>ninja编译arm报错：缺少glibc库，需要编译libcxx和libcxxabi</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Using &#x27;dlopen&#x27; in statically linked applications requires at runtime the shared libraries from the glibc version used for linking</span><br></pre></td></tr></table></figure>
 
-
-
-<h2 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[   +1 ms] /usr/bin/aarch64-linux-gnu-ld: CMakeFiles/myapp.dir/my_application.cc.o: in function `my_application_activate(_GApplication*)&#x27;:</span><br><span class="line">[        ] my_application.cc:(.text+0x36c): undefined reference to `fl_dart_project_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x378): undefined reference to `fl_dart_project_set_dart_entrypoint_arguments&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x380): undefined reference to `fl_view_new&#x27;</span><br><span class="line">[        ] /usr/bin/aarch64-linux-gnu-ld: my_application.cc:(.text+0x3c0): undefined reference to `fl_plugin_registry_get_type&#x27;</span><br><span class="line">[        ] clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
-
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
-<li>glib：GTK+库</li>
-<li>glibc：GNU C函数库</li>
-</ul>
-<p>交叉编译Linux arm/arm64参考资料：</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>相关文章链接：</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/sony/flutter-elinux/wiki/Building-flutter-apps#case-1-use-docker--qemu">Flutter eLinux：Cross-building from x64 to arm64</a></li>
-<li><a target="_blank" rel="noopener" href="https://wiki.loliot.net/docs/lang/flutter/engine/flutter-engine-for-linux-arm64/">flutter-engine-for-linux-arm64</a></li>
-<li><a target="_blank" rel="noopener" href="https://medium.com/flutter/flutter-on-raspberry-pi-mostly-from-scratch-2824c5e7dcb1">Flutter on Raspberry Pi (mostly) from scratch</a></li>
+<li><a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></li>
+<li><a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></li>
+<li><a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">Yocto嵌入式平台运行Flutter应用</a></li>
+<li><a href="/2021/11/07/basic-2021-11-07-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></li>
+<li><a href="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/">Flutter引擎源码</a></li>
+</ul>
+<p>资源下载链接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://storage.googleapis.com/flutter_infra_release">Flutter官方预构建引擎</a>：缺少arm平台</li>
+<li><a target="_blank" rel="noopener" href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter官方预构建引擎sysroot</a></li>
+<li><a target="_blank" rel="noopener" href="https://storage.googleapis.com/dart-archive">Flutter官方预构建Dart SDK</a></li>
+</ul>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wiki.loliot.net/docs/lang/flutter/engine/flutter-engine-for-linux-arm64/">Build Flutter engine for linux-arm/arm64</a>、<a target="_blank" rel="noopener" href="https://medium.com/flutter/flutter-on-raspberry-pi-mostly-from-scratch-2824c5e7dcb1">Flutter on Raspberry Pi (mostly) from scratch</a>：自行制作toolchain，编译引擎</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/55574">Flutter Issue</a>：编译arm引擎</li>
 </ul>
 <h2 id="Linux发行版说明"><a href="#Linux发行版说明" class="headerlink" title="Linux发行版说明"></a>Linux发行版说明</h2><p>搭建环境过程中见到很多库的名词不认识，因此查了一下</p>
 <ul>
@@ -642,8 +680,8 @@
       <i class="fa fa-chevron-left"></i> Linux容器运行GUI程序
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/" rel="next" title="Yocto嵌入式平台运行Flutter应用">
-      Yocto嵌入式平台运行Flutter应用 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/" rel="next" title="Flutter引擎源码分析">
+      Flutter引擎源码分析 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -705,7 +743,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">探索过程总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E5%92%8C%E7%9B%AE%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">背景和目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.</span> <span class="nav-text">环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E7%BA%B2"><span class="nav-number">1.3.</span> <span class="nav-text">大纲</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">通用问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">Docker操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91Linux%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">本地编译Linux桌面应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-ARM64%E5%B9%B3%E5%8F%B0%E5%BA%94%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">交叉编译Linux ARM64平台应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9flutter-tools"><span class="nav-number">5.1.</span> <span class="nav-text">修改flutter_tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Flutter-ARM64%E5%BC%95%E6%93%8E"><span class="nav-number">5.2.</span> <span class="nav-text">交叉编译Flutter ARM64引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-ARM64%E5%BA%94%E7%94%A8"><span class="nav-number">5.3.</span> <span class="nav-text">交叉编译Linux ARM64应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">5.4.</span> <span class="nav-text">踩坑记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-number">5.5.</span> <span class="nav-text">其他问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-ARM%E5%BA%94%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">交叉编译Linux ARM应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E5%92%8C%E7%9B%AE%E6%A0%87%E5%B9%B3%E5%8F%B0%E5%BA%93"><span class="nav-number">6.1.</span> <span class="nav-text">配置交叉编译工具链和目标平台库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="nav-number">6.2.</span> <span class="nav-text">问题记录</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">7.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%8F%91%E8%A1%8C%E7%89%88%E8%AF%B4%E6%98%8E"><span class="nav-number">7.1.</span> <span class="nav-text">Linux发行版说明</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">探索过程总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E5%92%8C%E7%9B%AE%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">背景和目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.</span> <span class="nav-text">环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E7%BA%B2"><span class="nav-number">1.3.</span> <span class="nav-text">大纲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%80%9D%E8%B7%AF"><span class="nav-number">1.4.</span> <span class="nav-text">其他思路</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">通用问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E6%93%8D%E4%BD%9C"><span class="nav-number">2.1.</span> <span class="nav-text">Docker操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%BC%96%E8%AF%91Linux%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">本地编译Linux桌面应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-arm64%E5%B9%B3%E5%8F%B0%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">交叉编译Linux arm64平台应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9flutter-tools"><span class="nav-number">4.1.</span> <span class="nav-text">修改flutter_tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Flutter-arm64%E5%BC%95%E6%93%8E"><span class="nav-number">4.2.</span> <span class="nav-text">交叉编译Flutter arm64引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-arm64%E5%BA%94%E7%94%A8"><span class="nav-number">4.3.</span> <span class="nav-text">交叉编译Linux arm64应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">4.4.</span> <span class="nav-text">踩坑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%981"><span class="nav-number">4.4.1.</span> <span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%982"><span class="nav-number">4.4.2.</span> <span class="nav-text">问题2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%983"><span class="nav-number">4.4.3.</span> <span class="nav-text">问题3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%984%EF%BC%88X%EF%BC%89"><span class="nav-number">4.4.4.</span> <span class="nav-text">问题4（X）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%985"><span class="nav-number">4.4.5.</span> <span class="nav-text">问题5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%986"><span class="nav-number">4.4.6.</span> <span class="nav-text">问题6</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-number">4.5.</span> <span class="nav-text">其他问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-arm%E5%BA%94%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">交叉编译Linux arm应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Flutter-arm%E5%BC%95%E6%93%8E"><span class="nav-number">5.1.</span> <span class="nav-text">交叉编译Flutter arm引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91Linux-arm%E5%BA%94%E7%94%A8-1"><span class="nav-number">5.2.</span> <span class="nav-text">交叉编译Linux arm应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95-1"><span class="nav-number">5.3.</span> <span class="nav-text">踩坑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">5.3.1.</span> <span class="nav-text">找不到交叉编译工具链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%B8%A6-arm-float-abi-hard%E9%80%89%E9%A1%B9"><span class="nav-number">5.3.2.</span> <span class="nav-text">不带--arm-float-abi&#x3D;hard选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#target-triple%E4%BD%BF%E7%94%A8arm-linux-gnueabihf"><span class="nav-number">5.3.3.</span> <span class="nav-text">--target-triple使用arm-linux-gnueabihf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-SDK%E7%BC%96%E8%AF%91%E6%8A%A5%E9%94%99"><span class="nav-number">5.3.4.</span> <span class="nav-text">Dart SDK编译报错</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98-1"><span class="nav-number">5.4.</span> <span class="nav-text">其他问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%8F%91%E8%A1%8C%E7%89%88%E8%AF%B4%E6%98%8E"><span class="nav-number">6.1.</span> <span class="nav-text">Linux发行版说明</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -721,7 +759,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -815,13 +853,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">480k</span>
+    <span title="站点总字数">504k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:17</span>
+    <span title="站点阅读时长">7:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
