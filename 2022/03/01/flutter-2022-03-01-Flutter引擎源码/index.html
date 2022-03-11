@@ -29,15 +29,12 @@
 <meta property="og:site_name" content="Afauria&#39;s Blog">
 <meta property="og:description" content="Flutter引擎源码分析">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5.png">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E4%BF%AE%E6%94%B9.png">
 <meta property="article:published_time" content="2022-02-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-11T07:32:32.421Z">
+<meta property="article:modified_time" content="2022-03-11T10:28:06.895Z">
 <meta property="article:author" content="丘山月夜">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="跨平台">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5.png">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/">
 
@@ -242,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-11 15:32:32" itemprop="dateModified" datetime="2022-03-11T15:32:32+08:00">2022-03-11</time>
+                <time title="修改时间：2022-03-11 18:28:06" itemprop="dateModified" datetime="2022-03-11T18:28:06+08:00">2022-03-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,14 +278,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>9 分钟</span>
             </span>
             <div class="post-description">Flutter引擎源码分析</div>
 
@@ -361,63 +358,11 @@
 <li><code>--clang</code>：使用clang编译，默认为true，对应<code>--no-clang</code></li>
 <li><code>--stripped</code>：删除调试符号，默认为true，对应<code>--no-stripped</code></li>
 </ul>
-<h1 id="GLFW-Example"><a href="#GLFW-Example" class="headerlink" title="GLFW Example"></a>GLFW Example</h1><p>Flutter引擎源码中包含一个<a target="_blank" rel="noopener" href="https://github.com/flutter/engine/tree/master/examples/glfw">GLFW</a>的运行案例（<code>flutter/examples/glfw</code>），演示了如何定制嵌入层，使用GLFW图形库框架渲染Flutter。</p>
-<h2 id="嵌入层定制原理"><a href="#嵌入层定制原理" class="headerlink" title="嵌入层定制原理"></a>嵌入层定制原理</h2><ol>
-<li><code>FlutterEmbedderGLFW.cc</code>引用<code>shell/platform/embedder/embedder.h</code>头文件：Flutter提供了一套平台无关的嵌入层ABI（<code>shell/platform/embedder/</code>），包括初始化和启动引擎，发送事件，发送PlatformMessage等函数和功能。</li>
-<li>main函数中初始化并启动Flutter引擎，执行Flutter程序（本例是Kernel文件<code>myapp/build/flutter_assets/kernel_blob.bin</code>）</li>
-<li>对接不同平台的图形库框架（本例是glfw）：用于创建窗口和OpenGL上下文，接收设备输入事件。</li>
-<li>调用embedder中对应的函数，将窗口、事件等发送给引擎层。</li>
-<li>引擎通过Skia将画面渲染到窗口。</li>
-</ol>
-<h2 id="Demo运行步骤"><a href="#Demo运行步骤" class="headerlink" title="Demo运行步骤"></a>Demo运行步骤</h2><p>以macOS为例：</p>
-<ol>
-<li>安装glfw：<code>brew install glfw</code></li>
-<li>安装cmake：<code>brew install cmake</code></li>
-<li>编译debug版本的引擎：<code>./flutter/tools/gn --unoptimized</code>、<code>ninja -C out/host_debug_unopt</code></li>
-<li>运行脚本：<code>./run.sh</code>，主要做了几件事情<ol>
-<li>创建debug文件夹</li>
-<li>执行cmake生成makefile编译配置文件：链接glfw和flutter嵌入层函数库</li>
-<li>执行make将<code>FlutterEmbedderGLFW.cc</code>源文件编译为可执行程序<code>flutter_glfw</code></li>
-<li>创建Flutter模版项目，替换<code>main.dart</code>：<code>flutter create myapp</code></li>
-<li>Flutter应用构建，生成<code>flutter_assets</code>，包含Flutter代码的Kernel快照：<code>flutter build bundle</code></li>
-<li>运行Flutter应用程序：<code>./flutter_glfw ./myapp ../../../../third_party/icu/common/icudtl.dat</code></li>
-</ol>
-</li>
-</ol>
-<p>高版本源码example中包含<code>BUILD.gn</code>文件，ninja编译的时候会生成<code>embedder_example</code>可执行程序，不需要手动运行脚本。</p>
-<blockquote>
-<p>可以通过<code>--build-embedder-examples</code>、<code>--no--build-embedder-examples</code>决定是否编译。默认开启</p>
-</blockquote>
-<h2 id="踩坑解决"><a href="#踩坑解决" class="headerlink" title="踩坑解决"></a>踩坑解决</h2><p>cmake编译失败：<code>CMake Error in CMakeList.txt: &quot;GLFW_INCLUDE_PATH-NOTFOUND&quot;</code></p>
-<blockquote>
-<p>原因：找不到glfw路径。下载的glfw版本是3.3.2的，CMakeList.txt中配置的是3.3的版本<code>/usr/local/Cellar/glfw/3.3/include/GLFW/</code></p>
-<p>解决：改成对应版本即可</p>
-</blockquote>
-<p>cmake编译失败：<code>CMake Error: The following variables are used in this project, but they are set to NOTFOUND. FLUTTER_LIB</code></p>
-<blockquote>
-<p>原因：<code>FLUTTER_LIB</code>变量找不到<code>host_debug_unopt</code>路径，查看CMakeList.txt：<code>find_library(FLUTTER_LIB flutter_engine PATHS $&#123;CMAKE_SOURCE_DIR&#125;/../../../out/host_debug_unopt)</code></p>
-<p>解决：编译一下debug版本的引擎即可</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成ninja配置文件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --unoptimized</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ninja编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/host_debug_unopt</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>Flutter项目编译失败，报错如下</p>
-<p><img src="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5.png"></p>
-<blockquote>
-<p>原因：Flutter SDK和源码的版本问题，替换的<code>main.dart</code>没有使用空安全写法。并且该SDK版本找不到<code>display1</code>属性</p>
-<p>解决：修改<code>main.dart</code>文件如下</p>
-</blockquote>
-<p><img src="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E4%BF%AE%E6%94%B9.png"></p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders">Custom Flutter Engine Embedders</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedding-in-AOT-Mode">Custom Flutter Engine Embedding in AOT Mode</a></li>
 <li><a target="_blank" rel="noopener" href="https://flutter.cn/embedded">Embedded support for Flutter</a></li>
-</ul>
-<p>嵌入层定制案例：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/ardera/flutter-pi">Flutter-Pi</a>：Flutter适配树莓派</li>
-<li>索尼的<a target="_blank" rel="noopener" href="https://github.com/sony/flutter-embedded-linux">flutter-embedded-linux</a>：Flutter嵌入层适配Linux嵌入式平台，支持x11、Wayland、DRM等</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/toyota-connected/ivi-homescreen">toyota-homescreen</a>：支持Wayland</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>：基于Yocto构建，包含上面的三个案例</li>
 </ul>
 
     </div>
@@ -525,7 +470,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#target-sysroot"><span class="nav-number">1.</span> <span class="nav-text">target-sysroot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#target-triple"><span class="nav-number">2.</span> <span class="nav-text">target-triple</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#prebuilt-dart-sdk"><span class="nav-number">3.</span> <span class="nav-text">prebuilt-dart-sdk</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">3.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GLFW-Example"><span class="nav-number">5.</span> <span class="nav-text">GLFW Example</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%B1%82%E5%AE%9A%E5%88%B6%E5%8E%9F%E7%90%86"><span class="nav-number">5.1.</span> <span class="nav-text">嵌入层定制原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo%E8%BF%90%E8%A1%8C%E6%AD%A5%E9%AA%A4"><span class="nav-number">5.2.</span> <span class="nav-text">Demo运行步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%A7%A3%E5%86%B3"><span class="nav-number">5.3.</span> <span class="nav-text">踩坑解决</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#target-sysroot"><span class="nav-number">1.</span> <span class="nav-text">target-sysroot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#target-triple"><span class="nav-number">2.</span> <span class="nav-text">target-triple</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#prebuilt-dart-sdk"><span class="nav-number">3.</span> <span class="nav-text">prebuilt-dart-sdk</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">3.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -635,13 +580,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">504k</span>
+    <span title="站点总字数">502k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:38</span>
+    <span title="站点阅读时长">7:37</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/</loc>
-    
-    <lastmod>2022-03-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/</loc>
     
     <lastmod>2022-03-11</lastmod>
@@ -21,6 +12,15 @@
   
   <url>
     <loc>https://blog.afauria.xyz/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/</loc>
+    
+    <lastmod>2022-03-11</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/</loc>
     
     <lastmod>2022-03-11</lastmod>
     

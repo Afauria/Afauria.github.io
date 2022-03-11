@@ -292,63 +292,11 @@
 <li><code>--clang</code>：使用clang编译，默认为true，对应<code>--no-clang</code></li>
 <li><code>--stripped</code>：删除调试符号，默认为true，对应<code>--no-stripped</code></li>
 </ul>
-<h1 id="GLFW-Example"><a href="#GLFW-Example" class="headerlink" title="GLFW Example"></a>GLFW Example</h1><p>Flutter引擎源码中包含一个<a href="https://github.com/flutter/engine/tree/master/examples/glfw">GLFW</a>的运行案例（<code>flutter/examples/glfw</code>），演示了如何定制嵌入层，使用GLFW图形库框架渲染Flutter。</p>
-<h2 id="嵌入层定制原理"><a href="#嵌入层定制原理" class="headerlink" title="嵌入层定制原理"></a>嵌入层定制原理</h2><ol>
-<li><code>FlutterEmbedderGLFW.cc</code>引用<code>shell/platform/embedder/embedder.h</code>头文件：Flutter提供了一套平台无关的嵌入层ABI（<code>shell/platform/embedder/</code>），包括初始化和启动引擎，发送事件，发送PlatformMessage等函数和功能。</li>
-<li>main函数中初始化并启动Flutter引擎，执行Flutter程序（本例是Kernel文件<code>myapp/build/flutter_assets/kernel_blob.bin</code>）</li>
-<li>对接不同平台的图形库框架（本例是glfw）：用于创建窗口和OpenGL上下文，接收设备输入事件。</li>
-<li>调用embedder中对应的函数，将窗口、事件等发送给引擎层。</li>
-<li>引擎通过Skia将画面渲染到窗口。</li>
-</ol>
-<h2 id="Demo运行步骤"><a href="#Demo运行步骤" class="headerlink" title="Demo运行步骤"></a>Demo运行步骤</h2><p>以macOS为例：</p>
-<ol>
-<li>安装glfw：<code>brew install glfw</code></li>
-<li>安装cmake：<code>brew install cmake</code></li>
-<li>编译debug版本的引擎：<code>./flutter/tools/gn --unoptimized</code>、<code>ninja -C out/host_debug_unopt</code></li>
-<li>运行脚本：<code>./run.sh</code>，主要做了几件事情<ol>
-<li>创建debug文件夹</li>
-<li>执行cmake生成makefile编译配置文件：链接glfw和flutter嵌入层函数库</li>
-<li>执行make将<code>FlutterEmbedderGLFW.cc</code>源文件编译为可执行程序<code>flutter_glfw</code></li>
-<li>创建Flutter模版项目，替换<code>main.dart</code>：<code>flutter create myapp</code></li>
-<li>Flutter应用构建，生成<code>flutter_assets</code>，包含Flutter代码的Kernel快照：<code>flutter build bundle</code></li>
-<li>运行Flutter应用程序：<code>./flutter_glfw ./myapp ../../../../third_party/icu/common/icudtl.dat</code></li>
-</ol>
-</li>
-</ol>
-<p>高版本源码example中包含<code>BUILD.gn</code>文件，ninja编译的时候会生成<code>embedder_example</code>可执行程序，不需要手动运行脚本。</p>
-<blockquote>
-<p>可以通过<code>--build-embedder-examples</code>、<code>--no--build-embedder-examples</code>决定是否编译。默认开启</p>
-</blockquote>
-<h2 id="踩坑解决"><a href="#踩坑解决" class="headerlink" title="踩坑解决"></a>踩坑解决</h2><p>cmake编译失败：<code>CMake Error in CMakeList.txt: &quot;GLFW_INCLUDE_PATH-NOTFOUND&quot;</code></p>
-<blockquote>
-<p>原因：找不到glfw路径。下载的glfw版本是3.3.2的，CMakeList.txt中配置的是3.3的版本<code>/usr/local/Cellar/glfw/3.3/include/GLFW/</code></p>
-<p>解决：改成对应版本即可</p>
-</blockquote>
-<p>cmake编译失败：<code>CMake Error: The following variables are used in this project, but they are set to NOTFOUND. FLUTTER_LIB</code></p>
-<blockquote>
-<p>原因：<code>FLUTTER_LIB</code>变量找不到<code>host_debug_unopt</code>路径，查看CMakeList.txt：<code>find_library(FLUTTER_LIB flutter_engine PATHS $&#123;CMAKE_SOURCE_DIR&#125;/../../../out/host_debug_unopt)</code></p>
-<p>解决：编译一下debug版本的引擎即可</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成ninja配置文件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./flutter/tools/gn --unoptimized</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ninja编译</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ninja -C out/host_debug_unopt</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>Flutter项目编译失败，报错如下</p>
-<p><img src="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5.png"></p>
-<blockquote>
-<p>原因：Flutter SDK和源码的版本问题，替换的<code>main.dart</code>没有使用空安全写法。并且该SDK版本找不到<code>display1</code>属性</p>
-<p>解决：修改<code>main.dart</code>文件如下</p>
-</blockquote>
-<p><img src="/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/GLFW%E9%A1%B9%E7%9B%AE%E4%BF%AE%E6%94%B9.png"></p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
 <li><a href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders">Custom Flutter Engine Embedders</a></li>
 <li><a href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedding-in-AOT-Mode">Custom Flutter Engine Embedding in AOT Mode</a></li>
 <li><a href="https://flutter.cn/embedded">Embedded support for Flutter</a></li>
-</ul>
-<p>嵌入层定制案例：</p>
-<ul>
-<li><a href="https://github.com/ardera/flutter-pi">Flutter-Pi</a>：Flutter适配树莓派</li>
-<li>索尼的<a href="https://github.com/sony/flutter-embedded-linux">flutter-embedded-linux</a>：Flutter嵌入层适配Linux嵌入式平台，支持x11、Wayland、DRM等</li>
-<li><a href="https://github.com/toyota-connected/ivi-homescreen">toyota-homescreen</a>：支持Wayland</li>
-<li><a href="https://github.com/meta-flutter/meta-flutter">meta-flutter</a>：基于Yocto构建，包含上面的三个案例</li>
 </ul>
 ]]></content>
       <categories>
@@ -674,6 +622,7 @@
 <p>资源下载链接：</p>
 <ul>
 <li><a href="https://storage.googleapis.com/flutter_infra_release">Flutter官方预构建引擎</a>：缺少arm平台</li>
+<li><a href="https://github.com/ardera/flutter-engine-binaries-for-arm">预构建ARM引擎</a>：开发者预构建的arm引擎，需要注意版本对应，否则可能无法使用</li>
 <li><a href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter官方预构建引擎sysroot</a></li>
 <li><a href="https://storage.googleapis.com/dart-archive">Flutter官方预构建Dart SDK</a></li>
 </ul>
