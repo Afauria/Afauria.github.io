@@ -35,8 +35,8 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%812.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/%E4%BF%AE%E6%94%B9flutter_tools%E4%BB%A3%E7%A0%813.png">
 <meta property="article:published_time" content="2022-02-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-11T10:30:57.430Z">
-<meta property="article:author" content="丘山月夜">
+<meta property="article:modified_time" content="2022-03-13T10:47:19.701Z">
+<meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="Linux">
@@ -219,7 +219,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="name" content="Afauria">
       <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
     </span>
 
@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-11 18:30:57" itemprop="dateModified" datetime="2022-03-11T18:30:57+08:00">2022-03-11</time>
+                <time title="修改时间：2022-03-13 18:47:19" itemprop="dateModified" datetime="2022-03-13T18:47:19+08:00">2022-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -312,7 +312,6 @@
 </blockquote>
 <h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>目标：解决Flutter交叉编译Linux arm平台应用，在TV嵌入式设备上运行。</p>
 <p>任务：使用Flutter开发Linux TV应用，研究Flutter应用和引擎编译，搭建编译环境，Flutter嵌入层定制和适配。</p>
-<p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此上面编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
 <p>Flutter桌面应用编译只能在对应的平台上（Linux应用只能在Linux平台上编译），由于没有Linux电脑，无法编译和运行Linux程序（x86_64、arm、arm64）。参考<a target="_blank" rel="noopener" href="https://flutter.cn/desktop">Flutter桌面支持</a></p>
 <blockquote>
 <p>解决思路：利用Docker Ubuntu容器环境。</p>
@@ -326,6 +325,7 @@
 <li>准备好环境之后可以方便的进行打包和移植</li>
 </ul>
 </blockquote>
+<p><strong>注：Flutter官方的Linux桌面嵌入层使用GTK图形库，因此下面编译出的Linux应用只适用于Linux GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
 <h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>环境：（下文不再赘述）</p>
 <ul>
 <li>主机（Host）：<ul>
@@ -455,7 +455,7 @@
 <p>编译器本身也是一个可执行程序，只能在目标平台运行。</p>
 </blockquote>
 <p>既然官方提供的引擎构件无法使用，那只能自己下载引擎源码编译生成gen_snapshot了。</p>
-<h2 id="交叉编译Flutter-arm64引擎"><a href="#交叉编译Flutter-arm64引擎" class="headerlink" title="交叉编译Flutter arm64引擎"></a>交叉编译Flutter arm64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></p>
+<h2 id="交叉编译Flutter-arm64引擎"><a href="#交叉编译Flutter-arm64引擎" class="headerlink" title="交叉编译Flutter arm64引擎"></a>交叉编译Flutter arm64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">Flutter源码下载和编译</a></p>
 <p>注：Flutter SDK中内置了引擎的<code>artifact</code>，如果自己编译引擎，需要确保Engine源码和Framework源码版本对应。本文使用2.8.1版本</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> flutter --version</span></span><br><span class="line">Flutter 2.8.1 • channel stable • https://github.com/flutter/flutter.git</span><br><span class="line">Framework • revision 77d935af4d (10 weeks ago) • 2021-12-16 08:37:33 -0800</span><br><span class="line">Engine • revision 890a5fca2e</span><br><span class="line">Tools • Dart 2.15.1</span><br></pre></td></tr></table></figure>
 
@@ -608,7 +608,7 @@
 
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>相关文章链接：</p>
 <ul>
-<li><a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></li>
+<li><a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">Flutter源码下载和编译</a></li>
 <li><a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></li>
 <li><a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">Yocto嵌入式平台运行Flutter应用</a></li>
 <li><a href="/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></li>
@@ -750,9 +750,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+    <img class="site-author-image" itemprop="image" alt="Afauria"
       src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <p class="site-author-name" itemprop="name">Afauria</p>
   <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -760,7 +760,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -848,13 +848,13 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">503k</span>
+    <span title="站点总字数">504k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

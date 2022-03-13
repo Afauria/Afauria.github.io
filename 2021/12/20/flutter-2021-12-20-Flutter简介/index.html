@@ -22,20 +22,24 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="党员笔记">
+  <meta name="description" content="Flutter基础介绍，架构说明">
 <meta property="og:type" content="article">
-<meta property="og:title" content="党员笔记">
-<meta property="og:url" content="https://blog.afauria.xyz/2017/12/21/personal-2017-12-21-Party/index.html">
+<meta property="og:title" content="Flutter简介">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="党员笔记">
+<meta property="og:description" content="Flutter基础介绍，架构说明">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-12-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.065Z">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb架构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png">
+<meta property="article:published_time" content="2021-12-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-13T10:54:15.434Z">
 <meta property="article:author" content="Afauria">
-<meta property="article:tag" content="其他">
+<meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter架构.png">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2017/12/21/personal-2017-12-21-Party/">
+<link rel="canonical" href="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/">
 
 
 <script id="page-configurations">
@@ -48,7 +52,7 @@
   };
 </script>
 
-  <title>党员笔记 | Afauria's Blog</title>
+  <title>Flutter简介 | Afauria's Blog</title>
   
 
 
@@ -207,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2017/12/21/personal-2017-12-21-Party/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -220,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          党员笔记
+          Flutter简介
         </h1>
 
         <div class="post-meta">
@@ -231,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2017-12-21 00:00:00" itemprop="dateCreated datePublished" datetime="2017-12-21T00:00:00+08:00">2017-12-21</time>
+              <time title="创建时间：2021-12-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-20T00:00:00+08:00">2021-12-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2022-03-13 18:54:15" itemprop="dateModified" datetime="2022-03-13T18:54:15+08:00">2022-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,12 +250,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
                 </span>
             </span>
 
           
-            <span id="/2017/12/21/personal-2017-12-21-Party/" class="post-meta-item leancloud_visitors" data-flag-title="党员笔记" title="阅读次数">
+            <span id="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter简介" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -266,8 +270,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2017/12/21/personal-2017-12-21-Party/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/12/21/personal-2017-12-21-Party/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -277,16 +281,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>691</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
-            <div class="post-description">党员笔记</div>
+            <div class="post-description">Flutter基础介绍，架构说明</div>
 
         </div>
       </header>
@@ -297,35 +301,142 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="思想汇报书写格式"><a href="#思想汇报书写格式" class="headerlink" title="思想汇报书写格式"></a>思想汇报书写格式</h2><ol>
-<li><p>标题：一般在第一行居中写“思想汇报”。</p>
-</li>
-<li><p>称谓：一般在第二行顶格写“敬爱的党支部”或“敬爱的党组织”，后面加冒号。</p>
-</li>
-<li><p>正文：这是思想汇报的主要部分，一般写以下内容：</p>
+        <h1 id="Flutter简介"><a href="#Flutter简介" class="headerlink" title="Flutter简介"></a>Flutter简介</h1><p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
 <ul>
-<li>对当前和一个时期党的一个时期党的中心任务或党的路线、方针、政策的看法、态度，阐明自己的观点，写清楚自己的认识或自己还有什么疑虑和理解不清楚的问题等。</li>
-<li>参加重要活动或学习重要文章、文件所受的启发、教育和体会，把自己的认识、体会和收获向党组织汇报。</li>
-<li>本人在政治、思想、学习、工作、作风等方面的主要表现情况。</li>
-<li>对照党员的标准，找出存在问题及今后的努力方向，表明自己要求进步的决心和信心。</li>
+<li>支持移动平台（Android、iOS），桌面平台（Windows、Linux、MacOS），Web平台（浏览器），其他嵌入式平台（如车载、IoT设备、树莓派等，需要自行扩展适配）</li>
+<li>支持多屏幕设备、折叠设备等</li>
 </ul>
+<p>Flutter SDK包含框架代码、脚手架、编译工具、调试工具和各种脚本等。</p>
+<p>Flutter只是一个框架，不是一门语言，Flutter使用了Dart语言，Flutter引擎中的嵌入层（UI渲染、输入输出、以及PlatformChannel等）使用了平台原生语言（如C++，Java等）。</p>
+<p>Flutter和Dart类比Android和Java的关系：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Flutter</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编程语言</td>
+<td>Dart</td>
+<td>Java、Kotlin</td>
+</tr>
+<tr>
+<td>编译器</td>
+<td>dart compile</td>
+<td>javac、dx</td>
+</tr>
+<tr>
+<td>应用构建工具</td>
+<td>flutter命令</td>
+<td>gradle命令</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Flutter Framework</td>
+<td>Android Framwork</td>
+</tr>
+<tr>
+<td>开发套件</td>
+<td>Flutter SDK</td>
+<td>Android SDK</td>
+</tr>
+<tr>
+<td>底层源码</td>
+<td>Flutter引擎源码</td>
+<td>AOSP系统源码</td>
+</tr>
+<tr>
+<td>源码管理工具</td>
+<td>gclient</td>
+<td>repo</td>
+</tr>
+<tr>
+<td>源码编译配置</td>
+<td>gn文件</td>
+<td>低版本mk、高版本bp文件</td>
+</tr>
+<tr>
+<td>源码编译工具</td>
+<td>ninja</td>
+<td>低版本make，高版本ninja</td>
+</tr>
+</tbody></table>
+<h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
+</ol>
+<blockquote>
+<p>Flutter SDK默认会缓存官方构建好的引擎artifact，打包到应用中</p>
+</blockquote>
+<p>架构如下：</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter架构.png" style="zoom: 33%;">
+
+<ol>
+<li><p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供应用程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
 </li>
-<li><p>结尾：在思想汇报的最后部分，可写上自己对党组织的请求和希望，一般用“恳请党组织给予批评、帮助”或“希望党组织加强对我的培养和教育”等作为结束语。</p>
+<li><p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
 </li>
-<li><p>落款：在结尾的右下方要写上汇报人的姓名，并注明汇报的年月日。</p>
+<li><p>框架层：提供Flutter应用开发的框架，包括响应式框架、布局、组件、基础库等</p>
+<ol>
+<li>foundation：提供上层常用的抽象和函数</li>
+<li>基本模块：如 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/animation/animation-library.html">animation</a>、 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/painting/painting-library.html">painting</a> 和 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/gestures/gestures-library.html">gestures</a></li>
+<li>渲染层：提供布局操作的抽象，构建可渲染对象的树</li>
+<li>widgets层：和渲染层中的渲染对象对应，并提供响应式编程模型</li>
+<li>Material和Cupertino：封装widgets，实现Material和iOS设计规范</li>
+</ol>
+</li>
+<li><p>软件包：封装开发者常用的功能，分为普通包和插件包</p>
+<ol>
+<li>Packages：与平台无关。如http、路由导航、依赖管理、应用内支付、组件等</li>
+<li>Plugins：封装原生平台调用，如webview、camera等</li>
+</ol>
+</li>
+<li><p>应用层：Flutter应用、模块、插件等</p>
 </li>
 </ol>
-<h2 id="思想汇报书写要求"><a href="#思想汇报书写要求" class="headerlink" title="思想汇报书写要求"></a>思想汇报书写要求</h2><ol>
-<li>实事求是，写清自己的真情实感，切忌空话套话。</li>
-<li>根据不同时期的思想认识情况，集中深刻对一两个问题谈深谈透，不要泛泛而谈。</li>
-<li>要紧密联系实际，本人亲自书写，不得简单抄录党章、报告和报刊文章，也不得抄袭他人思想汇报。</li>
-<li>一分为二，既要肯定自己的进步，又要找准自己的不足，敢于向党组织暴露自身的缺点和问题。</li>
-<li>要按时、经常、主动、自觉地向党组织写思想汇报，一般不应由党组织、培养人提醒或督促。</li>
-<li>书写过程中不得有任何勾抹迹象，字迹清晰，切忌潦草。</li>
-<li>不能有错别字，注意标点符号等严格符合高考作文要求。</li>
+<blockquote>
+<p>Flutter界面构建、布局、合成、绘制都由自身完成，而不是转换为原生控件。Flutter引擎与平台无关，通过嵌入层ABI调用操作系统方法。</p>
+<p>应用启动时，嵌入层初始化Flutter引擎，获取UI和栅格化线程，创建Surface供Flutter写入</p>
+</blockquote>
+<h2 id="平台嵌入层"><a href="#平台嵌入层" class="headerlink" title="平台嵌入层"></a>平台嵌入层</h2><p>嵌入层是Flutter实现跨平台的核心。Flutter官方提供了Android、iOS、Windows、macOS、Linux、Fuchsia等平台嵌入层。</p>
+<p>对于其他嵌入式平台和系统，需要定制嵌入层。后面的文章会介绍。</p>
+<h2 id="Web上的Flutter"><a href="#Web上的Flutter" class="headerlink" title="Web上的Flutter"></a>Web上的Flutter</h2><p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
+<p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb架构.png" style="zoom: 33%;">
+
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ul>
+<li>统一管理：将原生工程作为Flutter工程的子工程。</li>
+<li>模块集成：Flutter工程作为原生工程的一个子模块，使用aar或者pod库的方式依赖。</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>单纯学会写Flutter应用很简单，事实上我也是这么入门的：2021年5月份用了一周左右看了<a target="_blank" rel="noopener" href="https://book.flutterchina.club/">Flutter实战</a>，并且实战开发了WanAndroid的Demo。后续就直接上手开发项目，架构设计也不难，一套GetX框架用到底，大部分时候是在学GetX框架，然后自定义组件，写页面和业务等。</p>
+<p>学习的过程中也粗略的看了Flutter渲染流程、加载和运行原理、源码架构等文章，感觉一知半解，缺少系统性的学习和总结。刚好有需求做Flutter嵌入式平台的定制开发，涉及到一些进阶的知识，因此做一些整理，虽然对应用开发可能没什么帮助，但是也会有其他的收获和感悟。</p>
+<p>研究过程和思路如下：</p>
+<ol>
+<li>Flutter介绍和跨平台方案对比。</li>
+<li>Dart编译和执行原理，Dart源码编译：编译前端、编译后端。</li>
+<li>Flutter应用构建流程、构建产物分析。</li>
+<li>Flutter引擎源码分析和编译。</li>
+<li>Flutter引擎和应用交叉编译编译环境搭建（使用Docker）。</li>
+<li>Yocto系统编译，嵌入式平台调试。</li>
+<li>Linux图形系统介绍。</li>
+<li>Flutter嵌入层定制和适配。</li>
+<li>Linux窗口管理器、桌面应用开发和运行。</li>
+<li>源代码管理、CI搭建和部署。</li>
+<li>Flutter应用加载流程、渲染原理。</li>
+<li>Flutter应用开发，架构设计、产物裁剪。</li>
+<li>Flutter插件开发，Dart调C接口：跨进程、FFI接口</li>
 </ol>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>一带一路，两学一做，三会一课，四个自信，四个全面，五位一体，五大发展等知识点</p>
-<h2 id="评议"><a href="#评议" class="headerlink" title="评议"></a>评议</h2><p>从思想、工作、学习、生活各方面结合实际概括，并给予评价和期望</p>
+<p><img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png"></p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/">Flutter中文网</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.flutterchina.club/">Flutter实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/desktop">Flutter桌面支持</a></li>
+</ul>
 
     </div>
 
@@ -355,7 +466,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%85%B6%E4%BB%96/" rel="tag"><i class="fa fa-tag"></i> 其他</a>
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
           </div>
 
         
@@ -364,12 +475,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2017/11/24/reader-2017-11-24-Coco/" rel="prev" title="《寻梦环游记》">
-      <i class="fa fa-chevron-left"></i> 《寻梦环游记》
+    <a href="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" rel="prev" title="跨平台技术选型">
+      <i class="fa fa-chevron-left"></i> 跨平台技术选型
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/04/10/basic-2018-04-10-ProgramBasic/" rel="next" title="程序基础（更新中）">
-      程序基础（更新中） <i class="fa fa-chevron-right"></i>
+    <a href="/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/" rel="next" title="《提问的智慧》">
+      《提问的智慧》 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -431,7 +542,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E6%83%B3%E6%B1%87%E6%8A%A5%E4%B9%A6%E5%86%99%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">思想汇报书写格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E6%83%B3%E6%B1%87%E6%8A%A5%E4%B9%A6%E5%86%99%E8%A6%81%E6%B1%82"><span class="nav-number">2.</span> <span class="nav-text">思想汇报书写要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">评议</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Flutter简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">Flutter架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E5%B5%8C%E5%85%A5%E5%B1%82"><span class="nav-number">2.1.</span> <span class="nav-text">平台嵌入层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E4%B8%8A%E7%9A%84Flutter"><span class="nav-number">2.2.</span> <span class="nav-text">Web上的Flutter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

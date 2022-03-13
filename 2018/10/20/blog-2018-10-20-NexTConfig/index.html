@@ -36,8 +36,8 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2018/10/20/blog-2018-10-20-NexTConfig/添加百度站点地图.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2018/10/20/blog-2018-10-20-NexTConfig/LeanCloud%E5%88%9B%E5%BB%BAClass.png">
 <meta property="article:published_time" content="2018-10-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-23T05:01:05.752Z">
-<meta property="article:author" content="丘山月夜">
+<meta property="article:modified_time" content="2022-03-13T09:07:50.037Z">
+<meta property="article:author" content="Afauria">
 <meta property="article:tag" content="工具">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="博客">
@@ -220,7 +220,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="丘山月夜">
+      <meta itemprop="name" content="Afauria">
       <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
     </span>
 
@@ -247,7 +247,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-23 13:01:05" itemprop="dateModified" datetime="2021-12-23T13:01:05+08:00">2021-12-23</time>
+                <time title="修改时间：2022-03-13 17:07:50" itemprop="dateModified" datetime="2022-03-13T17:07:50+08:00">2022-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,7 +286,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8k</span>
+              <span>8.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -440,7 +440,7 @@
 
 <ol start="2">
 <li>在需要置顶的文章头部中添加<code>top: true</code></li>
-<li>配置置顶图标：在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>中添加下面代码</li>
+<li>配置置顶图标：修改<code>next/layout/_macro/post.swig</code>文件，在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>中添加下面代码</li>
 </ol>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;post-meta&quot;</span>&gt;</span></span><br><span class="line">&#123;% if post.top %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;post-meta-item&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;far fa-thumb-tack&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color:#7D26CD&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">7D26CD</span>&gt;</span>置顶<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line">  <span class="comment">&lt;!--省略..--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -449,6 +449,8 @@
 <p>由于<code>next</code>主题使用的<code>fontawesome</code>图标只有<code>all.min.css</code>，不包含<code>fa-thumb-tack</code>（图钉）图标。需要手动下载<code>fontawesome</code>图标，替换<code>next/source/lib/font-awesome</code>下的文件夹。</p>
 <p>这里就不引入了，换成<code>fa-fire</code>（火）或者<code>fa-bolt</code>（闪电）图标，能看懂就行</p>
 </blockquote>
+<h2 id="修改归档页面文章数量"><a href="#修改归档页面文章数量" class="headerlink" title="修改归档页面文章数量"></a>修改归档页面文章数量</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-generator-index</span><br><span class="line">npm install --save hexo-generator-archive</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改站点配置文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 首页配置</span></span><br><span class="line">index_generator:</span><br><span class="line">  path: &#x27;&#x27;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by: -date</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 归档页面配置</span></span><br><span class="line">archive_generator:</span><br><span class="line">  per_page: 30</span><br><span class="line">  order_by: -date</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ol>
 <li><a target="_blank" rel="noopener" href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a></li>
 <li><a target="_blank" rel="noopener" href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a></li>
@@ -564,15 +566,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E6%95%88%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">博客效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">NexT配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Readme-md%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">添加Readme.md文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8A%A8%E6%80%81%E8%83%8C%E6%99%AF"><span class="nav-number">2.2.</span> <span class="nav-text">添加动态背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E7%9A%84%E5%B8%A6-%E5%8F%B7%E7%9A%84%E6%A0%87%E7%AD%BE"><span class="nav-number">2.3.</span> <span class="nav-text">修改文章底部的带#号的标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E6%A0%87Favicon"><span class="nav-number">2.4.</span> <span class="nav-text">设置网站的图标Favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD"><span class="nav-number">2.5.</span> <span class="nav-text">添加搜索功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E6%8E%89NexT%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95%E5%BA%8F%E5%8F%B7"><span class="nav-number">2.6.</span> <span class="nav-text">去掉NexT自带的文章目录序号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%88%86%E7%B1%BB%E3%80%81%E6%A0%87%E7%AD%BE%E5%92%8C%E5%85%B3%E4%BA%8E%E9%A1%B5%E9%9D%A2"><span class="nav-number">2.7.</span> <span class="nav-text">生成分类、标签和关于页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-number">2.7.1.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">2.7.2.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">2.7.3.</span> <span class="nav-text">关于</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.8.</span> <span class="nav-text">修改样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9%E5%9C%B0%E5%9B%BEsitemap"><span class="nav-number">2.9.</span> <span class="nav-text">添加站点地图sitemap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Google%E6%A3%80%E7%B4%A2"><span class="nav-number">2.9.1.</span> <span class="nav-text">Google检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BE%E5%BA%A6%E6%A3%80%E7%B4%A2"><span class="nav-number">2.9.2.</span> <span class="nav-text">百度检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8D%9A%E5%AE%A2%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.10.</span> <span class="nav-text">添加博客字数统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.11.</span> <span class="nav-text">添加站点访问统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.12.</span> <span class="nav-text">添加评论系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AELive2d%E5%8D%A1%E9%80%9A%E4%BA%BA%E7%89%A9"><span class="nav-number">2.13.</span> <span class="nav-text">配置Live2d卡通人物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E4%B8%8A%E8%A7%92%E9%85%8D%E7%BD%AEFork-me-on-GitHub%E5%85%A5%E5%8F%A3"><span class="nav-number">2.14.</span> <span class="nav-text">右上角配置Fork me on GitHub入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%AF%8F%E6%97%A5%E4%B8%80%E8%A8%80-%E4%BB%8A%E6%97%A5%E8%AF%97%E8%AF%8D"><span class="nav-number">2.15.</span> <span class="nav-text">添加每日一言&#x2F;今日诗词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E7%BD%AE%E9%A1%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.16.</span> <span class="nav-text">添加文章置顶功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E6%95%88%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">博客效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">NexT配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Readme-md%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">添加Readme.md文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8A%A8%E6%80%81%E8%83%8C%E6%99%AF"><span class="nav-number">2.2.</span> <span class="nav-text">添加动态背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E7%9A%84%E5%B8%A6-%E5%8F%B7%E7%9A%84%E6%A0%87%E7%AD%BE"><span class="nav-number">2.3.</span> <span class="nav-text">修改文章底部的带#号的标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E6%A0%87Favicon"><span class="nav-number">2.4.</span> <span class="nav-text">设置网站的图标Favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD"><span class="nav-number">2.5.</span> <span class="nav-text">添加搜索功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%BB%E6%8E%89NexT%E8%87%AA%E5%B8%A6%E7%9A%84%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95%E5%BA%8F%E5%8F%B7"><span class="nav-number">2.6.</span> <span class="nav-text">去掉NexT自带的文章目录序号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%88%86%E7%B1%BB%E3%80%81%E6%A0%87%E7%AD%BE%E5%92%8C%E5%85%B3%E4%BA%8E%E9%A1%B5%E9%9D%A2"><span class="nav-number">2.7.</span> <span class="nav-text">生成分类、标签和关于页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-number">2.7.1.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">2.7.2.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">2.7.3.</span> <span class="nav-text">关于</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.8.</span> <span class="nav-text">修改样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9%E5%9C%B0%E5%9B%BEsitemap"><span class="nav-number">2.9.</span> <span class="nav-text">添加站点地图sitemap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Google%E6%A3%80%E7%B4%A2"><span class="nav-number">2.9.1.</span> <span class="nav-text">Google检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BE%E5%BA%A6%E6%A3%80%E7%B4%A2"><span class="nav-number">2.9.2.</span> <span class="nav-text">百度检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8D%9A%E5%AE%A2%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.10.</span> <span class="nav-text">添加博客字数统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E7%82%B9%E8%AE%BF%E9%97%AE%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.11.</span> <span class="nav-text">添加站点访问统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.12.</span> <span class="nav-text">添加评论系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AELive2d%E5%8D%A1%E9%80%9A%E4%BA%BA%E7%89%A9"><span class="nav-number">2.13.</span> <span class="nav-text">配置Live2d卡通人物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E4%B8%8A%E8%A7%92%E9%85%8D%E7%BD%AEFork-me-on-GitHub%E5%85%A5%E5%8F%A3"><span class="nav-number">2.14.</span> <span class="nav-text">右上角配置Fork me on GitHub入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%AF%8F%E6%97%A5%E4%B8%80%E8%A8%80-%E4%BB%8A%E6%97%A5%E8%AF%97%E8%AF%8D"><span class="nav-number">2.15.</span> <span class="nav-text">添加每日一言&#x2F;今日诗词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E7%BD%AE%E9%A1%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.16.</span> <span class="nav-text">添加文章置顶功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%BD%92%E6%A1%A3%E9%A1%B5%E9%9D%A2%E6%96%87%E7%AB%A0%E6%95%B0%E9%87%8F"><span class="nav-number">2.17.</span> <span class="nav-text">修改归档页面文章数量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="丘山月夜"
+    <img class="site-author-image" itemprop="image" alt="Afauria"
       src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">丘山月夜</p>
+  <p class="site-author-name" itemprop="name">Afauria</p>
   <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -580,7 +582,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -668,13 +670,13 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">丘山月夜</span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">503k</span>
+    <span title="站点总字数">504k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

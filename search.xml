@@ -317,7 +317,6 @@
 </blockquote>
 <h2 id="背景和目标"><a href="#背景和目标" class="headerlink" title="背景和目标"></a>背景和目标</h2><p>目标：解决Flutter交叉编译Linux arm平台应用，在TV嵌入式设备上运行。</p>
 <p>任务：使用Flutter开发Linux TV应用，研究Flutter应用和引擎编译，搭建编译环境，Flutter嵌入层定制和适配。</p>
-<p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此上面编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
 <p>Flutter桌面应用编译只能在对应的平台上（Linux应用只能在Linux平台上编译），由于没有Linux电脑，无法编译和运行Linux程序（x86_64、arm、arm64）。参考<a href="https://flutter.cn/desktop">Flutter桌面支持</a></p>
 <blockquote>
 <p>解决思路：利用Docker Ubuntu容器环境。</p>
@@ -331,6 +330,7 @@
 <li>准备好环境之后可以方便的进行打包和移植</li>
 </ul>
 </blockquote>
+<p><strong>注：Flutter官方的Linux桌面嵌入层使用GTK图形库，因此下面编译出的Linux应用只适用于Linux GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层，修改编译工具链和sysroot</strong></p>
 <h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>环境：（下文不再赘述）</p>
 <ul>
 <li>主机（Host）：<ul>
@@ -460,7 +460,7 @@
 <p>编译器本身也是一个可执行程序，只能在目标平台运行。</p>
 </blockquote>
 <p>既然官方提供的引擎构件无法使用，那只能自己下载引擎源码编译生成gen_snapshot了。</p>
-<h2 id="交叉编译Flutter-arm64引擎"><a href="#交叉编译Flutter-arm64引擎" class="headerlink" title="交叉编译Flutter arm64引擎"></a>交叉编译Flutter arm64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></p>
+<h2 id="交叉编译Flutter-arm64引擎"><a href="#交叉编译Flutter-arm64引擎" class="headerlink" title="交叉编译Flutter arm64引擎"></a>交叉编译Flutter arm64引擎</h2><p>源码下载和Host编译参考<a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">Flutter源码下载和编译</a></p>
 <p>注：Flutter SDK中内置了引擎的<code>artifact</code>，如果自己编译引擎，需要确保Engine源码和Framework源码版本对应。本文使用2.8.1版本</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> flutter --version</span></span><br><span class="line">Flutter 2.8.1 • channel stable • https://github.com/flutter/flutter.git</span><br><span class="line">Framework • revision 77d935af4d (10 weeks ago) • 2021-12-16 08:37:33 -0800</span><br><span class="line">Engine • revision 890a5fca2e</span><br><span class="line">Tools • Dart 2.15.1</span><br></pre></td></tr></table></figure>
 
@@ -613,7 +613,7 @@
 
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>相关文章链接：</p>
 <ul>
-<li><a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/">Flutter架构和源码编译</a></li>
+<li><a href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">Flutter源码下载和编译</a></li>
 <li><a href="/2022/02/13/tool-2022-02-13-DockerGUI/">Linux容器运行GUI程序</a></li>
 <li><a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/">Yocto嵌入式平台运行Flutter应用</a></li>
 <li><a href="/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></li>
@@ -656,10 +656,7 @@
     <title>Linux容器运行GUI程序</title>
     <url>/2022/02/13/tool-2022-02-13-DockerGUI/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>研究Flutter跨平台应用在Linux上运行。由于没有Linux电脑，因此尝试使用Docker容器代替Linux主机环境，将编译好的Flutter应用放到Linux容器中运行。</p>
-<p>Flutter应用需要针对Linux x86_64、ARM64、ARM目标平台分别进行编译和交叉编译。</p>
-<p>最终目标：在Linux ARM嵌入式平台运行Flutter应用。</p>
-<p>本文只介绍如何在Linux容器中运行GUI程序，不介绍Flutter编译相关。只演示x86_64架构Linux容器，ARM和ARM64步骤相同。</p>
-<p><strong>注：Flutter官方的Linux嵌入层使用GTK图形库，因此编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层。</strong></p>
+<p>本文只介绍如何在Linux容器中运行GUI程序，不介绍Flutter编译相关。只演示x86_64架构Linux容器，arm和arm64步骤相同。</p>
 <h1 id="Mac上运行Docker-Linux-GUI程序"><a href="#Mac上运行Docker-Linux-GUI程序" class="headerlink" title="Mac上运行Docker Linux GUI程序"></a>Mac上运行Docker Linux GUI程序</h1><p>Linux本身不带图形界面，需要安装桌面环境。有两种方式X Window和VNC：</p>
 <ul>
 <li>X Window System本身支持网络传输，本地开启X Server服务，远程X Client应用通过ssh连接到本地。</li>
@@ -1734,78 +1731,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Flutter架构和源码编译</title>
-    <url>/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/</url>
-    <content><![CDATA[<h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
-<ol>
-<li><a href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
-<li><a href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
-</ol>
-<blockquote>
-<p>Flutter SDK默认会缓存官方构建好的engine artifact，打包到应用中</p>
-</blockquote>
-<p>架构如下：</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter架构.png" style="zoom: 33%;">
-
-<ol>
-<li><p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供营养程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
-</li>
-<li><p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
-</li>
-<li><p>框架层：提供Flutter应用开发的框架，包括响应式框架、布局、组件、基础库等</p>
-<ol>
-<li>foundation：提供上层常用的抽象和函数</li>
-<li>基本模块：如 <a href="https://api.flutter-io.cn/flutter/animation/animation-library.html">animation</a>、 <a href="https://api.flutter-io.cn/flutter/painting/painting-library.html">painting</a> 和 <a href="https://api.flutter-io.cn/flutter/gestures/gestures-library.html">gestures</a></li>
-<li>渲染层：提供布局操作的抽象，构建可渲染对象的树</li>
-<li>widgets层：和渲染层中的渲染对象对应，并提供响应式编程模型</li>
-<li>Material和Cupertino：封装widgets，实现Material和iOS设计规范</li>
-</ol>
-</li>
-<li><p>软件包：封装开发者常用的功能，分为普通包和插件包</p>
-<ol>
-<li>Packages：与平台无关。如http、路由导航、依赖管理、应用内支付、组件等</li>
-<li>Plugins：封装原生平台调用，如webview、camera等</li>
-</ol>
-</li>
-<li><p>应用层：APP主体或以模块的方式集成到原生应用中</p>
-</li>
-</ol>
-<blockquote>
-<p>Flutter界面构建、布局、合成、绘制都由自身完成，而不是转换为原生控件。Flutter引擎与平台无关，通过嵌入层ABI调用操作系统方法。</p>
-<p>应用启动时，嵌入层初始化Flutter引擎，获取UI和栅格化线程，创建Surface供Flutter写入</p>
-</blockquote>
-<h2 id="平台嵌入层"><a href="#平台嵌入层" class="headerlink" title="平台嵌入层"></a>平台嵌入层</h2><p>嵌入层是Flutter实现跨平台的核心。Flutter官方提供了Android、iOS、Windows、macOS、Linux、Fuchsia等平台嵌入层。</p>
-<p><strong>桌面应用需要在对应的平台上编译（见<a href="https://flutter.cn/desktop">Flutter桌面支持</a>）</strong>，暂不支持交叉编译，移动平台可以交叉编译，推荐使用macOS主机</p>
-<ul>
-<li>macOS支持Android和iOS的交叉编译</li>
-<li>Linux支持Android和Fuchsia的交叉编译，不支持iOS</li>
-<li>Windows不支持Android、Fuchsia或iOS交叉编译</li>
-</ul>
-<blockquote>
-<p>Linux x64主机交叉编译Linux arm64目标平台应用：参考<a href="https://github.com/flutter/flutter/issues/74929">issue</a>和<a href="https://docs.google.com/document/d/19tzWySgtgtTA99XQsjx5Pg0SFJeZKXyUlYavR0EXv8c/edit#">说明</a></p>
-</blockquote>
-<p>Flutter最早只支持Android、iOS跨平台、不支持桌面平台。为了移植到桌面，出现了一些自定义嵌入层的项目</p>
-<ul>
-<li><a href="https://github.com/go-flutter-desktop/go-flutter">go-flutter</a>：使用go语言和GLFW实现桌面平台支持。</li>
-<li><a href="https://github.com/google/flutter-desktop-embedding">Flutter Desktop Embedding</a>：已经合入到Flutter官方源码中</li>
-<li><a href="https://github.com/flutter/engine/tree/master/examples/glfw">Flutter官方GLFW案例</a>：使用GLFW渲染Flutter</li>
-</ul>
-<blockquote>
-<p>GLFW（Graphics Library Framework，图形库框架）：开源多平台的OpenGL框架，封装OpenGL调用API，用于创建窗口，渲染OpenGL、管理输入等。由C语言实现，GitHub上也有Go语言的实现等</p>
-</blockquote>
-<p>对于嵌入式系统，开发者可以创建自定义的嵌入层。案例：</p>
-<ul>
-<li>VNC风格的远程Flutter会话<a href="https://github.com/chinmaygarde/fluttercast">Flutter Cast</a></li>
-<li><a href="https://github.com/ardera/flutter-pi">树莓派嵌入层</a></li>
-<li><a href="https://github.com/toyota-connected/ivi-homescreen">Toyota嵌入层：ivi-homescreen</a></li>
-<li><a href="https://github.com/sony/flutter-embedded-linux">Sony嵌入层：flutter-embedded-linux</a>、<a href="https://github.com/sony/flutter-elinux">Sony扩展Flutter SDK：flutter_eLinux</a></li>
-<li><a href="https://github.com/meta-flutter/meta-flutter">基于Yocto构建的Flutter</a>：支持树莓派、sony、toyota等嵌入式系统构建</li>
-</ul>
-<h2 id="Web上的Flutter"><a href="#Web上的Flutter" class="headerlink" title="Web上的Flutter"></a>Web上的Flutter</h2><p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
-<p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/FlutterWeb架构.png" style="zoom: 33%;">
-
-<h1 id="SDK下载和编译"><a href="#SDK下载和编译" class="headerlink" title="SDK下载和编译"></a>SDK下载和编译</h1><p>目的：</p>
+    <title>Flutter源码下载和编译</title>
+    <url>/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<h1 id="SDK下载和编译"><a href="#SDK下载和编译" class="headerlink" title="SDK下载和编译"></a>SDK下载和编译</h1><p>目的：</p>
 <ol>
 <li>学习源码</li>
 <li>定制框架：如修改<code>flutter_tools</code>编译工具等</li>
@@ -1821,12 +1749,12 @@
 <li><p>检查环境：<code>flutter doctor</code></p>
 </li>
 <li><p>Android Studio打开<code>&#123;flutter_framework&#125;/packages/</code>下的项目，默认会当做Android工程，IDE提示<code>Dart SDK is not configured</code>或者<code>Dart support is not enabled for the module &#39;flutter_tools&#39;</code>，如下</p>
-<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png"></p>
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png"></p>
 </li>
 <li><p>配置Flutter工程：直接点击上图的<code>Open Dart Settings</code>或者打开<code>Prefereneces&gt;Language&gt;Dart/Flutter</code>。配置Dart SDK和Flutter SDK路径，对照下Flutter应用项目的配置即可。如下</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置DartSDK.png" style="zoom: 67%;">
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置DartSDK.png" style="zoom: 67%;">
 
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png" style="zoom:67%;"></li>
+<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png" style="zoom:67%;"></li>
 <li><p>配置完之后即可在IDE查看和修改源码</p>
 </li>
 <li><p>编译源码</p>
@@ -1860,7 +1788,7 @@
 <p>切换版本：默认获取master分支的版本，建议切换engine版本，与Flutter SDK保持一致，需要进入<code>src/flutter</code>目录执行以下命令</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> commitId使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%9E%B6%E6%9E%84%E5%92%8C%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
+<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
 <blockquote>
 <p>主机包含多个版本Dart SDK的时候。Dart编译前端、编译后端、以及Dart运行时的版本必须一致，否则会报错版本不匹配。建议切换engine版本，保持Dart SDK版本一致。否则需要进入对应路径下执行命令。</p>
 <p>详情参考<a href="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/">Dart的编译和执行</a></p>
@@ -1941,9 +1869,7 @@
 
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
 <ul>
-<li><a href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
 <li><a href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">Flutter Wiki官方文档</a></li>
-<li><a href="https://flutter.cn/desktop">Flutter桌面支持</a></li>
 </ul>
 <p>gclient使用可以参考<a href="https://www.cnblogs.com/xl2432/p/11596695.html">chromium开发工具–gclient</a>、<a href="https://keyou.github.io/blog/2017/11/02/gclient/">gclient 介绍</a></p>
 ]]></content>
@@ -2573,7 +2499,7 @@
       </tags>
   </entry>
   <entry>
-    <title>提问的智慧</title>
+    <title>《提问的智慧》</title>
     <url>/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/</url>
     <content><![CDATA[<p>//todo</p>
 <p>原文链接：<a href="http://linuxmafia.com/faq/Essays/smart-questions.html">http://linuxmafia.com/faq/Essays/smart-questions.html</a></p>
@@ -2587,6 +2513,153 @@
       </categories>
       <tags>
         <tag>阅读</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flutter简介</title>
+    <url>/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="Flutter简介"><a href="#Flutter简介" class="headerlink" title="Flutter简介"></a>Flutter简介</h1><p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
+<ul>
+<li>支持移动平台（Android、iOS），桌面平台（Windows、Linux、MacOS），Web平台（浏览器），其他嵌入式平台（如车载、IoT设备、树莓派等，需要自行扩展适配）</li>
+<li>支持多屏幕设备、折叠设备等</li>
+</ul>
+<p>Flutter SDK包含框架代码、脚手架、编译工具、调试工具和各种脚本等。</p>
+<p>Flutter只是一个框架，不是一门语言，Flutter使用了Dart语言，Flutter引擎中的嵌入层（UI渲染、输入输出、以及PlatformChannel等）使用了平台原生语言（如C++，Java等）。</p>
+<p>Flutter和Dart类比Android和Java的关系：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Flutter</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编程语言</td>
+<td>Dart</td>
+<td>Java、Kotlin</td>
+</tr>
+<tr>
+<td>编译器</td>
+<td>dart compile</td>
+<td>javac、dx</td>
+</tr>
+<tr>
+<td>应用构建工具</td>
+<td>flutter命令</td>
+<td>gradle命令</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Flutter Framework</td>
+<td>Android Framwork</td>
+</tr>
+<tr>
+<td>开发套件</td>
+<td>Flutter SDK</td>
+<td>Android SDK</td>
+</tr>
+<tr>
+<td>底层源码</td>
+<td>Flutter引擎源码</td>
+<td>AOSP系统源码</td>
+</tr>
+<tr>
+<td>源码管理工具</td>
+<td>gclient</td>
+<td>repo</td>
+</tr>
+<tr>
+<td>源码编译配置</td>
+<td>gn文件</td>
+<td>低版本mk、高版本bp文件</td>
+</tr>
+<tr>
+<td>源码编译工具</td>
+<td>ninja</td>
+<td>低版本make，高版本ninja</td>
+</tr>
+</tbody></table>
+<h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
+<ol>
+<li><a href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
+<li><a href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
+</ol>
+<blockquote>
+<p>Flutter SDK默认会缓存官方构建好的引擎artifact，打包到应用中</p>
+</blockquote>
+<p>架构如下：</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter架构.png" style="zoom: 33%;">
+
+<ol>
+<li><p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供应用程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
+</li>
+<li><p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
+</li>
+<li><p>框架层：提供Flutter应用开发的框架，包括响应式框架、布局、组件、基础库等</p>
+<ol>
+<li>foundation：提供上层常用的抽象和函数</li>
+<li>基本模块：如 <a href="https://api.flutter-io.cn/flutter/animation/animation-library.html">animation</a>、 <a href="https://api.flutter-io.cn/flutter/painting/painting-library.html">painting</a> 和 <a href="https://api.flutter-io.cn/flutter/gestures/gestures-library.html">gestures</a></li>
+<li>渲染层：提供布局操作的抽象，构建可渲染对象的树</li>
+<li>widgets层：和渲染层中的渲染对象对应，并提供响应式编程模型</li>
+<li>Material和Cupertino：封装widgets，实现Material和iOS设计规范</li>
+</ol>
+</li>
+<li><p>软件包：封装开发者常用的功能，分为普通包和插件包</p>
+<ol>
+<li>Packages：与平台无关。如http、路由导航、依赖管理、应用内支付、组件等</li>
+<li>Plugins：封装原生平台调用，如webview、camera等</li>
+</ol>
+</li>
+<li><p>应用层：Flutter应用、模块、插件等</p>
+</li>
+</ol>
+<blockquote>
+<p>Flutter界面构建、布局、合成、绘制都由自身完成，而不是转换为原生控件。Flutter引擎与平台无关，通过嵌入层ABI调用操作系统方法。</p>
+<p>应用启动时，嵌入层初始化Flutter引擎，获取UI和栅格化线程，创建Surface供Flutter写入</p>
+</blockquote>
+<h2 id="平台嵌入层"><a href="#平台嵌入层" class="headerlink" title="平台嵌入层"></a>平台嵌入层</h2><p>嵌入层是Flutter实现跨平台的核心。Flutter官方提供了Android、iOS、Windows、macOS、Linux、Fuchsia等平台嵌入层。</p>
+<p>对于其他嵌入式平台和系统，需要定制嵌入层。后面的文章会介绍。</p>
+<h2 id="Web上的Flutter"><a href="#Web上的Flutter" class="headerlink" title="Web上的Flutter"></a>Web上的Flutter</h2><p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
+<p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb架构.png" style="zoom: 33%;">
+
+<h1 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h1><ul>
+<li>统一管理：将原生工程作为Flutter工程的子工程。</li>
+<li>模块集成：Flutter工程作为原生工程的一个子模块，使用aar或者pod库的方式依赖。</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>单纯学会写Flutter应用很简单，事实上我也是这么入门的：2021年5月份用了一周左右看了<a href="https://book.flutterchina.club/">Flutter实战</a>，并且实战开发了WanAndroid的Demo。后续就直接上手开发项目，架构设计也不难，一套GetX框架用到底，大部分时候是在学GetX框架，然后自定义组件，写页面和业务等。</p>
+<p>学习的过程中也粗略的看了Flutter渲染流程、加载和运行原理、源码架构等文章，感觉一知半解，缺少系统性的学习和总结。刚好有需求做Flutter嵌入式平台的定制开发，涉及到一些进阶的知识，因此做一些整理，虽然对应用开发可能没什么帮助，但是也会有其他的收获和感悟。</p>
+<p>研究过程和思路如下：</p>
+<ol>
+<li>Flutter介绍和跨平台方案对比。</li>
+<li>Dart编译和执行原理，Dart源码编译：编译前端、编译后端。</li>
+<li>Flutter应用构建流程、构建产物分析。</li>
+<li>Flutter引擎源码分析和编译。</li>
+<li>Flutter引擎和应用交叉编译编译环境搭建（使用Docker）。</li>
+<li>Yocto系统编译，嵌入式平台调试。</li>
+<li>Linux图形系统介绍。</li>
+<li>Flutter嵌入层定制和适配。</li>
+<li>Linux窗口管理器、桌面应用开发和运行。</li>
+<li>源代码管理、CI搭建和部署。</li>
+<li>Flutter应用加载流程、渲染原理。</li>
+<li>Flutter应用开发，架构设计、产物裁剪。</li>
+<li>Flutter插件开发，Dart调C接口：跨进程、FFI接口</li>
+</ol>
+<p><img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png"></p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://flutterchina.club/">Flutter中文网</a></li>
+<li><a href="https://book.flutterchina.club/">Flutter实战</a></li>
+<li><a href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
+<li><a href="https://flutter.cn/desktop">Flutter桌面支持</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
       </tags>
   </entry>
   <entry>
@@ -2705,7 +2778,7 @@
 <tr>
 <td>支持平台</td>
 <td>Android、iOS</td>
-<td>Android、iOS、Web、桌面、Fuchisa</td>
+<td>Android、iOS、Web、桌面、Fuchsia</td>
 </tr>
 <tr>
 <td>包体积</td>
@@ -7453,6 +7526,33 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>Markdown生成目录结构树</title>
+    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
+    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
+<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
+<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
+<blockquote>
+<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
+<p>npm帮我们创建了两个cmd文件</p>
+</blockquote>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NPM笔记</title>
     <url>/2021/04/12/note-2021-04-12-NPM/</url>
     <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
@@ -7486,33 +7586,6 @@ end</pre>
         <category>笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown生成目录结构树</title>
-    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
-    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
-<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
-<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
-<blockquote>
-<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
-<p>npm帮我们创建了两个cmd文件</p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -7723,7 +7796,7 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>爱丽丝漫游奇境记【转】</title>
+    <title>《爱丽丝漫游奇境记》【转】</title>
     <url>/2020/11/20/reader-2020-11-20-%E7%88%B1%E4%B8%BD%E4%B8%9D%E6%BC%AB%E6%B8%B8%E5%A5%87%E5%A2%83%E8%AE%B0%E3%80%90%E8%BD%AC%E3%80%91/</url>
     <content><![CDATA[<h1 id="爱丽丝漫游奇境记【转】"><a href="#爱丽丝漫游奇境记【转】" class="headerlink" title="爱丽丝漫游奇境记【转】"></a>爱丽丝漫游奇境记【转】</h1><p>红桃皇后其实是个长得头特别大，人特别丑，完全得不到老爸老妈优秀遗传的长女，天天忍受长得漂亮得尽人心的做作妹妹，得不到人爱的可怜姑娘。 　　<br>　　她乖戾的性格下，其实就只是一个可爱傻女孩善良率直的心。<br>　　说她善良。你看爱丽丝说她因为长太高大被人当成怪人的时候，马上引来她的同情。别人不欢迎你，我欢迎。她身边的宠臣,一个两个不是这个鼻子长歪了,就是那个肚子特别大。<br>　　她就是同情和她自身一样，因为某样东西特别大（头），而遭到他人歧视的人。<br>　　她统治了wonderland，也没有将她做作妹妹怎样。<br>　　她亲爱的美丽妹妹还是有座开满鲜花的美丽宫殿以及一群忠心的白色骑士。<br>　　而她妹妹重获政权之后，却要把她流放到一个没有人烟的地方，而且不允许任何人和她说话。这对害怕孤独的红桃皇后来说，比杀了她更致命。 　　<br>　　可怕比可爱更强。<br>　　可以的情况下，谁想变成可怕的那个？<br>　　人人都喜欢不是更好吗？<br>　　可是万一你像红桃皇后那样顶着一个会被嘲笑，不具好感的头怎么办？ 　　<br>　　所以我觉得红桃皇后才真正像一个皇后，而白皇后充其量是个无能公主而已。<br>　　她坚强有魄力。<br>　　她心里的无助和害怕也只讲给骑士听而已。当然遗憾的是，这是个无情的迎合的家伙。<br>　　红桃皇后对外有多么坚强啊，以至于那么地讨人厌。<br>　　请看白皇后，遇到困难，只是指望一个外来者爱丽丝帮她砍掉恶龙。<br>　　明明自己有能力而不行动，以一个誓言为借口。<br>　　谁又想去杀生？<br>　　爱丽丝也已说过，自己坚决不杀生。<br>　　捂着鼻子取药材。<br>　　明明自己调药的时候，拿着死人油脂调得轻柔而快乐。<br>　　这样装模作样而伪善皇后，我一点都不喜欢。<br>　　相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍到他的头。真实而可爱多了。 　　<br>　　有天生的美丽，和优雅善良的举止少精弱精 ，自然更讨人喜欢。妹妹是这样获得国土大部分人的支持的。<br>　　而红桃皇后呢?<br>　　后面我发现效忠她的都是些满脸凶相的可怕怪兽之后,就想,也是,同类人才能理解同类人的寂寞。<br>　　其实这种人才特别容易为对向他们和善的人感动，甚至赴汤蹈火。<br>　　你看那只掌管钥匙的恶兽，只是因为爱丽丝还给了他眼睛。<br>　　也就甘心成为了她的坐骑。 　　<br>　　这些看似的恶人，其实就是缺乏爱的孩子而已。<br>　　内心异常的善良。<br>　　最怕别人欺骗她，背叛她，所以只好以一脸凶恶来保护自己。 　　<br>　　不过，童话是童话，红桃皇后扮演恶人，自然要输的。 </p>
 ]]></content>
@@ -9782,7 +9855,7 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>青年的楷模 学习的榜样——读《习近平的七年知青岁月》</title>
+    <title>青年的楷模 学习的榜样——读《习近平的七年知青岁月》【转】</title>
     <url>/2018/11/02/reader-2017-10-01-PartyArticleStudy/</url>
     <content><![CDATA[ <center>
      <font size="5">青年的楷模 学习的榜样——读《习近平的七年知青岁月》</font><br>
@@ -9790,7 +9863,7 @@ dispatchMessage-->判断是否是通知消息
  </center>
 
 <p>​    2013年五四青年节，习近平总书记在同各界优秀青年代表座谈时，讲了一段极有文采、极富人生哲理的话：“青年朋友们，人的一生只有一次青春。现在，青春是用来奋斗的；将来，青春是用来回忆的……青年时代，选择吃苦也就选择了收获，选择奉献也就选择了高尚。青年时期多经历一点摔打、挫折、考验，有利于走好一生的路。要历练宠辱不惊的心理素质，坚定百折不挠的进取意志，保持乐观向上的精神状态，变挫折为动力，用从挫折中吸取的教训启迪人生，使人生获得升华和超越。”</p>
-<p>　　当时，我听到这段话，第一反应就是青年喜欢听、听得进，肯定会“火”。果不其然，总书记的讲话一经全文公开发表，这段话就在青年中引起强烈共鸣，激励着无数青年发出了“奋斗的青春最美丽”的铮铮誓言。现在，读了《习近平的七年知青岁月》（以下简称《岁月》），了解了总书记青年时期的点点滴滴，我们再来回味和咀嚼这段话，更有一种跨越历史、直击人心的触动与震撼，更能体会到总书记在讲这一番话时的语重心长、殷殷嘱托。我理解，总书记这段话是说给广大青年听的，同时每一个字又是对自己知青岁月的深沉感悟。在那段日子里，青年习近平在艰难困苦中经历摔打、挫折、考验，做到了宠辱不惊、百折不挠、乐观向上，真正实现了人生的升华和超越。透过七年知青岁月，我们更加深刻地感受到了总书记“五四”寄语背后那股震撼人心的力量，这就是“知行合一”所带来的极其强大的心灵感染力、理论说服力、实践穿透力。这种震撼，吸引着我、同样也吸引着广大青年走进总书记的七年知青岁月，感悟总书记的青春奋斗故事给我们带来的深刻启示。《岁月》一经出版发行，就在广大团干部和团员青年中自发形成了读《岁月》、话理想、谈奋斗的浓厚氛围，形成了向青年习近平学习、向习近平总书记看齐的高度自觉。这是人民群众的呼声，这是人民领袖的魅力。</p>
+<p>​    当时，我听到这段话，第一反应就是青年喜欢听、听得进，肯定会“火”。果不其然，总书记的讲话一经全文公开发表，这段话就在青年中引起强烈共鸣，激励着无数青年发出了“奋斗的青春最美丽”的铮铮誓言。现在，读了《习近平的七年知青岁月》（以下简称《岁月》），了解了总书记青年时期的点点滴滴，我们再来回味和咀嚼这段话，更有一种跨越历史、直击人心的触动与震撼，更能体会到总书记在讲这一番话时的语重心长、殷殷嘱托。我理解，总书记这段话是说给广大青年听的，同时每一个字又是对自己知青岁月的深沉感悟。在那段日子里，青年习近平在艰难困苦中经历摔打、挫折、考验，做到了宠辱不惊、百折不挠、乐观向上，真正实现了人生的升华和超越。透过七年知青岁月，我们更加深刻地感受到了总书记“五四”寄语背后那股震撼人心的力量，这就是“知行合一”所带来的极其强大的心灵感染力、理论说服力、实践穿透力。这种震撼，吸引着我、同样也吸引着广大青年走进总书记的七年知青岁月，感悟总书记的青春奋斗故事给我们带来的深刻启示。《岁月》一经出版发行，就在广大团干部和团员青年中自发形成了读《岁月》、话理想、谈奋斗的浓厚氛围，形成了向青年习近平学习、向习近平总书记看齐的高度自觉。这是人民群众的呼声，这是人民领袖的魅力。</p>
 <p>　　一、习近平总书记的七年知青岁月是青年一代励志成才的生动教材</p>
 <p>　　习近平总书记寄语青年：“人生的扣子从一开始就要扣好。”总书记的七年知青岁月就是对这句话的最好注脚。对于每一个人来讲，扣人生第一粒扣子时的外部环境是很不一样的。有人可以在亲人的帮助下扣，有人可以在阳光下、灯光下扣，而总书记当初是在黑暗中摸索，在“苦其心志、劳其筋骨、饿其体肤”的环境下，艰难而又准确地扣好这人生第一粒扣子的。惟其艰难，更显伟大，更能够给当代青年以丰富的教益与启迪。</p>
 <p>　　青年一代向总书记学习，就是要坚定听党话、跟党走的理想信念。习近平总书记指出，广大团员青年坚定跟党走，就是初心。不忘这个初心，是我国广大青年的政治选择，也是我国广大青年的人生航向。总书记曾经说过：“人生的道路要靠自己来选择。如何选择一条正确的道路，关键是要有坚定的理想信念。否则，环境再好照样会走错路。”总书记青年时期先后写了8份入团申请书、10份入党申请书，即便是在个人处境极为艰难的条件下，始终没有对党产生过怀疑和动摇。这就为我们生动诠释了什么叫矢志不渝、什么叫理想坚定，为广大青年树立了坚守初心不动摇的学习楷模。党的十八大以来，习近平总书记反复强调理想信念是精神之钙；在谈到青年成长道路问题时，每次必讲理想，而且都是第一位的要求。广大青年要把总书记的要求和他青年时代的实践结合起来学习，把理想信念建立在对科学理论的理性认同上，建立在对历史规律的正确认识上，建立在对基本国情的准确把握上，真正牢固树立为实现中华民族伟大复兴中国梦而奋斗的远大理想，坚定跟党走中国特色社会主义道路的坚定信念。</p>
@@ -11442,7 +11515,7 @@ dispatchMessage-->判断是否是通知消息
 
 <ol start="2">
 <li>在需要置顶的文章头部中添加<code>top: true</code></li>
-<li>配置置顶图标：在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>中添加下面代码</li>
+<li>配置置顶图标：修改<code>next/layout/_macro/post.swig</code>文件，在<code>&lt;div class=&quot;post-meta&quot;&gt;</code>中添加下面代码</li>
 </ol>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;post-meta&quot;</span>&gt;</span></span><br><span class="line">&#123;% if post.top %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;post-meta-item&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;far fa-thumb-tack&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color:#7D26CD&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">7D26CD</span>&gt;</span>置顶<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line">  <span class="comment">&lt;!--省略..--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -11451,6 +11524,8 @@ dispatchMessage-->判断是否是通知消息
 <p>由于<code>next</code>主题使用的<code>fontawesome</code>图标只有<code>all.min.css</code>，不包含<code>fa-thumb-tack</code>（图钉）图标。需要手动下载<code>fontawesome</code>图标，替换<code>next/source/lib/font-awesome</code>下的文件夹。</p>
 <p>这里就不引入了，换成<code>fa-fire</code>（火）或者<code>fa-bolt</code>（闪电）图标，能看懂就行</p>
 </blockquote>
+<h2 id="修改归档页面文章数量"><a href="#修改归档页面文章数量" class="headerlink" title="修改归档页面文章数量"></a>修改归档页面文章数量</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-generator-index</span><br><span class="line">npm install --save hexo-generator-archive</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改站点配置文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 首页配置</span></span><br><span class="line">index_generator:</span><br><span class="line">  path: &#x27;&#x27;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by: -date</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 归档页面配置</span></span><br><span class="line">archive_generator:</span><br><span class="line">  per_page: 30</span><br><span class="line">  order_by: -date</span><br></pre></td></tr></table></figure>
+
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ol>
 <li><a href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a></li>
 <li><a href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a></li>
@@ -12479,6 +12554,66 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/tool-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+<li><code>git count-objects -vH</code>：查看仓库大小</li>
+<li><code>git gc</code>：Git垃圾回收</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
+<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
+<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>快捷键笔记</title>
     <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
     <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
@@ -12594,66 +12729,6 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/tool-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-<li><code>git count-objects -vH</code>：查看仓库大小</li>
-<li><code>git gc</code>：Git垃圾回收</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
-<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
-<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -12842,74 +12917,6 @@ dispatchMessage-->判断是否是通知消息
   </entry>
   <entry>
     <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-Mina/</url>
-    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
-<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
-<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
-<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
-</ol>
-<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
-<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
-<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
-<li>长连接和短连接是相对的：但都是TCP连接</li>
-<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
-<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
-<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
-<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
-</ol>
-<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
-<p>除了mina框架外，还有netty框架。</p>
-<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
-<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
-<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
-<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
-<ol>
-<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
-<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
-</li>
-<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
-</li>
-</ol>
-<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
-<ol>
-<li>首先创建IoService</li>
-<li>添加过滤器/拦截器IoFilterChain</li>
-<li>实现IoHandler对数据进行业务逻辑处理</li>
-</ol>
-<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
-<p>Binaries是jar包，Sources是源码</p>
-<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
-<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
-<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
-<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
-<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
-<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
-<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网络编程和Mina入门</title>
     <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
     <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
 <li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
@@ -12949,6 +12956,74 @@ dispatchMessage-->判断是否是通知消息
 <h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
 <p>Binaries是jar包，Sources是源码</p>
 <p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina02.png" alt="导入包"></p>
+<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
+<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
+<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
+<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
+<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
+<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+        <tag>网络编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络编程和Mina入门</title>
+    <url>/2018/07/23/tech-2018-07-23-Mina/</url>
+    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
+<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
+<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
+<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
+</ol>
+<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
+<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
+<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
+<li>长连接和短连接是相对的：但都是TCP连接</li>
+<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
+<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
+<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
+<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
+</ol>
+<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
+<p>除了mina框架外，还有netty框架。</p>
+<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
+<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
+<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
+<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
+<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
+<ol>
+<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
+<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
+</li>
+<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
+</li>
+</ol>
+<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
+<ol>
+<li>首先创建IoService</li>
+<li>添加过滤器/拦截器IoFilterChain</li>
+<li>实现IoHandler对数据进行业务逻辑处理</li>
+</ol>
+<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
+<p>Binaries是jar包，Sources是源码</p>
+<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
 <h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -13118,6 +13193,201 @@ dispatchMessage-->判断是否是通知消息
 </ul>
 <p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
 <p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>道</title>
+    <url>/2018/04/14/personal-2018-04-14-Think/</url>
+    <content><![CDATA[<ul>
+<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
+</li>
+<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
+</li>
+<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
+<ul>
+<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
+</ul>
+</li>
+<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
+</li>
+<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
+</li>
+<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
+</li>
+<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
+</li>
+<li><p>忍一时越想越气，退一步越想越亏</p>
+<ul>
+<li>同是射手（王者荣耀）</li>
+</ul>
+</li>
+<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
+<ul>
+<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
+</ul>
+</li>
+<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
+</li>
+<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
+</li>
+<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
+</li>
+<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
+</li>
+<li><p>自从用了网易云，我把《故事会》退订了</p>
+</li>
+<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
+</li>
+<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
+</li>
+<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
+</li>
+<li><p>心比长相好，懂比爱重要。</p>
+</li>
+<li><p>我从来都不喜欢分享我的朋友给别人</p>
+</li>
+<li><p>爱笑的男孩子运气不会太差</p>
+<ul>
+<li>因为运气差的男孩子笑不出来。</li>
+</ul>
+</li>
+<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
+</li>
+<li><p>买名表算不算缴智商税</p>
+<ul>
+<li>你要是戴着名表去忽悠人，那不是智商税</li>
+<li>你要是被忽悠着去买名表，那就是智商税</li>
+<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
+</ul>
+</li>
+<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
+</li>
+<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
+</li>
+<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
+<ul>
+<li>我tm在上班的时候，他们不是在睡觉吗？</li>
+</ul>
+</li>
+<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
+</li>
+<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
+</li>
+<li><p>这个世上没有感同身受，只有冷暖自知</p>
+</li>
+<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
+</li>
+<li><p>你要的是幸福，还是对错</p>
+</li>
+<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
+</li>
+<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
+</li>
+<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
+</li>
+<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
+</li>
+<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
+</li>
+<li><p>我养了两盆一帆风顺，总是王了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
+</li>
+<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
+</li>
+<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
+</li>
+<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
+</li>
+<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
+</li>
+<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
+</li>
+<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
+</li>
+<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
+</li>
+<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
+</li>
+<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
+</li>
+<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
+</li>
+<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
+</li>
+<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
+<ul>
+<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
+</li>
+<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
+<ol start="2">
+<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
+<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
+<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
+<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
+</ol>
+</li>
+<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
+</li>
+<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
         <category>其他</category>
@@ -13405,192 +13675,360 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>道</title>
-    <url>/2018/04/14/personal-2018-04-14-Think/</url>
-    <content><![CDATA[<ul>
-<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
+    <title>独角戏</title>
+    <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
+    <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
+<li><p>你的女朋友有缺点吗？ ：有，像星星一样的多。 ：那你的女朋友有优点吗？ ：有，像太阳一样的少。 ：那你为什么还喜欢她？ ：因为太阳一出现，星星就不见了。</p>
 </li>
-<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
-</li>
-<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
+<li><p>女孩终于鼓足勇气向男孩表白，害羞地问男孩：“你喜欢我吗？” 男孩说：“不喜欢。” 女孩伤心欲绝，转身要走。 这时男孩叫住了女孩，对她说：“傻瓜，你还没问我爱不爱你呀。” 女孩破涕为笑：“那你爱不爱我？” “不爱。”。</p>
 <ul>
-<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
+<li>男孩：你怎么不问问我是不是真心的 女孩：那你是真心的吗 男孩：当然啊不是啊</li>
 </ul>
 </li>
-<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
+<li><p>如果有一天我说想你了，不是说这天我想你了，是说这天我憋不住了。</p>
 </li>
-<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
+<li><p>听到这音乐，第一个通宵就是在魔法密林刷级</p>
 </li>
-<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
+<li><p>与其说是孤独 不如坦诚的讲自己没有全心全意的与人相处 老友没有再联系 新朋友不去信任 对亲密的人说不出口 只能从陌生人身上寻找慰藉 反正也没有人知道我是谁 去哪里 跑向谁</p>
 </li>
-<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
+<li><p>若你身边无爱，祝你卡里有钱。</p>
 </li>
-<li><p>忍一时越想越气，退一步越想越亏</p>
+<li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后地你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也会是。</p>
+</li>
+<li><p>我一岁的时候五岁，你年龄是我的五倍。我四岁的时候你八岁，你年龄是我的两倍。我十六岁的时候你二十岁，你的年龄是我的1.25倍。虽然我知道我永远无法追上你，但是我一生都在向你靠近。</p>
+</li>
+<li><p>今天的你对我爱答不理，明天的我还来找你</p>
+</li>
+<li><p>她点了一个赞，你脑补出一出戏，她更新一条动态，你就像在做阅读理解，她坐在你身边，却隔着一条银河，她什么都没做，却成了你心里地最重要。</p>
+</li>
+<li><p>你好，同城</p>
 <ul>
-<li>同是射手（王者荣耀）</li>
+<li>数学里有个温柔霸道的词： 有且仅有 ； </li>
+<li>还有个孤独的词： 假设存在； </li>
+<li>还有个悲凉的词： 充分不必要； </li>
+<li>还有一种无奈： 无限接近，永不等于；</li>
+<li>最妄想的词儿： 令a和b相等；</li>
+<li>还有个孤独傲慢的词： 无解； </li>
+<li>还有个让人痛彻心扉的的字———略 </li>
 </ul>
 </li>
-<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
+<li><p>相爱的人总喜欢说反话，却又渴望对方能读懂自己的心。有点像是两个人的一场美梦，彼此都害怕自己身边的人已经睡醒远去，自己还在原地做梦，所以不断的试探考验，但是如果两人都执着的要考验对方是否醒了，那两个人还会有一起做梦的可能吗？林佳和孟云都生怕自己是醒的晚被抛弃的那个，所以明明还爱着，两个人却都急匆匆地起身离开了。</p>
+</li>
+<li><p>初见是惊鸿一瞥，南柯一梦是你。等待是山重水复，怦然心动是你。相遇是柳暗花明，如梦初醒是你。重逢是始料未及，别来无恙是你。我喜欢你，依旧是你。</p>
+</li>
+<li><p>不忘人恩，不念人过。 不思人非，不计人怨。</p>
+</li>
+<li><p>我可以单身很久，但恋爱一定要和爱的人谈。</p>
+</li>
+<li><p>单是相遇便花光了我所有运气。</p>
+</li>
+<li><p>十年前，我有过这样一个手机，它最大容量只能存储两百条短信。每当存满了，都要精挑细选地删除我的，留住她的。那时候我多想有一个可以存储五百条短信的手机。而如今，我有了一个能无限存储短信的手机。却再也找不到一个能和我聊两百条短信的人了。</p>
 <ul>
-<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
+<li>因为现在都用QQ和微信了。</li>
 </ul>
 </li>
-<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
+<li><p>爱一个人，始于颜值，陷于才华，痴于肉体，迷于声色，久于性格，终于人品。</p>
 </li>
-<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
+<li><p>用王家卫的台词来说，今天是我们分开的第847天，两年多的时间里，我没有爱过谁，我的手在离开你之后没有被谁牵过，我的嘴在你离开之后也没有被谁亲过，闭上眼睛，我还能感受到你的手你的唇，就离开那么一会儿，我以为我一睁开眼睛，我一叫你，你就回来了。</p>
 </li>
-<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
+<li><p>我自己都如此涼薄 拿什麼去溫暖別人。</p>
 </li>
-<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
+<li><p>你也不可能一直帮我 我怎么会不知道</p>
 </li>
-<li><p>自从用了网易云，我把《故事会》退订了</p>
+<li><p>你可以把一个老实人教会浪漫，但你不可能把一个花心的人永远束心</p>
 </li>
-<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
+<li><p>如果有人给你发了下雪的视频，你应该回复她我也想你了，因为春赏百花冬观雪，醒亦念卿，梦亦念卿</p>
 </li>
-<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
+<li><p>心有良人，不言于口，不形于表，亦不掩之，直言不讳，拒之坦然，得之惜之。 存人心系，大在长貌，小在言行，亦然品性，遇此之形，不急于言，拒人应礼，应人有度。</p>
 </li>
-<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
+<li><p>孟婆啊，如果你遇到我的妈妈，你就在她的碗里多放几块糖，她这辈子吃的苦太多了，下辈子让她吃甜的吧，把苦的放在我的碗里把，我不想让她再吃这么多的苦，我会心疼的</p>
 </li>
-<li><p>心比长相好，懂比爱重要。</p>
+<li><p>有没有人跟我一样？打开QQ发现没有聊天的人，于是点开看点，看一看，笑一笑，感动一下？你好陌生人，愿你天黑有灯，下雨有伞，路上有良人相伴，明天太阳依然会升起，请你不要停步，如果可以加个好友，我愿意陪你聊天。</p>
 </li>
-<li><p>我从来都不喜欢分享我的朋友给别人</p>
+<li><p>无人与我立黄昏，无人问我粥可温，无人怜我悲与伤，无人分我乐与欢</p>
 </li>
-<li><p>爱笑的男孩子运气不会太差</p>
+<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你</p>
+</li>
+<li><p>女：我结婚的时候你会来吗？</p>
 <ul>
-<li>因为运气差的男孩子笑不出来。</li>
+<li>男：那我劫婚，你会跟我走吗？</li>
+<li>世界上最悲哀的事莫过于此，他开心幸福难过的模样你都见过，但唯独你没见过她属于你的样子</li>
 </ul>
 </li>
-<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
+<li><p>自己喜欢的人在别人怀里，我能做什么，我能说什么，一个男人的悲剧在于如果他失败了，他不能将事情与人说，只能将愤怒屈辱不甘埋在心里</p>
 </li>
-<li><p>买名表算不算缴智商税</p>
+<li><p>坐过最贵的“车”是爸爸的肩膀，住过最贵的“房子”是妈妈的肚子。出生时，我哭了，你们笑了；结婚时，我笑了，你们哭了。我成了你们时才知你们为何哭，为何笑</p>
+</li>
+<li><p>我很想恋爱，但不是因为恋爱才恋爱，我想因为那个人是你，才想恋爱，所以你没出现，我也没恋爱。</p>
+</li>
+<li><p>我喜欢你，像风走了八千里，不问归期。我喜欢你，像柳动蝉鸣，日落潮汐，不能自已。我喜欢你，像云漂泊九万里，不曾歇息。我喜欢你，像日落前洒下的余晖，不忍离去。我喜欢你，像太阳升了落去，无论朝夕。</p>
 <ul>
-<li>你要是戴着名表去忽悠人，那不是智商税</li>
-<li>你要是被忽悠着去买名表，那就是智商税</li>
-<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
+<li>这句话运用排比的句式，同时也运用了比喻，句式整齐，节奏明确，真挚表达了自己的喜爱、仰慕之情。语言生动形象，读起来朗朗上口。</li>
 </ul>
 </li>
-<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
+<li><p>聚在一起，成型，扭曲，缠绕，有时候又还原，断裂，再连接，这就是结，就是时间。——你的名字</p>
 </li>
-<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
-</li>
-<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
+<li><p>刘涛：我一直不知道陈奕迅十年中的第一句“如果那两个字没有颤抖，我不会发现我难受”是哪两个字</p>
 <ul>
-<li>我tm在上班的时候，他们不是在睡觉吗？</li>
+<li>好胖，因为我不会发现我难瘦</li>
+<li>“如果”</li>
+<li>是“好的”这两个字，林夕在节目中说过的</li>
 </ul>
 </li>
-<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
-</li>
-<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
-</li>
-<li><p>这个世上没有感同身受，只有冷暖自知</p>
-</li>
-<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
-</li>
-<li><p>你要的是幸福，还是对错</p>
-</li>
-<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
-</li>
-<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
-</li>
-<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
-</li>
-<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
-</li>
-<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
-</li>
-<li><p>我养了两盆一帆风顺，总是王了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
-</li>
-<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
-</li>
-<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
-</li>
-<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
-</li>
-<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
-</li>
-<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
-</li>
-<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
-</li>
-<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
-</li>
-<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
-</li>
-<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
-</li>
-<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
-</li>
-<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
-</li>
-<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
+<li><p>我见青山多妩媚，料青山见我应如是。</p>
 <ul>
-<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
+<li>我见众生皆草木，唯你是青山</li>
+<li>众生见我皆草木，唯你视我如青山</li>
 </ul>
 </li>
-</ul>
+<li><p>你是目前为止我碰到的唯一一个我追不到还会不开心的人，事情还是一样地在重复，我喜欢你的时候，你是一切，我不喜欢你了，你就什么都不是了。以前的我，也许会放大你的缺点来让自己迅速忘记，然而现在的自己已然可以将大部分错误都归到自己身上了。</p>
+</li>
+<li><p>我感觉从小到大我和朋友的相处总是会出现问题，一开始我都觉得是他们不好，现在想想其实因为是我吧，因为是我所以总会出现问题，有时候也控制不住自己莫名的情绪，正常人际交往都磕磕绊绊，哪还敢想两个人长时间磨合忍让，我也还是适合一个人呆着，至少情绪过后可以与自己和解。</p>
+</li>
+<li><p>像我这种人，不适合谈恋爱，更不适合结婚。我的情绪不太稳定，又敏感，想的太多，总是揣测对方的心意，然后又一遍遍的想是不是自己哪里出了问题。我也不擅长沟通，不知道怎么跟一个朝夕相处的人好好处理遇到的分歧和问题。我想来想去，还是独自生活更符合天性，也不会害人害己。</p>
+</li>
+<li><p>总会有大概合适的人。一切的事情自有道理吧。</p>
+</li>
+<li><p>当我说出“永远爱你”的时候，我的意思是：希望你永远都被人爱，是不是我不重要。</p>
+</li>
+<li><p>我其实很害怕，你会遇到一个人，可以替代我，代替我对你的那份喜欢，我虽然是独一无二的，可别人也是。</p>
+</li>
+<li><p>我想你一定在找文案吧。送你一句：人间忽晚，山河已秋。如果不喜欢，那就看开头的三个字吧。</p>
+</li>
+<li><p>既然琴瑟起，何以笙箫默。</p>
+</li>
+<li><p>小学时，想和喜欢的人同桌</p>
 <ul>
-<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
-</li>
-<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
-<ol start="2">
-<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
-<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
-<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
-<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
-</ol>
-</li>
-<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
-</li>
-<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
+<li>初中时，想和喜欢的人同班</li>
+<li>高中时，想和喜欢的人同校</li>
+<li>工作时，想和喜欢的人同城</li>
+<li>年老时，想和喜欢的人同一个世界</li>
 </ul>
 </li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+<li><p>叮当陪了大雄80年，<br>在大雄临死前，<br>他对叮当说:<br>“我走之后你就回到属于你的地方吧！”<br>叮当同意了！<br>大雄死后…<br>叮当用时光机回到了80年前，<br>对小时候的大雄说:<br>“大雄你好，我叫叮当。” 每次看到这个段子都好感动，<br>—–人生若只如初见！<br>朋友也好，爱人也罢，如果累了，我们就回到第一天见面的时候…     我想重新认识你 从你叫什么名字开始。</p>
+</li>
+<li><p>汤姆：我这一生只抓你这一只老鼠，说到做到</p>
+<ul>
+<li>其实汤姆不是不会抓老鼠，只是不会抓杰瑞</li>
 </ul>
 </li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
+<li><p>祝你三冬冷暖有人知，祝你头发长长，祝你狂吃不胖，祝你不败给感情，祝你嫁给爱情</p>
+</li>
+<li><p>愿你天黑有灯，下雨有伞，终生有人陪伴</p>
+</li>
+<li><p>那些翻着评论，却不评论的人，或许才是真的孤独寂寞的人，路过的陌生人，愿你贪吃不胖，愿你懒惰不丑，愿你的深情不被辜负，愿你的余生都有人</p>
+</li>
+<li><p>尝尽世间绚烂，难补一生心酸</p>
+</li>
+<li><p>过分善良就是愚蠢，过分心软就是放任，过分宽容就是纵容。 你可以做一个老实人，但你不能蠢到相信所有人。</p>
+</li>
+<li><p>一生一世一双人，半醉半醒半浮生</p>
+</li>
+<li><p>一生所寻，不过是最初的自己，愿你走出半生，归来仍是少年。</p>
+</li>
+<li><p>平生不会相思，才会相思，便害相思。</p>
+</li>
+<li><p>群处守嘴，独处守心。</p>
+</li>
+<li><p>最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。</p>
+</li>
+<li><p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
+</li>
+<li><p>不为往事扰，余生只愿笑</p>
+</li>
+<li><p>因为到最后你会发现，一个人的愚蠢不是几句话就能纠正的，谁也无法阻止智障坑人，正如无法阻止死神上门</p>
+</li>
+<li><p>茕茕白兔，东走西顾，衣不如新，人不如故</p>
+</li>
+<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！</p>
+<p>你好，最熟悉的陌生人</p>
+</li>
+<li><p>婚姻就是吵架冲出门以后，回来顺便买了个菜。</p>
+</li>
+<li><p>你知道吗，七年并不能忘记一个人。但一个旧细胞死亡新的细胞诞生，周围的旧细胞就会告诉这个新来的：主人之前是怎样怎样爱一个人的，就这样，即使七年后你的身体里都是新的细胞，但是他们都知道你旧的故事</p>
+</li>
+<li><p>从此无心爱良夜，任他明月下西楼</p>
+</li>
+<li><p>据说强迫症的人听歌有两种方式，一是一首单曲不断循环播放，直到听得想吐，二是随机播放，但会不断切歌。</p>
+</li>
+<li><p>七月有风八月有雨，九月会不会有你。</p>
+</li>
+<li><p>很想跟你借一个未来，有你全部的温情和热爱。</p>
+</li>
+<li><p>你在别人眼里可能平凡普通，但你一直是我自己唯一的信仰。</p>
+</li>
+<li><p>如果有一天你决定从我的生命中离开，请不要不告而别，至少好好的说一声再见。</p>
+</li>
+<li><p>其实没有别的什么能真正伤害你，唯一能伤害你的 是你的在意。</p>
+</li>
+<li><p>我以为，爱情可以填满我们心目中的遗憾。没想到，制造遗憾的偏偏就是爱情。</p>
+</li>
+<li><p>往后余生，洗碗是我，拖地是我，宠你也是我。</p>
+</li>
+<li><p>你可以帮我洗个东西吗？洗什么？喜欢我。</p>
+</li>
+<li><p>如果时间能重来，遇见你的瞬间，我还是会义无反顾。</p>
+</li>
+<li><p>遇上一个喜欢自己的人，不是什么容易的事，来日方长，你只是刚好错过一个我。</p>
+</li>
+<li><p>故事很长，我长话短说，我喜欢你。</p>
+</li>
+<li><p>因为爱，全世界都是你，喜是你悲也是你。</p>
+</li>
+<li><p>爱总是很美丽，结束的没道理。</p>
+</li>
+<li><p>曾经我一个人在世上流浪，遇见你以后，在你眼里找到了故乡。</p>
+</li>
+<li><p>我不清楚未来的方向，那大概是有你的地方。</p>
+</li>
+<li><p>怕无归期，怕空欢喜，怕来者不是你。</p>
+</li>
+<li><p>总有人比你好，而终无人可取代你。</p>
+</li>
+<li><p>很久以后才知道，原来和有些人最好的结局，就是互相杳无音信。</p>
+</li>
+<li><p>可惜喜欢就像乘法一样，只要一方为零，结果便为零。</p>
+</li>
+<li><p>如果可以，我想重新认识你，从我叫什么名字开始，然后以后的故事里，我绝对不会爱上你。</p>
+</li>
+<li><p>最深的孤独，是你明知道自己的渴望，却得对它装聋作哑。</p>
+</li>
+<li><p>忽然明白了那个叫周幽王的二百五为什么会烽火戏诸侯了，奶奶的，要是你喜欢的女孩会因此对你笑笑，踹翻全世界的事情也不是做不出来。</p>
+</li>
+<li><p>删去成行的字，最后打了个嗯发给你。没关系，不是所有的情绪都要告诉你，比如我的不开心，比如我好想你</p>
+</li>
+<li><p>人平均活到68岁，一共两万四千八百二十天，十九万个小时，三千五百万分钟，差不多二十一亿秒左右，这十秒，你在读这段话，这十秒，你只属于我，陌生人，我爱你。</p>
+</li>
+<li><p>我若成佛，天下无魔。我若成魔，佛奈我何。我若成仙，心游人间。我若成人，爱你万年。</p>
+</li>
+<li><p>上下四方谓之宇，古往今来谓之宙</p>
+<ul>
+<li>空间为宇，时间为宙</li>
 </ul>
 </li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+<li><p>我喜欢暖暖，她却喜欢凉凉</p>
+<ul>
+<li>真是个悲伤的故事</li>
 </ul>
 </li>
+<li><p>小生不才，未得姑娘青睐，扰姑娘良久，姑娘勿怪，自此所有仰慕之意止于唇齿，掩于岁月，匿于年华。姑娘往北走，小生往南瞧，不再打扰姑娘，今生就此别过，望姑娘日后独善其身，遇良人，与君欢喜城，暖色度余生。</p>
+</li>
+<li><p>那时候，最好的朋友就在身边，喜欢的女孩近在眼前。 红衣佳人白衣友，朝与同歌暮同酒。 世人谓我恋长安，其实只恋长安某。 ，我都要成大叔了</p>
+</li>
+<li><p>有时候，你选择与某人保持距离，不是因为你不在乎，而是因为你清楚地知道，ta不属于你，人生遇到的每一个人，出场顺序真的很重要，很多人如果换一个时间认识，就会有不同的结局。或许，有些爱，只能止于唇齿，掩于岁月，且行且珍惜。</p>
+</li>
+<li><p>以前我看到：所爱隔山海，山海皆可平。</p>
+<ul>
+<li>那时我觉得：海有舟可渡，山有路可行</li>
+<li>后来才发现：山海皆可平，难平是人心</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
+</li>
+<li><p>我之前没爱过别人，你是第一个，我怕我做得不好，让你觉得爱情不过如此</p>
+</li>
+<li><p>如果说以后不结婚的话，我想在一个烟火盛开的地方，生根发芽。</p>
+</li>
+<li><p>其实每一个人都有自己的预测，如果你去表白一个自己心仪的女孩子，其实没有那么久的考虑时间，其实那一刻你已经知道是幸福还是学会道别，我想对于自己最难的是结束自己的付出，真正的去说一句祝你幸福</p>
+</li>
+<li><p>你知道私人FM为什么没有倒退键只有下一首吗，因为错过了就错过了，再也回不来了。其实我想说，那你指导为什么音乐播放器都有一个最近播放的列表吗。因为只要你找的及时，那首歌一直在那里，从未离去。所以啊，人也一样， 你不去试试，怎么知道能不能成功呢。</p>
+</li>
+<li><p>我尊重同性恋，理解抑郁症，我会喂楼下的猫，会给老奶奶让座，会跟外卖小哥说谢谢，但是，现在我想做个有脾气的坏人了。</p>
+</li>
+<li><p>蛇不知己毒，人不知己罪，从古至今，时不伤人人自伤</p>
+</li>
+<li><p>有一种男生，不会聊天，不会撩妹，一聊天就没什么话题，很尴尬，但是内心非常想跟别人聊天，主动又不知道说什么，只有选择沉默，身边的朋友很少，但是待人很真实，对别人来说是老实巴交，追女孩没一次成功，现在还单身，却总喜欢在别人的故事里感受温暖，加油！自己，加油！这样的人</p>
+</li>
+<li><p>最初我买了一双鞋子，每次蹭了一点灰我都会小心翼翼地拭去，后来时间稍微久了一点，就算被别人踩了一脚，我连头都懒得低了，大抵对事对物都如此。起初她皱一下眉头你都会心疼，后来她哭你也无所谓了。</p>
+<ul>
+<li>那是你的鞋子不够贵或者是不够限量。还是她不够珍贵</li>
+</ul>
+</li>
+<li><p>星河滚烫，你是人间理想。人海冷漠，你是人间炽热。皓月清凉，你是人间曙光。万物生长，你是二月朝阳。世间靡漫，你是明月繁星。满眼星河，你是清梦满船。万事浮沉，你是人间归途。众人平庸，你是人间星光。世事无常，你是满目琳琅。满树繁花，你是心之所向。</p>
+</li>
+<li><p>你眼中的灿烂星河，是我不曾见过的世外桃源</p>
+</li>
+<li><p>红桃皇后是一个头很大的皇后……这样装模做样而伪善的皇后，我一点都不喜欢。相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍掉她的头，真实而可爱多了。……不过，童话是童话，红桃皇后扮演恶人，自然要输的。</p>
+</li>
+<li><p>在google上输入“故事”，可以得到113000000条结果，但输入“结局”，却只能得到44900000。可见，不是每个故事都有结局。</p>
+</li>
+<li><p>余光中先生说月色和雪色之间你是第三种角色，于我而言你是第四种难得</p>
+</li>
+<li><p>村上春树写过这样一句话：如果我爱你，而你也正巧爱我，你头发乱了的时候，我会笑笑地替你拨一拨，然后手还留恋地在你发上多呆几秒。但是，如果我爱你，而不巧的，你不爱我，我只会轻轻地告诉你：你头发乱了哦~、</p>
+</li>
+<li><p>张爱玲说过每一个男子都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之红的变了墙上地一抹蚊子血，白的还是床前明月光；娶了白玫瑰，白的便是衣服上的一粒饭黏子，红的却是心口上的一颗朱砂痣。</p>
+</li>
+<li><p>人在饿的时候会选择不爱的食物，会在寂寞的时候选择不爱的人，因为强扭的瓜不甜，但是解渴。</p>
+</li>
+<li><p>自古表白多白表，从来情书难书情。笑谈少年多年少，常与生人道人生。</p>
+</li>
+<li><p>你走，我不送；你来，无论多大风多大雨，我去接你。</p>
+</li>
+<li><p>当初走上那条相爱的路，他们谁都不知道目的地在何方，却依然坚定着信念向前走，只要对方在身边，所以去哪里都可以。年轻时，遇到让人心动的人不难，好看的皮囊，有趣的灵魂，都能令人心动不已。难的是，在心动过后，还能让彼此在长久的相守中心安，就像张家辉和关咏荷。在爱情里，他曾经很穷，穷得只能爱她，而她回报给他的，是除了他身边，她那里都不去。春来夏往，秋收冬藏，这样的爱情，来日方长。</p>
+</li>
+<li><p>你打瞌睡碰到我肩膀得一瞬间，我整颗心都要炸开了，虽然只是一瞬间，但至今想起来都要高兴不已。</p>
+</li>
+<li><p>谁曾见过风？你我皆不曾。但看木叶舞枝头（万木垂梢首），便晓风穿过。让风鼓动你的双翼，将它送去你身边。</p>
+</li>
+<li><p>如梦如幻月，若即若离花。</p>
+</li>
+<li><p>黑格尔曾经说过，历史给我们的教训是：我们从不会从历史中吸取教训。</p>
+</li>
+<li><p>我死后，身体将回归大地，那时，身体可触碰天际，万世仰望星空</p>
+</li>
+<li><p>你要做一个不动声色地大人，不准情绪化，不准偷偷想念，不准回头看。——村上春树</p>
+</li>
+<li><p>我熬过了所有的苦难，我已经不期待和谁在一起了。——马尔克斯</p>
+</li>
+<li><p>请记住那些对你好的人，因为他本可以不这样的。——宫崎骏</p>
+</li>
+<li><p>能离开的人，便不算是爱人。——张爱玲</p>
+</li>
+<li><p>幸好想念无声，否则震耳欲聋。</p>
+</li>
+<li><p>我只是想起了你，不是想你了</p>
+</li>
+<li><p>人说，林深时见鹿，海蓝时见鲸，梦醒时见你。可实际，林深时雾起，海蓝时浪涌，梦醒时也许未见鹿，未见鲸，亦未见你。但是，鹿踏雾而来，鲸随浪儿起，你没回头，又怎知我没来过</p>
+</li>
+<li><p>一次旅行，一次洗心，一次心动，一次亲密。哪怕再远，我都会奋不顾身放下手里的事情去找你，我不知道我有多喜欢你，但如果是去见你，我一定会用跑的。</p>
+</li>
+<li><p>“她割破了手指，他很紧张的跑去给她买创可贴，他是个哑巴，比划了好久，售货员还是不懂他的意思，他心急如焚地用小刀在自己手上也划了一个小口”我很喜欢这个故事，但如果爱情仅仅靠说说而已地话，那哑巴怎么办。</p>
+</li>
+<li><p>在有生的瞬间能遇到你，竟花光了所有的运气</p>
+</li>
+<li><p>海底月是天上月，眼前人是心上人</p>
+</li>
+<li><p>世间不如意事七八九，能与人言一二三都无</p>
+</li>
+</ul>
+<h1 id="江湖"><a href="#江湖" class="headerlink" title="江湖"></a>江湖</h1><ul>
+<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
+<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
+<li>还有一个烧烤架</li>
+</ul>
+</li>
+<li>江湖也没什么好的，也就酒还行</li>
+<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
+<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
+<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
+<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
+<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
+</ul>
+</li>
+<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
+<li>儿女情长什么的，真的很影响大哥行走江湖</li>
+<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
+<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
+<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
+<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
+<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
+<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
+<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
+<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
+<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
+<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
+<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
+<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
+<li>明月来复照，把酒贺今朝——观风月</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -14810,369 +15248,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>独角戏</title>
-    <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
-    <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
-<li><p>你的女朋友有缺点吗？ ：有，像星星一样的多。 ：那你的女朋友有优点吗？ ：有，像太阳一样的少。 ：那你为什么还喜欢她？ ：因为太阳一出现，星星就不见了。</p>
-</li>
-<li><p>女孩终于鼓足勇气向男孩表白，害羞地问男孩：“你喜欢我吗？” 男孩说：“不喜欢。” 女孩伤心欲绝，转身要走。 这时男孩叫住了女孩，对她说：“傻瓜，你还没问我爱不爱你呀。” 女孩破涕为笑：“那你爱不爱我？” “不爱。”。</p>
-<ul>
-<li>男孩：你怎么不问问我是不是真心的 女孩：那你是真心的吗 男孩：当然啊不是啊</li>
-</ul>
-</li>
-<li><p>如果有一天我说想你了，不是说这天我想你了，是说这天我憋不住了。</p>
-</li>
-<li><p>听到这音乐，第一个通宵就是在魔法密林刷级</p>
-</li>
-<li><p>与其说是孤独 不如坦诚的讲自己没有全心全意的与人相处 老友没有再联系 新朋友不去信任 对亲密的人说不出口 只能从陌生人身上寻找慰藉 反正也没有人知道我是谁 去哪里 跑向谁</p>
-</li>
-<li><p>若你身边无爱，祝你卡里有钱。</p>
-</li>
-<li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后地你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也会是。</p>
-</li>
-<li><p>我一岁的时候五岁，你年龄是我的五倍。我四岁的时候你八岁，你年龄是我的两倍。我十六岁的时候你二十岁，你的年龄是我的1.25倍。虽然我知道我永远无法追上你，但是我一生都在向你靠近。</p>
-</li>
-<li><p>今天的你对我爱答不理，明天的我还来找你</p>
-</li>
-<li><p>她点了一个赞，你脑补出一出戏，她更新一条动态，你就像在做阅读理解，她坐在你身边，却隔着一条银河，她什么都没做，却成了你心里地最重要。</p>
-</li>
-<li><p>你好，同城</p>
-<ul>
-<li>数学里有个温柔霸道的词： 有且仅有 ； </li>
-<li>还有个孤独的词： 假设存在； </li>
-<li>还有个悲凉的词： 充分不必要； </li>
-<li>还有一种无奈： 无限接近，永不等于；</li>
-<li>最妄想的词儿： 令a和b相等；</li>
-<li>还有个孤独傲慢的词： 无解； </li>
-<li>还有个让人痛彻心扉的的字———略 </li>
-</ul>
-</li>
-<li><p>相爱的人总喜欢说反话，却又渴望对方能读懂自己的心。有点像是两个人的一场美梦，彼此都害怕自己身边的人已经睡醒远去，自己还在原地做梦，所以不断的试探考验，但是如果两人都执着的要考验对方是否醒了，那两个人还会有一起做梦的可能吗？林佳和孟云都生怕自己是醒的晚被抛弃的那个，所以明明还爱着，两个人却都急匆匆地起身离开了。</p>
-</li>
-<li><p>初见是惊鸿一瞥，南柯一梦是你。等待是山重水复，怦然心动是你。相遇是柳暗花明，如梦初醒是你。重逢是始料未及，别来无恙是你。我喜欢你，依旧是你。</p>
-</li>
-<li><p>不忘人恩，不念人过。 不思人非，不计人怨。</p>
-</li>
-<li><p>我可以单身很久，但恋爱一定要和爱的人谈。</p>
-</li>
-<li><p>单是相遇便花光了我所有运气。</p>
-</li>
-<li><p>十年前，我有过这样一个手机，它最大容量只能存储两百条短信。每当存满了，都要精挑细选地删除我的，留住她的。那时候我多想有一个可以存储五百条短信的手机。而如今，我有了一个能无限存储短信的手机。却再也找不到一个能和我聊两百条短信的人了。</p>
-<ul>
-<li>因为现在都用QQ和微信了。</li>
-</ul>
-</li>
-<li><p>爱一个人，始于颜值，陷于才华，痴于肉体，迷于声色，久于性格，终于人品。</p>
-</li>
-<li><p>用王家卫的台词来说，今天是我们分开的第847天，两年多的时间里，我没有爱过谁，我的手在离开你之后没有被谁牵过，我的嘴在你离开之后也没有被谁亲过，闭上眼睛，我还能感受到你的手你的唇，就离开那么一会儿，我以为我一睁开眼睛，我一叫你，你就回来了。</p>
-</li>
-<li><p>我自己都如此涼薄 拿什麼去溫暖別人。</p>
-</li>
-<li><p>你也不可能一直帮我 我怎么会不知道</p>
-</li>
-<li><p>你可以把一个老实人教会浪漫，但你不可能把一个花心的人永远束心</p>
-</li>
-<li><p>如果有人给你发了下雪的视频，你应该回复她我也想你了，因为春赏百花冬观雪，醒亦念卿，梦亦念卿</p>
-</li>
-<li><p>心有良人，不言于口，不形于表，亦不掩之，直言不讳，拒之坦然，得之惜之。 存人心系，大在长貌，小在言行，亦然品性，遇此之形，不急于言，拒人应礼，应人有度。</p>
-</li>
-<li><p>孟婆啊，如果你遇到我的妈妈，你就在她的碗里多放几块糖，她这辈子吃的苦太多了，下辈子让她吃甜的吧，把苦的放在我的碗里把，我不想让她再吃这么多的苦，我会心疼的</p>
-</li>
-<li><p>有没有人跟我一样？打开QQ发现没有聊天的人，于是点开看点，看一看，笑一笑，感动一下？你好陌生人，愿你天黑有灯，下雨有伞，路上有良人相伴，明天太阳依然会升起，请你不要停步，如果可以加个好友，我愿意陪你聊天。</p>
-</li>
-<li><p>无人与我立黄昏，无人问我粥可温，无人怜我悲与伤，无人分我乐与欢</p>
-</li>
-<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你</p>
-</li>
-<li><p>女：我结婚的时候你会来吗？</p>
-<ul>
-<li>男：那我劫婚，你会跟我走吗？</li>
-<li>世界上最悲哀的事莫过于此，他开心幸福难过的模样你都见过，但唯独你没见过她属于你的样子</li>
-</ul>
-</li>
-<li><p>自己喜欢的人在别人怀里，我能做什么，我能说什么，一个男人的悲剧在于如果他失败了，他不能将事情与人说，只能将愤怒屈辱不甘埋在心里</p>
-</li>
-<li><p>坐过最贵的“车”是爸爸的肩膀，住过最贵的“房子”是妈妈的肚子。出生时，我哭了，你们笑了；结婚时，我笑了，你们哭了。我成了你们时才知你们为何哭，为何笑</p>
-</li>
-<li><p>我很想恋爱，但不是因为恋爱才恋爱，我想因为那个人是你，才想恋爱，所以你没出现，我也没恋爱。</p>
-</li>
-<li><p>我喜欢你，像风走了八千里，不问归期。我喜欢你，像柳动蝉鸣，日落潮汐，不能自已。我喜欢你，像云漂泊九万里，不曾歇息。我喜欢你，像日落前洒下的余晖，不忍离去。我喜欢你，像太阳升了落去，无论朝夕。</p>
-<ul>
-<li>这句话运用排比的句式，同时也运用了比喻，句式整齐，节奏明确，真挚表达了自己的喜爱、仰慕之情。语言生动形象，读起来朗朗上口。</li>
-</ul>
-</li>
-<li><p>聚在一起，成型，扭曲，缠绕，有时候又还原，断裂，再连接，这就是结，就是时间。——你的名字</p>
-</li>
-<li><p>刘涛：我一直不知道陈奕迅十年中的第一句“如果那两个字没有颤抖，我不会发现我难受”是哪两个字</p>
-<ul>
-<li>好胖，因为我不会发现我难瘦</li>
-<li>“如果”</li>
-<li>是“好的”这两个字，林夕在节目中说过的</li>
-</ul>
-</li>
-<li><p>我见青山多妩媚，料青山见我应如是。</p>
-<ul>
-<li>我见众生皆草木，唯你是青山</li>
-<li>众生见我皆草木，唯你视我如青山</li>
-</ul>
-</li>
-<li><p>你是目前为止我碰到的唯一一个我追不到还会不开心的人，事情还是一样地在重复，我喜欢你的时候，你是一切，我不喜欢你了，你就什么都不是了。以前的我，也许会放大你的缺点来让自己迅速忘记，然而现在的自己已然可以将大部分错误都归到自己身上了。</p>
-</li>
-<li><p>我感觉从小到大我和朋友的相处总是会出现问题，一开始我都觉得是他们不好，现在想想其实因为是我吧，因为是我所以总会出现问题，有时候也控制不住自己莫名的情绪，正常人际交往都磕磕绊绊，哪还敢想两个人长时间磨合忍让，我也还是适合一个人呆着，至少情绪过后可以与自己和解。</p>
-</li>
-<li><p>像我这种人，不适合谈恋爱，更不适合结婚。我的情绪不太稳定，又敏感，想的太多，总是揣测对方的心意，然后又一遍遍的想是不是自己哪里出了问题。我也不擅长沟通，不知道怎么跟一个朝夕相处的人好好处理遇到的分歧和问题。我想来想去，还是独自生活更符合天性，也不会害人害己。</p>
-</li>
-<li><p>总会有大概合适的人。一切的事情自有道理吧。</p>
-</li>
-<li><p>当我说出“永远爱你”的时候，我的意思是：希望你永远都被人爱，是不是我不重要。</p>
-</li>
-<li><p>我其实很害怕，你会遇到一个人，可以替代我，代替我对你的那份喜欢，我虽然是独一无二的，可别人也是。</p>
-</li>
-<li><p>我想你一定在找文案吧。送你一句：人间忽晚，山河已秋。如果不喜欢，那就看开头的三个字吧。</p>
-</li>
-<li><p>既然琴瑟起，何以笙箫默。</p>
-</li>
-<li><p>小学时，想和喜欢的人同桌</p>
-<ul>
-<li>初中时，想和喜欢的人同班</li>
-<li>高中时，想和喜欢的人同校</li>
-<li>工作时，想和喜欢的人同城</li>
-<li>年老时，想和喜欢的人同一个世界</li>
-</ul>
-</li>
-<li><p>叮当陪了大雄80年，<br>在大雄临死前，<br>他对叮当说:<br>“我走之后你就回到属于你的地方吧！”<br>叮当同意了！<br>大雄死后…<br>叮当用时光机回到了80年前，<br>对小时候的大雄说:<br>“大雄你好，我叫叮当。” 每次看到这个段子都好感动，<br>—–人生若只如初见！<br>朋友也好，爱人也罢，如果累了，我们就回到第一天见面的时候…     我想重新认识你 从你叫什么名字开始。</p>
-</li>
-<li><p>汤姆：我这一生只抓你这一只老鼠，说到做到</p>
-<ul>
-<li>其实汤姆不是不会抓老鼠，只是不会抓杰瑞</li>
-</ul>
-</li>
-<li><p>祝你三冬冷暖有人知，祝你头发长长，祝你狂吃不胖，祝你不败给感情，祝你嫁给爱情</p>
-</li>
-<li><p>愿你天黑有灯，下雨有伞，终生有人陪伴</p>
-</li>
-<li><p>那些翻着评论，却不评论的人，或许才是真的孤独寂寞的人，路过的陌生人，愿你贪吃不胖，愿你懒惰不丑，愿你的深情不被辜负，愿你的余生都有人</p>
-</li>
-<li><p>尝尽世间绚烂，难补一生心酸</p>
-</li>
-<li><p>过分善良就是愚蠢，过分心软就是放任，过分宽容就是纵容。 你可以做一个老实人，但你不能蠢到相信所有人。</p>
-</li>
-<li><p>一生一世一双人，半醉半醒半浮生</p>
-</li>
-<li><p>一生所寻，不过是最初的自己，愿你走出半生，归来仍是少年。</p>
-</li>
-<li><p>平生不会相思，才会相思，便害相思。</p>
-</li>
-<li><p>群处守嘴，独处守心。</p>
-</li>
-<li><p>最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。</p>
-</li>
-<li><p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
-</li>
-<li><p>不为往事扰，余生只愿笑</p>
-</li>
-<li><p>因为到最后你会发现，一个人的愚蠢不是几句话就能纠正的，谁也无法阻止智障坑人，正如无法阻止死神上门</p>
-</li>
-<li><p>茕茕白兔，东走西顾，衣不如新，人不如故</p>
-</li>
-<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！</p>
-<p>你好，最熟悉的陌生人</p>
-</li>
-<li><p>婚姻就是吵架冲出门以后，回来顺便买了个菜。</p>
-</li>
-<li><p>你知道吗，七年并不能忘记一个人。但一个旧细胞死亡新的细胞诞生，周围的旧细胞就会告诉这个新来的：主人之前是怎样怎样爱一个人的，就这样，即使七年后你的身体里都是新的细胞，但是他们都知道你旧的故事</p>
-</li>
-<li><p>从此无心爱良夜，任他明月下西楼</p>
-</li>
-<li><p>据说强迫症的人听歌有两种方式，一是一首单曲不断循环播放，直到听得想吐，二是随机播放，但会不断切歌。</p>
-</li>
-<li><p>七月有风八月有雨，九月会不会有你。</p>
-</li>
-<li><p>很想跟你借一个未来，有你全部的温情和热爱。</p>
-</li>
-<li><p>你在别人眼里可能平凡普通，但你一直是我自己唯一的信仰。</p>
-</li>
-<li><p>如果有一天你决定从我的生命中离开，请不要不告而别，至少好好的说一声再见。</p>
-</li>
-<li><p>其实没有别的什么能真正伤害你，唯一能伤害你的 是你的在意。</p>
-</li>
-<li><p>我以为，爱情可以填满我们心目中的遗憾。没想到，制造遗憾的偏偏就是爱情。</p>
-</li>
-<li><p>往后余生，洗碗是我，拖地是我，宠你也是我。</p>
-</li>
-<li><p>你可以帮我洗个东西吗？洗什么？喜欢我。</p>
-</li>
-<li><p>如果时间能重来，遇见你的瞬间，我还是会义无反顾。</p>
-</li>
-<li><p>遇上一个喜欢自己的人，不是什么容易的事，来日方长，你只是刚好错过一个我。</p>
-</li>
-<li><p>故事很长，我长话短说，我喜欢你。</p>
-</li>
-<li><p>因为爱，全世界都是你，喜是你悲也是你。</p>
-</li>
-<li><p>爱总是很美丽，结束的没道理。</p>
-</li>
-<li><p>曾经我一个人在世上流浪，遇见你以后，在你眼里找到了故乡。</p>
-</li>
-<li><p>我不清楚未来的方向，那大概是有你的地方。</p>
-</li>
-<li><p>怕无归期，怕空欢喜，怕来者不是你。</p>
-</li>
-<li><p>总有人比你好，而终无人可取代你。</p>
-</li>
-<li><p>很久以后才知道，原来和有些人最好的结局，就是互相杳无音信。</p>
-</li>
-<li><p>可惜喜欢就像乘法一样，只要一方为零，结果便为零。</p>
-</li>
-<li><p>如果可以，我想重新认识你，从我叫什么名字开始，然后以后的故事里，我绝对不会爱上你。</p>
-</li>
-<li><p>最深的孤独，是你明知道自己的渴望，却得对它装聋作哑。</p>
-</li>
-<li><p>忽然明白了那个叫周幽王的二百五为什么会烽火戏诸侯了，奶奶的，要是你喜欢的女孩会因此对你笑笑，踹翻全世界的事情也不是做不出来。</p>
-</li>
-<li><p>删去成行的字，最后打了个嗯发给你。没关系，不是所有的情绪都要告诉你，比如我的不开心，比如我好想你</p>
-</li>
-<li><p>人平均活到68岁，一共两万四千八百二十天，十九万个小时，三千五百万分钟，差不多二十一亿秒左右，这十秒，你在读这段话，这十秒，你只属于我，陌生人，我爱你。</p>
-</li>
-<li><p>我若成佛，天下无魔。我若成魔，佛奈我何。我若成仙，心游人间。我若成人，爱你万年。</p>
-</li>
-<li><p>上下四方谓之宇，古往今来谓之宙</p>
-<ul>
-<li>空间为宇，时间为宙</li>
-</ul>
-</li>
-<li><p>我喜欢暖暖，她却喜欢凉凉</p>
-<ul>
-<li>真是个悲伤的故事</li>
-</ul>
-</li>
-<li><p>小生不才，未得姑娘青睐，扰姑娘良久，姑娘勿怪，自此所有仰慕之意止于唇齿，掩于岁月，匿于年华。姑娘往北走，小生往南瞧，不再打扰姑娘，今生就此别过，望姑娘日后独善其身，遇良人，与君欢喜城，暖色度余生。</p>
-</li>
-<li><p>那时候，最好的朋友就在身边，喜欢的女孩近在眼前。 红衣佳人白衣友，朝与同歌暮同酒。 世人谓我恋长安，其实只恋长安某。 ，我都要成大叔了</p>
-</li>
-<li><p>有时候，你选择与某人保持距离，不是因为你不在乎，而是因为你清楚地知道，ta不属于你，人生遇到的每一个人，出场顺序真的很重要，很多人如果换一个时间认识，就会有不同的结局。或许，有些爱，只能止于唇齿，掩于岁月，且行且珍惜。</p>
-</li>
-<li><p>以前我看到：所爱隔山海，山海皆可平。</p>
-<ul>
-<li>那时我觉得：海有舟可渡，山有路可行</li>
-<li>后来才发现：山海皆可平，难平是人心</li>
-</ul>
-</li>
-<li><p>我之前没爱过别人，你是第一个，我怕我做得不好，让你觉得爱情不过如此</p>
-</li>
-<li><p>如果说以后不结婚的话，我想在一个烟火盛开的地方，生根发芽。</p>
-</li>
-<li><p>其实每一个人都有自己的预测，如果你去表白一个自己心仪的女孩子，其实没有那么久的考虑时间，其实那一刻你已经知道是幸福还是学会道别，我想对于自己最难的是结束自己的付出，真正的去说一句祝你幸福</p>
-</li>
-<li><p>你知道私人FM为什么没有倒退键只有下一首吗，因为错过了就错过了，再也回不来了。其实我想说，那你指导为什么音乐播放器都有一个最近播放的列表吗。因为只要你找的及时，那首歌一直在那里，从未离去。所以啊，人也一样， 你不去试试，怎么知道能不能成功呢。</p>
-</li>
-<li><p>我尊重同性恋，理解抑郁症，我会喂楼下的猫，会给老奶奶让座，会跟外卖小哥说谢谢，但是，现在我想做个有脾气的坏人了。</p>
-</li>
-<li><p>蛇不知己毒，人不知己罪，从古至今，时不伤人人自伤</p>
-</li>
-<li><p>有一种男生，不会聊天，不会撩妹，一聊天就没什么话题，很尴尬，但是内心非常想跟别人聊天，主动又不知道说什么，只有选择沉默，身边的朋友很少，但是待人很真实，对别人来说是老实巴交，追女孩没一次成功，现在还单身，却总喜欢在别人的故事里感受温暖，加油！自己，加油！这样的人</p>
-</li>
-<li><p>最初我买了一双鞋子，每次蹭了一点灰我都会小心翼翼地拭去，后来时间稍微久了一点，就算被别人踩了一脚，我连头都懒得低了，大抵对事对物都如此。起初她皱一下眉头你都会心疼，后来她哭你也无所谓了。</p>
-<ul>
-<li>那是你的鞋子不够贵或者是不够限量。还是她不够珍贵</li>
-</ul>
-</li>
-<li><p>星河滚烫，你是人间理想。人海冷漠，你是人间炽热。皓月清凉，你是人间曙光。万物生长，你是二月朝阳。世间靡漫，你是明月繁星。满眼星河，你是清梦满船。万事浮沉，你是人间归途。众人平庸，你是人间星光。世事无常，你是满目琳琅。满树繁花，你是心之所向。</p>
-</li>
-<li><p>你眼中的灿烂星河，是我不曾见过的世外桃源</p>
-</li>
-<li><p>红桃皇后是一个头很大的皇后……这样装模做样而伪善的皇后，我一点都不喜欢。相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍掉她的头，真实而可爱多了。……不过，童话是童话，红桃皇后扮演恶人，自然要输的。</p>
-</li>
-<li><p>在google上输入“故事”，可以得到113000000条结果，但输入“结局”，却只能得到44900000。可见，不是每个故事都有结局。</p>
-</li>
-<li><p>余光中先生说月色和雪色之间你是第三种角色，于我而言你是第四种难得</p>
-</li>
-<li><p>村上春树写过这样一句话：如果我爱你，而你也正巧爱我，你头发乱了的时候，我会笑笑地替你拨一拨，然后手还留恋地在你发上多呆几秒。但是，如果我爱你，而不巧的，你不爱我，我只会轻轻地告诉你：你头发乱了哦~、</p>
-</li>
-<li><p>张爱玲说过每一个男子都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之红的变了墙上地一抹蚊子血，白的还是床前明月光；娶了白玫瑰，白的便是衣服上的一粒饭黏子，红的却是心口上的一颗朱砂痣。</p>
-</li>
-<li><p>人在饿的时候会选择不爱的食物，会在寂寞的时候选择不爱的人，因为强扭的瓜不甜，但是解渴。</p>
-</li>
-<li><p>自古表白多白表，从来情书难书情。笑谈少年多年少，常与生人道人生。</p>
-</li>
-<li><p>你走，我不送；你来，无论多大风多大雨，我去接你。</p>
-</li>
-<li><p>当初走上那条相爱的路，他们谁都不知道目的地在何方，却依然坚定着信念向前走，只要对方在身边，所以去哪里都可以。年轻时，遇到让人心动的人不难，好看的皮囊，有趣的灵魂，都能令人心动不已。难的是，在心动过后，还能让彼此在长久的相守中心安，就像张家辉和关咏荷。在爱情里，他曾经很穷，穷得只能爱她，而她回报给他的，是除了他身边，她那里都不去。春来夏往，秋收冬藏，这样的爱情，来日方长。</p>
-</li>
-<li><p>你打瞌睡碰到我肩膀得一瞬间，我整颗心都要炸开了，虽然只是一瞬间，但至今想起来都要高兴不已。</p>
-</li>
-<li><p>谁曾见过风？你我皆不曾。但看木叶舞枝头（万木垂梢首），便晓风穿过。让风鼓动你的双翼，将它送去你身边。</p>
-</li>
-<li><p>如梦如幻月，若即若离花。</p>
-</li>
-<li><p>黑格尔曾经说过，历史给我们的教训是：我们从不会从历史中吸取教训。</p>
-</li>
-<li><p>我死后，身体将回归大地，那时，身体可触碰天际，万世仰望星空</p>
-</li>
-<li><p>你要做一个不动声色地大人，不准情绪化，不准偷偷想念，不准回头看。——村上春树</p>
-</li>
-<li><p>我熬过了所有的苦难，我已经不期待和谁在一起了。——马尔克斯</p>
-</li>
-<li><p>请记住那些对你好的人，因为他本可以不这样的。——宫崎骏</p>
-</li>
-<li><p>能离开的人，便不算是爱人。——张爱玲</p>
-</li>
-<li><p>幸好想念无声，否则震耳欲聋。</p>
-</li>
-<li><p>我只是想起了你，不是想你了</p>
-</li>
-<li><p>人说，林深时见鹿，海蓝时见鲸，梦醒时见你。可实际，林深时雾起，海蓝时浪涌，梦醒时也许未见鹿，未见鲸，亦未见你。但是，鹿踏雾而来，鲸随浪儿起，你没回头，又怎知我没来过</p>
-</li>
-<li><p>一次旅行，一次洗心，一次心动，一次亲密。哪怕再远，我都会奋不顾身放下手里的事情去找你，我不知道我有多喜欢你，但如果是去见你，我一定会用跑的。</p>
-</li>
-<li><p>“她割破了手指，他很紧张的跑去给她买创可贴，他是个哑巴，比划了好久，售货员还是不懂他的意思，他心急如焚地用小刀在自己手上也划了一个小口”我很喜欢这个故事，但如果爱情仅仅靠说说而已地话，那哑巴怎么办。</p>
-</li>
-<li><p>在有生的瞬间能遇到你，竟花光了所有的运气</p>
-</li>
-<li><p>海底月是天上月，眼前人是心上人</p>
-</li>
-<li><p>世间不如意事七八九，能与人言一二三都无</p>
-</li>
-</ul>
-<h1 id="江湖"><a href="#江湖" class="headerlink" title="江湖"></a>江湖</h1><ul>
-<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
-<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
-<li>还有一个烧烤架</li>
-</ul>
-</li>
-<li>江湖也没什么好的，也就酒还行</li>
-<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
-<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
-<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
-<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
-<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
-</ul>
-</li>
-<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
-<li>儿女情长什么的，真的很影响大哥行走江湖</li>
-<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
-<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
-<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
-<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
-<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
-<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
-<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
-<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
-<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
-<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
-<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
-<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
-<li>明月来复照，把酒贺今朝——观风月</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序基础（更新中）</title>
     <url>/2018/04/10/basic-2018-04-10-ProgramBasic/</url>
     <content><![CDATA[<h1 id="二进制"><a href="#二进制" class="headerlink" title="二进制"></a>二进制</h1><p>在计算机系统中，数值一律用<strong>补码</strong>来表示和存储。原因在于，使用补码，可以将符号位和数值域统一处理；同时，加法和减法也可以统一处理（为了计算方便）。此外，补码与原码相互转换，其运算过程是相同的，不需要额外的硬件电路。（百度百科）</p>
@@ -15367,7 +15442,7 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>《寻梦环游记》观后感</title>
+    <title>《寻梦环游记》</title>
     <url>/2017/11/24/reader-2017-11-24-Coco/</url>
     <content><![CDATA[ <center>
      <font size="5">《寻梦环游记》</font><br>
@@ -15395,7 +15470,7 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>道德经</title>
+    <title>《道德经》</title>
     <url>/2017/11/11/reader-2017-11-11-%E9%81%93%E5%BE%B7%E7%BB%8F/</url>
     <content><![CDATA[ <center>
      <font size="5">《道德经》</font><br>
