@@ -22,21 +22,26 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="占坑，有空补">
+  <meta name="description" content="跨平台演进，方案对比，性能分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓跨平台方案简介">
-<meta property="og:url" content="https://blog.afauria.xyz/2018/10/14/android-2018-10-14-HybridSolution/index.html">
+<meta property="og:title" content="跨平台技术选型">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="占坑，有空补">
+<meta property="og:description" content="跨平台演进，方案对比，性能分析">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-10-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-10T02:22:01.449Z">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/跨端技术演进.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Android.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Flutter.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-RN.png">
+<meta property="article:published_time" content="2021-12-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-13T07:31:57.216Z">
 <meta property="article:author" content="丘山月夜">
-<meta property="article:tag" content="Android">
-<meta property="article:tag" content="进阶">
+<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="跨平台">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/跨端技术演进.png">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2018/10/14/android-2018-10-14-HybridSolution/">
+<link rel="canonical" href="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -49,7 +54,7 @@
   };
 </script>
 
-  <title>安卓跨平台方案简介 | Afauria's Blog</title>
+  <title>跨平台技术选型 | Afauria's Blog</title>
   
 
 
@@ -208,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2018/10/14/android-2018-10-14-HybridSolution/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -221,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          安卓跨平台方案简介
+          跨平台技术选型
         </h1>
 
         <div class="post-meta">
@@ -232,14 +237,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-10-14 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-14T00:00:00+08:00">2018-10-14</time>
+              <time title="创建时间：2021-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-15T00:00:00+08:00">2021-12-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-10 10:22:01" itemprop="dateModified" datetime="2022-01-10T10:22:01+08:00">2022-01-10</time>
+                <time title="修改时间：2022-03-13 15:31:57" itemprop="dateModified" datetime="2022-03-13T15:31:57+08:00">2022-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,12 +252,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
                 </span>
             </span>
 
           
-            <span id="/2018/10/14/android-2018-10-14-HybridSolution/" class="post-meta-item leancloud_visitors" data-flag-title="安卓跨平台方案简介" title="阅读次数">
+            <span id="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" class="post-meta-item leancloud_visitors" data-flag-title="跨平台技术选型" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -267,8 +272,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/10/14/android-2018-10-14-HybridSolution/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/10/14/android-2018-10-14-HybridSolution/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -278,16 +283,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>340</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
-            <div class="post-description">占坑，有空补</div>
+            <div class="post-description">跨平台演进，方案对比，性能分析</div>
 
         </div>
       </header>
@@ -298,18 +303,280 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Hybrid-App"><a href="#Hybrid-App" class="headerlink" title="Hybrid App"></a>Hybrid App</h2><p>//todo 跨平台方案对比，选型</p>
-<p>Hybrid App（混合模式移动应用）：介于web-app、native-app这两者之间的app，兼具Native App（原生app）良好用户交互体验的优势”和“Web App跨平台开发的优势”。</p>
-<p>原因：</p>
+        <h1 id="跨平台技术优势"><a href="#跨平台技术优势" class="headerlink" title="跨平台技术优势"></a>跨平台技术优势</h1><p>原生开发不足：</p>
+<ol>
+<li>Android、iOS分开维护，开发和测试成本大。对于小团队来说成本较大。</li>
+<li>动态化弱，更新需发版。</li>
+</ol>
+<p>跨平台优势：</p>
+<ol>
+<li>增加代码复用，减少开发者对多个平台差异适配的工作量，降低开发成本。</li>
+<li>UI和交互一致。</li>
+<li>动态化，热更新。</li>
+<li>热重载。</li>
+</ol>
+<p>跨平台不足：</p>
+<ol>
+<li>接入成本</li>
+<li>不可避免要和原生通信</li>
+<li>性能弱于原生</li>
+</ol>
+<h1 id="跨端技术演进"><a href="#跨端技术演进" class="headerlink" title="跨端技术演进"></a>跨端技术演进</h1><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/跨端技术演进.png" style="zoom:100%;">
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>WebView（Web App）</th>
+<th>Hybrid（WebView+）</th>
+<th>JS+原生渲染</th>
+<th>自绘UI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>介绍</td>
+<td>使用原生Web容器，JS引擎解析，WebKit或者Blink渲染</td>
+<td>混合开发，WebView增强。通过JSBridge进行原生通信和调用</td>
+<td>类RN方案，生成虚拟Dom，JSCore映射成原生控件渲染。</td>
+<td>Dart编译，Flutter提供渲染引擎自绘</td>
+</tr>
+<tr>
+<td>代表框架</td>
+<td>H5、PWA</td>
+<td>Cordova、Ionic、小程序、PhoneGap</td>
+<td>RN、Weex、Hippy、快应用</td>
+<td>Flutter、QT</td>
+</tr>
+<tr>
+<td>虚拟机（运行时）</td>
+<td>JS引擎（V8、JSC）</td>
+<td>JS引擎+JSBridge</td>
+<td>JS引擎</td>
+<td>Dart VM</td>
+</tr>
+<tr>
+<td>渲染引擎</td>
+<td>WebKit、Blink</td>
+<td>WebKit、Blink</td>
+<td>Native渲染</td>
+<td>2D：Skia（SGL）<br>3D：OpenGL ES</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>差</td>
+<td>差</td>
+<td>原生渲染，运行时解析Dom树，和原生通信</td>
+<td>接近原生</td>
+</tr>
+</tbody></table>
 <ul>
-<li>传统app需要同时开发android和iOS两个app，成本较大。</li>
-<li>使用H5具有低成本、高效率、跨平台等特性</li>
+<li>PWA（Progressive Web App，渐进式Web App）：离线缓存、无需安装、服务端首屏渲染。</li>
+<li>Weex：阿里巴巴出品，使用vue框架开发</li>
+<li>快应用：国内手机厂商出品，使用JS开发，将引擎内置到ROM中，减少应用体积。</li>
+<li>Taro：可以使用TSX、JSX、React语法，编译成不同平台的代码（RN、微信/支付宝/京东小程序、快应用、H5等）</li>
 </ul>
-<p>原理：Hybrid APP底层依赖于Native提供的容器（UIWebview），上层使用Html&amp;Css&amp;JS做业务开发，底层透明化、上层多样化。</p>
-<p>优点：共享ui代码，提高开发效率</p>
-<p>缺点：性能比不上Native。</p>
-<p>场景：有利于前端介入，适合业务快速迭代。</p>
-<h2 id="方案选择"><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h2><p>flutter，weex，reactnative等</p>
+<p>js调用Android方式：</p>
+<ol>
+<li><code>WebView.addJavaScriptInterface()</code></li>
+<li><code>WebViewClient.shouldOverrideUrlLoading()</code></li>
+</ol>
+<p>Android调用JS方式：</p>
+<ol>
+<li><code>WebView.loadUrl()</code></li>
+<li><code>WebView.evaluateJavaScript()</code></li>
+</ol>
+<h1 id="RN和Flutter对比"><a href="#RN和Flutter对比" class="headerlink" title="RN和Flutter对比"></a>RN和Flutter对比</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>React Native</th>
+<th>Flutter</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原理</td>
+<td>JSCore引擎解析React虚拟Dom，渲染成原生控件树。</td>
+<td>skia引擎自绘UI</td>
+</tr>
+<tr>
+<td>技术栈</td>
+<td>React</td>
+<td>Dart</td>
+</tr>
+<tr>
+<td>开发者</td>
+<td>FaceBook</td>
+<td>Google</td>
+</tr>
+<tr>
+<td>支持版本</td>
+<td>Android 4.1（API level 16）以上</td>
+<td>Android 4.1（API level 16）以上</td>
+</tr>
+<tr>
+<td>支持平台</td>
+<td>Android、iOS</td>
+<td>Android、iOS、Web、桌面、Fuchisa</td>
+</tr>
+<tr>
+<td>包体积</td>
+<td>iOS系统自带JS Core，Android系统不带</td>
+<td>Android系统内置Skia引擎，iOS系统不带</td>
+</tr>
+<tr>
+<td>UI一致性</td>
+<td>低：不同平台控件单独维护，复杂场景需要对原生控件进行扩展</td>
+<td>高：一套代码，UI一致</td>
+</tr>
+<tr>
+<td>原生调用</td>
+<td>JS Bridge</td>
+<td>Platform Channel</td>
+</tr>
+<tr>
+<td>动态化</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>热重载</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<h1 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h1><p>只对比Android和RN、Flutter</p>
+<p>启动速度、内存、CPU多次测试取平均值。通过脚本模拟滚动列表操作。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Android</th>
+<th>Flutter</th>
+<th>RN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>运行效率</td>
+<td>1.0：Dalvik+解释器。<br>2.2：Dalvik+JIT。<br>5.0：ART+AOT。<br>7.0：混合编译。<br>9.0：编译模版</td>
+<td>Debug是JIT，Release是AOT。</td>
+<td>Js运行时编译，渲染需要和原生通信。</td>
+</tr>
+<tr>
+<td>Release包</td>
+<td>3.5M</td>
+<td>未分包16M，分包5～6M</td>
+<td>未分包30.1M，分包后10M左右</td>
+</tr>
+<tr>
+<td>冷启动</td>
+<td>329ms</td>
+<td>395ms</td>
+<td>341ms</td>
+</tr>
+<tr>
+<td>温启动</td>
+<td>242ms</td>
+<td>288ms</td>
+<td>243ms</td>
+</tr>
+<tr>
+<td>热启动</td>
+<td>89ms</td>
+<td>57ms</td>
+<td>53ms</td>
+</tr>
+<tr>
+<td>内存占用</td>
+<td>61.768M</td>
+<td>75.747M</td>
+<td>105.117M</td>
+</tr>
+<tr>
+<td>CPU占用</td>
+<td>52.040%</td>
+<td>63.660%</td>
+<td>67.820%</td>
+</tr>
+<tr>
+<td>FPS（帧/s）</td>
+<td>93.989</td>
+<td>23.584、80.645</td>
+<td>96.647</td>
+</tr>
+<tr>
+<td>View数量</td>
+<td>57</td>
+<td>9</td>
+<td>93</td>
+</tr>
+<tr>
+<td>Display list</td>
+<td>80.98KB</td>
+<td>12.53KB</td>
+<td>138KB</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>4.37MB</td>
+<td>48KB</td>
+<td>4.2MB</td>
+</tr>
+<tr>
+<td>进程总耗电量</td>
+<td>0.306mAh</td>
+<td>0.332mAh</td>
+<td>0.520mAh</td>
+</tr>
+<tr>
+<td>进程CPU耗电量</td>
+<td>0.0000800mAh</td>
+<td>0.000383mAh</td>
+<td>0.00154mAh</td>
+</tr>
+<tr>
+<td>过度绘制</td>
+<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Android.png" style="zoom:25%;"></td>
+<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Flutter.png" style="zoom: 25%;"></td>
+<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-RN.png" style="zoom:25%;"></td>
+</tr>
+</tbody></table>
+<p>温启动：进程没被杀，Activity被回收，例如双击返回退出，或者app内存不足被回收</p>
+<p>Flutter打包：<code>flutter build apk --split-per-abi</code></p>
+<p>RN打包：<code>./gradlew assembleRelease</code></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app/build.gradle</span></span><br><span class="line">android &#123;</span><br><span class="line">  splits &#123;</span><br><span class="line">        abi &#123;</span><br><span class="line">            reset()</span><br><span class="line">            enable <span class="literal">true</span></span><br><span class="line">            universalApk <span class="literal">false</span>  <span class="comment">// If true, also generate a universal APK</span></span><br><span class="line">            include <span class="string">&quot;armeabi-v7a&quot;</span>, <span class="string">&quot;x86&quot;</span>, <span class="string">&quot;arm64-v8a&quot;</span>, <span class="string">&quot;x86_64&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><p>性能：</p>
+<ul>
+<li>渲染性能：原生=Flutter&gt;RN&gt;H5</li>
+<li>运行效率：原生&gt;Flutter&gt;RN</li>
+<li>启动速度：原生&gt;RN&gt;Flutter</li>
+<li>包体积：RN&gt;Flutter&gt;原生</li>
+<li>耗电量：RN&gt;Flutter&gt;原生</li>
+<li>过度绘制：RN&gt;原生&gt;Flutter</li>
+</ul>
+</li>
+<li><p>使用成本：</p>
+<ul>
+<li>学习曲线、成熟度、普及度、社区生态、三方库、行业趋势：容易过时，不对比了。目前主流应该是Flutter。</li>
+<li>框架程度：Flutter&gt;RN&gt;H5</li>
+<li>接入成本：全新项目成本较低，原有项目接入成本较高</li>
+<li>维护成本：原生需要维护两套代码。RN需要封装原生控件、Flutter需要封装插件</li>
+</ul>
+</li>
+<li><p>开发效率：</p>
+<ul>
+<li>热重载：RN、Flutter支持热重载</li>
+<li>工具链（开发、编译、调试、测试、发布）：都挺完善的</li>
+</ul>
+</li>
+<li><p>平台一致性：Flutter&gt;RN=原生</p>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Android性能分析请参考：<a href="/2021/12/12/android-2021-12-19-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">Android性能分析</a></p>
+<p>Flutter性能分析参考<a target="_blank" rel="noopener" href="https://flutter.cn/docs/perf">官方文档</a></p>
+<p>Android性能分析脚本见<a target="_blank" rel="noopener" href="https://github.com/Afauria/PerformanceCheck">GitHub-PerformanceCheck</a></p>
+<p>Android、Flutter、RN测试Demo见<a target="_blank" rel="noopener" href="https://github.com/Afauria/HybridPerformance">GitHub-HybridPerformance</a></p>
 
     </div>
 
@@ -339,8 +606,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
-              <a href="/tags/%E8%BF%9B%E9%98%B6/" rel="tag"><i class="fa fa-tag"></i> 进阶</a>
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+              <a href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 跨平台</a>
           </div>
 
         
@@ -349,12 +616,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/10/10/webdev-2018-10-10-JavaWebBasicNote/" rel="prev" title="javaweb基础概念笔记">
-      <i class="fa fa-chevron-left"></i> javaweb基础概念笔记
+    <a href="/2021/12/09/android-2021-12-09-ButterKnife/" rel="prev" title="ButterKnife解析">
+      <i class="fa fa-chevron-left"></i> ButterKnife解析
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/10/17/blog-2018-10-17-Hexo-GitPage/" rel="next" title="Hexo+GitPage搭建博客">
-      Hexo+GitPage搭建博客 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/" rel="next" title="提问的智慧">
+      提问的智慧 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -416,7 +683,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hybrid-App"><span class="nav-number">1.</span> <span class="nav-text">Hybrid App</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">方案选择</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E4%BC%98%E5%8A%BF"><span class="nav-number">1.</span> <span class="nav-text">跨平台技术优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B"><span class="nav-number">2.</span> <span class="nav-text">跨端技术演进</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RN%E5%92%8CFlutter%E5%AF%B9%E6%AF%94"><span class="nav-number">3.</span> <span class="nav-text">RN和Flutter对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -526,13 +793,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">502k</span>
+    <span title="站点总字数">503k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:37</span>
+    <span title="站点阅读时长">7:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

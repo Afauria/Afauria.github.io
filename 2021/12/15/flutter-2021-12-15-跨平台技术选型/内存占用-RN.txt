@@ -1,0 +1,107 @@
+PACM00:/ $ dumpsys meminfo com.rn_app
+Applications Memory Usage (in Kilobytes):
+Uptime: 122966720 Realtime: 226650157
+
+** MEMINFO in pid 3155 [com.rn_app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    11472    11340        0       43    20480    15875     4604
+  Dalvik Heap     4601     4576        0       34    16456     4168    12288
+ Dalvik Other     1497     1484        0        0
+        Stack       52       52        0        0
+       Ashmem        2        0        0        0
+    Other dev        8        0        8        0
+     .so mmap    14854      616    10140       37
+    .jar mmap      671        0        0        0
+    .apk mmap      515        0       64        0
+    .ttf mmap      201        0       64        0
+    .dex mmap     5408        4     5404        0
+    .oat mmap      630        0        0        0
+    .art mmap     1260      920        0       75
+   Other mmap      420      152        0        0
+   EGL mtrack     8884     8884        0        0
+    GL mtrack     6504     6504        0        0
+      Unknown    34645    34620        0        1
+        TOTAL    91814    69152    15680      190    36936    20043    16892
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     5496
+         Native Heap:    11340
+                Code:    16292
+               Stack:       52
+            Graphics:    15388
+       Private Other:    36264
+              System:     6982
+
+               TOTAL:    91814       TOTAL SWAP PSS:      190
+
+ Objects
+               Views:      527         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       14        AssetManagers:        0
+       Local Binders:        8        Proxy Binders:       30
+       Parcel memory:        3         Parcel count:       14
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+
+PACM00:/ $ dumpsys meminfo com.rn_app
+Applications Memory Usage (in Kilobytes):
+Uptime: 122971128 Realtime: 226654566
+
+** MEMINFO in pid 3155 [com.rn_app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    13923    13796        0       43    24576    18305     6270
+  Dalvik Heap     5561     5492        0       16    16501     4213    12288
+ Dalvik Other     1185     1180        0        0
+        Stack       52       52        0        0
+       Ashmem        2        0        0        0
+    Other dev        8        0        8        0
+     .so mmap    14955      616    10204       37
+    .jar mmap      680        0        0        0
+    .apk mmap      515        0       64        0
+    .ttf mmap      209        0       64        0
+    .dex mmap     5408        4     5404        0
+    .oat mmap      643        0        0        0
+    .art mmap     1803     1324       32       58
+   Other mmap      456      160        0        0
+   EGL mtrack     8884     8884        0        0
+    GL mtrack    44940    44940        0        0
+      Unknown    34716    34692        0        1
+        TOTAL   134095   111140    15776      155    41077    22518    18558
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     6848
+         Native Heap:    13796
+                Code:    16356
+               Stack:       52
+            Graphics:    53824
+       Private Other:    36040
+              System:     7179
+
+               TOTAL:   134095       TOTAL SWAP PSS:      155
+
+ Objects
+               Views:      542         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       14        AssetManagers:        0
+       Local Binders:        8        Proxy Binders:       31
+       Parcel memory:        3         Parcel count:       14
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+
+PACM00:/ $
