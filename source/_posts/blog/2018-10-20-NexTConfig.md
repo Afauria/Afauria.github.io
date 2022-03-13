@@ -397,7 +397,7 @@ npm install hexo-generator-index-pin-top --save
 ```
 
 2. 在需要置顶的文章头部中添加`top: true`
-3. 配置置顶图标：在`<div class="post-meta">`中添加下面代码
+3. 配置置顶图标：修改`next/layout/_macro/post.swig`文件，在`<div class="post-meta">`中添加下面代码
 
 ```html
 <div class="post-meta">
@@ -418,6 +418,25 @@ npm install hexo-generator-index-pin-top --save
 > 由于`next`主题使用的`fontawesome`图标只有`all.min.css`，不包含`fa-thumb-tack`（图钉）图标。需要手动下载`fontawesome`图标，替换`next/source/lib/font-awesome`下的文件夹。
 >
 > 这里就不引入了，换成`fa-fire`（火）或者`fa-bolt`（闪电）图标，能看懂就行
+
+## 修改归档页面文章数量
+
+```shell
+npm install --save hexo-generator-index
+npm install --save hexo-generator-archive
+
+# 修改站点配置文件
+# 首页配置
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+
+# 归档页面配置
+archive_generator:
+  per_page: 30
+  order_by: -date
+```
 
 # 参考文章
 

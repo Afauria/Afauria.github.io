@@ -7,7 +7,7 @@ title: Afauria's Blog
 subtitle: 丘山月夜的博客
 description: 君は空を見てるか,<br>風の音を聞いてるか
 keywords:
-author: 丘山月夜
+author: Afauria
 language: zh-CN
 timezone:
 
@@ -52,6 +52,10 @@ highlight:
 index_generator:
   path: ''
   per_page: 10
+  order_by: -date
+
+archive_generator:
+  per_page: 30
   order_by: -date
   
 # Category & Tag

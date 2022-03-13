@@ -15,13 +15,7 @@ tags:
 
 研究Flutter跨平台应用在Linux上运行。由于没有Linux电脑，因此尝试使用Docker容器代替Linux主机环境，将编译好的Flutter应用放到Linux容器中运行。
 
-Flutter应用需要针对Linux x86_64、ARM64、ARM目标平台分别进行编译和交叉编译。
-
-最终目标：在Linux ARM嵌入式平台运行Flutter应用。
-
-本文只介绍如何在Linux容器中运行GUI程序，不介绍Flutter编译相关。只演示x86_64架构Linux容器，ARM和ARM64步骤相同。
-
-**注：Flutter官方的Linux嵌入层使用GTK图形库，因此编译出的Linux应用只适用于GTK环境。嵌入式平台如果使用其他图形系统（例如DRM、Wayland），需要定制嵌入层。**
+本文只介绍如何在Linux容器中运行GUI程序，不介绍Flutter编译相关。只演示x86_64架构Linux容器，arm和arm64步骤相同。
 
 # Mac上运行Docker Linux GUI程序
 
