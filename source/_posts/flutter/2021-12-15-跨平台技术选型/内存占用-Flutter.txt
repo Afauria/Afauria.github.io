@@ -1,0 +1,113 @@
+PACM00:/ $ dumpsys meminfo com.afauria.performance.flutter_app
+Applications Memory Usage (in Kilobytes):
+Uptime: 122904094 Realtime: 226587531
+
+** MEMINFO in pid 2907 [com.afauria.performance.flutter_app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    12860    12796        0       45    26624    19270     7353
+  Dalvik Heap     1587     1516        0       16    13502     1214    12288
+ Dalvik Other      338      336        0        1
+        Stack       48       48        0        0
+       Ashmem        2        0        0        0
+    Other dev       12        0       12        0
+     .so mmap    13867      444     9760       38
+    .jar mmap      523        0        0        0
+    .apk mmap      206        0        4        0
+    .ttf mmap     1422        0      732        0
+    .dex mmap      344        4      340        0
+    .oat mmap      515        0        0        0
+    .art mmap     1780     1320       32       63
+   Other mmap       32       12        0        0
+   EGL mtrack    15733    15733        0        0
+    GL mtrack     7420     7420        0        0
+      Unknown    10230    10200        0        1
+        TOTAL    67083    49829    10880      164    40126    20484    19641
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2868
+         Native Heap:    12796
+                Code:    11284
+               Stack:       48
+            Graphics:    23153
+       Private Other:    10560
+              System:     6374
+
+               TOTAL:    67083       TOTAL SWAP PSS:      164
+
+ Objects
+               Views:       10         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       15        AssetManagers:        0
+       Local Binders:       12        Proxy Binders:       30
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+
+
+ Asset Allocations
+    : 1K
+PACM00:/ $ dumpsys meminfo com.afauria.performance.flutter_app
+Applications Memory Usage (in Kilobytes):
+Uptime: 122911348 Realtime: 226594785
+
+** MEMINFO in pid 2907 [com.afauria.performance.flutter_app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    13460    13396        0       45    26624    20093     6530
+  Dalvik Heap     1651     1580        0       16    13503     1215    12288
+ Dalvik Other      342      340        0        1
+        Stack       48       48        0        0
+       Ashmem        2        0        0        0
+    Other dev       12        0       12        0
+     .so mmap    13900      444     9760       38
+    .jar mmap      536        0        0        0
+    .apk mmap      206        0        4        0
+    .ttf mmap     1435        0      732        0
+    .dex mmap      344        4      340        0
+    .oat mmap      515        0        0        0
+    .art mmap     1800     1340       32       62
+   Other mmap       32       12        0        0
+   EGL mtrack    17255    17255        0        0
+    GL mtrack    20968    20968        0        0
+      Unknown    10210    10180        0        1
+        TOTAL    82879    65567    10880      163    40127    21308    18818
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2952
+         Native Heap:    13396
+                Code:    11284
+               Stack:       48
+            Graphics:    38223
+       Private Other:    10544
+              System:     6432
+
+               TOTAL:    82879       TOTAL SWAP PSS:      163
+
+ Objects
+               Views:       10         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       15        AssetManagers:        0
+       Local Binders:       12        Proxy Binders:       30
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+
+
+ Asset Allocations
+    : 1K
+PACM00:/ $
