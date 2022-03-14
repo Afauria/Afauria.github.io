@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/图形系统架构层级.png">
 <meta property="article:published_time" content="2022-02-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-24T08:51:06.862Z">
+<meta property="article:modified_time" content="2022-03-14T01:14:53.073Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Linux">
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-02-24 16:51:06" itemprop="dateModified" datetime="2022-02-24T16:51:06+08:00">2022-02-24</time>
+                <time title="修改时间：2022-03-14 09:14:53" itemprop="dateModified" datetime="2022-03-14T09:14:53+08:00">2022-03-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -367,10 +367,10 @@
 <h1 id="窗口系统"><a href="#窗口系统" class="headerlink" title="窗口系统"></a>窗口系统</h1><p>Linux是一个基于命令行的操作系统，不包含图形界面，很多Linux服务器不装X服务器，只有命令行界面。而Windows在内核中就实现了图形界面。</p>
 <p>GUI界面要呈现给用户，主要分为两个步骤：</p>
 <ol>
-<li>渲染：通过图形API接口绘制图形（包括软件/硬件，2D/3D，直接/间接，客户端渲染/服务端渲染），保存到Buffer中（操作内存MMIO、DMA）</li>
+<li>渲染（绘制）：通过图形API接口绘制图形（包括软件/硬件加速，2D/3D，直接/间接，客户端渲染/服务端渲染），保存到Buffer中（操作内存MMIO、DMA）</li>
 <li>送显：将Buffer中的UI数据，呈现到显示设备上。</li>
 </ol>
-<p>由于每个应用都有自己的界面，这些应用共用一个显示设备，或是并列显示，或是层叠显示。因此需要一个程序来管理这些应用界面：负责将各个界面排列、合并最终显示到显示设备，即显示服务器。</p>
+<p><strong>由于每个应用都有自己的界面，这些应用共用一个显示设备，或是并列显示，或是层叠显示。因此需要一个程序来管理这些应用界面：负责将各个界面排列、合并最终显示到显示设备，即显示服务器。</strong></p>
 <blockquote>
 <p>如X Window中的X Server、Wayland中的Wayland Server，Android中的Surface Flinger。</p>
 </blockquote>
@@ -406,7 +406,7 @@
 <li>例如图形界面终端（也叫GUI）点击一个按钮，告诉计算机，应用程序处理之后将绘图数据传回，终端显示画面。</li>
 </ul>
 </blockquote>
-<p>由于每个GUI应用都要显示界面，而显示设备只有一个，因此需要为每个应用分配一个窗口，再对画面进行合成，最终输出到显示设备。</p>
+<p>由于<strong>每个GUI应用都要显示界面，而显示设备只有一个</strong>，因此需要为每个应用分配一个窗口，再对画面进行合成，最终输出到显示设备。</p>
 <p>但由于早期RAM内存不足，如果为每个窗口分配一块Buffer，打开几个窗口内存就满了。X Window的做法是只使用一块屏幕大小的Buffer，每个窗口可以减去自己被盖住部分的Buffer，当窗口位置发生变化时，发一个重绘信号给窗口，窗口将绘制数据传给X Server的Buffer。</p>
 <p>要实现半透明的窗口，需要对上层窗口和下层窗口做alpha混合，但是由于X Server中的Buffer只有一层，无法进行alpha混合。因此X Window扩展了协议，由Compositor合成之后再将整个屏幕的结果传给X Server渲染（内存够了，但X Window不想变更原来的机制）。</p>
 <p>随着时间发展，越来越多的Client和Server程序运行在同一台机器，<strong>Client和Server频繁通信导致性能较低</strong>，特别是针对3D渲染。因此出现了DRI框架，客户端可以直接利用显卡处理图形（<strong>直接渲染</strong>）。</p>
@@ -683,7 +683,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -727,6 +727,9 @@
         </li>
         <li class="links-of-blogroll-item">
           <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2022&#x2F;01&#x2F;01&#x2F;reader-2022-01-01-阅读推荐&#x2F;">阅读推荐</a>
         </li>
     </ul>
   </div>
@@ -777,13 +780,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">504k</span>
+    <span title="站点总字数">511k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:38</span>
+    <span title="站点阅读时长">7:44</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
