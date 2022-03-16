@@ -22,17 +22,18 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Android开发工具，常见问题">
+  <meta name="description" content="Android开发工具说明、常用命令手册和问题解决：ADB、模拟器。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android开发工具（占坑）">
+<meta property="og:title" content="Android开发工具和命令手册">
 <meta property="og:url" content="https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="Android开发工具，常见问题">
+<meta property="og:description" content="Android开发工具说明、常用命令手册和问题解决：ADB、模拟器。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-02-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-05T07:43:23.559Z">
+<meta property="article:modified_time" content="2022-03-15T12:09:58.936Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
+<meta property="article:tag" content="工具">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
@@ -48,7 +49,7 @@
   };
 </script>
 
-  <title>Android开发工具（占坑） | Afauria's Blog</title>
+  <title>Android开发工具和命令手册 | Afauria's Blog</title>
   
 
 
@@ -220,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android开发工具（占坑）
+          Android开发工具和命令手册
         </h1>
 
         <div class="post-meta">
@@ -238,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-05 15:43:23" itemprop="dateModified" datetime="2021-11-05T15:43:23+08:00">2021-11-05</time>
+                <time title="修改时间：2022-03-15 20:09:58" itemprop="dateModified" datetime="2022-03-15T20:09:58+08:00">2022-03-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,7 +252,7 @@
             </span>
 
           
-            <span id="/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-meta-item leancloud_visitors" data-flag-title="Android开发工具（占坑）" title="阅读次数">
+            <span id="/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-meta-item leancloud_visitors" data-flag-title="Android开发工具和命令手册" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -277,16 +278,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>739</span>
+              <span>7.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
-            <div class="post-description">Android开发工具，常见问题</div>
+            <div class="post-description">Android开发工具说明、常用命令手册和问题解决：ADB、模拟器。</div>
 
         </div>
       </header>
@@ -297,9 +298,223 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h1><h2 id="Windows运行Android模拟器"><a href="#Windows运行Android模拟器" class="headerlink" title="Windows运行Android模拟器"></a>Windows运行Android模拟器</h2><h3 id="Intel-CPU"><a href="#Intel-CPU" class="headerlink" title="Intel CPU"></a>Intel CPU</h3><p>Intel CPU使用HAXM（Hardware Accelerated Execution Manager）技术，使用基于 Intel(R) Virtualization Technology (VT) 的硬件加速，实现 Android 模拟器加速。</p>
+        <h1 id="ADB（Android-Debug-Bridge）安卓调试工具"><a href="#ADB（Android-Debug-Bridge）安卓调试工具" class="headerlink" title="ADB（Android Debug Bridge）安卓调试工具"></a>ADB（Android Debug Bridge）安卓调试工具</h1><p>ADB是连接Android手机与PC端的桥梁，通过adb可以管理、操作模拟器和设备，如安装软件、查看设备软硬件参数、系统升级等</p>
+<h2 id="Mac配置环境变量"><a href="#Mac配置环境变量" class="headerlink" title="Mac配置环境变量"></a>Mac配置环境变量</h2><ol>
+<li>修改<code>~/.bash_profile</code>文件如下</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ANDROID_HOME=/Users/name/Library/Android/sdk</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$&#123;ANDROID_HOME&#125;</span>/tools`</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$&#123;ANDROID_HOME&#125;</span>/platform-tools</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>执行<code>source .bash_profile</code>生效，如果使用了<code>zsh</code>，在<code>~/.zshrc</code>文件末尾添加<code>source ~/.bash_profile</code></li>
+</ol>
+<h2 id="常用adb命令"><a href="#常用adb命令" class="headerlink" title="常用adb命令"></a>常用adb命令</h2><ul>
+<li><code>adb connect &lt;手机ip[:端口号]&gt;</code>：连接adb，默认端口号为5555</li>
+<li><code>adb disconnect</code>：断开连接</li>
+<li><code>adb devices</code>：查看连接的设备</li>
+<li><code>adb [command] --help</code>：查看某个命令的帮助</li>
+<li><code>adb install 电脑路径/xxx.apk</code>：安装apk到手机。-r覆盖安装，-t安装测试包，-d忽略版本大小</li>
+<li><code>adb pull 手机存储路径 电脑路径</code>：从手机拷贝到电脑</li>
+<li><code>adb push 电脑路径 手机存储路径</code>：从电脑拷贝到手机</li>
+<li><code>adb shell</code>：进入Android终端。<code>-s</code>：如果连接了多个设备，使用-s指定设备</li>
+<li><code>adb root</code>：开启root，大部分系统无法直接root</li>
+<li><code>adb remount</code>：挂载目录，设置为可读写（需先root），或者进入终端输入<code>mount -o remount,rw [路径]</code></li>
+<li>开启无线adb（需先root）：连接串口或USB，进入终端输入<ul>
+<li><code>stop adbd</code></li>
+<li><code>setprop service.adb.tcp.port 5555</code></li>
+<li><code>start adbd</code></li>
+</ul>
+</li>
+<li><code>adb kill-server</code>：杀死adb服务</li>
+<li><code>adb start-server</code>：启动adb服务</li>
+</ul>
+<h2 id="无线连接ADB"><a href="#无线连接ADB" class="headerlink" title="无线连接ADB"></a>无线连接ADB</h2><p>参考<a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/adb">官方文档</a></p>
+<p>Android11及更高版本：开发者选项中打开无线调试</p>
+<p>Android10及以下：</p>
+<ol>
+<li>使用USB连接</li>
+<li>输入<code>adb tcpip 5555</code></li>
+<li>拔掉USB</li>
+<li>输入<code>adb connect &lt;ip地址&gt;:5555</code></li>
+</ol>
+<h2 id="输出设备日志"><a href="#输出设备日志" class="headerlink" title="输出设备日志"></a>输出设备日志</h2><ul>
+<li><code>adb logcat &gt; logcat.log</code>：输出日志到logcat.log文件夹，如果没有则新建</li>
+<li><code>adb logcat &gt; &quot;%date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%时%time:~3,2%分%time:~6,2%.log&quot;</code>：以日期时间命名文件</li>
+<li><code>logcat -d -f &lt;文件名&gt;</code>：输出日志，-d表示将缓存日志全部输出</li>
+<li><code>dmesg</code>：查看linux kernel开机日志</li>
+</ul>
+<p>adb logcat [选项] [过滤项]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">选项</span><br><span class="line">&quot;-s&quot;: 设置输出日志的标签, 只显示该标签的日志;</span><br><span class="line">&quot;-f&quot;: 将日志输出到文件, 默认输出到标准输出流中, -f 参数执行不成功;</span><br><span class="line">&quot;-r&quot;: 按照每千字节输出日志, 需要 -f 参数, 不过这个命令没有执行成功;</span><br><span class="line">&quot;-n&quot;: 设置日志输出的最大数目, 需要 -r 参数, 这个执行 感觉 跟 adb logcat 效果一样;</span><br><span class="line">&quot;-v&quot;: 设置日志的输出格式, 注意只能设置一项;</span><br><span class="line">&quot;-c&quot;: 清空所有的日志缓存信息;</span><br><span class="line">&quot;-d&quot;: 将缓存的日志输出到屏幕上, 并且不会阻塞;</span><br><span class="line">&quot;-t&quot;: 输出最近的几行日志, 输出完退出, 不阻塞;</span><br><span class="line">&quot;-g&quot;: 查看日志缓冲区信息;</span><br><span class="line">&quot;-b&quot;: 加载一个日志缓冲区, 默认是 main, 下面详解;</span><br><span class="line">&quot;-B&quot;: 以二进制形式输出日志;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">过滤项格式 : &lt;tag&gt;[:priority] , 标签：日志等级, 默认的日志过滤项是&quot;*:I&quot;;如&quot;*:E&quot;表示过滤Error以上。</span><br><span class="line">-- V : Verbose (明细);</span><br><span class="line">-- D : Debug (调试);</span><br><span class="line">-- I : Info (信息);</span><br><span class="line">-- W : Warn (警告);</span><br><span class="line">-- E : Error (错误);</span><br><span class="line">-- F: Fatal (严重错误);</span><br><span class="line">-- S : Silent(Super all output) (最高的优先级, 可能不会记载东西);</span><br></pre></td></tr></table></figure>
+
+<h1 id="常用android调试命令手册"><a href="#常用android调试命令手册" class="headerlink" title="常用android调试命令手册"></a>常用android调试命令手册</h1><p>可以结合<code>grep</code>命令过滤关键信息。</p>
+<blockquote>
+<p><code>grep [options] PATTERN FILE</code>：<code>grep -inR enable_global_input *</code></p>
+<ul>
+<li>-i：忽略大小写</li>
+<li>-n：输出匹配的行号</li>
+<li>-R：递归遍历文件夹</li>
+<li>-E：可以输入多个：<code>grep -E &quot;word1|word2|word3&quot; file.txt </code></li>
+</ul>
+</blockquote>
+<p><strong><code>dumpsys、pm、am、wm</code>等命令本质也是通过执行代码运行的，可以在framework中搜索到相关代码，了解原理</strong></p>
+<h2 id="dumpsys"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</h2><ul>
+<li><code>dumpsys activity</code>：输出Android组件信息，可以加上a[ctivities]、b[roadcasts]、s[ervices]、prov[iders]等过滤特定信息</li>
+<li><code>dumpsys window windows</code>：获取窗口信息，结合<code>grep mFocus</code>获取当前窗口</li>
+<li><code>dumpsys package &lt;packagename&gt;</code>：输出应用包信息，结合<code>grep version</code>查看应用版本，结合<code>grep path</code>查看应用路径</li>
+<li><code>dumpsys meminfo</code>：查看内存信息</li>
+<li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
+</ul>
+<h2 id="pm"><a href="#pm" class="headerlink" title="pm"></a>pm</h2><ul>
+<li><p><code>pm list package -f </code>：输出所有已安装apk</p>
+<ul>
+<li>-f：输出安装路径</li>
+<li>-3：过滤出第三方应用</li>
+<li>-s：过滤出系统应用</li>
+<li>-d：过滤disable应用</li>
+<li>-U：显示应用uid</li>
+<li>–uid UID：过滤指定uid应用</li>
+<li>–user USER_ID：过滤指定userid应用</li>
+</ul>
+</li>
+<li><p><code>pm install/uninstall &lt;apk文件&gt;</code>：安装应用，-r覆盖安装，-t安装测试包，-d忽略版本大小</p>
+</li>
+<li><p><code>pm path [package_name]</code>：查看应用安装路径</p>
+</li>
+<li><p><code>pm dump &lt;packagename&gt;</code>：查看应用信息</p>
+</li>
+<li><p><code>pm clear</code>：清除应用缓存数据</p>
+</li>
+<li><p><code>pm enable/disable &lt;包名/组件名&gt;</code>：启用/禁用组件，设置为disable之后组件无法运行。如开机向导应用，运行完毕之后禁用，下次开机就会直接进入桌面</p>
+</li>
+<li><p><code>pm list permissions [group]</code>：输出已知权限</p>
+<ul>
+<li><code>-d</code>：仅列出危险权限</li>
+<li><code>-g</code>：按组进行整理</li>
+</ul>
+</li>
+<li><p><code>pm list features</code>：输出系统支持的功能</p>
+</li>
+<li><p><code>pm list libraries</code>：输出系统支持的所有库</p>
+</li>
+<li><p><code>pm list users</code>：输出系统中的所有用户</p>
+</li>
+</ul>
+<h2 id="am"><a href="#am" class="headerlink" title="am"></a>am</h2><ul>
+<li><code>am start</code>、<code>am startservice</code>、<code>am broadcast</code>：启动组件<ul>
+<li>-p：包名</li>
+<li>-n：包名/Manifest注册组件名。</li>
+<li>-a：action启动</li>
+<li>-c：category</li>
+<li>-d：data，uri启动</li>
+</ul>
+</li>
+<li><code>am force-stop &lt;包名&gt;</code>：退出应用</li>
+</ul>
+<h2 id="input"><a href="#input" class="headerlink" title="input"></a>input</h2><ul>
+<li><code>input</code>：输入事件<ul>
+<li><code>input keyevent &lt;keycode&gt;</code>：输入按键事件</li>
+<li><code>input text xxx</code>：输入文本</li>
+<li><code>input tap &lt;x&gt; &lt;y&gt;</code>：输入点击事件</li>
+<li><code>input swipe &lt;x1&gt; &lt;y1&gt; &lt;x2&gt; &lt;y2&gt;</code>：输入滑动事件</li>
+<li>…</li>
+</ul>
+</li>
+<li><code>getevent</code>：获取按键键值</li>
+<li><code>sendevent &lt;device：设备&gt; &lt;type：事件类型&gt; &lt;scanCode：linux键值&gt; &lt;value：键值&gt;</code>：发送按键事件<ul>
+<li>scanCode是linux层的键值和android keycode不一样。红外按键是从底层驱动传入，转换为Linux层scanCode，再转换为Android的KeyCode。</li>
+<li>1为按下，0为松开</li>
+<li>如<code>sendevent /dev/input/event0 1 658 1 &amp;&amp; sendevent /dev/input/event0 0 0 0 &amp;&amp; sendevent /dev/input/event0 1 658 0 &amp;&amp; sendevent /dev/input/event0 0 0 0</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="性能相关"><a href="#性能相关" class="headerlink" title="性能相关"></a>性能相关</h2><ul>
+<li><code>dumpsys meminfo</code>：查看内存信息</li>
+<li><code>dumpsys procstats</code>：查看进程内存、CPU信息</li>
+<li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
+<li><code>dumpsys batterystats &lt;package_name&gt;</code>：查看应用能耗</li>
+<li><code>cat /proc/meminfo</code>：查看设备内存</li>
+<li><code>free</code>：查看可用内存</li>
+<li><code>procrank</code>：查看所有进程内存使用</li>
+<li><code>showmap -a &lt;pid&gt;</code>：查看进程内存信息和对应的地址区域</li>
+<li><code>df -h</code>：查看设备存储空间</li>
+<li><code>cat /proc/进程号/oom_adj</code>：查看当前进程adj值</li>
+<li><code>cat /proc/进程号/oom_score_adj</code>：查看真正有效的adj值</li>
+<li><code>vmstat [Delay] [Count]</code>：查看CPU和内存使用率，虚拟内存交换情况，IO读写情况</li>
+<li><code>top</code>：查看进程信息，内存和CPU使用情况<ul>
+<li><code>-m &lt;num&gt;</code>：显示多少个进程</li>
+<li><code>-n &lt;num&gt;</code>：刷新次数</li>
+<li><code>-d &lt;num&gt;</code>：刷新间隔</li>
+<li><code>-s &lt;col&gt;</code>：按列排序，如cpu、vss、rss、thr等</li>
+<li><code>-t</code>：显示线程信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><code>uiautomator dump [file]</code>：输出layout结构层级</li>
+<li><code>logcat -d -f &lt;文件名&gt;</code>：输出日志，-d表示将缓存日志全部输出</li>
+<li><code>dmesg</code>：查看内核日志</li>
+<li><code>cat /sys/class/net/wlan0/address</code>：查看mac地址</li>
+<li><code>svc wifi enable/disable</code>：开启/关闭wifi</li>
+<li><code>getprop</code>、<code>setprop</code>：查看、设置系统属性，结合grep过滤可以查看系统信息，如内存大小、版本等</li>
+<li><code>settings get/put &lt;namespace：system/global/secure&gt; &lt;key&gt; [value]</code>：查看Settings Provider属性<ul>
+<li><code>settings get system date_format</code>、<code>settings put system date_format dd-MM-yyyy</code>：设置日期格式</li>
+<li><code>settings put global http_proxy 127.0.0.1:8888</code>：设置代理，用于fiddle抓包</li>
+<li><code>settings put global adb_enabled 0</code>：关闭USB调试</li>
+</ul>
+</li>
+<li><code>wm size [如1920x1080]</code>、<code>wm density [如240]</code>：查看和设置设备分辨率和dpi</li>
+<li><code>reboot</code>：重启设备</li>
+<li><code>screencap 1.png</code>：截屏</li>
+<li><code>screenrecord 1.mp4</code>：录屏</li>
+<li><code>cmd overlay list</code>：查看overlay apk</li>
+<li><code>tcpdump -p -vv -s 0 -w /mnt/sdcard/capture.pcap</code>：抓包，使用wireshark分析。系统需要root</li>
+<li><code>busybox vi &lt;file&gt;</code>：busybox集成了linux常用工具和命令，短小精悍，适合嵌入式平台。系统不支持vi等命令时可以使用busybox。</li>
+<li><code>find ./ -name runtime-permissions.xml</code>：查找文件</li>
+<li><code>ifconfig</code>：查看ip地址和mac地址</li>
+<li><code>pwd</code>：输出当前路径</li>
+<li><code>ping</code>：尝试连接ip或域名</li>
+<li><code>chmod [权限数字] [路径]</code>：修改文件权限，777表示任何用户可读可写</li>
+<li><code>md5 [文件]</code>：获取文件md5值</li>
+</ul>
+<h1 id="终端登录工具"><a href="#终端登录工具" class="headerlink" title="终端登录工具"></a>终端登录工具</h1><ol>
+<li>adb shell</li>
+<li>windows上使用MobaXterm：支持SSH、FTP、串口、VNC等</li>
+<li>mac上使用串口：通过<code>screen &lt;串口名称，如tty.usbserial-gggggggg1&gt; &lt;波特率，如115200&gt;</code>连接</li>
+</ol>
+<blockquote>
+<p>tty（Teletypes，或者teletypewriters）：终端是一种字符型设备，它有多种类型，通常使用tty来简称各种类型的终端设备。</p>
+<p>tty也是一个Unix命令，用来给出当前终端设备的名称。</p>
+<p>在Linux系统的设备特殊文件目录/dev/下，TTY设备包括虚拟控制台，串口以及伪终端设备</p>
+<p>/dev/tty代表当前tty设备，在当前的终端中输入 echo “hello” &gt; /dev/tty ，都会直接显示在当前的终端中。</p>
+</blockquote>
+<h1 id="Prop属性"><a href="#Prop属性" class="headerlink" title="Prop属性"></a>Prop属性</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>系统开机后会从以下系统文件中读取默认的属性，并写入共享内存中。按顺序读取，后面的会覆盖前面的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bionic/libc/include/sys/_system_properties.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_PATH_RAMDISK_DEFAULT  <span class="meta-string">&quot;/default.prop&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_PATH_SYSTEM_BUILD     <span class="meta-string">&quot;/system/build.prop&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_PATH_SYSTEM_DEFAULT   <span class="meta-string">&quot;/system/default.prop&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_PATH_LOCAL_OVERRIDE   <span class="meta-string">&quot;/data/local.prop&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// system/core/init/property_service.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">start_property_service</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fd;</span><br><span class="line">  	<span class="comment">//...</span></span><br><span class="line">    load_properties_from_file(PROP_PATH_SYSTEM_BUILD);</span><br><span class="line">    load_properties_from_file(PROP_PATH_SYSTEM_DEFAULT);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> ALLOW_LOCAL_PROP_OVERRIDE</span></span><br><span class="line">    load_properties_from_file(PROP_PATH_LOCAL_OVERRIDE);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* ALLOW_LOCAL_PROP_OVERRIDE */</span></span></span><br><span class="line">    <span class="comment">/* Read persistent properties after all default values have been loaded. */</span></span><br><span class="line">    load_persistent_properties();</span><br><span class="line">    update_legacy_atvc_properties();</span><br><span class="line">  	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置方式"><a href="#设置方式" class="headerlink" title="设置方式"></a>设置方式</h2><ol>
+<li>setprop、getprop命令</li>
+<li>修改prop系统文件：需要root</li>
+<li>Java调用，有权限限制</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java API</span></span><br><span class="line"><span class="keyword">import</span> android.os.SystemProperties;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">get</span><span class="params">(String key, String def)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(String key, String val)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>ro.开头的属性只读</li>
+<li>persist.开头的属性名永久保存。其他属性（debug.、service.开头）开机之后清除：<ol>
+<li>设置persist属性的时候会写入<code>/data/property/persistent_properties</code>文件中</li>
+<li>加载属性的时候会从该文件读取</li>
+</ol>
+</li>
+<li>直接编辑prop文件修改属性，会永久保存</li>
+<li>属性名最大长度是32，属性值最大长度是92</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bionic/libc/include/sys/system_properties.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_NAME_MAX   32</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROP_VALUE_MAX  92</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h1><h2 id="Windows运行Android模拟器"><a href="#Windows运行Android模拟器" class="headerlink" title="Windows运行Android模拟器"></a>Windows运行Android模拟器</h2><h3 id="Intel-CPU"><a href="#Intel-CPU" class="headerlink" title="Intel CPU"></a>Intel CPU</h3><p>Intel CPU使用HAXM（Hardware Accelerated Execution Manager）技术，使用基于 Intel(R) Virtualization Technology (VT) 的硬件加速，实现 Android 模拟器加速。</p>
 <p>需要在BIOS中开启硬件支持VT，并且Android sdk需要安装Intel x86 Emulator Accelerator（HAXM）扩展。</p>
-<h3 id="AMD-CPU"><a href="#AMD-CPU" class="headerlink" title="AMD CPU"></a>AMD CPU</h3><p>AMD通过Android Studio运行模拟器会报错，如“提示CPU不支持“，或者”建议使用x86模拟器”。在BIOS中开启虚拟化也没用。</p>
+<h3 id="AMD-CPU"><a href="#AMD-CPU" class="headerlink" title="AMD CPU"></a>AMD CPU</h3><p>AMD通过Android Studio运行模拟器会报错，如”提示CPU不支持”，或者”建议使用x86模拟器”。在BIOS中开启虚拟化也没用。</p>
 <p>解决办法：</p>
 <ul>
 <li>使用GenyMotion模拟器，并且在Android Studio上安装GenyMotion插件。<ul>
@@ -315,12 +530,12 @@
 </ul>
 </li>
 </ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>如果是IntelCPU还是建议使用HAXM，支持硬件加速。</li>
 <li>如果是AMD CPU建议使用Win10的Hyper-V技术</li>
 <li>建议使用x86模拟器，速度能快很多倍</li>
 </ul>
-<p>参考<a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2018/07/android-emulator-amd-processor-hyper-v.html">Android模拟器安装</a>k</p>
+<p>参考<a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2018/07/android-emulator-amd-processor-hyper-v.html">Android模拟器安装</a></p>
 
     </div>
 
@@ -351,6 +566,7 @@
           
           <div class="post-tags">
               <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
           </div>
 
         
@@ -426,7 +642,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E8%BF%90%E8%A1%8CAndroid%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">Windows运行Android模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intel-CPU"><span class="nav-number">1.1.1.</span> <span class="nav-text">Intel CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMD-CPU"><span class="nav-number">1.1.2.</span> <span class="nav-text">AMD CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB%EF%BC%88Android-Debug-Bridge%EF%BC%89%E5%AE%89%E5%8D%93%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">ADB（Android Debug Bridge）安卓调试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">Mac配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8adb%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">常用adb命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E8%BF%9E%E6%8E%A5ADB"><span class="nav-number">1.3.</span> <span class="nav-text">无线连接ADB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%97%A5%E5%BF%97"><span class="nav-number">1.4.</span> <span class="nav-text">输出设备日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8android%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C"><span class="nav-number">2.</span> <span class="nav-text">常用android调试命令手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-number">2.1.</span> <span class="nav-text">dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pm"><span class="nav-number">2.2.</span> <span class="nav-text">pm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am"><span class="nav-number">2.3.</span> <span class="nav-text">am</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input"><span class="nav-number">2.4.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E7%9B%B8%E5%85%B3"><span class="nav-number">2.5.</span> <span class="nav-text">性能相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E7%99%BB%E5%BD%95%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">终端登录工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prop%E5%B1%9E%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">Prop属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">设置方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.3.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E8%BF%90%E8%A1%8CAndroid%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Windows运行Android模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intel-CPU"><span class="nav-number">5.1.1.</span> <span class="nav-text">Intel CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMD-CPU"><span class="nav-number">5.1.2.</span> <span class="nav-text">AMD CPU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -539,13 +755,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">511k</span>
+    <span title="站点总字数">520k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:44</span>
+    <span title="站点阅读时长">7:53</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
