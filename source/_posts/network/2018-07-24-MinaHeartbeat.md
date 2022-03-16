@@ -2,12 +2,11 @@
 layout: post
 title: Mina心跳检测实现
 date: 2018-7-24
-categories: 技术
+categories: 计算机网络
 description: Mina心跳检测实现
 tags:
-- 技术
-- 网络编程
-keywords: [Java , Mina , 网络]
+- 计算机网络
+keywords: [Java , Mina , 计算机网络]
 ---
 
 上一篇文章讲了Mina的简单使用，这一篇将要讲讲怎么用Mina实现心跳检测。网上有很多相关的文章，但是我觉得比较难理解，自己折腾了好久才明白，所以想用我觉得容易理解的话总结一下。也给自己做个笔记。
