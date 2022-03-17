@@ -224,8 +224,8 @@
       </categories>
       <tags>
         <tag>Flutter</tag>
-        <tag>Docker</tag>
         <tag>Linux</tag>
+        <tag>Docker</tag>
         <tag>Yocto</tag>
       </tags>
   </entry>
@@ -648,8 +648,8 @@
       </categories>
       <tags>
         <tag>Flutter</tag>
-        <tag>Docker</tag>
         <tag>Linux</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -795,8 +795,8 @@
       <tags>
         <tag>工具</tag>
         <tag>Flutter</tag>
-        <tag>Docker</tag>
         <tag>Linux</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -8136,6 +8136,162 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
+
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
+
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<blockquote>
+<p>除了scp之外，还可以使用rsync同步文件</p>
+</blockquote>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+<ol>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+</ol>
+</li>
+</ol>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端网站部署</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
+<ol>
+<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
+<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
+</ol>
+<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
+
+<ol>
+<li>使用python内置服务器开启端口访问文件<ol>
+<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
+<li>Python3：<code>python -m http.server 8081</code></li>
+</ol>
+</li>
+<li>使用node的http server<ol>
+<li>安装http server：<code>npm install http-server -g</code></li>
+<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
+<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
+<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
+<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
+<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
+<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
+<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
+<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
+<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
+<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
+</ol>
+<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
+<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
+<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
+<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
+</ol>
+<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
+<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
+<ol>
+<li>使用<code>chmod -R 777</code>修改读写权限</li>
+<li>Nginx用户配置</li>
+<li>Nginx文件路径和网页入口配置</li>
+<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
+<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
+</ol>
+</li>
+</ol>
+<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
+<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像</li>
+<li>启动容器</li>
+<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
+</ol>
+<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<blockquote>
+<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
+</blockquote>
+<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
+<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
+<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
+</ol>
+<p>可以使用docker compose+yml配置文件创建和启动容器</p>
+<ol>
+<li>安装docker compose工具</li>
+<li>编写yml配置文件</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
+<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
+<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
+<li>内部网站使用vite或者node等开发工具部署。</li>
+<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
+<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
@@ -8297,159 +8453,30 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+    <title>Markdown生成目录结构树</title>
+    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
+    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
+<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
+<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
 
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
 <blockquote>
-<p>除了scp之外，还可以使用rsync同步文件</p>
+<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
+<p>npm帮我们创建了两个cmd文件</p>
 </blockquote>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
-<ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
-</ol>
 </li>
-</ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
-
-<ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
-</ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
-<ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
 </ol>
 ]]></content>
       <categories>
-        <category>后端</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端网站部署</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
-<ol>
-<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
-<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
-</ol>
-<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
-
-<ol>
-<li>使用python内置服务器开启端口访问文件<ol>
-<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
-<li>Python3：<code>python -m http.server 8081</code></li>
-</ol>
-</li>
-<li>使用node的http server<ol>
-<li>安装http server：<code>npm install http-server -g</code></li>
-<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
-<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
-<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
-<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
-<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
-<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
-<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
-<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
-<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
-<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
-<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
-</ol>
-<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
-<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
-<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
-<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
-</ol>
-<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
-<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
-<ol>
-<li>使用<code>chmod -R 777</code>修改读写权限</li>
-<li>Nginx用户配置</li>
-<li>Nginx文件路径和网页入口配置</li>
-<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
-<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
-</ol>
-</li>
-</ol>
-<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
-<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像</li>
-<li>启动容器</li>
-<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
-</ol>
-<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
-<blockquote>
-<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
-</blockquote>
-<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
-<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
-<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
-</ol>
-<p>可以使用docker compose+yml配置文件创建和启动容器</p>
-<ol>
-<li>安装docker compose工具</li>
-<li>编写yml配置文件</li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
-<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
-<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
-<li>内部网站使用vite或者node等开发工具部署。</li>
-<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
-<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
-</ol>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-        <tag>Docker</tag>
+        <tag>工具</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -8540,33 +8567,6 @@ end</pre>
         <category>笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown生成目录结构树</title>
-    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
-    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
-<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
-<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
-<blockquote>
-<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
-<p>npm帮我们创建了两个cmd文件</p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -14511,6 +14511,21 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>快捷键笔记</title>
+    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
+<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
+<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
+<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git笔记</title>
     <url>/2018/10/04/tool-2018-10-04-Git/</url>
     <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
@@ -14568,21 +14583,6 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快捷键笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
-<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
-<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
-<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -14939,45 +14939,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch+Logstash+Kibana</title>
-    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
-    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
-<li>Elasticsearch：后台分布式存储以及全文检索</li>
-<li>Logstash: 日志加工、“搬运工” </li>
-<li>Kibana：数据可视化展示。</li>
-</ol>
-<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
-<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
-<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
-<li><p>Cluster ：集群。</p>
-<p>多个搜索服务器的集合</p>
-</li>
-<li><p>Node：节点。</p>
-<p>组成集群的单个服务器</p>
-</li>
-<li><p>Shard：分片。</p>
-<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
-<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
-</li>
-<li><p>Replia：副本。</p>
-<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-</li>
-</ul>
-<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
-<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
-<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
-<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Jekyll-博客工具</title>
     <url>/2018/07/15/blog-2018-07-15-Jekyll/</url>
     <content><![CDATA[<h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><ul>
@@ -15040,6 +15001,45 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>ElasticSearch+Logstash+Kibana</title>
+    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
+    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
+<li>Elasticsearch：后台分布式存储以及全文检索</li>
+<li>Logstash: 日志加工、“搬运工” </li>
+<li>Kibana：数据可视化展示。</li>
+</ol>
+<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
+<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
+<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li><p>Cluster ：集群。</p>
+<p>多个搜索服务器的集合</p>
+</li>
+<li><p>Node：节点。</p>
+<p>组成集群的单个服务器</p>
+</li>
+<li><p>Shard：分片。</p>
+<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
+<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
+</li>
+<li><p>Replia：副本。</p>
+<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+</li>
+</ul>
+<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
+<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
+<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
+<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>静态代码分析平台SonarQube</title>
     <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
     <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
@@ -15062,24 +15062,370 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
+    <title>独角戏</title>
+    <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
+    <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
+<li><p>你的女朋友有缺点吗？ ：有，像星星一样的多。 ：那你的女朋友有优点吗？ ：有，像太阳一样的少。 ：那你为什么还喜欢她？ ：因为太阳一出现，星星就不见了。</p>
+</li>
+<li><p>女孩终于鼓足勇气向男孩表白，害羞地问男孩：“你喜欢我吗？” 男孩说：“不喜欢。” 女孩伤心欲绝，转身要走。 这时男孩叫住了女孩，对她说：“傻瓜，你还没问我爱不爱你呀。” 女孩破涕为笑：“那你爱不爱我？” “不爱。”。</p>
 <ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
+<li>男孩：你怎么不问问我是不是真心的 女孩：那你是真心的吗 男孩：当然啊不是啊</li>
 </ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+</li>
+<li><p>如果有一天我说想你了，不是说这天我想你了，是说这天我憋不住了。</p>
+</li>
+<li><p>听到这音乐，第一个通宵就是在魔法密林刷级</p>
+</li>
+<li><p>与其说是孤独 不如坦诚的讲自己没有全心全意的与人相处 老友没有再联系 新朋友不去信任 对亲密的人说不出口 只能从陌生人身上寻找慰藉 反正也没有人知道我是谁 去哪里 跑向谁</p>
+</li>
+<li><p>若你身边无爱，祝你卡里有钱。</p>
+</li>
+<li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后地你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也会是。</p>
+</li>
+<li><p>我一岁的时候五岁，你年龄是我的五倍。我四岁的时候你八岁，你年龄是我的两倍。我十六岁的时候你二十岁，你的年龄是我的1.25倍。虽然我知道我永远无法追上你，但是我一生都在向你靠近。</p>
+</li>
+<li><p>今天的你对我爱答不理，明天的我还来找你</p>
+</li>
+<li><p>男生思维：你不做我女朋友，我怎么对你好？女生思维：你不对我好，我怎么做你女朋友？</p>
+<ul>
+<li>男人是结果导向，女人是过程导向</li>
+</ul>
+</li>
+<li><p>为什么女人到了社会上会遇到越来越好的男人？而男人到了社会却再也找不到比学校里好的女人？</p>
+<ul>
+<li>神回复：因为车越开越旧，司机越开越六。</li>
+</ul>
+</li>
+<li><p>她点了一个赞，你脑补出一出戏，她更新一条动态，你就像在做阅读理解，她坐在你身边，却隔着一条银河，她什么都没做，却成了你心里地最重要。</p>
+</li>
+<li><p>你好，同城</p>
+<ul>
+<li>数学里有个温柔霸道的词： 有且仅有 ； </li>
+<li>还有个孤独的词： 假设存在； </li>
+<li>还有个悲凉的词： 充分不必要； </li>
+<li>还有一种无奈： 无限接近，永不等于；</li>
+<li>最妄想的词儿： 令a和b相等；</li>
+<li>还有个孤独傲慢的词： 无解； </li>
+<li>还有个让人痛彻心扉的的字———略 </li>
+</ul>
+</li>
+<li><p>相爱的人总喜欢说反话，却又渴望对方能读懂自己的心。有点像是两个人的一场美梦，彼此都害怕自己身边的人已经睡醒远去，自己还在原地做梦，所以不断的试探考验，但是如果两人都执着的要考验对方是否醒了，那两个人还会有一起做梦的可能吗？林佳和孟云都生怕自己是醒的晚被抛弃的那个，所以明明还爱着，两个人却都急匆匆地起身离开了。</p>
+</li>
+<li><p>初见是惊鸿一瞥，南柯一梦是你。等待是山重水复，怦然心动是你。相遇是柳暗花明，如梦初醒是你。重逢是始料未及，别来无恙是你。我喜欢你，依旧是你。</p>
+</li>
+<li><p>不忘人恩，不念人过。 不思人非，不计人怨。</p>
+</li>
+<li><p>我可以单身很久，但恋爱一定要和爱的人谈。</p>
+</li>
+<li><p>单是相遇便花光了我所有运气。</p>
+</li>
+<li><p>十年前，我有过这样一个手机，它最大容量只能存储两百条短信。每当存满了，都要精挑细选地删除我的，留住她的。那时候我多想有一个可以存储五百条短信的手机。而如今，我有了一个能无限存储短信的手机。却再也找不到一个能和我聊两百条短信的人了。</p>
+<ul>
+<li>因为现在都用QQ和微信了。</li>
+</ul>
+</li>
+<li><p>爱一个人，始于颜值，陷于才华，痴于肉体，迷于声色，久于性格，终于人品。</p>
+</li>
+<li><p>用王家卫的台词来说，今天是我们分开的第847天，两年多的时间里，我没有爱过谁，我的手在离开你之后没有被谁牵过，我的嘴在你离开之后也没有被谁亲过，闭上眼睛，我还能感受到你的手你的唇，就离开那么一会儿，我以为我一睁开眼睛，我一叫你，你就回来了。</p>
+</li>
+<li><p>我自己都如此涼薄 拿什麼去溫暖別人。</p>
+</li>
+<li><p>你也不可能一直帮我 我怎么会不知道</p>
+</li>
+<li><p>你可以把一个老实人教会浪漫，但你不可能把一个花心的人永远束心</p>
+</li>
+<li><p>如果有人给你发了下雪的视频，你应该回复她我也想你了，因为春赏百花冬观雪，醒亦念卿，梦亦念卿</p>
+</li>
+<li><p>心有良人，不言于口，不形于表，亦不掩之，直言不讳，拒之坦然，得之惜之。 存人心系，大在长貌，小在言行，亦然品性，遇此之形，不急于言，拒人应礼，应人有度。</p>
+</li>
+<li><p>孟婆啊，如果你遇到我的妈妈，你就在她的碗里多放几块糖，她这辈子吃的苦太多了，下辈子让她吃甜的吧，把苦的放在我的碗里把，我不想让她再吃这么多的苦，我会心疼的</p>
+</li>
+<li><p>有没有人跟我一样？打开QQ发现没有聊天的人，于是点开看点，看一看，笑一笑，感动一下？你好陌生人，愿你天黑有灯，下雨有伞，路上有良人相伴，明天太阳依然会升起，请你不要停步，如果可以加个好友，我愿意陪你聊天。</p>
+</li>
+<li><p>无人与我立黄昏，无人问我粥可温，无人怜我悲与伤，无人分我乐与欢</p>
+</li>
+<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你</p>
+</li>
+<li><p>女：我结婚的时候你会来吗？</p>
+<ul>
+<li>男：那我劫婚，你会跟我走吗？</li>
+<li>世界上最悲哀的事莫过于此，他开心幸福难过的模样你都见过，但唯独你没见过她属于你的样子</li>
+</ul>
+</li>
+<li><p>自己喜欢的人在别人怀里，我能做什么，我能说什么，一个男人的悲剧在于如果他失败了，他不能将事情与人说，只能将愤怒屈辱不甘埋在心里</p>
+</li>
+<li><p>坐过最贵的“车”是爸爸的肩膀，住过最贵的“房子”是妈妈的肚子。出生时，我哭了，你们笑了；结婚时，我笑了，你们哭了。我成了你们时才知你们为何哭，为何笑</p>
+</li>
+<li><p>我很想恋爱，但不是因为恋爱才恋爱，我想因为那个人是你，才想恋爱，所以你没出现，我也没恋爱。</p>
+</li>
+<li><p>我喜欢你，像风走了八千里，不问归期。我喜欢你，像柳动蝉鸣，日落潮汐，不能自已。我喜欢你，像云漂泊九万里，不曾歇息。我喜欢你，像日落前洒下的余晖，不忍离去。我喜欢你，像太阳升了落去，无论朝夕。</p>
+<ul>
+<li>这句话运用排比的句式，同时也运用了比喻，句式整齐，节奏明确，真挚表达了自己的喜爱、仰慕之情。语言生动形象，读起来朗朗上口。</li>
+</ul>
+</li>
+<li><p>聚在一起，成型，扭曲，缠绕，有时候又还原，断裂，再连接，这就是结，就是时间。——你的名字</p>
+</li>
+<li><p>刘涛：我一直不知道陈奕迅十年中的第一句“如果那两个字没有颤抖，我不会发现我难受”是哪两个字</p>
+<ul>
+<li>好胖，因为我不会发现我难瘦</li>
+<li>“如果”</li>
+<li>是“好的”这两个字，林夕在节目中说过的</li>
+</ul>
+</li>
+<li><p>我见青山多妩媚，料青山见我应如是。</p>
+<ul>
+<li>我见众生皆草木，唯你是青山</li>
+<li>众生见我皆草木，唯你视我如青山</li>
+</ul>
+</li>
+<li><p>你是目前为止我碰到的唯一一个我追不到还会不开心的人，事情还是一样地在重复，我喜欢你的时候，你是一切，我不喜欢你了，你就什么都不是了。以前的我，也许会放大你的缺点来让自己迅速忘记，然而现在的自己已然可以将大部分错误都归到自己身上了。</p>
+</li>
+<li><p>我感觉从小到大我和朋友的相处总是会出现问题，一开始我都觉得是他们不好，现在想想其实因为是我吧，因为是我所以总会出现问题，有时候也控制不住自己莫名的情绪，正常人际交往都磕磕绊绊，哪还敢想两个人长时间磨合忍让，我也还是适合一个人呆着，至少情绪过后可以与自己和解。</p>
+</li>
+<li><p>像我这种人，不适合谈恋爱，更不适合结婚。我的情绪不太稳定，又敏感，想的太多，总是揣测对方的心意，然后又一遍遍的想是不是自己哪里出了问题。我也不擅长沟通，不知道怎么跟一个朝夕相处的人好好处理遇到的分歧和问题。我想来想去，还是独自生活更符合天性，也不会害人害己。</p>
+</li>
+<li><p>总会有大概合适的人。一切的事情自有道理吧。</p>
+</li>
+<li><p>当我说出“永远爱你”的时候，我的意思是：希望你永远都被人爱，是不是我不重要。</p>
+</li>
+<li><p>我其实很害怕，你会遇到一个人，可以替代我，代替我对你的那份喜欢，我虽然是独一无二的，可别人也是。</p>
+</li>
+<li><p>我想你一定在找文案吧。送你一句：人间忽晚，山河已秋。如果不喜欢，那就看开头的三个字吧。</p>
+</li>
+<li><p>既然琴瑟起，何以笙箫默。</p>
+</li>
+<li><p>小学时，想和喜欢的人同桌</p>
+<ul>
+<li>初中时，想和喜欢的人同班</li>
+<li>高中时，想和喜欢的人同校</li>
+<li>工作时，想和喜欢的人同城</li>
+<li>年老时，想和喜欢的人同一个世界</li>
+</ul>
+</li>
+<li><p>叮当陪了大雄80年，<br>在大雄临死前，<br>他对叮当说:<br>“我走之后你就回到属于你的地方吧！”<br>叮当同意了！<br>大雄死后…<br>叮当用时光机回到了80年前，<br>对小时候的大雄说:<br>“大雄你好，我叫叮当。” 每次看到这个段子都好感动，<br>—–人生若只如初见！<br>朋友也好，爱人也罢，如果累了，我们就回到第一天见面的时候…     我想重新认识你 从你叫什么名字开始。</p>
+</li>
+<li><p>汤姆：我这一生只抓你这一只老鼠，说到做到</p>
+<ul>
+<li>其实汤姆不是不会抓老鼠，只是不会抓杰瑞</li>
+</ul>
+</li>
+<li><p>祝你三冬冷暖有人知，祝你头发长长，祝你狂吃不胖，祝你不败给感情，祝你嫁给爱情</p>
+</li>
+<li><p>愿你天黑有灯，下雨有伞，终生有人陪伴</p>
+</li>
+<li><p>那些翻着评论，却不评论的人，或许才是真的孤独寂寞的人，路过的陌生人，愿你贪吃不胖，愿你懒惰不丑，愿你的深情不被辜负，愿你的余生都有人</p>
+</li>
+<li><p>尝尽世间绚烂，难补一生心酸</p>
+</li>
+<li><p>过分善良就是愚蠢，过分心软就是放任，过分宽容就是纵容。 你可以做一个老实人，但你不能蠢到相信所有人。</p>
+</li>
+<li><p>一生一世一双人，半醉半醒半浮生</p>
+</li>
+<li><p>一生所寻，不过是最初的自己，愿你走出半生，归来仍是少年。</p>
+</li>
+<li><p>平生不会相思，才会相思，便害相思。</p>
+</li>
+<li><p>群处守嘴，独处守心。</p>
+</li>
+<li><p>最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。</p>
+</li>
+<li><p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
+</li>
+<li><p>不为往事扰，余生只愿笑</p>
+</li>
+<li><p>因为到最后你会发现，一个人的愚蠢不是几句话就能纠正的，谁也无法阻止智障坑人，正如无法阻止死神上门</p>
+</li>
+<li><p>茕茕白兔，东走西顾，衣不如新，人不如故</p>
+</li>
+<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！</p>
+<p>你好，最熟悉的陌生人</p>
+</li>
+<li><p>婚姻就是吵架冲出门以后，回来顺便买了个菜。</p>
+</li>
+<li><p>你知道吗，七年并不能忘记一个人。但一个旧细胞死亡新的细胞诞生，周围的旧细胞就会告诉这个新来的：主人之前是怎样怎样爱一个人的，就这样，即使七年后你的身体里都是新的细胞，但是他们都知道你旧的故事</p>
+</li>
+<li><p>从此无心爱良夜，任他明月下西楼</p>
+</li>
+<li><p>据说强迫症的人听歌有两种方式，一是一首单曲不断循环播放，直到听得想吐，二是随机播放，但会不断切歌。</p>
+</li>
+<li><p>七月有风八月有雨，九月会不会有你。</p>
+</li>
+<li><p>很想跟你借一个未来，有你全部的温情和热爱。</p>
+</li>
+<li><p>你在别人眼里可能平凡普通，但你一直是我自己唯一的信仰。</p>
+</li>
+<li><p>如果有一天你决定从我的生命中离开，请不要不告而别，至少好好的说一声再见。</p>
+</li>
+<li><p>其实没有别的什么能真正伤害你，唯一能伤害你的 是你的在意。</p>
+</li>
+<li><p>我以为，爱情可以填满我们心目中的遗憾。没想到，制造遗憾的偏偏就是爱情。</p>
+</li>
+<li><p>往后余生，洗碗是我，拖地是我，宠你也是我。</p>
+</li>
+<li><p>你可以帮我洗个东西吗？洗什么？喜欢我。</p>
+</li>
+<li><p>如果时间能重来，遇见你的瞬间，我还是会义无反顾。</p>
+</li>
+<li><p>遇上一个喜欢自己的人，不是什么容易的事，来日方长，你只是刚好错过一个我。</p>
+</li>
+<li><p>故事很长，我长话短说，我喜欢你。</p>
+</li>
+<li><p>因为爱，全世界都是你，喜是你悲也是你。</p>
+</li>
+<li><p>爱总是很美丽，结束的没道理。</p>
+</li>
+<li><p>曾经我一个人在世上流浪，遇见你以后，在你眼里找到了故乡。</p>
+</li>
+<li><p>我不清楚未来的方向，那大概是有你的地方。</p>
+</li>
+<li><p>怕无归期，怕空欢喜，怕来者不是你。</p>
+</li>
+<li><p>总有人比你好，而终无人可取代你。</p>
+</li>
+<li><p>很久以后才知道，原来和有些人最好的结局，就是互相杳无音信。</p>
+</li>
+<li><p>可惜喜欢就像乘法一样，只要一方为零，结果便为零。</p>
+</li>
+<li><p>如果可以，我想重新认识你，从我叫什么名字开始，然后以后的故事里，我绝对不会爱上你。</p>
+</li>
+<li><p>最深的孤独，是你明知道自己的渴望，却得对它装聋作哑。</p>
+</li>
+<li><p>忽然明白了那个叫周幽王的二百五为什么会烽火戏诸侯了，奶奶的，要是你喜欢的女孩会因此对你笑笑，踹翻全世界的事情也不是做不出来。</p>
+</li>
+<li><p>删去成行的字，最后打了个嗯发给你。没关系，不是所有的情绪都要告诉你，比如我的不开心，比如我好想你</p>
+</li>
+<li><p>人平均活到68岁，一共两万四千八百二十天，十九万个小时，三千五百万分钟，差不多二十一亿秒左右，这十秒，你在读这段话，这十秒，你只属于我，陌生人，我爱你。</p>
+</li>
+<li><p>我若成佛，天下无魔。我若成魔，佛奈我何。我若成仙，心游人间。我若成人，爱你万年。</p>
+</li>
+<li><p>上下四方谓之宇，古往今来谓之宙</p>
+<ul>
+<li>空间为宇，时间为宙</li>
+</ul>
+</li>
+<li><p>我喜欢暖暖，她却喜欢凉凉</p>
+<ul>
+<li>真是个悲伤的故事</li>
+</ul>
+</li>
+<li><p>小生不才，未得姑娘青睐，扰姑娘良久，姑娘勿怪，自此所有仰慕之意止于唇齿，掩于岁月，匿于年华。姑娘往北走，小生往南瞧，不再打扰姑娘，今生就此别过，望姑娘日后独善其身，遇良人，与君欢喜城，暖色度余生。</p>
+</li>
+<li><p>那时候，最好的朋友就在身边，喜欢的女孩近在眼前。 红衣佳人白衣友，朝与同歌暮同酒。 世人谓我恋长安，其实只恋长安某。 ，我都要成大叔了</p>
+</li>
+<li><p>有时候，你选择与某人保持距离，不是因为你不在乎，而是因为你清楚地知道，ta不属于你，人生遇到的每一个人，出场顺序真的很重要，很多人如果换一个时间认识，就会有不同的结局。或许，有些爱，只能止于唇齿，掩于岁月，且行且珍惜。</p>
+</li>
+<li><p>以前我看到：所爱隔山海，山海皆可平。</p>
+<ul>
+<li>那时我觉得：海有舟可渡，山有路可行</li>
+<li>后来才发现：山海皆可平，难平是人心</li>
+</ul>
+</li>
+<li><p>我之前没爱过别人，你是第一个，我怕我做得不好，让你觉得爱情不过如此</p>
+</li>
+<li><p>如果说以后不结婚的话，我想在一个烟火盛开的地方，生根发芽。</p>
+</li>
+<li><p>其实每一个人都有自己的预测，如果你去表白一个自己心仪的女孩子，其实没有那么久的考虑时间，其实那一刻你已经知道是幸福还是学会道别，我想对于自己最难的是结束自己的付出，真正的去说一句祝你幸福</p>
+</li>
+<li><p>你知道私人FM为什么没有倒退键只有下一首吗，因为错过了就错过了，再也回不来了。其实我想说，那你指导为什么音乐播放器都有一个最近播放的列表吗。因为只要你找的及时，那首歌一直在那里，从未离去。所以啊，人也一样， 你不去试试，怎么知道能不能成功呢。</p>
+</li>
+<li><p>我尊重同性恋，理解抑郁症，我会喂楼下的猫，会给老奶奶让座，会跟外卖小哥说谢谢，但是，现在我想做个有脾气的坏人了。</p>
+</li>
+<li><p>蛇不知己毒，人不知己罪，从古至今，时不伤人人自伤</p>
+</li>
+<li><p>有一种男生，不会聊天，不会撩妹，一聊天就没什么话题，很尴尬，但是内心非常想跟别人聊天，主动又不知道说什么，只有选择沉默，身边的朋友很少，但是待人很真实，对别人来说是老实巴交，追女孩没一次成功，现在还单身，却总喜欢在别人的故事里感受温暖，加油！自己，加油！这样的人</p>
+</li>
+<li><p>最初我买了一双鞋子，每次蹭了一点灰我都会小心翼翼地拭去，后来时间稍微久了一点，就算被别人踩了一脚，我连头都懒得低了，大抵对事对物都如此。起初她皱一下眉头你都会心疼，后来她哭你也无所谓了。</p>
+<ul>
+<li>那是你的鞋子不够贵或者是不够限量。还是她不够珍贵</li>
+</ul>
+</li>
+<li><p>星河滚烫，你是人间理想。人海冷漠，你是人间炽热。皓月清凉，你是人间曙光。万物生长，你是二月朝阳。世间靡漫，你是明月繁星。满眼星河，你是清梦满船。万事浮沉，你是人间归途。众人平庸，你是人间星光。世事无常，你是满目琳琅。满树繁花，你是心之所向。</p>
+</li>
+<li><p>你眼中的灿烂星河，是我不曾见过的世外桃源</p>
+</li>
+<li><p>红桃皇后是一个头很大的皇后……这样装模做样而伪善的皇后，我一点都不喜欢。相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍掉她的头，真实而可爱多了。……不过，童话是童话，红桃皇后扮演恶人，自然要输的。</p>
+</li>
+<li><p>在google上输入“故事”，可以得到113000000条结果，但输入“结局”，却只能得到44900000。可见，不是每个故事都有结局。</p>
+</li>
+<li><p>余光中先生说月色和雪色之间你是第三种角色，于我而言你是第四种难得</p>
+</li>
+<li><p>村上春树写过这样一句话：如果我爱你，而你也正巧爱我，你头发乱了的时候，我会笑笑地替你拨一拨，然后手还留恋地在你发上多呆几秒。但是，如果我爱你，而不巧的，你不爱我，我只会轻轻地告诉你：你头发乱了哦~、</p>
+</li>
+<li><p>张爱玲说过每一个男子都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之红的变了墙上地一抹蚊子血，白的还是床前明月光；娶了白玫瑰，白的便是衣服上的一粒饭黏子，红的却是心口上的一颗朱砂痣。</p>
+</li>
+<li><p>人在饿的时候会选择不爱的食物，会在寂寞的时候选择不爱的人，因为强扭的瓜不甜，但是解渴。</p>
+</li>
+<li><p>自古表白多白表，从来情书难书情。笑谈少年多年少，常与生人道人生。</p>
+</li>
+<li><p>你走，我不送；你来，无论多大风多大雨，我去接你。</p>
+</li>
+<li><p>当初走上那条相爱的路，他们谁都不知道目的地在何方，却依然坚定着信念向前走，只要对方在身边，所以去哪里都可以。年轻时，遇到让人心动的人不难，好看的皮囊，有趣的灵魂，都能令人心动不已。难的是，在心动过后，还能让彼此在长久的相守中心安，就像张家辉和关咏荷。在爱情里，他曾经很穷，穷得只能爱她，而她回报给他的，是除了他身边，她那里都不去。春来夏往，秋收冬藏，这样的爱情，来日方长。</p>
+</li>
+<li><p>你打瞌睡碰到我肩膀得一瞬间，我整颗心都要炸开了，虽然只是一瞬间，但至今想起来都要高兴不已。</p>
+</li>
+<li><p>谁曾见过风？你我皆不曾。但看木叶舞枝头（万木垂梢首），便晓风穿过。让风鼓动你的双翼，将它送去你身边。</p>
+</li>
+<li><p>如梦如幻月，若即若离花。</p>
+</li>
+<li><p>黑格尔曾经说过，历史给我们的教训是：我们从不会从历史中吸取教训。</p>
+</li>
+<li><p>我死后，身体将回归大地，那时，身体可触碰天际，万世仰望星空</p>
+</li>
+<li><p>你要做一个不动声色地大人，不准情绪化，不准偷偷想念，不准回头看。——村上春树</p>
+</li>
+<li><p>我熬过了所有的苦难，我已经不期待和谁在一起了。——马尔克斯</p>
+</li>
+<li><p>请记住那些对你好的人，因为他本可以不这样的。——宫崎骏</p>
+</li>
+<li><p>能离开的人，便不算是爱人。——张爱玲</p>
+</li>
+<li><p>幸好想念无声，否则震耳欲聋。</p>
+</li>
+<li><p>我只是想起了你，不是想你了</p>
+</li>
+<li><p>人说，林深时见鹿，海蓝时见鲸，梦醒时见你。可实际，林深时雾起，海蓝时浪涌，梦醒时也许未见鹿，未见鲸，亦未见你。但是，鹿踏雾而来，鲸随浪儿起，你没回头，又怎知我没来过</p>
+</li>
+<li><p>一次旅行，一次洗心，一次心动，一次亲密。哪怕再远，我都会奋不顾身放下手里的事情去找你，我不知道我有多喜欢你，但如果是去见你，我一定会用跑的。</p>
+</li>
+<li><p>“她割破了手指，他很紧张的跑去给她买创可贴，他是个哑巴，比划了好久，售货员还是不懂他的意思，他心急如焚地用小刀在自己手上也划了一个小口”我很喜欢这个故事，但如果爱情仅仅靠说说而已地话，那哑巴怎么办。</p>
+</li>
+<li><p>在有生的瞬间能遇到你，竟花光了所有的运气</p>
+</li>
+<li><p>海底月是天上月，眼前人是心上人</p>
+</li>
+<li><p>世间不如意事七八九，能与人言一二三都无</p>
+</li>
+</ul>
+<h1 id="江湖"><a href="#江湖" class="headerlink" title="江湖"></a>江湖</h1><ul>
+<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
+<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
+<li>还有一个烧烤架</li>
+</ul>
+</li>
+<li>江湖也没什么好的，也就酒还行</li>
+<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
+<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
+<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
+<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
+<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
+</ul>
+</li>
+<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
+<li>儿女情长什么的，真的很影响大哥行走江湖</li>
+<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
+<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
+<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
+<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
+<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
+<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
+<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
+<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
+<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
+<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
+<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
+<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
+<li>明月来复照，把酒贺今朝——观风月</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -16523,16 +16869,71 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>博君一笑图</title>
-    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
-    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
 
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
 
-<p>神评：防窥膜，看不见</p>
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
 
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
+</ul>
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -16692,370 +17093,16 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>独角戏</title>
-    <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
-    <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
-<li><p>你的女朋友有缺点吗？ ：有，像星星一样的多。 ：那你的女朋友有优点吗？ ：有，像太阳一样的少。 ：那你为什么还喜欢她？ ：因为太阳一出现，星星就不见了。</p>
-</li>
-<li><p>女孩终于鼓足勇气向男孩表白，害羞地问男孩：“你喜欢我吗？” 男孩说：“不喜欢。” 女孩伤心欲绝，转身要走。 这时男孩叫住了女孩，对她说：“傻瓜，你还没问我爱不爱你呀。” 女孩破涕为笑：“那你爱不爱我？” “不爱。”。</p>
-<ul>
-<li>男孩：你怎么不问问我是不是真心的 女孩：那你是真心的吗 男孩：当然啊不是啊</li>
-</ul>
-</li>
-<li><p>如果有一天我说想你了，不是说这天我想你了，是说这天我憋不住了。</p>
-</li>
-<li><p>听到这音乐，第一个通宵就是在魔法密林刷级</p>
-</li>
-<li><p>与其说是孤独 不如坦诚的讲自己没有全心全意的与人相处 老友没有再联系 新朋友不去信任 对亲密的人说不出口 只能从陌生人身上寻找慰藉 反正也没有人知道我是谁 去哪里 跑向谁</p>
-</li>
-<li><p>若你身边无爱，祝你卡里有钱。</p>
-</li>
-<li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后地你，在遭遇人生低谷的时候，不要灰心，至少曾经有人被你的魅力所吸引，曾经是，以后也会是。</p>
-</li>
-<li><p>我一岁的时候五岁，你年龄是我的五倍。我四岁的时候你八岁，你年龄是我的两倍。我十六岁的时候你二十岁，你的年龄是我的1.25倍。虽然我知道我永远无法追上你，但是我一生都在向你靠近。</p>
-</li>
-<li><p>今天的你对我爱答不理，明天的我还来找你</p>
-</li>
-<li><p>男生思维：你不做我女朋友，我怎么对你好？女生思维：你不对我好，我怎么做你女朋友？</p>
-<ul>
-<li>男人是结果导向，女人是过程导向</li>
-</ul>
-</li>
-<li><p>为什么女人到了社会上会遇到越来越好的男人？而男人到了社会却再也找不到比学校里好的女人？</p>
-<ul>
-<li>神回复：因为车越开越旧，司机越开越六。</li>
-</ul>
-</li>
-<li><p>她点了一个赞，你脑补出一出戏，她更新一条动态，你就像在做阅读理解，她坐在你身边，却隔着一条银河，她什么都没做，却成了你心里地最重要。</p>
-</li>
-<li><p>你好，同城</p>
-<ul>
-<li>数学里有个温柔霸道的词： 有且仅有 ； </li>
-<li>还有个孤独的词： 假设存在； </li>
-<li>还有个悲凉的词： 充分不必要； </li>
-<li>还有一种无奈： 无限接近，永不等于；</li>
-<li>最妄想的词儿： 令a和b相等；</li>
-<li>还有个孤独傲慢的词： 无解； </li>
-<li>还有个让人痛彻心扉的的字———略 </li>
-</ul>
-</li>
-<li><p>相爱的人总喜欢说反话，却又渴望对方能读懂自己的心。有点像是两个人的一场美梦，彼此都害怕自己身边的人已经睡醒远去，自己还在原地做梦，所以不断的试探考验，但是如果两人都执着的要考验对方是否醒了，那两个人还会有一起做梦的可能吗？林佳和孟云都生怕自己是醒的晚被抛弃的那个，所以明明还爱着，两个人却都急匆匆地起身离开了。</p>
-</li>
-<li><p>初见是惊鸿一瞥，南柯一梦是你。等待是山重水复，怦然心动是你。相遇是柳暗花明，如梦初醒是你。重逢是始料未及，别来无恙是你。我喜欢你，依旧是你。</p>
-</li>
-<li><p>不忘人恩，不念人过。 不思人非，不计人怨。</p>
-</li>
-<li><p>我可以单身很久，但恋爱一定要和爱的人谈。</p>
-</li>
-<li><p>单是相遇便花光了我所有运气。</p>
-</li>
-<li><p>十年前，我有过这样一个手机，它最大容量只能存储两百条短信。每当存满了，都要精挑细选地删除我的，留住她的。那时候我多想有一个可以存储五百条短信的手机。而如今，我有了一个能无限存储短信的手机。却再也找不到一个能和我聊两百条短信的人了。</p>
-<ul>
-<li>因为现在都用QQ和微信了。</li>
-</ul>
-</li>
-<li><p>爱一个人，始于颜值，陷于才华，痴于肉体，迷于声色，久于性格，终于人品。</p>
-</li>
-<li><p>用王家卫的台词来说，今天是我们分开的第847天，两年多的时间里，我没有爱过谁，我的手在离开你之后没有被谁牵过，我的嘴在你离开之后也没有被谁亲过，闭上眼睛，我还能感受到你的手你的唇，就离开那么一会儿，我以为我一睁开眼睛，我一叫你，你就回来了。</p>
-</li>
-<li><p>我自己都如此涼薄 拿什麼去溫暖別人。</p>
-</li>
-<li><p>你也不可能一直帮我 我怎么会不知道</p>
-</li>
-<li><p>你可以把一个老实人教会浪漫，但你不可能把一个花心的人永远束心</p>
-</li>
-<li><p>如果有人给你发了下雪的视频，你应该回复她我也想你了，因为春赏百花冬观雪，醒亦念卿，梦亦念卿</p>
-</li>
-<li><p>心有良人，不言于口，不形于表，亦不掩之，直言不讳，拒之坦然，得之惜之。 存人心系，大在长貌，小在言行，亦然品性，遇此之形，不急于言，拒人应礼，应人有度。</p>
-</li>
-<li><p>孟婆啊，如果你遇到我的妈妈，你就在她的碗里多放几块糖，她这辈子吃的苦太多了，下辈子让她吃甜的吧，把苦的放在我的碗里把，我不想让她再吃这么多的苦，我会心疼的</p>
-</li>
-<li><p>有没有人跟我一样？打开QQ发现没有聊天的人，于是点开看点，看一看，笑一笑，感动一下？你好陌生人，愿你天黑有灯，下雨有伞，路上有良人相伴，明天太阳依然会升起，请你不要停步，如果可以加个好友，我愿意陪你聊天。</p>
-</li>
-<li><p>无人与我立黄昏，无人问我粥可温，无人怜我悲与伤，无人分我乐与欢</p>
-</li>
-<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你</p>
-</li>
-<li><p>女：我结婚的时候你会来吗？</p>
-<ul>
-<li>男：那我劫婚，你会跟我走吗？</li>
-<li>世界上最悲哀的事莫过于此，他开心幸福难过的模样你都见过，但唯独你没见过她属于你的样子</li>
-</ul>
-</li>
-<li><p>自己喜欢的人在别人怀里，我能做什么，我能说什么，一个男人的悲剧在于如果他失败了，他不能将事情与人说，只能将愤怒屈辱不甘埋在心里</p>
-</li>
-<li><p>坐过最贵的“车”是爸爸的肩膀，住过最贵的“房子”是妈妈的肚子。出生时，我哭了，你们笑了；结婚时，我笑了，你们哭了。我成了你们时才知你们为何哭，为何笑</p>
-</li>
-<li><p>我很想恋爱，但不是因为恋爱才恋爱，我想因为那个人是你，才想恋爱，所以你没出现，我也没恋爱。</p>
-</li>
-<li><p>我喜欢你，像风走了八千里，不问归期。我喜欢你，像柳动蝉鸣，日落潮汐，不能自已。我喜欢你，像云漂泊九万里，不曾歇息。我喜欢你，像日落前洒下的余晖，不忍离去。我喜欢你，像太阳升了落去，无论朝夕。</p>
-<ul>
-<li>这句话运用排比的句式，同时也运用了比喻，句式整齐，节奏明确，真挚表达了自己的喜爱、仰慕之情。语言生动形象，读起来朗朗上口。</li>
-</ul>
-</li>
-<li><p>聚在一起，成型，扭曲，缠绕，有时候又还原，断裂，再连接，这就是结，就是时间。——你的名字</p>
-</li>
-<li><p>刘涛：我一直不知道陈奕迅十年中的第一句“如果那两个字没有颤抖，我不会发现我难受”是哪两个字</p>
-<ul>
-<li>好胖，因为我不会发现我难瘦</li>
-<li>“如果”</li>
-<li>是“好的”这两个字，林夕在节目中说过的</li>
-</ul>
-</li>
-<li><p>我见青山多妩媚，料青山见我应如是。</p>
-<ul>
-<li>我见众生皆草木，唯你是青山</li>
-<li>众生见我皆草木，唯你视我如青山</li>
-</ul>
-</li>
-<li><p>你是目前为止我碰到的唯一一个我追不到还会不开心的人，事情还是一样地在重复，我喜欢你的时候，你是一切，我不喜欢你了，你就什么都不是了。以前的我，也许会放大你的缺点来让自己迅速忘记，然而现在的自己已然可以将大部分错误都归到自己身上了。</p>
-</li>
-<li><p>我感觉从小到大我和朋友的相处总是会出现问题，一开始我都觉得是他们不好，现在想想其实因为是我吧，因为是我所以总会出现问题，有时候也控制不住自己莫名的情绪，正常人际交往都磕磕绊绊，哪还敢想两个人长时间磨合忍让，我也还是适合一个人呆着，至少情绪过后可以与自己和解。</p>
-</li>
-<li><p>像我这种人，不适合谈恋爱，更不适合结婚。我的情绪不太稳定，又敏感，想的太多，总是揣测对方的心意，然后又一遍遍的想是不是自己哪里出了问题。我也不擅长沟通，不知道怎么跟一个朝夕相处的人好好处理遇到的分歧和问题。我想来想去，还是独自生活更符合天性，也不会害人害己。</p>
-</li>
-<li><p>总会有大概合适的人。一切的事情自有道理吧。</p>
-</li>
-<li><p>当我说出“永远爱你”的时候，我的意思是：希望你永远都被人爱，是不是我不重要。</p>
-</li>
-<li><p>我其实很害怕，你会遇到一个人，可以替代我，代替我对你的那份喜欢，我虽然是独一无二的，可别人也是。</p>
-</li>
-<li><p>我想你一定在找文案吧。送你一句：人间忽晚，山河已秋。如果不喜欢，那就看开头的三个字吧。</p>
-</li>
-<li><p>既然琴瑟起，何以笙箫默。</p>
-</li>
-<li><p>小学时，想和喜欢的人同桌</p>
-<ul>
-<li>初中时，想和喜欢的人同班</li>
-<li>高中时，想和喜欢的人同校</li>
-<li>工作时，想和喜欢的人同城</li>
-<li>年老时，想和喜欢的人同一个世界</li>
-</ul>
-</li>
-<li><p>叮当陪了大雄80年，<br>在大雄临死前，<br>他对叮当说:<br>“我走之后你就回到属于你的地方吧！”<br>叮当同意了！<br>大雄死后…<br>叮当用时光机回到了80年前，<br>对小时候的大雄说:<br>“大雄你好，我叫叮当。” 每次看到这个段子都好感动，<br>—–人生若只如初见！<br>朋友也好，爱人也罢，如果累了，我们就回到第一天见面的时候…     我想重新认识你 从你叫什么名字开始。</p>
-</li>
-<li><p>汤姆：我这一生只抓你这一只老鼠，说到做到</p>
-<ul>
-<li>其实汤姆不是不会抓老鼠，只是不会抓杰瑞</li>
-</ul>
-</li>
-<li><p>祝你三冬冷暖有人知，祝你头发长长，祝你狂吃不胖，祝你不败给感情，祝你嫁给爱情</p>
-</li>
-<li><p>愿你天黑有灯，下雨有伞，终生有人陪伴</p>
-</li>
-<li><p>那些翻着评论，却不评论的人，或许才是真的孤独寂寞的人，路过的陌生人，愿你贪吃不胖，愿你懒惰不丑，愿你的深情不被辜负，愿你的余生都有人</p>
-</li>
-<li><p>尝尽世间绚烂，难补一生心酸</p>
-</li>
-<li><p>过分善良就是愚蠢，过分心软就是放任，过分宽容就是纵容。 你可以做一个老实人，但你不能蠢到相信所有人。</p>
-</li>
-<li><p>一生一世一双人，半醉半醒半浮生</p>
-</li>
-<li><p>一生所寻，不过是最初的自己，愿你走出半生，归来仍是少年。</p>
-</li>
-<li><p>平生不会相思，才会相思，便害相思。</p>
-</li>
-<li><p>群处守嘴，独处守心。</p>
-</li>
-<li><p>最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。</p>
-</li>
-<li><p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
-</li>
-<li><p>不为往事扰，余生只愿笑</p>
-</li>
-<li><p>因为到最后你会发现，一个人的愚蠢不是几句话就能纠正的，谁也无法阻止智障坑人，正如无法阻止死神上门</p>
-</li>
-<li><p>茕茕白兔，东走西顾，衣不如新，人不如故</p>
-</li>
-<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！</p>
-<p>你好，最熟悉的陌生人</p>
-</li>
-<li><p>婚姻就是吵架冲出门以后，回来顺便买了个菜。</p>
-</li>
-<li><p>你知道吗，七年并不能忘记一个人。但一个旧细胞死亡新的细胞诞生，周围的旧细胞就会告诉这个新来的：主人之前是怎样怎样爱一个人的，就这样，即使七年后你的身体里都是新的细胞，但是他们都知道你旧的故事</p>
-</li>
-<li><p>从此无心爱良夜，任他明月下西楼</p>
-</li>
-<li><p>据说强迫症的人听歌有两种方式，一是一首单曲不断循环播放，直到听得想吐，二是随机播放，但会不断切歌。</p>
-</li>
-<li><p>七月有风八月有雨，九月会不会有你。</p>
-</li>
-<li><p>很想跟你借一个未来，有你全部的温情和热爱。</p>
-</li>
-<li><p>你在别人眼里可能平凡普通，但你一直是我自己唯一的信仰。</p>
-</li>
-<li><p>如果有一天你决定从我的生命中离开，请不要不告而别，至少好好的说一声再见。</p>
-</li>
-<li><p>其实没有别的什么能真正伤害你，唯一能伤害你的 是你的在意。</p>
-</li>
-<li><p>我以为，爱情可以填满我们心目中的遗憾。没想到，制造遗憾的偏偏就是爱情。</p>
-</li>
-<li><p>往后余生，洗碗是我，拖地是我，宠你也是我。</p>
-</li>
-<li><p>你可以帮我洗个东西吗？洗什么？喜欢我。</p>
-</li>
-<li><p>如果时间能重来，遇见你的瞬间，我还是会义无反顾。</p>
-</li>
-<li><p>遇上一个喜欢自己的人，不是什么容易的事，来日方长，你只是刚好错过一个我。</p>
-</li>
-<li><p>故事很长，我长话短说，我喜欢你。</p>
-</li>
-<li><p>因为爱，全世界都是你，喜是你悲也是你。</p>
-</li>
-<li><p>爱总是很美丽，结束的没道理。</p>
-</li>
-<li><p>曾经我一个人在世上流浪，遇见你以后，在你眼里找到了故乡。</p>
-</li>
-<li><p>我不清楚未来的方向，那大概是有你的地方。</p>
-</li>
-<li><p>怕无归期，怕空欢喜，怕来者不是你。</p>
-</li>
-<li><p>总有人比你好，而终无人可取代你。</p>
-</li>
-<li><p>很久以后才知道，原来和有些人最好的结局，就是互相杳无音信。</p>
-</li>
-<li><p>可惜喜欢就像乘法一样，只要一方为零，结果便为零。</p>
-</li>
-<li><p>如果可以，我想重新认识你，从我叫什么名字开始，然后以后的故事里，我绝对不会爱上你。</p>
-</li>
-<li><p>最深的孤独，是你明知道自己的渴望，却得对它装聋作哑。</p>
-</li>
-<li><p>忽然明白了那个叫周幽王的二百五为什么会烽火戏诸侯了，奶奶的，要是你喜欢的女孩会因此对你笑笑，踹翻全世界的事情也不是做不出来。</p>
-</li>
-<li><p>删去成行的字，最后打了个嗯发给你。没关系，不是所有的情绪都要告诉你，比如我的不开心，比如我好想你</p>
-</li>
-<li><p>人平均活到68岁，一共两万四千八百二十天，十九万个小时，三千五百万分钟，差不多二十一亿秒左右，这十秒，你在读这段话，这十秒，你只属于我，陌生人，我爱你。</p>
-</li>
-<li><p>我若成佛，天下无魔。我若成魔，佛奈我何。我若成仙，心游人间。我若成人，爱你万年。</p>
-</li>
-<li><p>上下四方谓之宇，古往今来谓之宙</p>
-<ul>
-<li>空间为宇，时间为宙</li>
-</ul>
-</li>
-<li><p>我喜欢暖暖，她却喜欢凉凉</p>
-<ul>
-<li>真是个悲伤的故事</li>
-</ul>
-</li>
-<li><p>小生不才，未得姑娘青睐，扰姑娘良久，姑娘勿怪，自此所有仰慕之意止于唇齿，掩于岁月，匿于年华。姑娘往北走，小生往南瞧，不再打扰姑娘，今生就此别过，望姑娘日后独善其身，遇良人，与君欢喜城，暖色度余生。</p>
-</li>
-<li><p>那时候，最好的朋友就在身边，喜欢的女孩近在眼前。 红衣佳人白衣友，朝与同歌暮同酒。 世人谓我恋长安，其实只恋长安某。 ，我都要成大叔了</p>
-</li>
-<li><p>有时候，你选择与某人保持距离，不是因为你不在乎，而是因为你清楚地知道，ta不属于你，人生遇到的每一个人，出场顺序真的很重要，很多人如果换一个时间认识，就会有不同的结局。或许，有些爱，只能止于唇齿，掩于岁月，且行且珍惜。</p>
-</li>
-<li><p>以前我看到：所爱隔山海，山海皆可平。</p>
-<ul>
-<li>那时我觉得：海有舟可渡，山有路可行</li>
-<li>后来才发现：山海皆可平，难平是人心</li>
-</ul>
-</li>
-<li><p>我之前没爱过别人，你是第一个，我怕我做得不好，让你觉得爱情不过如此</p>
-</li>
-<li><p>如果说以后不结婚的话，我想在一个烟火盛开的地方，生根发芽。</p>
-</li>
-<li><p>其实每一个人都有自己的预测，如果你去表白一个自己心仪的女孩子，其实没有那么久的考虑时间，其实那一刻你已经知道是幸福还是学会道别，我想对于自己最难的是结束自己的付出，真正的去说一句祝你幸福</p>
-</li>
-<li><p>你知道私人FM为什么没有倒退键只有下一首吗，因为错过了就错过了，再也回不来了。其实我想说，那你指导为什么音乐播放器都有一个最近播放的列表吗。因为只要你找的及时，那首歌一直在那里，从未离去。所以啊，人也一样， 你不去试试，怎么知道能不能成功呢。</p>
-</li>
-<li><p>我尊重同性恋，理解抑郁症，我会喂楼下的猫，会给老奶奶让座，会跟外卖小哥说谢谢，但是，现在我想做个有脾气的坏人了。</p>
-</li>
-<li><p>蛇不知己毒，人不知己罪，从古至今，时不伤人人自伤</p>
-</li>
-<li><p>有一种男生，不会聊天，不会撩妹，一聊天就没什么话题，很尴尬，但是内心非常想跟别人聊天，主动又不知道说什么，只有选择沉默，身边的朋友很少，但是待人很真实，对别人来说是老实巴交，追女孩没一次成功，现在还单身，却总喜欢在别人的故事里感受温暖，加油！自己，加油！这样的人</p>
-</li>
-<li><p>最初我买了一双鞋子，每次蹭了一点灰我都会小心翼翼地拭去，后来时间稍微久了一点，就算被别人踩了一脚，我连头都懒得低了，大抵对事对物都如此。起初她皱一下眉头你都会心疼，后来她哭你也无所谓了。</p>
-<ul>
-<li>那是你的鞋子不够贵或者是不够限量。还是她不够珍贵</li>
-</ul>
-</li>
-<li><p>星河滚烫，你是人间理想。人海冷漠，你是人间炽热。皓月清凉，你是人间曙光。万物生长，你是二月朝阳。世间靡漫，你是明月繁星。满眼星河，你是清梦满船。万事浮沉，你是人间归途。众人平庸，你是人间星光。世事无常，你是满目琳琅。满树繁花，你是心之所向。</p>
-</li>
-<li><p>你眼中的灿烂星河，是我不曾见过的世外桃源</p>
-</li>
-<li><p>红桃皇后是一个头很大的皇后……这样装模做样而伪善的皇后，我一点都不喜欢。相比之下，红桃皇后，嘟着嘴巴嚷嚷说，砍掉她的头，真实而可爱多了。……不过，童话是童话，红桃皇后扮演恶人，自然要输的。</p>
-</li>
-<li><p>在google上输入“故事”，可以得到113000000条结果，但输入“结局”，却只能得到44900000。可见，不是每个故事都有结局。</p>
-</li>
-<li><p>余光中先生说月色和雪色之间你是第三种角色，于我而言你是第四种难得</p>
-</li>
-<li><p>村上春树写过这样一句话：如果我爱你，而你也正巧爱我，你头发乱了的时候，我会笑笑地替你拨一拨，然后手还留恋地在你发上多呆几秒。但是，如果我爱你，而不巧的，你不爱我，我只会轻轻地告诉你：你头发乱了哦~、</p>
-</li>
-<li><p>张爱玲说过每一个男子都有过这样的两个女人，至少两个。娶了红玫瑰，久而久之红的变了墙上地一抹蚊子血，白的还是床前明月光；娶了白玫瑰，白的便是衣服上的一粒饭黏子，红的却是心口上的一颗朱砂痣。</p>
-</li>
-<li><p>人在饿的时候会选择不爱的食物，会在寂寞的时候选择不爱的人，因为强扭的瓜不甜，但是解渴。</p>
-</li>
-<li><p>自古表白多白表，从来情书难书情。笑谈少年多年少，常与生人道人生。</p>
-</li>
-<li><p>你走，我不送；你来，无论多大风多大雨，我去接你。</p>
-</li>
-<li><p>当初走上那条相爱的路，他们谁都不知道目的地在何方，却依然坚定着信念向前走，只要对方在身边，所以去哪里都可以。年轻时，遇到让人心动的人不难，好看的皮囊，有趣的灵魂，都能令人心动不已。难的是，在心动过后，还能让彼此在长久的相守中心安，就像张家辉和关咏荷。在爱情里，他曾经很穷，穷得只能爱她，而她回报给他的，是除了他身边，她那里都不去。春来夏往，秋收冬藏，这样的爱情，来日方长。</p>
-</li>
-<li><p>你打瞌睡碰到我肩膀得一瞬间，我整颗心都要炸开了，虽然只是一瞬间，但至今想起来都要高兴不已。</p>
-</li>
-<li><p>谁曾见过风？你我皆不曾。但看木叶舞枝头（万木垂梢首），便晓风穿过。让风鼓动你的双翼，将它送去你身边。</p>
-</li>
-<li><p>如梦如幻月，若即若离花。</p>
-</li>
-<li><p>黑格尔曾经说过，历史给我们的教训是：我们从不会从历史中吸取教训。</p>
-</li>
-<li><p>我死后，身体将回归大地，那时，身体可触碰天际，万世仰望星空</p>
-</li>
-<li><p>你要做一个不动声色地大人，不准情绪化，不准偷偷想念，不准回头看。——村上春树</p>
-</li>
-<li><p>我熬过了所有的苦难，我已经不期待和谁在一起了。——马尔克斯</p>
-</li>
-<li><p>请记住那些对你好的人，因为他本可以不这样的。——宫崎骏</p>
-</li>
-<li><p>能离开的人，便不算是爱人。——张爱玲</p>
-</li>
-<li><p>幸好想念无声，否则震耳欲聋。</p>
-</li>
-<li><p>我只是想起了你，不是想你了</p>
-</li>
-<li><p>人说，林深时见鹿，海蓝时见鲸，梦醒时见你。可实际，林深时雾起，海蓝时浪涌，梦醒时也许未见鹿，未见鲸，亦未见你。但是，鹿踏雾而来，鲸随浪儿起，你没回头，又怎知我没来过</p>
-</li>
-<li><p>一次旅行，一次洗心，一次心动，一次亲密。哪怕再远，我都会奋不顾身放下手里的事情去找你，我不知道我有多喜欢你，但如果是去见你，我一定会用跑的。</p>
-</li>
-<li><p>“她割破了手指，他很紧张的跑去给她买创可贴，他是个哑巴，比划了好久，售货员还是不懂他的意思，他心急如焚地用小刀在自己手上也划了一个小口”我很喜欢这个故事，但如果爱情仅仅靠说说而已地话，那哑巴怎么办。</p>
-</li>
-<li><p>在有生的瞬间能遇到你，竟花光了所有的运气</p>
-</li>
-<li><p>海底月是天上月，眼前人是心上人</p>
-</li>
-<li><p>世间不如意事七八九，能与人言一二三都无</p>
-</li>
-</ul>
-<h1 id="江湖"><a href="#江湖" class="headerlink" title="江湖"></a>江湖</h1><ul>
-<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
-<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
-<li>还有一个烧烤架</li>
-</ul>
-</li>
-<li>江湖也没什么好的，也就酒还行</li>
-<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
-<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
-<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
-<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
-<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
-</ul>
-</li>
-<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
-<li>儿女情长什么的，真的很影响大哥行走江湖</li>
-<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
-<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
-<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
-<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
-<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
-<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
-<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
-<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
-<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
-<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
-<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
-<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
-<li>明月来复照，把酒贺今朝——观风月</li>
-</ul>
+    <title>博君一笑图</title>
+    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
+    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
+
+<p>神评：防窥膜，看不见</p>
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
 ]]></content>
       <categories>
         <category>其他</category>
@@ -17314,53 +17361,6 @@ dispatchMessage-->判断是否是通知消息
     庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
     雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
 </center>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
-</ul>
-</li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
 
 ]]></content>
       <categories>
