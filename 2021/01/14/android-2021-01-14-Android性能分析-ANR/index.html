@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Android ANR机制和原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能分析大全-ANR">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍Android ANR机制和原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Service超时原理.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-BroadcastReceiver超时原理.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-ContentProvider超时原理.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Input超时原理.png">
+<meta property="article:published_time" content="2021-01-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-17T01:11:33.102Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Service超时原理.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android性能分析大全-ANR | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android性能分析大全-ANR
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-14T00:00:00+08:00">2021-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-17 09:11:33" itemprop="dateModified" datetime="2022-03-17T09:11:33+08:00">2022-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/" class="post-meta-item leancloud_visitors" data-flag-title="Android性能分析大全-ANR" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+            <div class="post-description">介绍Android ANR机制和原理</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ANR分析"><a href="#ANR分析" class="headerlink" title="ANR分析"></a>ANR分析</h1><p>ANR（Application Not Response，应用无响应）：ANR可以看作是卡顿的极端情况，系统有一套检测机制</p>
+<p>原因：</p>
+<ol>
+<li><p><strong>主线程</strong>做了太多阻塞耗时操作：</p>
+<ol>
+<li>I/O</li>
+<li>同步Binder调用</li>
+<li>长时间计算</li>
+<li>等待阻塞其他线程资源的锁：Thread的join、sleep、wait方法</li>
+</ol>
+</li>
+<li><p>系统整体性能慢：CPU和内存满载、内存碎片化、GC慢等</p>
+</li>
+</ol>
+<p>分析：</p>
+<ol>
+<li>使用严格模式</li>
+<li>打开【开发者选项&gt;显示所有ANR】：一般情况下只有前台会显示ANR对话框，但是后台广播、服务也可能发生ANR。</li>
+<li>CPU分析耗时方法</li>
+<li>出现anr之后会在<code>/data/anr/</code>路径下生成anr trace文件。找到对应的进程pid，搜索<code>main</code>线程，查看anr堆栈。</li>
+</ol>
+<p>解决：</p>
+<ol>
+<li>优化应用内存</li>
+<li>将耗时操作放到子线程</li>
+<li>避免频繁实时刷新UI</li>
+<li>onReceive中耗时操作可以通过启动IntentService处理</li>
+<li>代码设计避免出现同步、死锁等异常情况</li>
+</ol>
+<h1 id="ANR机制"><a href="#ANR机制" class="headerlink" title="ANR机制"></a>ANR机制</h1><p>先介绍大致的流程，源码分析之后再补（TODO）</p>
+<p>主要原理：</p>
+<ol>
+<li>埋炸弹：向system_server埋入定时炸弹，在规定时间内没有完成任务，则引爆炸弹，炸毁目标进程。</li>
+<li>拆炸弹：在规定时间内完成任务，拆除炸弹</li>
+<li>引爆炸弹：system_server封装现场，抓取快照，收集Trace，便于后续分析。弹出ANR提示框</li>
+</ol>
+<p>触发机制</p>
+<ul>
+<li><p>Service生命周期超时：前台20s、后台200s</p>
+<ul>
+<li><code>Reason: Executing service</code></li>
+</ul>
+</li>
+<li><p>BroadcastReceiver生命周期超时：前台10s、后台60s</p>
+<ul>
+<li><code>Reason: Broadcast of Intent &#123; ... &#125;</code></li>
+</ul>
+</li>
+<li><p>ContentProvider启动超时：10s</p>
+<ul>
+<li><code>Reason: ContentProvider not responding</code></li>
+</ul>
+</li>
+<li><p>前台Activity响应输入事件超时：5s</p>
+<ul>
+<li><code>Reason: Input dispatching timed out (Waiting because the focused window has not finished processing the input events that were previously delivered to it.)</code></li>
+</ul>
+</li>
+<li><p>窗口获取焦点超时：5s</p>
+<ul>
+<li><code>Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)</code></li>
+</ul>
+</li>
+</ul>
+<p>注：</p>
+<p>前台广播和后台广播？</p>
+<blockquote>
+<p>广播默认是后台的，通过指定Intent的flag为<code>FLAG_RECEIVER_FOREGROUND</code>，设置为前台广播。</p>
+<p>AMS中有两个广播队列：mFgBroadcastQueue和mBgBroadcastQueue</p>
+</blockquote>
+<p>只有有序广播才会超时，无序广播一次循环分发，不存在前一个receiver处理慢的问题</p>
+<p>Service、BroadcastReceiver、ContentProvider原理类似，都采用”定时雷”的方式，超时会主动引爆炸弹。</p>
+<p>输入事件超时和窗口获取焦点超时，采用的是”扫雷”的方式，超时不会主动引爆炸弹，等新的事件来了之后踩雷。</p>
+<p>后台广播和服务ANR不会有提示框，而是Log输出异常。</p>
+<p>LMK机制可能刚好把广播进程杀掉，导致ANR，此时pid为0。（自动化测试时可以判断pid为0时不报ANR异常）</p>
+<h2 id="Service超时"><a href="#Service超时" class="headerlink" title="Service超时"></a>Service超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Service超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>客户端启动服务</li>
+<li>system_server接收请求，向AMS发送消息，埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>system_server通知Service进程创建Service</li>
+<li>Service进程接收消息，发到主线程</li>
+<li>主线程调用Service生命周期，执行任务，并等待SP持久化</li>
+<li>执行完成之后向system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="BroadcastReceiver超时"><a href="#BroadcastReceiver超时" class="headerlink" title="BroadcastReceiver超时"></a>BroadcastReceiver超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-BroadcastReceiver超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+
+
+<ol>
+<li>客户端发送广播</li>
+<li>system_server接收广播，向AMS发送消息</li>
+<li>AMS埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>AMS通知注册的BroadcastReceiver进程</li>
+<li>BroadcastReceiver进程接收消息，发到主线程。主线程调用BroadcastReceiver生命周期，执行任务</li>
+<li>执行完成向通知system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="ContentProvider超时"><a href="#ContentProvider超时" class="headerlink" title="ContentProvider超时"></a>ContentProvider超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-ContentProvider超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>客户端请求ContentProvider数据</li>
+<li>system_server接收请求，如果未启动，则先通过zygote fork新进程</li>
+<li>ContentProvider进程向system_server注册</li>
+<li>AMS埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>system_server通知Provider进程</li>
+<li>Provider进程接收消息，发到主线程执行任务</li>
+<li>执行完成向通知system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="输入事件无响应"><a href="#输入事件无响应" class="headerlink" title="输入事件无响应"></a>输入事件无响应</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Input超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>InputReader线程通过EventHub监听<code>/dev/input</code>读取输入事件，发给InputDispatcher。InputDispatcher线程负责将事件分发给目标应用窗口<ol>
+<li>mInboundQueue队列记录接收的事件</li>
+<li>outboundQueue队列记录即将分发的事件</li>
+<li>waitQueue记录已分发，且目标应用未处理完成的事件</li>
+</ol>
+</li>
+<li>InputDispatcher开始分发事件<ol>
+<li>先检测是否有正在处理的事件（mPendingEvent），如果没有则取出mInboundQueue队头的事件，赋值给mPendingEvent，并重置ANR时间。否则不会取出事件，也不会重置时间</li>
+<li>检查窗口是否就绪（checkWindowReadyForMoreInputLocked）</li>
+<li>满足以下条件，进入扫雷，终止本轮事件分发<ol>
+<li>对于按键事件判断outboundQueue或者waitQueue不为空</li>
+<li>对于非按键事件，判断waitQueue不为空且等待队头时间超时5s</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>当窗口准备就绪后，将mPendingEvent放到outboundQueue队列</li>
+<li>从outboundQueue中取出事件，放入waitQueue队列</li>
+<li>InputDispatcher通过Socket发送事件给目标应用进程（APP进程初始化时就已经创建双向通信Socket）</li>
+<li>目标进程收到事件后，转发给目标窗口处理，进行View事件分发处理</li>
+<li>处理完成后向system_server汇报，从waitQueue队列中移除事件</li>
+</ol>
+<p>原理：InputDispatcher运行在system_server中，接收底层传上来的设备事件，然后检测上一个事件是否已经处理完毕，如果超时，会调用WMS的notifyANR提示弹窗。应用程序主线程通过InputChannel读取输入事件，交给View处理。</p>
+<p>如果没有新事件，即使超时了也不会主动上报。系统推测这个时候用户可能没有关注手机，过一段时间阻塞可能会自行消失，因此会”隐瞒不报”。</p>
+<h2 id="窗口获取焦点超时"><a href="#窗口获取焦点超时" class="headerlink" title="窗口获取焦点超时"></a>窗口获取焦点超时</h2><p>属于输入事件超时：由于窗口获取不到焦点，导致应用无法接收事件，因此InputDispatcher会上报ANR。</p>
+<p>一般发生在窗口切换时：</p>
+<ol>
+<li>焦点在A应用窗口</li>
+<li>切换应用B</li>
+<li>A应用onPause，焦点丢失</li>
+<li>B进程创建，焦点丢失</li>
+<li>B应用onResume，获取焦点</li>
+</ol>
+<p>其中3、4过程中焦点为null，如果超过了5s，且新事件到来，则会产生ANR。</p>
+<p>此时报告ANR的应用可能是A或者B，但不一定是真正超时的应用，需要具体分析：</p>
+<ul>
+<li>A应用onPause慢</li>
+<li>B应用创建慢，onCreate、onStart、onResume耗时</li>
+<li>系统整体性能慢</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://gityuan.com/2016/07/02/android-anr/">理解Android ANR的触发原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zjy764219923/article/details/102897066">ANR解决方法研究</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/06/android-2021-01-06-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E4%BC%98%E5%8C%96%E7%AF%87/" rel="prev" title="Android性能分析大全-优化篇">
+      <i class="fa fa-chevron-left"></i> Android性能分析大全-优化篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/04/%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" rel="next" title="知识体系构建中......">
+      知识体系构建中...... <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ANR%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">ANR分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ANR%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">ANR机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Service%E8%B6%85%E6%97%B6"><span class="nav-number">2.1.</span> <span class="nav-text">Service超时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BroadcastReceiver%E8%B6%85%E6%97%B6"><span class="nav-number">2.2.</span> <span class="nav-text">BroadcastReceiver超时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContentProvider%E8%B6%85%E6%97%B6"><span class="nav-number">2.3.</span> <span class="nav-text">ContentProvider超时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E4%BA%8B%E4%BB%B6%E6%97%A0%E5%93%8D%E5%BA%94"><span class="nav-number">2.4.</span> <span class="nav-text">输入事件无响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E8%8E%B7%E5%8F%96%E7%84%A6%E7%82%B9%E8%B6%85%E6%97%B6"><span class="nav-number">2.5.</span> <span class="nav-text">窗口获取焦点超时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2022&#x2F;01&#x2F;01&#x2F;reader-2022-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">534k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:06</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Android性能分析方法和思路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能分析大全-方法篇">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍Android性能分析方法和思路">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/CPU分析大纲.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/内存分析大纲.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染模式.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png">
+<meta property="article:published_time" content="2021-01-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-17T03:28:56.401Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/CPU分析大纲.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android性能分析大全-方法篇 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android性能分析大全-方法篇
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-04 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-04T00:00:00+08:00">2021-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-17 11:28:56" itemprop="dateModified" datetime="2022-03-17T11:28:56+08:00">2022-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/" class="post-meta-item leancloud_visitors" data-flag-title="Android性能分析大全-方法篇" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+            <div class="post-description">介绍Android性能分析方法和思路</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>性能分析分为很多领域，关系比较难理清，比如卡顿分析和内存、CPU、布局都有关系，对应的优化也是从这几方面入手。导致文章结构比较难组织，这里就罗列一下各种分析方法。</p>
+<p>总体方法：</p>
+<ol>
+<li>查看基本信息：应用和系统整体CPU、内存等情况</li>
+<li>合理假设、缩小范围验证</li>
+<li>捕获具体信息：例如堆分配、方法调用栈、方法耗时等</li>
+<li>分析详细信息：找到具体影响因素</li>
+<li>解决、优化：<strong>没有完美的方案，需要找到平衡点，以提升用户体验为最终目的</strong>，例如空间换时间、时间换空间<ol>
+<li>在不影响用户体验情况下进行优化，例如LMK会根据进程优先级决定杀死顺序，ANR会根据前后台设置超时时间</li>
+<li>对于不影响用户体验的地方可以降低优先级</li>
+</ol>
+</li>
+</ol>
+<p>性能分析不准确？</p>
+<ul>
+<li>关闭<code>Instance Run</code>，避免影响性能</li>
+<li>一般情况下只能对debuggable应用进行分析，而debuggable应用未经优化，导致性能分析不准确。Android 10（API 29）可以在应用清单文件中添加<code>&lt;profileable android:shell=&quot;true&quot;/&gt;</code>，标记为profileable应用，对性能影响较小。可分析应用功能有限，只具备部分CPU和内存分析功能。</li>
+<li>频繁的GC会影响性能</li>
+<li>分析工具运行的时候会对App运行效率有一定影响，因此应该对比相对性能。</li>
+</ul>
+<h1 id="CPU分析"><a href="#CPU分析" class="headerlink" title="CPU分析"></a>CPU分析</h1><img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/CPU分析大纲.png" style="zoom:100%;">
+
+<h2 id="跟踪"><a href="#跟踪" class="headerlink" title="跟踪"></a>跟踪</h2><p>方法和函数跟踪：</p>
+<ol>
+<li>生成<code>.trace</code>跟踪文件：5.0以上可以设置采样间隔，避免影响性能。<ol>
+<li>手动开始/停止跟踪：DDMS或者CPU Profiler</li>
+<li>代码中调用<code>Debug.startMethodTracing</code>和<code>Debug.stopMethodTracing</code>开始/结束跟踪</li>
+</ol>
+</li>
+<li>查看和分析<code>.trace</code>文件：<ol>
+<li>DDMS中的TraceView工具</li>
+<li>AS中的CPU Profiler</li>
+</ol>
+</li>
+</ol>
+<p>系统跟踪：</p>
+<ol>
+<li>生成Systrace或Perfetto文件<ol>
+<li>使用CPU Profiler，选择CPU记录配置为系统跟踪</li>
+<li>Systrace命令行工具：在PC上运行</li>
+<li>Perfetto命令行工具：在设备端运行，Android 10以上</li>
+<li>System Tracing App生成：Android 9以上</li>
+</ol>
+</li>
+<li>查看和分析：<ol>
+<li><a target="_blank" rel="noopener" href="https://ui.perfetto.dev/">可视化界面-Perfetto UI</a>中查看</li>
+<li>直接打开HTML文件</li>
+</ol>
+</li>
+</ol>
+<h2 id="使用Debug类生成Trace文件"><a href="#使用Debug类生成Trace文件" class="headerlink" title="使用Debug类生成Trace文件"></a>使用Debug类生成Trace文件</h2><p>参考<a target="_blank" rel="noopener" href="https://developer.android.com/studio/profile/generate-trace-logs?hl=zh-cn">通过应用插桩生成跟踪日志</a></p>
+<p>对于间隔时间较短，或难以手动启动/停止记录的场景。可以使用Debug类进行跟踪，生成<code>.trace</code>文件导入CPU Profiler中查看。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开启跟踪，可以指定文件名称</span></span><br><span class="line">Debug.startMethodTracing(path)</span><br><span class="line"><span class="comment">//停止跟踪</span></span><br><span class="line">Debug.stopMethodTracing()</span><br></pre></td></tr></table></figure>
+
+<p>注：</p>
+<ul>
+<li>生成文件存储在<code>getExternalFilesDir()</code>路径下<code>/sdcard/Android/data/$packagename/files</code>。</li>
+<li>启用剖析功能后，应用的运行速度会减慢，因此应该对比相对时间，而不是绝对时间。</li>
+<li>存在8M的缓冲空间限制，对于持续较长时间的记录，需要使用CPU Profiler</li>
+<li>Android 5.0（API 级别 21）以上，新增<code>Debug.startMethodTracingSampling(String tracePath, int bufferSize, int intervalUs)</code>方法，可以基于采样的方法跟踪，可以设置采样间隔，减少对性能的影响。</li>
+<li>未指定新的文件名称，调用多次跟踪方法，旧文件会被覆盖。可以动态的重命名文件，如下</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> dateFormat: DateFormat = SimpleDateFormat(<span class="string">&quot;dd_MM_yyyy_hh_mm_ss&quot;</span>, Locale.getDefault())</span><br><span class="line"><span class="keyword">val</span> logDate: String = dateFormat.format(Date())</span><br><span class="line">Debug.startMethodTracing(<span class="string">&quot;sample-<span class="variable">$logDate</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="内存分析"><a href="#内存分析" class="headerlink" title="内存分析"></a>内存分析</h1><img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/内存分析大纲.png" style="zoom:100%;">
+
+<p>USS&lt;PSS&lt;RSS&lt;VSS：</p>
+<ul>
+<li>独占内存大小 (USS，Unique Set Size)：应用使用的非共享页面大小（不包括共享页面）</li>
+<li>按比例分摊的内存大小 (PSS，Proportional Set Size)：应用使用的非共享页面的内存+共享页面的均匀分摊大小（例如，如果三个进程共享 3MB，则每个进程的 PSS 为 1MB）。</li>
+<li>常驻内存大小 (RSS，Resident Set Size)：应用使用的非共享页面+共享页面大小</li>
+<li>虚拟内存大小（VSS，Virtual Set Size）：应用使用的非共享页面+共享页面+分配但未使用的内存大小</li>
+</ul>
+<blockquote>
+<p>比较有用的是USS和PSS</p>
+<p>PSS需要确定共享的页面和共享页面的进程数量，因此计算较慢。PSS加起来即所有进程占用的实际内存。</p>
+</blockquote>
+<p>共享内存：</p>
+<ol>
+<li>Zygote启动并加载通用Framework代码和资源，新进程只加载和运行应用代码</li>
+<li>大部分静态数据可被其他进程共享：例如Dalvik代码（预加载的odex文件）、应用资源、so库</li>
+<li>Android明确分配的共享内存区域，例如窗口Surface和屏幕合成器之间共享的内存</li>
+</ol>
+<h2 id="查看内存分配"><a href="#查看内存分配" class="headerlink" title="查看内存分配"></a>查看内存分配</h2><ol>
+<li>生成hprof文件：<ol>
+<li>手动点击dump按钮</li>
+<li>命令行：<code>am dumpheap &lt;pid&gt; &lt;file&gt;</code></li>
+<li>代码中调用<code>Debug.dumpHprofData (String fileName)</code></li>
+</ol>
+</li>
+<li>查看内存分配<ol>
+<li>Java内存分配：<ol>
+<li>Memory Profiler</li>
+<li>MAT工具</li>
+<li>DDMS：Heap、Allocation Tracker</li>
+<li>Perfetto的Java Heap Profiler：Android11及以上设备</li>
+</ol>
+</li>
+<li>Native内存分配：Android10及以上设备<ol>
+<li>使用Perfetto的heapprofd工具</li>
+<li>Memory Profiler：基于Perfetto的heapprofd实现</li>
+</ol>
+</li>
+<li>JNI全局引用：Memory Profiler</li>
+</ol>
+</li>
+</ol>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏：指本该回收的对象，由于被生命周期更长的对象引用，导致GC无法回收这块内存（GC可达，被GC Root对象引用）。内存泄漏最终会导致内存溢出。</p>
+<p>检查方法：运行代码，执行操作（例如旋转设备、切换应用），尝试强制GC，检查内存和对象数是否会回到稳定值。</p>
+<p>常见内存泄漏场景：</p>
+<ul>
+<li>Activity、Context、View、Drawable等对象被引用，导致Activity或Context无法回收</li>
+<li>非静态内部类，默认持有外部类引用。例如Handler、Runnable未结束，导致Activity无法被回收</li>
+<li>单例或static对象引用其他对象</li>
+<li>观察者模式未解注册</li>
+<li>Android特殊组件：<ul>
+<li>数据库Cursor未销毁</li>
+<li>数据库、网络Socket、文件连接未close</li>
+<li>自定义控件TypedArray未recycle</li>
+<li>Bitmap未recycle</li>
+</ul>
+</li>
+</ul>
+<p>类型：</p>
+<ul>
+<li>常发性内存泄漏：每次执行都会泄漏。</li>
+<li>一次性内存泄漏：多次执行只泄漏一次，例如单例持有Context，每次打开新的页面都替换新的Context，原来的Context就可以被释放掉</li>
+</ul>
+<h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC</p>
+<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC</p>
+<h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>OOM（Out of memory，内存溢出）：JVM没有足够的内存来为对象分配空间，GC也已经没有空间可回收，此时会抛出<code>java.lang.OutOfMemoryError</code></p>
+<p>原因：</p>
+<ol>
+<li>JVM分配空间太少</li>
+<li>应用内存占用太多</li>
+<li>应用内存使用完了没释放（内存泄漏）</li>
+</ol>
+<p>类型：</p>
+<ol>
+<li><code>java.lang.OutOfMemoryError: Java heap space</code>：Java堆内存溢出</li>
+<li><code>java.lang.OutOfMemoryError: PermGen space</code>：永久代溢出，即方法区。包括Class信息、静态变量、常量等过多</li>
+<li><code>java.lang.StackOverflowError</code>：虚拟机栈溢出，一般是由于深度递归和死循环造成</li>
+</ol>
+<blockquote>
+<p>对应JVM内存模型，除了程序计数器之外，Java虚拟机栈、Native方法栈、Java堆、方法区都可能发生内存溢出</p>
+</blockquote>
+<h2 id="APP内存限制"><a href="#APP内存限制" class="headerlink" title="APP内存限制"></a>APP内存限制</h2><p>一般是系统配置的，通过<code>getprop</code>或者<code>cat /system/build.prop</code>命令可以查看，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[dalvik.vm.heapgrowthlimit]: [160m] # 默认情况下APP可以使用的Heap最大值</span><br><span class="line">[dalvik.vm.heapmaxfree]: [4m] # 单次Heap调整的最大值</span><br><span class="line">[dalvik.vm.heapminfree]: [512k] # 单次Heap调整的最小值</span><br><span class="line">[dalvik.vm.heapsize]: [224m] # APP清单文件中指定了largeHeap属性，则以此项为最大值</span><br><span class="line">[dalvik.vm.heapstartsize]: [4m] # APP启动时分配的初始大小</span><br><span class="line">[dalvik.vm.heaptargetutilization]: [0.75] # 理想的堆内存利用率，已使用Heap/总Heap。GC之后会根据该值调整Heap大小</span><br></pre></td></tr></table></figure>
+
+<p>应用可以通过<code>ActivityManager</code>的<code>getMemoryClass</code>方法查询：返回整数，单位为M</p>
+<h2 id="LMK机制"><a href="#LMK机制" class="headerlink" title="LMK机制"></a>LMK机制</h2><p>内存不足前会调用<code>onTrimMemory()</code>方法通知应用主动释放内存，否则Android系统的LMK机制（Low Memory Kill），会根据进程<code>oom_adj_score</code>值杀死进程。</p>
+<ul>
+<li><code>cat /proc/进程号/oom_adj</code>：查看当前进程adj值</li>
+<li><code>cat /proc/进程号/oom_score_adj</code>：查看真正有效的adj值</li>
+</ul>
+<p>按进程重要程度分为以下级别，参考<a target="_blank" rel="noopener" href="https://developer.android.com/topic/performance/memory-management">开发者文档-进程间的内存分配</a></p>
+<ul>
+<li>系统原生进程：init、kswapd、netd、logd、adbd等</li>
+<li>系统进程：系统服务system_server</li>
+<li>持久性进程：设备核心服务，例如电话、WLAN</li>
+<li>前台进程：用户正在交互所需要的进程<ul>
+<li>拥有正在交互的Activity（前台Activity）</li>
+<li>Service与正在交互的Activity绑定</li>
+<li>运行了前台服务（startForeground）</li>
+<li>正在执行生命周期的Service</li>
+<li>正在执行onReceive的广播</li>
+</ul>
+</li>
+<li>可见进程：不和用户交互，但处于可见状态，用户可感知<ul>
+<li>Activity不处于前台，但仍可见（处于Pause状态）。</li>
+<li>进程的服务和可见Activity绑定</li>
+</ul>
+</li>
+<li>服务进程：运行了不属于上述两类的Service。例如后台播放音乐、后台下载</li>
+<li>Launcher应用：桌面、主屏幕</li>
+<li>上一个应用</li>
+<li>后台进程：Activity不可见（处于Stop状态）</li>
+<li>空进程：不包含活动组件，用于缓存，缩短下次在该进程启动组件的时间。例如Activity Back退出，进程不会立马被杀。</li>
+</ul>
+<p>更多细节参考<a target="_blank" rel="noopener" href="http://gityuan.com/2018/05/19/android-process-adj/">解读Android进程优先级ADJ算法</a></p>
+<h1 id="卡顿分析"><a href="#卡顿分析" class="headerlink" title="卡顿分析"></a>卡顿分析</h1><p>卡顿通常是因为主线程存在耗时方法调用，因此同样可以使用Cpu分析方法，使用系统跟踪，找到超出16ms的帧，分析具体方法耗时。</p>
+<h2 id="GPU渲染速度"><a href="#GPU渲染速度" class="headerlink" title="GPU渲染速度"></a>GPU渲染速度</h2><p>查看GPU绘制信息：<code>dumpsys gfxinfo &lt;packageName</code>&gt;`</p>
+<p>打开GPU呈现模式，会显示柱状条和16ms水平线：</p>
+<ul>
+<li>方法一：开发者选项&gt;监控&gt;GPU呈现模式分析</li>
+<li>方法二：<code>setprop debug.hwui.profile [true/visual_bars/false]</code></li>
+</ul>
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染模式.png" alt="GPU渲染" style="zoom:67%;">
+
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png" alt="GPU渲染" style="zoom:67%;">
+
+<h2 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h2><p>打开过度绘制调试：原色（0次，没有过度绘制）–&gt;蓝色（1次）–&gt;绿色（2次）–&gt;粉色（3次）–&gt;红色（3次以上）</p>
+<ul>
+<li>方法一：开发者选项&gt;调试GPU过度绘制</li>
+<li>方法二：<code>setprop debug.hwui.overdraw [false/show/show_deuteranomaly]</code> </li>
+</ul>
+<h2 id="捕获Binder调用"><a href="#捕获Binder调用" class="headerlink" title="捕获Binder调用"></a>捕获Binder调用</h2><p>频繁的进行Binder调用会影响性能。</p>
+<p>捕获Binder调用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开始捕获</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am trace-ipc start</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行操作：滚动、动画...</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Binder调用堆栈</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am trace-ipc stop --dump-file /data/<span class="built_in">local</span>/tmp/ipc-trace.txt</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检测主线程耗时"><a href="#检测主线程耗时" class="headerlink" title="检测主线程耗时"></a>检测主线程耗时</h2><h3 id="Looper循环中添加打印"><a href="#Looper循环中添加打印" class="headerlink" title="Looper循环中添加打印"></a>Looper循环中添加打印</h3><p>如下，loop中不断取出message处理。只要通过<code>Looper.getMainLooper().setMessageLogging()</code>设置打印类即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Looper.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Looper me = myLooper();</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      Message msg = queue.next(); <span class="comment">// might block</span></span><br><span class="line">      <span class="keyword">final</span> Printer logging = me.mLogging;</span><br><span class="line">      <span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">        logging.println(<span class="string">&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback + <span class="string">&quot;: &quot;</span> + msg.what);</span><br><span class="line">      &#125;</span><br><span class="line">      msg.target.dispatchMessage(msg);</span><br><span class="line">      <span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">        logging.println(<span class="string">&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用Choregorapher"><a href="#利用Choregorapher" class="headerlink" title="利用Choregorapher"></a>利用Choregorapher</h3><p>Android系统每16ms发送一次VSYNC信号，触发UI绘制，并提供了相应的回调。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//输出日志</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动速度"><a href="#启动速度" class="headerlink" title="启动速度"></a>启动速度</h1><ol>
+<li>冷启动：后台无进程</li>
+<li>热启动：后台有进程，Activity不需要重建，如home键回首页</li>
+<li>温启动：后台有进程，但Activity需要重建或恢复状态，如back键退出Activity，内存不足回收Activity</li>
+</ol>
+<p>查看启动时间：</p>
+<ol>
+<li><code>am start -W -n package/activity</code></li>
+<li>启动应用后查看logcat中Displayed打印，低版本在<code>ActivityManager</code>中打印，高版本在<code>ActivityTaskManager</code>打印</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -W</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am start -W com.afauria.sample</span></span><br><span class="line">Starting: Intent &#123; act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] pkg=com.afauria.sample &#125;</span><br><span class="line">Status: ok</span><br><span class="line">Activity: com.afauria.sample/.MainActivity</span><br><span class="line">ThisTime: 517</span><br><span class="line">TotalTime: 517</span><br><span class="line">WaitTime: 672</span><br><span class="line">Complete</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> logcat</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> logcat -d |grep ActivityManager</span></span><br><span class="line">03-15 15:01:07.418  3508  7142 I ActivityManager: START u0 &#123;act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.afauria.sample cmp=com.afauria.sample/.MainActivity&#125; from uid 0</span><br><span class="line">03-15 15:01:07.569  3508  3539 I ActivityManager: Start proc 9980:com.afauria.sample/1000 for activity com.afauria.sample/.MainActivity</span><br><span class="line">03-15 15:01:08.088  3508  3547 I ActivityManager: Displayed com.afauria.sample/.MainActivity: +517ms</span><br></pre></td></tr></table></figure>
+
+<p>分析：结合CPU分析方法，找到耗时操作。</p>
+<p>解决：减少Application和Activity的onCreate中的工作</p>
+<h1 id="能耗分析"><a href="#能耗分析" class="headerlink" title="能耗分析"></a>能耗分析</h1><p><code>Energy Profiler</code>，后面用过了再补充</p>
+<p>方法：</p>
+<ol>
+<li><p>重置电池数据收集：<code>adb shell dumpsys batterystats --reset</code></p>
+</li>
+<li><p>断开USB线：充电状态下不会使用电池电量</p>
+</li>
+<li><p>执行操作</p>
+</li>
+<li><p>连接手机</p>
+</li>
+<li><p>输出电池使用情况：<code>adb shell dumpsys batterystats &lt;package_name&gt;</code>，可以看到屏幕耗电和进程cpu耗电</p>
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png" alt="电池使用情况" style="zoom:80%;"></li>
+<li><p>生成报告：</p>
+<ol>
+<li>7.0及以上设备：<code>adb bugreport &gt; [path/]bugreport.zip</code></li>
+<li>6.0及以下设备：<code>adb bugreport &gt; [path/]bugreport.txt</code></li>
+</ol>
+</li>
+<li><p>使用<code>Battery Historian</code>分析报告</p>
+</li>
+</ol>
+<h1 id="网络流量分析"><a href="#网络流量分析" class="headerlink" title="网络流量分析"></a>网络流量分析</h1><p><code>Network Profiler</code></p>
+<h1 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h1><p>开启严格模式，查看Log输出信息，分析I/O、网络等异常情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     StrictMode.setThreadPolicy(<span class="keyword">new</span> StrictMode.ThreadPolicy.Builder()</span><br><span class="line">             .detectDiskReads()</span><br><span class="line">             .detectDiskWrites()</span><br><span class="line">             .detectNetwork()   <span class="comment">// or .detectAll() for all detectable problems</span></span><br><span class="line">             .penaltyLog()</span><br><span class="line">             .build());</span><br><span class="line">     StrictMode.setVmPolicy(<span class="keyword">new</span> StrictMode.VmPolicy.Builder()</span><br><span class="line">             .detectLeakedSqlLiteObjects()</span><br><span class="line">             .detectLeakedClosableObjects()</span><br><span class="line">             .penaltyLog()</span><br><span class="line">             .penaltyDeath()</span><br><span class="line">             .build());</span><br><span class="line">     <span class="keyword">super</span>.onCreate();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="性能分析相关命令"><a href="#性能分析相关命令" class="headerlink" title="性能分析相关命令"></a>性能分析相关命令</h1><p>介绍下上面没有提到的命令：</p>
+<ul>
+<li>内存：<ul>
+<li><code>dumpsys meminfo [package_name]</code>：查看某一时刻应用内存信息。</li>
+<li><code>dumpsys procstats</code>：查看进程内存、CPU信息，可以查看一段时间的内存信息</li>
+<li><code>procrank</code>：查看所有进程内存使用</li>
+<li><code>showmap -a &lt;pid&gt;</code>：查看进程内存信息和对应的地址区域</li>
+<li><code>cat /proc/meminfo</code>：查看设备内存</li>
+<li><code>free</code>：查看可用内存</li>
+<li><code>am dumpheap &lt;pid&gt; &lt;file&gt;</code>：捕获堆内存，生成hprof文件</li>
+</ul>
+</li>
+<li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
+<li><code>top</code>：查看<strong>各个进程</strong>信息，内存和CPU使用情况</li>
+<li><code>vmstat</code>：查看<strong>系统整体</strong>内存和CPU使用情况</li>
+<li><code>df -h</code>：查看设备存储空间</li>
+<li><code>tcpdump</code>：网络抓包，结合Wire Shark分析</li>
+</ul>
+<h2 id="dumpsys-prostats"><a href="#dumpsys-prostats" class="headerlink" title="dumpsys prostats"></a>dumpsys prostats</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">应用运行时间百分比 (minPSS-avgPSS-maxPSS/minUSS-avgUSS-maxUSS/minRSS-avgRSS-maxRSS over 样本数)</span></span><br><span class="line">AGGREGATED OVER LAST 3 HOURS:</span><br><span class="line">  * com.android.systemui / u0a37 / v28:</span><br><span class="line">           TOTAL: 100% (15MB-16MB-17MB/7.7MB-8.7MB-9.4MB/7.7MB-9.6MB-84MB over 178)</span><br><span class="line">      Persistent: 100% (15MB-16MB-17MB/7.7MB-8.7MB-9.4MB/7.7MB-9.6MB-84MB over 178)</span><br><span class="line">  ....</span><br><span class="line">  * com.android.gallery3d / u0a62 / v40030:</span><br><span class="line">           TOTAL: 0.01%</span><br><span class="line">        Receiver: 0.01%</span><br><span class="line">        (Cached): 54% (6.4MB-6.5MB-6.9MB/4.4MB-4.4MB-4.4MB/4.4MB-26MB-68MB over 6)</span><br></pre></td></tr></table></figure>
+
+<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p><code>top</code>：查看<strong>各个进程信息</strong>，内存和CPU使用情况</p>
+<ul>
+<li><code>-m &lt;num&gt;</code>：显示多少个进程</li>
+<li><code>-n &lt;num&gt;</code>：刷新次数</li>
+<li><code>-d &lt;num&gt;</code>：刷新间隔</li>
+<li><code>-s &lt;col&gt;</code>：按列排序，如cpu、vss、rss、thr等</li>
+<li><code>-t</code>：显示线程信息</li>
+</ul>
+<p>top一般用于查看进程信息，vmstat一般用于查看系统整体信息</p>
+<h2 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h2><p>Linux命令（Virtual Memory Statistics），查看<strong>系统整体</strong>CPU和内存使用率，虚拟内存交换情况，IO读写情况</p>
+<p>使用方式：<code>vmstat [Delay] [Count]</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vmstat</span></span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa</span><br><span class="line"> 2  0 173136  81416  14100 228904    0    0     1     0    0 1096  5  7 88  0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>procs进程<ul>
+<li>r： 等待执行的任务数。超过CPU个数，则会出现CPU瓶颈</li>
+<li>B：等待IO的进程数量</li>
+</ul>
+</li>
+<li>memory内存<ul>
+<li>swpd：正在使用的虚拟内存大小，单位KB</li>
+<li>free：空闲内存大小</li>
+<li>buff：已用的Buffer大小，对块设备读写进行缓冲</li>
+<li>cache：已用的cache大小，文件系统的cache</li>
+<li>inact：非活跃内存大小，即可回收的内存。使用-a选项显示</li>
+<li>active：活跃的内存大小。使用-a选项显示</li>
+</ul>
+</li>
+<li>Swap：内存交换<ul>
+<li>si：每秒从交换区写入内存的大小，单位KB/s</li>
+<li>so：每秒从内存写入交换区的大小，单位KB/s</li>
+</ul>
+</li>
+<li>IO<ul>
+<li>bi：每秒读取磁盘的块数，单位block，块大小一般为1024bytes</li>
+<li>bo：每秒写入磁盘的块数，单位block</li>
+</ul>
+</li>
+<li>System：值越大，sy就会越大<ul>
+<li>in：每秒中断数</li>
+<li>cs：每秒上下文切换数</li>
+</ul>
+</li>
+<li>CPU：<ul>
+<li>us（User time）：用户进程执行消耗CPU时间</li>
+<li>sy（System time）：系统进程消耗CPU时间</li>
+<li>id：空闲时间（包括IO等待时间），一般us+sy+id=100，us+sy参考值为80%，大于80%可能存在CPU不足</li>
+<li>wa：等待IO时间</li>
+</ul>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>关于优化，文中只提到了一部分，更多优化思路请参考下一篇文章</p>
+<p>ANR是卡顿的极端情况，单独写了一篇文章介绍。</p>
+<p>LMK是系统内存管理的一种机制，后续可能会单独写一篇文章介绍</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/profile">AndroidStudio指南-分析应用性能</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/topic/performance">Android指南-性能与功耗</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/performance/tracing">Android指南-系统跟踪</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/topic/performance/rendering/inspect-gpu-rendering#profile_rendering">开发者文档-GPU渲染分析</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/" rel="prev" title="Android性能分析大全-工具篇">
+      <i class="fa fa-chevron-left"></i> Android性能分析大全-工具篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/06/android-2021-01-06-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E4%BC%98%E5%8C%96%E7%AF%87/" rel="next" title="Android性能分析大全-优化篇">
+      Android性能分析大全-优化篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">CPU分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%B8%AA"><span class="nav-number">2.1.</span> <span class="nav-text">跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Debug%E7%B1%BB%E7%94%9F%E6%88%90Trace%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">使用Debug类生成Trace文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">内存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">3.1.</span> <span class="nav-text">查看内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8A%96%E5%8A%A8"><span class="nav-number">3.3.</span> <span class="nav-text">内存抖动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="nav-number">3.5.</span> <span class="nav-text">APP内存限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LMK%E6%9C%BA%E5%88%B6"><span class="nav-number">3.6.</span> <span class="nav-text">LMK机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%A1%E9%A1%BF%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">卡顿分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU%E6%B8%B2%E6%9F%93%E9%80%9F%E5%BA%A6"><span class="nav-number">4.1.</span> <span class="nav-text">GPU渲染速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E5%BA%A6%E7%BB%98%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">过度绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7Binder%E8%B0%83%E7%94%A8"><span class="nav-number">4.3.</span> <span class="nav-text">捕获Binder调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E4%B8%BB%E7%BA%BF%E7%A8%8B%E8%80%97%E6%97%B6"><span class="nav-number">4.4.</span> <span class="nav-text">检测主线程耗时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Looper%E5%BE%AA%E7%8E%AF%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%89%93%E5%8D%B0"><span class="nav-number">4.4.1.</span> <span class="nav-text">Looper循环中添加打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Choregorapher"><span class="nav-number">4.4.2.</span> <span class="nav-text">利用Choregorapher</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">启动速度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">能耗分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">网络流量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">严格模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">性能分析相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys-prostats"><span class="nav-number">9.1.</span> <span class="nav-text">dumpsys prostats</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top"><span class="nav-number">9.2.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vmstat"><span class="nav-number">9.3.</span> <span class="nav-text">vmstat</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">10.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2022&#x2F;01&#x2F;01&#x2F;reader-2022-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">534k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:06</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

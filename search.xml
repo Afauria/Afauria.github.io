@@ -3608,7 +3608,7 @@
   </entry>
   <entry>
     <title>跨平台技术选型</title>
-    <url>/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/</url>
+    <url>/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/</url>
     <content><![CDATA[<h1 id="跨平台技术优势"><a href="#跨平台技术优势" class="headerlink" title="跨平台技术优势"></a>跨平台技术优势</h1><p>原生开发不足：</p>
 <ol>
 <li>Android、iOS分开维护，开发和测试成本大。对于小团队来说成本较大。</li>
@@ -3627,7 +3627,7 @@
 <li>不可避免要和原生通信</li>
 <li>性能弱于原生</li>
 </ol>
-<h1 id="跨端技术演进"><a href="#跨端技术演进" class="headerlink" title="跨端技术演进"></a>跨端技术演进</h1><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/跨端技术演进.png" style="zoom:100%;">
+<h1 id="跨端技术演进"><a href="#跨端技术演进" class="headerlink" title="跨端技术演进"></a>跨端技术演进</h1><img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/跨端技术演进.png" style="zoom:100%;">
 
 <table>
 <thead>
@@ -3676,13 +3676,13 @@
 </tr>
 </tbody></table>
 <p>Hybrid原理：</p>
-<img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-H5混合开发.png" style="zoom:50%;">
+<img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-H5混合开发.png" style="zoom:50%;">
 
 <p>原生渲染原理：</p>
-<img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-原生渲染.png" style="zoom:50%;">
+<img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-原生渲染.png" style="zoom:50%;">
 
 <p>自绘渲染原理：</p>
-<img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-Flutter.png" style="zoom:50%;">
+<img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/原理-Flutter.png" style="zoom:50%;">
 
 <ul>
 <li>PWA（Progressive Web App，渐进式Web App）：离线缓存、无需安装、服务端首屏渲染。</li>
@@ -3850,9 +3850,9 @@
 </tr>
 <tr>
 <td>过度绘制</td>
-<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Android.png" style="zoom:25%;"></td>
-<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Flutter.png" style="zoom: 25%;"></td>
-<td><img src="/2021/12/15/flutter-2021-12-15-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-RN.png" style="zoom:25%;"></td>
+<td><img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Android.png" style="zoom:25%;"></td>
+<td><img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-Flutter.png" style="zoom: 25%;"></td>
+<td><img src="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/过度绘制-RN.png" style="zoom:25%;"></td>
 </tr>
 </tbody></table>
 <p>温启动：进程没被杀，Activity被回收，例如双击返回退出，或者app内存不足被回收</p>
@@ -3888,7 +3888,7 @@
 <li><p>平台一致性：Flutter&gt;RN=原生</p>
 </li>
 </ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Android性能分析请参考：<a href="/2021/12/12/android-2021-12-19-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">Android性能分析</a></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Android性能分析请参考前面几篇<a href="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/">Android性能分析大全</a></p>
 <p>Flutter性能分析参考<a href="https://flutter.cn/docs/perf">官方文档</a></p>
 <p>Android性能分析脚本见<a href="https://github.com/Afauria/PerformanceCheck">GitHub-PerformanceCheck</a></p>
 <p>Android、Flutter、RN测试Demo见<a href="https://github.com/Afauria/HybridPerformance">GitHub-HybridPerformance</a></p>
@@ -3899,344 +3899,6 @@
       <tags>
         <tag>Flutter</tag>
         <tag>跨平台</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Android性能分析大全-工具篇</title>
-    <url>/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>学习Android性能分析会涉及到一大堆工具。本来想将工具介绍放到性能分析过程中的，但是有的工具包含多个功能、存在功能重叠、或者被废弃了，穿插着讲会比较混乱。因此单独将工具使用拎出来，介绍工具的基本使用、不同工具间的关系、演进。</p>
-<h2 id="工具演进"><a href="#工具演进" class="headerlink" title="工具演进"></a>工具演进</h2><p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%BC%94%E8%BF%9B.png" alt="AndroidDeviceMonitor打开"></p>
-<h2 id="工具作用"><a href="#工具作用" class="headerlink" title="工具作用"></a>工具作用</h2><p>按照作用对工具进行下分类。区分下调试工具和性能分析工具</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Android性能分析工具分类.png" alt="AndroidDeviceMonitor打开" style="zoom:80%;">
-
-<h1 id="Android-Device-Monitor"><a href="#Android-Device-Monitor" class="headerlink" title="Android Device Monitor"></a>Android Device Monitor</h1><p><strong>大部分工具已弃用，被AS工具取代了，参考<a href="https://developer.android.com/studio/profile/monitor">AndroidDeviceMonitor迁移</a></strong></p>
-<p>包含在Android SDK中，囊括调试和分析多个工具</p>
-<ul>
-<li>DDMS：包含设备文件管理，Logcat、线程信息、堆信息、网络统计等功能</li>
-<li>TraceView：分析<code>.trace</code>文件（已弃用，使用AS的CPU Profiler）</li>
-<li>systrace：收集特定Trace信息</li>
-<li>Tracer for OpenGL ES：分析GPU信息</li>
-<li>Hierarchy Viewer：布局查看</li>
-<li>Pixel Perfect</li>
-<li>Network Traffic tool：查看网络传输</li>
-</ul>
-<h2 id="打开方式"><a href="#打开方式" class="headerlink" title="打开方式"></a>打开方式</h2><ol>
-<li>通过<code>&lt;android-sdk&gt;/tools/monitor</code>命令打开。</li>
-<li>旧版本AS可以通过<code>Tools--&gt;Android--&gt;DeviceMonitor</code>打开。（Android Studio3.1中废弃，Android Studio3.2中移除。）</li>
-</ol>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E6%89%93%E5%BC%80.png" alt="AndroidDeviceMonitor打开"></p>
-<p>界面如下：</p>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E7%95%8C%E9%9D%A2.png" alt="Android Device Monitor"></p>
-<h2 id="常用按钮介绍"><a href="#常用按钮介绍" class="headerlink" title="常用按钮介绍"></a>常用按钮介绍</h2><p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E5%B7%A5%E5%85%B7%E6%A0%8F.png" alt="AndroidDeviceMonitor工具栏"></p>
-<p>从左到右依次介绍：</p>
-<ol>
-<li>Debug：开启调试，需要有源代码</li>
-<li>Update Heap：更新堆使用情况，选中时右侧面板显示堆栈信息</li>
-<li>Dump hprof file：生成堆使用情况hprof文件（Heap Profile）</li>
-<li>Cause GC：触发垃圾回收</li>
-<li>Update Thread：更新线程运行状态，选中时右侧面板显示线程运行状态</li>
-<li>Start/Stop Method Profiling：开启或结束方法跟踪，采集数据，并自动使用TraceView显示图形化界面，可以导出<code>.trace</code>文件</li>
-<li>Stop：结束进程</li>
-<li>Screen Capture：截屏</li>
-<li>Dump View Hierarchy for UI Automator：Dump布局信息</li>
-<li>Capture system wide trace using Android systrace：打开Systrace工具</li>
-</ol>
-<h2 id="DDMS（Dalvik-Debug-Monitor-Server）"><a href="#DDMS（Dalvik-Debug-Monitor-Server）" class="headerlink" title="DDMS（Dalvik Debug Monitor Server）"></a>DDMS（Dalvik Debug Monitor Server）</h2><p>包含窗口和多个工具（调试和分析）：</p>
-<ul>
-<li>Device：用于查看连接的设备</li>
-<li>File Explorer：浏览设备文件</li>
-<li>Logcat：查看日志</li>
-<li>Emulator Control：仿真控制、模拟器控制，如模拟电话、短信、位置、通知等</li>
-<li>System Information：查看系统信息，CPU和内存使用情况等</li>
-<li>Thread：查看所有线程信息</li>
-<li>Heap：用于查看进程堆使用情况，例如Heap Size、Allocated、Free、Used、Objects等</li>
-<li>Allocation Tracker：查看对象内存分配的具体情况</li>
-<li>Network Traffic tool：监测网络使用情况</li>
-</ul>
-<h2 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h2><p>用于方法跟踪和查看，打开<code>.trace</code>文件分析具体方法调用耗时、CPU占用情况。Trace文件生成方式：</p>
-<ol>
-<li>DDMS或者CPU Profiler中手动点击Start/Stop Method Profiling</li>
-<li>代码中调用<code>Debug.startMethodTracing</code>和<code>Debug.stopMethodTracing</code>方法</li>
-</ol>
-<p>TraceView界面：</p>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E7%95%8C%E9%9D%A2.png" alt="TraceView界面"></p>
-<p>TraceView时间轴窗格：每个线程的活动信息</p>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E6%97%B6%E9%97%B4%E8%BD%B4%E7%AA%97%E6%A0%BC.png" alt="TraceView时间轴窗格"></p>
-<p>TraceView分析窗格：方法耗时和CPU使用信息</p>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E5%88%86%E6%9E%90%E7%AA%97%E6%A0%BC.png" alt="TraceView分析窗格"></p>
-<blockquote>
-<ul>
-<li>Incl Cpu Time：占用CPU时间，包括调用的方法</li>
-<li>Excl Cpu Time：占用CPU时间，不包括调用的方法</li>
-<li>Incl Real Time：方法执行真实时间，包括调用的方法</li>
-<li>Excl Cpu Time：方法执行真实时间，不包括调用的方法</li>
-<li>Calls+Recur Calls/Total：方法调用和递归次数占总次数的百分比</li>
-<li>Cpu Time/Call：Cpu占用平均时间</li>
-<li>Real Time/Call：平均执行时间</li>
-</ul>
-</blockquote>
-<h2 id="dmtracedump"><a href="#dmtracedump" class="headerlink" title="dmtracedump"></a>dmtracedump</h2><p>SDK工具：<code>Android/sdk/platform-tools/dmtracedump</code>，将<code>.trace</code>文件生成图形化的方法调用堆栈图</p>
-<p><code>dmtracedump [-ho] [-s sortable] [-d trace-file-name] [-g outfile] trace-file-name</code></p>
-<p><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/dmtracedump.png"></p>
-<h2 id="Systrace工具"><a href="#Systrace工具" class="headerlink" title="Systrace工具"></a>Systrace工具</h2><p>Systrace用于系统跟踪。基于Linux Kenerl的ftrace实现。在系统关键流程中插桩（如ActivityThread），通过category指定启用的Tag（高版本支持更多的Tag）。</p>
-<blockquote>
-<p>Java层的通过<code>android.os.Trace</code>类完成，native层通过<code>ATrace</code>宏完成</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Trace</span> </span>&#123;</span><br><span class="line">    <span class="comment">//系统使用</span></span><br><span class="line">    <span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceBegin</span><span class="params">(<span class="keyword">long</span> traceTag, String methodName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(traceTag)) &#123;</span><br><span class="line">            nativeTraceBegin(traceTag, methodName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceEnd</span><span class="params">(<span class="keyword">long</span> traceTag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(traceTag)) &#123;</span><br><span class="line">            nativeTraceEnd(traceTag);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//APP使用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">beginSection</span><span class="params">(<span class="meta">@NonNull</span> String sectionName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(TRACE_TAG_APP)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (sectionName.length() &gt; MAX_SECTION_NAME_LEN) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;sectionName is too long&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            nativeTraceBegin(TRACE_TAG_APP, sectionName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">endSection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(TRACE_TAG_APP)) &#123;</span><br><span class="line">            nativeTraceEnd(TRACE_TAG_APP);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>要收集应用Trace，跟踪的时候需要指定<code>-a</code>选项</strong></p>
-<p>应用可以自定义插桩，参考<a href="https://developer.android.com/topic/performance/tracing/custom-events">开发者文档-定义自定义事件</a></p>
-<ul>
-<li>Java或Kotlin调用：<code>Trace.beginSection()</code>、<code>Trace.endSection()</code></li>
-<li>Native调用：引入头文件<code>#include &lt;android/trace.h&gt;</code>，调用<code>ATrace_beginSection()</code>、<code>ATrace_endSection()</code></li>
-</ul>
-<p>注：</p>
-<ol>
-<li>begin和end调用一一对应</li>
-<li>begin和end必须在同一个线程</li>
-<li>systrace要求app是debuggable的，但是debug版本apk和release有差距，会导致结果不准确。可以打包release版本，通过反射调用<code>Trace.setAppTracingAllowed(true)</code>方法开启</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Class&lt;?&gt; trace = Class.forName(&quot;android.os.Trace&quot;);</span><br><span class="line">Method setAppTracingAllowed = trace.getDeclaredMethod(&quot;setAppTracingAllowed&quot;, boolean.class);</span><br><span class="line">setAppTracingAllowed.invoke(null, true);</span><br></pre></td></tr></table></figure>
-
-<h3 id="图形界面使用"><a href="#图形界面使用" class="headerlink" title="图形界面使用"></a>图形界面使用</h3><p>DDMS中打开Systrace工具</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/DDMS-Systrace打开.png" style="zoom:67%;">
-
-<p>选择输出路径、跟踪时长、Buffer大小、Tag等</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/DDMS-Systrace.png" style="zoom:67%;">
-
-<h3 id="命令行使用"><a href="#命令行使用" class="headerlink" title="命令行使用"></a>命令行使用</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 例如</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Android/sdk/platform-tools/systrace</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./systrace.py --time=10 -o mynewtrace.html <span class="built_in">sched</span> gfx view wm binder_driver hal dalvik input res</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Systrace使用说明：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> systrace.py [options] [category1 [category2 ...]]</span></span><br><span class="line"></span><br><span class="line">1. option为选项：可用`systrace.py -h`查看</span><br><span class="line">   1. `-t N`或者`--time=N`：指定跟踪时长</span><br><span class="line">   2. `-b N`或者`--buf-size=N`：指定跟踪缓冲区大小</span><br><span class="line">   3. `-a &lt;package-name&gt;`或者`--app=&lt;package-name&gt;`：开启指定包名应用中自定义插桩的Trace</span><br><span class="line">   4. `-l`或者`--list-categories`：查看设备支持的category</span><br><span class="line">   5. `-o`：输出文件，默认输出`trace.html`</span><br><span class="line">   6. `-j`：生成json文件</span><br><span class="line">2. category为要捕获的信息：可用`systrace.py -l`查看</span><br><span class="line">   1. `gfx`：Graphics信息，分析卡顿</span><br><span class="line">   2. `input`：输入事件</span><br><span class="line">   3. `sched`：cpu调度、线程信息</span><br><span class="line">   4. `view`：View绘制</span><br><span class="line">   5. `am`：ActivityManager调用信息，分析启动过程</span><br><span class="line">   6. `dalvik`：虚拟机信息，分析GC</span><br><span class="line">   7. `binder_driver`：分析Binder IPC</span><br><span class="line">   8. `core_services`：SystemServer信息</span><br></pre></td></tr></table></figure>
-
-<h3 id="分析报告"><a href="#分析报告" class="headerlink" title="分析报告"></a>分析报告</h3><p><a href="https://developer.android.google.cn/topic/performance/tracing/navigate-report">分析报告</a>：可以使用Perfetto UI查看，选择”Open with legacy UI”。</p>
-<p>如下图，绿色圆圈是正常的帧，红色和黄色表示存在卡顿。（无法看到具体调用栈，可以结合TraceView或CPU Profiler分析）</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Systrace卡顿帧.png" style="zoom:70%;">
-
-<p><strong>TraceView和systrace区别：</strong></p>
-<ul>
-<li>TraceView：捕获某个时间段内所有方法调用再全部分析，对性能影响较大（一个人犯罪了，把全国人民抓起来审问），高版本可以设置采样间隔。</li>
-<li>systrace：更加精细的控制，对性能影响较小，在系统关键流程中插桩，收集特定范围内的信息，可以选择记录指定的TAG。</li>
-</ul>
-<h1 id="Android-Studio工具"><a href="#Android-Studio工具" class="headerlink" title="Android Studio工具"></a>Android Studio工具</h1><p>包括多个工具，部分功能是集成Android SDK中的工具</p>
-<ul>
-<li>Logcat</li>
-<li>Android Emulator：模拟器。低版本是打开SDK的模拟器，高版本可以直接在AS中运行模拟器</li>
-<li>Debug Window：断点调试</li>
-<li>Device File Explorer：设备文件管理</li>
-<li>ADB</li>
-<li>Layout Inspector：布局查看</li>
-<li>性能分析：AS 3.0以下使用Android Monitor，AS 3.0及以上使用Android Profiler</li>
-<li>…</li>
-</ul>
-<h2 id="Android-Monitor"><a href="#Android-Monitor" class="headerlink" title="Android Monitor"></a>Android Monitor</h2><p>Android Studio3.0以下，包含Logcat、Memory、Network、CPU、GPU</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidMonitor界面.png" style="zoom: 67%;">
-
-<h2 id="Android-Profiler"><a href="#Android-Profiler" class="headerlink" title="Android Profiler"></a>Android Profiler</h2><p>Android Studio3.0及以上，包含CPU（可以进行卡顿检测）、Memory、Network、Energy能耗分析器</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidProfiler界面.png" alt="AndroidProfiler界面" style="zoom: 40%;">
-
-<p>可以单独启动Profiler，而不运行Android Studio：<code>&lt;studio-installation-folder&gt;/Contents/bin/profiler.sh</code></p>
-<h3 id="高级性能分析"><a href="#高级性能分析" class="headerlink" title="高级性能分析"></a>高级性能分析</h3><p>低版本设备（Android 7.1（API 25）及以下）不支持部分高级功能，Profiler中会显示：”Advanced profiling is unavailable for the selected process”。例如：</p>
-<ol>
-<li>不支持事件时间轴</li>
-<li>Memory Profiler中不支持显示GC事件</li>
-<li>Memory Profiler中不支持实时显示已分配对象数量</li>
-<li>Network Profiler中不支持已传输文件的详细信息</li>
-<li>…</li>
-</ol>
-<p>低版本设备要使用高级功能，需要修改配置：</p>
-<ol>
-<li>打开Run &gt; Edit Configurations</li>
-<li>选择应用Module</li>
-<li>选择Profiling，打开”Enable additional support for older devices (API level &lt; 26)”</li>
-<li>再次构建运行APP</li>
-</ol>
-<p>原理：在编译时往应用内插桩，会降低编译速度。</p>
-<h2 id="CPU-Profiler"><a href="#CPU-Profiler" class="headerlink" title="CPU Profiler"></a>CPU Profiler</h2><p>检查CPU使用率和线程活动，记录和查看方法调用轨迹。包括Java方法（Method Trace）、C/C++方法（Function Trace），系统方法（System Trace）。</p>
-<h3 id="主界面"><a href="#主界面" class="headerlink" title="主界面"></a>主界面</h3><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler.png" style="zoom:67%;">
-
-<ol>
-<li>事件时间轴：显示Activity生命周期状态和用户交互事件等。（高级功能，低版本设备不支持）</li>
-<li>CPU时间轴：实时显示应用CPU使用率（百分比）和当前应用线程总数，以及其他进程CPU使用率</li>
-<li>线程活动时间轴：列出应用所有线程和活动。<ol>
-<li>绿色：线程处于活跃状态或正准备使用CPU（就绪）。</li>
-<li>黄色：线程处于活跃状态，正在等待I/O操作（磁盘或网络）。</li>
-<li>灰色：线程休眠，并且没有消耗CPU。例如访问不可用资源。</li>
-</ol>
-</li>
-</ol>
-<p>采样方式：</p>
-<ol>
-<li><p>对Java方法采样：间隔一段时间捕获应用调用堆栈，比较捕获的数据集，推导应用Java方法执行时间和资源使用情况。</p>
-<blockquote>
-<p>如果一个方法在间隔期间执行完毕，则可能不会被记录。对于这种生命周期较短的方法，应使用插桩跟踪</p>
-</blockquote>
-</li>
-<li><p>跟踪Java方法：对每个Java方法调用开始和结束时记录时间戳。</p>
-<blockquote>
-<p>记录每个方法，会影响运行时性能，进而影响分析数据。另外也会造成生成文件过大。</p>
-</blockquote>
-</li>
-<li><p>对C/C++函数采样：捕获Native方法采样数据。</p>
-</li>
-<li><p>跟踪系统调用：基于systrace，记录应用和系统方法调用情况。</p>
-</li>
-<li><p>自定义配置</p>
-</li>
-</ol>
-<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
-<li>点击Record开始跟踪</li>
-<li>应用执行操作</li>
-<li>点击Stop停止跟踪</li>
-<li>自动打开分析窗格，也可以导出<code>.trace</code>跟踪文件</li>
-</ol>
-<h3 id="分析窗格"><a href="#分析窗格" class="headerlink" title="分析窗格"></a>分析窗格</h3><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler分析窗格.png" style="zoom:67%;">
-
-<ul>
-<li>Top Down：展开方法的被调用方<ul>
-<li>Self：方法本身执行时间</li>
-<li>Children：子方法执行时间</li>
-<li>Total：方法执行总时间</li>
-</ul>
-</li>
-<li>Bottom Up：展开方法的调用方</li>
-<li>Call Chart：调用图。横轴是时间，纵轴是调用栈<ul>
-<li>橙色：系统方法</li>
-<li>绿色：应用自身方法</li>
-<li>蓝色：三方API方法（包括Java API）</li>
-</ul>
-</li>
-<li>Flame Chart：火焰图。将相同的调用栈汇总为较长的横条，横轴不代表时间轴，而是每个方法执行的相对时间<ul>
-<li>橙色：系统方法</li>
-<li>黄色：三方API方法</li>
-<li>米黄色：应用自身方法</li>
-</ul>
-</li>
-</ul>
-<p>系统调用跟踪分析窗格，Display部分会显示系统图形流水线信息</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler卡顿分析.png" style="zoom:70%;">
-
-<ul>
-<li>Frames：主线程和RenderThread时间，<strong>超出16ms会显示红色</strong></li>
-<li>SurfaceFlinger：SurfaceFinger处理帧缓冲区的时间，负责将缓冲区内容送到显示器</li>
-<li>VSYNC：与显示流水线保持同步的信号</li>
-<li>BufferQueue：显示缓冲队列有多少帧在等待SurfaceFlinger使用。值为2表示处于三重缓冲状态。</li>
-</ul>
-<h2 id="Memory-Profiler"><a href="#Memory-Profiler" class="headerlink" title="Memory Profiler"></a>Memory Profiler</h2><h3 id="主界面-1"><a href="#主界面-1" class="headerlink" title="主界面"></a>主界面</h3><img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Memory Profiler.png" style="zoom:67%;">
-
-<blockquote>
-<p>事件时间轴和实时已分配对象属于高级性能分析功能，低版本设备不支持。</p>
-</blockquote>
-<p>Allocation Tracking采样方式：</p>
-<ul>
-<li>Full：捕获内存中的所有对象分配。低版本AS中（Android Studio 3.2及以下）的默认行为。影响运行速度。</li>
-<li>Sampled：定期对内存中的对象分配情况进行采样。默认选项，在进行性能剖析时对应用性能的影响较小。在短时间内分配大量对象的应用仍可能会表现出明显的速度减慢。</li>
-<li>Off：停止跟踪应用的内存分配。</li>
-</ul>
-<p>内存计算方式：</p>
-<ul>
-<li>Java：Java或Kotlin对象大小</li>
-<li>Native：C或C++对象大小</li>
-<li>Graphics：图形BufferQueue内存大小</li>
-<li>Stack：原生堆栈和Java堆栈大小，与线程数有关</li>
-<li>Code：代码和资源（如Dex字节码、so库等）内存大小</li>
-<li>Allocated：分配的Java/Kotlin对象数。不包含Native对象。</li>
-</ul>
-<h3 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
-<li>查看内存使用量时间轴。</li>
-<li>高版本（Android 8.0及以上）默认持续跟踪内存分配。低版本（Android 8.0以下）需要点击Record memory allocations按钮开始记录和停止记录。</li>
-<li>执行操作</li>
-<li>点击强制GC按钮进行垃圾回收</li>
-<li>点击dump按钮捕获堆内存状态，生成hprof文件</li>
-<li>查看内存具体分配情况，或者导出hprof文件</li>
-</ol>
-<h3 id="分析窗格-1"><a href="#分析窗格-1" class="headerlink" title="分析窗格"></a>分析窗格</h3><ol>
-<li>Class Name：类分配情况</li>
-<li>Instance：实例分配情况</li>
-<li>Instance Detail：实例的引用链和实例的成员变量</li>
-</ol>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Memory Profiler堆信息.png" style="zoom:67%;">
-
-<ul>
-<li>Allocations：分配的对象数</li>
-<li>Depth：GC Root到对象实例的最短跳数</li>
-<li>Native Size：对象在Native内存中的大小</li>
-<li>Shallow Size：对象本身的大小</li>
-<li>Retained Size：对象被释放掉后真正能够减少的大小，包括递归引用的对象。如果有多个对象引用同一个对象，则不会被计算进来。</li>
-</ul>
-<h2 id="Energy-Profiler"><a href="#Energy-Profiler" class="headerlink" title="Energy Profiler"></a>Energy Profiler</h2><p>比较少用到</p>
-<h2 id="Network-Profiler"><a href="#Network-Profiler" class="headerlink" title="Network Profiler"></a>Network Profiler</h2><p>比较少用到</p>
-<h1 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h1><h2 id="Perfetto命令行工具"><a href="#Perfetto命令行工具" class="headerlink" title="Perfetto命令行工具"></a>Perfetto命令行工具</h2><ul>
-<li><a href="https://perfetto.dev/docs/">官方文档</a></li>
-<li><a href="https://developer.android.google.cn/studio/command-line/perfetto">使用介绍</a></li>
-<li><a href="https://ui.perfetto.dev/">可视化界面-Perfetto UI</a></li>
-</ul>
-<p><strong>Android10引入的新一代分析工具，用于替代systrace工具</strong>。大文件打开比systrace快，能长时间跟踪，systrace记录短时间设备活动。</p>
-<ol>
-<li>ftrace：收集内核Trace信息</li>
-<li>atrace：收集用户态Trace信息</li>
-<li>Java Heap Profiler：收集Java内存分配信息，Android11及以上</li>
-<li>heapprofd：收集Native内存分配信息，Android10以上</li>
-</ol>
-<p>Perfetto UI界面如下，很容易找到超出16ms的块，再进一步放大检查调用栈</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Perfetto卡顿帧.png" style="zoom:70%;">
-
-<p>Perfetto可以兼容显示Systrace界面：选择”Legacy UI”打开</p>
-<h2 id="System-Tracing-App"><a href="#System-Tracing-App" class="headerlink" title="System Tracing App"></a>System Tracing App</h2><p>Android 9.0以上包含一个Sytem Tracing的系统应用，用于跟踪设备活动，生成Trace文件。可以直接在设备进行记录，再获取跟踪文件，无需通过adb连接到电脑。参考<a href="https://developer.android.google.cn/topic/performance/tracing/on-device">System Tracing App介绍</a></p>
-<p>步骤如下：</p>
-<ol>
-<li><p>打开System Tracing应用：”开发者选项&gt;System Tracing”</p>
-<img src="/2021/12/12/android-2021-12-12-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/System Tracing App.png" style="zoom:50%;"></li>
-<li><p>开始记录：有两种方式</p>
-<ol>
-<li>打开”Record Trace”开关</li>
-<li>打开”Show Quick Settings Tile”开关，将图标添加到快捷设置面板中，点击快捷图标开启”记录系统Trace”。</li>
-</ol>
-</li>
-<li><p>应用执行操作</p>
-</li>
-<li><p>停止记录，会保存Trace文件</p>
-<ol>
-<li>Android10及以上版本使用<code>.perfetto-trace</code>后缀保存（Perfetto格式，可以转换成Systrace格式，参考<a href="https://perfetto.dev/docs/quickstart/traceconv">Trace conversion</a>）</li>
-<li>Android9以上版本使用<code>.ctrace</code>后缀保存（Systrace格式）</li>
-</ol>
-</li>
-<li><p>共享跟踪记录</p>
-<ol>
-<li>使用adb：<code>adb pull /data/local/trace/ .</code></li>
-<li>使用Intent，通过电子邮件或其他应用共享给应用开发者</li>
-</ol>
-</li>
-<li><p>Perfetto UI中打开Trace文件分析</p>
-</li>
-</ol>
-<h2 id="AGI（Android-GPU-Inspector）"><a href="#AGI（Android-GPU-Inspector）" class="headerlink" title="AGI（Android GPU Inspector）"></a>AGI（Android GPU Inspector）</h2><p>图形分析器，包括Trace跟踪，CPU、GPU、内存、电池使用、Vulkan API调用等功能。参考<a href="https://developer.android.com/agi">Android GPU 检查器 (AGI)</a></p>
-<h2 id="MAT（Memory-Analyzer-Tool）"><a href="#MAT（Memory-Analyzer-Tool）" class="headerlink" title="MAT（Memory Analyzer Tool）"></a>MAT（Memory Analyzer Tool）</h2><p>Java堆分析工具，和Eclipse一起使用。用于分析hprof文件。也有独立运行的MAT。参考<a href="https://www.jianshu.com/p/d8e247b1e7b2">MAT使用入门</a></p>
-<h1 id="抓包工具"><a href="#抓包工具" class="headerlink" title="抓包工具"></a>抓包工具</h1><p>方法一：参考<a href="https://www.cnblogs.com/sgtb/p/3708566.html">Android端抓包方法</a></p>
-<ol>
-<li>tcpdump抓包（需root）：<code>tcpdump -p -vv -s 0 -w /mnt/sdcard/capture.pcap</code></li>
-<li>Wire Shark中分析。</li>
-</ol>
-<p>方法二：参考<a href="https://www.cnblogs.com/shoshana-kong/p/14161898.html">使用Fiddler实现手机抓包</a></p>
-<ol>
-<li>电脑安装Fiddler</li>
-<li>启动Fiddler代理服务</li>
-<li>手机设置网络代理为电脑IP地址，端口默认为8888</li>
-<li>手机端请求网络，请求会经过PC代理转发</li>
-<li>Fiddler分析网络包</li>
-</ol>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
-<ul>
-<li><a href="https://developer.android.com/studio/profile">AndroidStudio指南-分析应用性能</a></li>
-<li><a href="https://developer.android.com/topic/performance">Android指南-性能与功耗</a></li>
-<li><a href="https://developer.android.google.cn/topic/performance/tracing">Android指南-系统跟踪</a></li>
-<li><a href="https://developer.android.com/agi">Android GPU 检查器 (AGI)</a></li>
-<li><a href="https://www.jianshu.com/p/d8e247b1e7b2">MAT使用入门</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -5569,8 +5231,8 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>网络基础之自底向上设计</title>
-    <url>/2021/11/28/basic-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/</url>
+    <title>网络基础之自底向上设计（TODO）</title>
+    <url>/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/</url>
     <content><![CDATA[<h1 id="自底向上设计"><a href="#自底向上设计" class="headerlink" title="自底向上设计"></a>自底向上设计</h1><p>一台主机：不需要通信，不需要连接网络</p>
 <p>问题：无法和其他电脑连接，通信，只有基础的运算功能</p>
 <h2 id="网线直连"><a href="#网线直连" class="headerlink" title="网线直连"></a>网线直连</h2><p>两台主机：主机添加网口，使用一根网线连接通信</p>
@@ -5578,7 +5240,7 @@ end</pre>
 <p>N台主机：….</p>
 <p>问题：随着越来越多的人加入，网口越来越多，网线密密麻麻。</p>
 <h2 id="集线器（Hub）"><a href="#集线器（Hub）" class="headerlink" title="集线器（Hub）"></a>集线器（Hub）</h2><p>使用集线器做转发：只有简单的收发功能，将电信号<strong>转发到所有出口</strong>，相当于广播。如图</p>
-<p><img src="/2021/11/28/basic-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E9%9B%86%E7%BA%BF%E5%99%A8.gif"></p>
+<p><img src="/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E9%9B%86%E7%BA%BF%E5%99%A8.gif"></p>
 <blockquote>
 <ol>
 <li>对接收到的信号进行再生整形放大，以扩大网络的传输距离</li>
@@ -5593,15 +5255,15 @@ end</pre>
 <p>MAC地址可以重复，实际上只要不是同属一个数据链路就不会出现问题。</p>
 </blockquote>
 <p>如A设备的mac地址为<code>aa-aa-aa-aa-aa-aa</code>，B设备的mac地址为<code>bb-bb-bb-bb-bb-bb</code>。A给B发送数据的时候，带上地址，如图：</p>
-<p><img src="/2021/11/28/basic-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/mac%E5%9C%B0%E5%9D%80%E6%95%B0%E6%8D%AE%E5%8C%85.png"></p>
+<p><img src="/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/mac%E5%9C%B0%E5%9D%80%E6%95%B0%E6%8D%AE%E5%8C%85.png"></p>
 <p>设备收到数据包后，判断是自己的就收下，不是自己的就丢弃，如图：</p>
-<p><img src="/2021/11/28/basic-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E9%9B%86%E7%BA%BF%E5%99%A8+Mac%E5%9C%B0%E5%9D%80.gif"></p>
+<p><img src="/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E9%9B%86%E7%BA%BF%E5%99%A8+Mac%E5%9C%B0%E5%9D%80.gif"></p>
 <p>问题：本来只需要发送给一台设备，现在发了多台设备，既不安全，又浪费网络资源</p>
 <h2 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h2><p>使用交换机，将数据包转发给特定Mac地址的电脑。我们把它定义在<strong>数据链路层</strong></p>
 <p>//rodo</p>
 <h1 id="自顶向下"><a href="#自顶向下" class="headerlink" title="自顶向下"></a>自顶向下</h1><p>ping过程发生了什么，输入网站url发生了什么</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="网络层次划分"><a href="#网络层次划分" class="headerlink" title="网络层次划分"></a>网络层次划分</h2><p>有不同的划分标准，一图以蔽之～</p>
-<p><img src="/2021/11/28/basic-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E7%BD%91%E7%BB%9C%E5%B1%82%E6%AC%A1%E5%88%92%E5%88%86.png"></p>
+<p><img src="/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/%E7%BD%91%E7%BB%9C%E5%B1%82%E6%AC%A1%E5%88%92%E5%88%86.png"></p>
 <ul>
 <li>物理层（Physics Layer）</li>
 <li>数据链路层（Data Link Layer）</li>
@@ -5673,10 +5335,306 @@ end</pre>
 </ul>
 ]]></content>
       <categories>
-        <category>网络</category>
+        <category>计算机网络</category>
       </categories>
       <tags>
-        <tag>网络</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络基础之IP地址</title>
+    <url>/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/</url>
+    <content><![CDATA[<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><h2 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h2><p>IPv4：使用32位（4字节）表示IP地址。</p>
+<blockquote>
+<p>可以用十六进制、十进制、八进制表示。也可以用点分格式表示，将IP地址分为4段，每段一个字节，中间用点分隔，包括点分十进制、点分十六进制、点分八进制</p>
+<p>为了便于阅读和分析，通常写作点分十进制格式：将IP地址分为4段，每段1个字节，每段用十进制表示，中间用点分隔。</p>
+<p>点分格式中每一段可以用不同的进制表示，合法但是不常用，如：192.0x00（16进制）.0002（八进制）.235（十进制）</p>
+</blockquote>
+<h2 id="私有地址和公有地址"><a href="#私有地址和公有地址" class="headerlink" title="私有地址和公有地址"></a>私有地址和公有地址</h2><p>公有地址：向InterNIC注册申请，可以直接访问互联网。</p>
+<p>私有地址（专用地址）：非注册地址，供组织机构内部使用，自行分配和管理，无法被其他网络发现，因此可以重复。和互联网通信需要通过网关。</p>
+<blockquote>
+<p>IP地址类似家庭住址，一台主机向另一台主机发送数据，类似于寄信。</p>
+<p>公有地址由组织统一分配注册，不可重复，如解放路44号。邮递员可以直接把信送到该地址。</p>
+<p>私有地址相当于小区内的门牌号，如1栋101，其他小区也可以叫1栋101。邮递员只能找到注册的地址，因此只能送到小区门口的保卫处（网关），由保卫处送到具体的门牌号。同样的，发信也要经过保卫处。</p>
+</blockquote>
+<p>私有地址如果要连到Internet，需要将私有地址转换为公有地址，这个过程称为NAT（Network Address Translation，网络地址转换）。</p>
+<h2 id="网关和路由"><a href="#网关和路由" class="headerlink" title="网关和路由"></a>网关和路由</h2><p>网关：将一个网络连接到另一个网络的关口。</p>
+<p>设备会配置网关，如果两台主机不在同一个网络下，会将数据包发到网关，再转发给另一台主机。网关也有自己的IP地址，一般是本地网络下的第一个主机号。</p>
+<p>一台主机可以有多个网关，如果找不到可用的网关，会将数据包发给默认网关</p>
+<p>在windows上叫网关，在mac上叫路由器。路由器是网关的一种。</p>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>将IP地址划分为网络地址和主机地址两部分。转换为2进制，为1的部分对应网络段，为0的部分对应主机段</p>
+<p>如C类网络：子网掩码是255.255.255.0，也就是说前三段为网络号，最后一段为主机号。</p>
+<p>用途：可以用于判断不同主机是否在同一个子网内：将两个IP分别与子网掩码进行与运算，如果相等则表示在同一个子网内。</p>
+<p>表示方法：IP地址（子网掩码）、IP地址/子网掩码位数。如192.168.0.0（255.255.255.0）=192.168.0.0/24</p>
+<h2 id="分类网络（有类网络）"><a href="#分类网络（有类网络）" class="headerlink" title="分类网络（有类网络）"></a>分类网络（有类网络）</h2><p><img src="/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/%E5%88%86%E7%B1%BBIP%E5%9C%B0%E5%9D%80.png"></p>
+<p>对IP进行分类便于更好的路由，判断第一位为0则是A类地址，判断第二位为0则是B类地址…….</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>定义</th>
+<th>默认子网掩码</th>
+<th>IP地址范围</th>
+<th>私有IP地址范围</th>
+<th>最大网络数</th>
+<th>单个网段最大主机数</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>第1段为网络号，最高位固定为0，即1~127</td>
+<td>255.0.0.0</td>
+<td>0.0.0.0到127.255.255.255</td>
+<td>10.0.0.0-10.255.255.255</td>
+<td>126（减去0和127）</td>
+<td>16777214</td>
+<td>大型网络</td>
+</tr>
+<tr>
+<td>B</td>
+<td>前2段为网络号，最高位固定为10，即128~191</td>
+<td>255.255.0.0</td>
+<td>128.0.0.0到191.255.255.255</td>
+<td>172.16.0.0-172.31.255.255</td>
+<td>16384</td>
+<td>65534</td>
+<td>中型网络，一般用于大公司和政府机构</td>
+</tr>
+<tr>
+<td>C</td>
+<td>前3段为网络号，最高位固定为110，即192~223</td>
+<td>255.255.255.0</td>
+<td>192.0.0.0到223.255.255.255</td>
+<td>192.168.0.0-192.168.255.255</td>
+<td>2097152</td>
+<td>254</td>
+<td>小型网络，分配给任何有需要的人或组织，如校园网，小型办公网络</td>
+</tr>
+<tr>
+<td>D</td>
+<td>不分网络号和主机号，最高位固定为1110，即224~239</td>
+<td></td>
+<td>224.0.0.0到239.255.255.255</td>
+<td></td>
+<td></td>
+<td></td>
+<td>用于组播</td>
+</tr>
+<tr>
+<td>E</td>
+<td>不区分网络号和主机号，最高位为1111，即240~255</td>
+<td></td>
+<td>240.0.0.0到255.255.255.255</td>
+<td></td>
+<td></td>
+<td></td>
+<td>科研保留地址段</td>
+</tr>
+</tbody></table>
+<p>注：</p>
+<ol>
+<li>其中D、E类为特殊地址，不能用于分配。<strong>D类用作组播地址，E类为科研保留地址段</strong>。</li>
+<li>每个分类下还存在一些特殊用途的地址，不能用于主机分配，如环回地址（127开头，如127.0.0.1表示本机地址，一般用于测试），受限广播地址（255.255.255.255），本机地址（0.0.0.0）等</li>
+<li>最大网络数：<ol>
+<li>由于A类地址最高位固定为0，且用一个字节表示网络号，由于0和127不能使用，因此需要减去2，因此最大网络数=2^7-2，</li>
+<li>由于B类地址最高位固定为10，且用两个字节表示网络号，因此最大网络数=2^14</li>
+<li>由于C类地址最高位固定为110，且用三个字节表示网络号，因此最大网络数=2^21</li>
+</ol>
+</li>
+<li>单个网段最大主机数=2^主机号位数-2，（减去头和尾，规定第一个主机号表示网络地址，最后一个主机号表示广播地址，已经被分配，无法再分配给主机）</li>
+<li><strong>在分类网络中，子网掩码只有三种（A类：255.0.0.0、B类：255.255.0.0、C类：255.255.255.0）。在CIDR中使用可变长子网掩码（VLSM）</strong></li>
+<li>以0或255结尾的地址不能分配给主机：<strong>只在子网掩码至少为24位（即C类地址或者CIDR中24-32位子网掩码）的前提下才成立</strong>。<ol>
+<li><strong>以255结尾的地址不一定是广播地址</strong>（主机段全为1）：如B类地址172.16.0.0/255.255.0.0，后8位都是主机位，广播地址为172.16.255.255。172.16.1.255、172.16.2.255等不是广播地址，可以分配给主机</li>
+<li><strong>广播地址不一定以255结尾</strong>：如192.168.1.0-63/26，子网掩码为26位，主机号为6位，192.168.1.63、192.168.127、192.168.1.191、192.168.1.255（即每个子网下最后一台主机号）主机位都为1，因此都是广播地址。</li>
+</ol>
+</li>
+</ol>
+<h3 id="分类网络面临的问题"><a href="#分类网络面临的问题" class="headerlink" title="分类网络面临的问题"></a>分类网络面临的问题</h3><blockquote>
+<ol>
+<li>对于企业来说，C类地址只有254个偏少（不够用），而B类地址包含65534个偏多（浪费）。—&gt;CIDR划分子网</li>
+<li>B类地址很快将要分配完毕：最大网络数为16384。—&gt;CIDR划分子网</li>
+<li>同一网络下没有地址层次：如一个公司用了B类地址，但是需要划分开发环境、测试环境、生产环境IP。—&gt;CIDR划分子网</li>
+<li>路由表需要维护大量的表项：C类网络分散在不同地域，难以聚合。—&gt;CIDR将前缀相同的网络聚合成超网，分配给企业，此外还可以按世界地区进行分配</li>
+<li>整个IPv4地址最终将会全部耗尽：总数为2^32个地址，去掉私有地址、多播地址、以及一些特殊保留地址，可分配的IP地址不多。—&gt;通过新版本IP协议（IPv6）解决</li>
+</ol>
+</blockquote>
+<h2 id="子网划分与聚合"><a href="#子网划分与聚合" class="headerlink" title="子网划分与聚合"></a>子网划分与聚合</h2><p>意义：如上述，分类网络只有三种分配方式：C类2^8台主机、B类2^16台主机、A类2^24台主机。会造成大量浪费和不够用。因此在分类网络基础上，采用子网划分技术（<strong>VLSM和CIDR</strong>）得到更多类型大小的网络，提高IP地址利用率。</p>
+<blockquote>
+<ul>
+<li>等长子网划分：将分类网络等分成多个网络，所有子网的子网掩码相同</li>
+<li>变长子网划分：将分类网络分成多个网络，不同子网使用不同的子网掩码</li>
+</ul>
+</blockquote>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ol>
+<li>主机：互联网中的一个设备</li>
+<li>网络：多台机器组成一个网络，网络号相同则在一个网络下</li>
+<li>网络地址：一般是该网络的第一个IP地址，不可分配给主机，<strong>主机号全为0</strong>。用于标识该网络。</li>
+<li>广播地址：一般是该网络的最后一个IP地址，不可分配给主机，<strong>主机号全为1</strong>。用于向本地网络的所有机器发送广播。</li>
+<li>可用主机地址：网络下所有IP地址减去第一个和最后一个IP地址，可用分配给主机的IP地址。用于标识主机</li>
+<li>子网：将分类网络划分成更小后的网络，称为子网。其中第一个子网称为全0子网，最后一个子网为全1子网。<ol>
+<li>全0子网对应子网号全为0，全1子网对应子网号全为1</li>
+<li>旧标准（RFC950）里面全0和全1子网不可分配：为了避免全0子网网络地址（192.168.1.0）和全1子网的广播地址（192.168.1.255）分别与没有划分子网前的网络地址和广播地址冲突。</li>
+<li>新标准（RFC1878）废弃，全0子网和全1子网也可用于分配</li>
+</ol>
+</li>
+<li>超网：把多个小网络组成一个大网络。</li>
+<li>分类网络：将IP地址分为A、B、C、D、E类，使用标准的默认子网掩码。只有三种（A类：255.0.0.0、B类：255.255.0.0、C类：255.255.255.0）</li>
+<li>无类网络（CIDR）：基于VLSM可变长子网掩码，可以进行任意长度前缀分配，并且将多个前缀相同的地址块（CIDR地址块）组合到一个路由表项中，分配给企业使用，减少路由表项。</li>
+</ol>
+<blockquote>
+<p>VLSM（Variable Length Subnet Mask，可变长子网掩码）：通过增加掩码位数，可以划分更多的子网。</p>
+<p>CIDR（Classless Inter-Domain Routing，无类别域间路由）：基于VLSM，聚合超网。取代分类网络划分IP地址。</p>
+</blockquote>
+<h3 id="子网划分原理"><a href="#子网划分原理" class="headerlink" title="子网划分原理"></a>子网划分原理</h3><p>从主机位取出部分位用作子网位（借位），和原网络号合并为新的网络号，这样就可以将标准的IP网络划分成几个小的网络。</p>
+<p><img src="/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/%E5%88%92%E5%88%86%E5%AD%90%E7%BD%91.png"></p>
+<p>如将C类地址192.168.1.0/24，划分为2个子网：</p>
+<ol>
+<li>需要向主机位借1位作为子网位</li>
+<li>子网掩码由255.255.255.0（/24）变为255.255.255.128（/25）</li>
+<li>主机位数从8变为7</li>
+<li>每个子网IP地址数从256变为128=2^7</li>
+<li>每个子网可用主机数从254变为126=2^7-2</li>
+<li>第一个子网段为192.168.1.0-127/25，其中192.168.1.0/25为网络地址，192.168.1.127/25为广播地址。</li>
+<li>第二个子网段为192.168.1.128-255/25，其中192.168.1.128/25为网络地址，192.168.1.255/25为广播地址。</li>
+</ol>
+<p><strong>借1位可以划分两个子网0、1，借2位可以划分4个子网00、01、10、11….（可以看出第一个子网为全0子网、最后一个子网为全1子网）</strong></p>
+<h2 id="各种概念换算"><a href="#各种概念换算" class="headerlink" title="各种概念换算"></a>各种概念换算</h2><p>以下全部转换为2进制计算，判断是否属于同一个网段，主要看他们的网络标识是否一样</p>
+<ul>
+<li><p>网络标识（网络号）：<strong>主机段全为0的IP地址</strong>，子网掩码和IP地址进行”与”操作。用于区分不同的网段</p>
+</li>
+<li><p>主机标识（主机号）：子网掩码取反和IP地址进行“与”操作，用于区分同一网段下的不同主机</p>
+</li>
+<li><p>广播地址：<strong>主机段全为1的IP地址</strong>，广播地址不一定是255结尾，以255结尾的也不一定是广播地址，需要结合子网掩码判断。</p>
+</li>
+<li><p>子网数量：2^子网段位数。</p>
+<ul>
+<li>C类网络下：主机段位数+子网段位数=8，即IP地址数量*子网数量=2^8</li>
+<li>B类网络下，主机段位数+子网段位数=16，即IP地址数量*子网数量=2^16</li>
+</ul>
+</li>
+<li><p>IP地址数量：2^主机段位数</p>
+</li>
+<li><p>可用主机数量（可分配IP地址数）：IP地址数量-2（减去头和尾，规定第一个主机号表示网络地址，最后一个主机号表示广播地址，已经被分配，无法再分配给主机）</p>
+</li>
+<li><p>该子网可用IP地址段：将网络地址下的所有主机分段，段数为子网数量，去掉头和尾，即为该子网可用IP地址段</p>
+</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>如IP地址192.168.1.53</p>
+<blockquote>
+<ul>
+<li>C类地址默认子网掩码为255.255.255.0</li>
+<li>网络标识为192.168.1.0</li>
+<li>主机标识为53</li>
+<li>子网数量为1</li>
+<li>广播地址为192.168.1.255，主机号全为1，即255</li>
+<li>IP地址数量为256</li>
+<li>可用主机数位254</li>
+<li>该子网可用IP地址段为192.168.1.1-192.168.1.254</li>
+</ul>
+</blockquote>
+<p>如IP地址192.168.1.53/27</p>
+<blockquote>
+<ol>
+<li>27表示子网掩码有27个1，即：11111111 11111111 11111111 11100000。即子网掩码为255.255.255.224。</li>
+<li>网络段有27位，主机段有5位，得一个子网IP地址数量为32，可用主机数为30，子网数量为8。</li>
+<li>IP地址转换为二进制：11000000 10101000 00000001 00110101</li>
+<li>和子网掩码进行与操作，得：11000000 10101000 00000001 00100000，即网络地址192.168.1.32。</li>
+<li>和子网掩码取反后进行与操作，得：00000000 00000000 00000000 00010101，即主机标识为21，表示这个子网下的第21台主机</li>
+<li>主机段全部置为1，得：11000000 10101000 00000001 00111111，即广播地址192.168.1.63</li>
+<li>将网络分为8段：<ol>
+<li>第一个子网：192.168.1.0-192.168.1.31</li>
+<li>第二个子网：192.168.1.32-192.168.1.63</li>
+<li>第三个子网：192.168.1.64-192.168.1.95</li>
+<li>第四个子网：192.168.1.96-192.168.1.127</li>
+<li>……</li>
+</ol>
+</li>
+<li>53位于第二个子网，该子网的广播地址为192.168.1.63</li>
+<li>该子网可用IP段为：192.168.1.33-192.168.1.62</li>
+</ol>
+</blockquote>
+<p>将B类地址168.195.0.0划分为27个子网，求子网掩码和每个子网下IP地址数量？</p>
+<blockquote>
+<ol>
+<li>27=11011，需要向主机位借5位。</li>
+<li>借的是高位，即255.255.11111000.0</li>
+<li>换算成10进制为255.255.248.0</li>
+<li>主机号占11位，IP地址数量=2^11</li>
+</ol>
+</blockquote>
+<p>将B类地址168.195.0.0划分成若干子网后，每个子网内有700台主机，求子网掩码和可划分子网数？</p>
+<blockquote>
+<ol>
+<li>700=1010111100，主机号占10位，网络号占22位。</li>
+<li>即向主机号借了6位。255.255.11111100.0</li>
+<li>换算成10进制为255.255.252.0</li>
+<li>借了6位，可划分2^6个子网</li>
+</ol>
+</blockquote>
+<h1 id="单播、广播、组播（多播）"><a href="#单播、广播、组播（多播）" class="headerlink" title="单播、广播、组播（多播）"></a>单播、广播、组播（多播）</h1><p>这里的单播、广播、组播是针对网络层的说法，传输层TCP、UDP是对网络层的封装</p>
+<h2 id="单播（一对一）"><a href="#单播（一对一）" class="headerlink" title="单播（一对一）"></a>单播（一对一）</h2><p>单播地址是IP网络中最常见的。包含单播目标地址的分组发送给特定主机。源地址-&gt;目标地址</p>
+<ul>
+<li>以太网帧报头中必须有目标IP地址和目标MAC地址。（目标IP地址+目标MAC地址）</li>
+<li>如果目标地址属于另一个网络，则目标MAC地址为源地址所在网络的路由器的MAC地址。（目标IP地址+源地址的路由器MAC地址）</li>
+</ul>
+<p><img src="/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/%E5%8D%95%E6%92%AD.jpg" alt="单播"></p>
+<p>缺点：服务器压力大，服务器流量＝客户机数量×客户机流量</p>
+<p>优点：针对不同客户做出不同响应，容易实现个性化的服务</p>
+<h2 id="广播（一对所有）"><a href="#广播（一对所有）" class="headerlink" title="广播（一对所有）"></a>广播（一对所有）</h2><p>广播分组的目标IP地址的主机部分全为1，这意味着本地网络（广播域）中的所有主机都将接收并查看该分组。</p>
+<ul>
+<li>以太网帧报头中必须有目标IP地址和广播MAC地址。（目标IP地址+广播MAC地址）</li>
+<li>在以太网中，广播MAC地址长48位，其十六进制表示为FF-FF-FF-FF-FF-FF。</li>
+</ul>
+<p><img src="/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/%E5%B9%BF%E6%92%AD.jpg" alt="广播"></p>
+<p>优点：网络设备简单，维护简单，布网成本低</p>
+<p>缺点：无法针对不同客户做出不同响应。</p>
+<h3 id="受限广播"><a href="#受限广播" class="headerlink" title="受限广播"></a>受限广播</h3><p>不会被路由器转发，但会被送到相同物理网络段上的所有主机，只能用于本地网络。</p>
+<p>IP地址的网络字段和主机字段全为1，即地址：<strong>255.255.255.255</strong></p>
+<h3 id="直接广播"><a href="#直接广播" class="headerlink" title="直接广播"></a>直接广播</h3><p>通过路由发送到该网络下的每台主机</p>
+<p>IP地址的网络字段定义这个网络，<strong>主机字段</strong>通常全为1，如：</p>
+<ul>
+<li>C类网络192.168.1.0的默认子网掩码为255.255.255.0，其广播地址为192.168.1.255。</li>
+<li>B类网络172.16.0.0的默认子网掩码为255.255.0.0，其广播地址为172.16.255.255。</li>
+<li>A类网络10.0.0.0的默认子网掩码为255.0.0.0，其广播地址为10.255.255.255。</li>
+</ul>
+<h2 id="多播（一对多）"><a href="#多播（一对多）" class="headerlink" title="多播（一对多）"></a>多播（一对多）</h2><p>让源设备能够将分组发送给一组设备。属于多播组的设备将被分配一个多播组IP地址，多播地址范围为224.0.0.0～239.255.255.255。由于多播地址表示一组设备（有时被称为主机组），因此只能用作分组的目标地址。源地址总是为单播地址。</p>
+<ol>
+<li>224.0.0.0 ~ 224.0.0.255 为预留的组播地址，只能在局域⽹中，路由器是不会进⾏转发的。</li>
+<li>224.0.1.0 ~ 238.255.255.255 为⽤户可⽤的组播地址，可以⽤于 Internet 上。</li>
+<li>239.0.0.0 ~ 239.255.255.255 为本地管理组播地址，可供内部⽹在内部使⽤，仅在特定的本地范围内有效。</li>
+</ol>
+<ul>
+<li>以太网帧报头中必须有目标IP地址和多播MAC地址。</li>
+<li>多播MAC地址以十六进制值01-00-5E打头，余下的6个十六进制位是根据IP多播组地址的最后23位转换得到的。</li>
+</ul>
+<p><img src="/2021/11/27/network-2021-11-27-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8BIP%E5%9C%B0%E5%9D%80/%E5%A4%9A%E6%92%AD.jpg" alt="多播"></p>
+<p>优点：多个客户端加入同一个组，共享一条数据流，节省服务器负载</p>
+<p>缺点：丢包错包之后难以弥补</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Tips：</p>
+<ul>
+<li>DHCP：动态分配IP</li>
+<li>HOST：<ul>
+<li>Internet主机指互联网中的一台设备，有自己的IP地址，每台主机在互联网上的地位是平等的</li>
+<li>指电脑主机</li>
+</ul>
+</li>
+<li>PC：个人计算机</li>
+<li>SERVER：服务器，指运行服务程序的计算机</li>
+<li>InterNIC（Internet Network Information Center，因特网信息中心）：提供IP分配、域名管理等服务。此外还有ENIC（欧洲）、APNIC（亚太）等负责不同地区IP分配。在中国是由 CNNIC 的机构进⾏管理。</li>
+<li>ISP（Internet Service Provider，互联网服务提供商）：如中国电信、中国移动等。</li>
+</ul>
+<p>参考文章：</p>
+<ul>
+<li><a href="https://blog.51cto.com/u_6930123/2113151">IP地址和子网划分学习笔记之《子网划分详解》</a></li>
+<li><a href="https://www.cnblogs.com/therock/articles/2798653.html">单播、广播和多播IP地址</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
@@ -5968,12 +5926,6 @@ end</pre>
 <li><a href="https://www.cnblogs.com/therock/articles/2798653.html">单播、广播和多播IP地址</a></li>
 </ul>
 ]]></content>
-      <categories>
-        <category>网络</category>
-      </categories>
-      <tags>
-        <tag>网络</tag>
-      </tags>
   </entry>
   <entry>
     <title>编程语言、编译器和Android虚拟机</title>
@@ -8474,57 +8426,6 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
-
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
-<blockquote>
-<p>除了scp之外，还可以使用rsync同步文件</p>
-</blockquote>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
-<ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
-</ol>
-</li>
-</ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
-
-<ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
-</ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
-<ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
@@ -8791,6 +8692,94 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
+
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
+
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<blockquote>
+<p>除了scp之外，还可以使用rsync同步文件</p>
+</blockquote>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+<ol>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+</ol>
+</li>
+</ol>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NPM笔记</title>
+    <url>/2021/04/12/note-2021-04-12-NPM/</url>
+    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
+<ol>
+<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
+<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
+</ul>
+</li>
+<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
+<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
+<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
+</ul>
+</li>
+<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
+<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
+<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
+<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
+</ul>
+</li>
+<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
+<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
+<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
+<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Github笔记</title>
     <url>/2021/04/12/note-2021-04-12-Github/</url>
     <content><![CDATA[<h1 id="GitHub笔记"><a href="#GitHub笔记" class="headerlink" title="GitHub笔记"></a>GitHub笔记</h1><ol>
@@ -8872,40 +8861,966 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>NPM笔记</title>
-    <url>/2021/04/12/note-2021-04-12-NPM/</url>
-    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
+    <title>Android性能分析大全-ANR</title>
+    <url>/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/</url>
+    <content><![CDATA[<h1 id="ANR分析"><a href="#ANR分析" class="headerlink" title="ANR分析"></a>ANR分析</h1><p>ANR（Application Not Response，应用无响应）：ANR可以看作是卡顿的极端情况，系统有一套检测机制</p>
+<p>原因：</p>
 <ol>
-<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
-<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
-</ul>
+<li><p><strong>主线程</strong>做了太多阻塞耗时操作：</p>
+<ol>
+<li>I/O</li>
+<li>同步Binder调用</li>
+<li>长时间计算</li>
+<li>等待阻塞其他线程资源的锁：Thread的join、sleep、wait方法</li>
+</ol>
 </li>
-<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
-<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
-<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
-</ul>
-</li>
-<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
-<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
-<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
-<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
-</ul>
-</li>
-<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
-<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
-<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
-<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
-</ul>
+<li><p>系统整体性能慢：CPU和内存满载、内存碎片化、GC慢等</p>
 </li>
 </ol>
+<p>分析：</p>
+<ol>
+<li>使用严格模式</li>
+<li>打开【开发者选项&gt;显示所有ANR】：一般情况下只有前台会显示ANR对话框，但是后台广播、服务也可能发生ANR。</li>
+<li>CPU分析耗时方法</li>
+<li>出现anr之后会在<code>/data/anr/</code>路径下生成anr trace文件。找到对应的进程pid，搜索<code>main</code>线程，查看anr堆栈。</li>
+</ol>
+<p>解决：</p>
+<ol>
+<li>优化应用内存</li>
+<li>将耗时操作放到子线程</li>
+<li>避免频繁实时刷新UI</li>
+<li>onReceive中耗时操作可以通过启动IntentService处理</li>
+<li>代码设计避免出现同步、死锁等异常情况</li>
+</ol>
+<h1 id="ANR机制"><a href="#ANR机制" class="headerlink" title="ANR机制"></a>ANR机制</h1><p>先介绍大致的流程，源码分析之后再补（TODO）</p>
+<p>主要原理：</p>
+<ol>
+<li>埋炸弹：向system_server埋入定时炸弹，在规定时间内没有完成任务，则引爆炸弹，炸毁目标进程。</li>
+<li>拆炸弹：在规定时间内完成任务，拆除炸弹</li>
+<li>引爆炸弹：system_server封装现场，抓取快照，收集Trace，便于后续分析。弹出ANR提示框</li>
+</ol>
+<p>触发机制</p>
+<ul>
+<li><p>Service生命周期超时：前台20s、后台200s</p>
+<ul>
+<li><code>Reason: Executing service</code></li>
+</ul>
+</li>
+<li><p>BroadcastReceiver生命周期超时：前台10s、后台60s</p>
+<ul>
+<li><code>Reason: Broadcast of Intent &#123; ... &#125;</code></li>
+</ul>
+</li>
+<li><p>ContentProvider启动超时：10s</p>
+<ul>
+<li><code>Reason: ContentProvider not responding</code></li>
+</ul>
+</li>
+<li><p>前台Activity响应输入事件超时：5s</p>
+<ul>
+<li><code>Reason: Input dispatching timed out (Waiting because the focused window has not finished processing the input events that were previously delivered to it.)</code></li>
+</ul>
+</li>
+<li><p>窗口获取焦点超时：5s</p>
+<ul>
+<li><code>Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)</code></li>
+</ul>
+</li>
+</ul>
+<p>注：</p>
+<p>前台广播和后台广播？</p>
+<blockquote>
+<p>广播默认是后台的，通过指定Intent的flag为<code>FLAG_RECEIVER_FOREGROUND</code>，设置为前台广播。</p>
+<p>AMS中有两个广播队列：mFgBroadcastQueue和mBgBroadcastQueue</p>
+</blockquote>
+<p>只有有序广播才会超时，无序广播一次循环分发，不存在前一个receiver处理慢的问题</p>
+<p>Service、BroadcastReceiver、ContentProvider原理类似，都采用”定时雷”的方式，超时会主动引爆炸弹。</p>
+<p>输入事件超时和窗口获取焦点超时，采用的是”扫雷”的方式，超时不会主动引爆炸弹，等新的事件来了之后踩雷。</p>
+<p>后台广播和服务ANR不会有提示框，而是Log输出异常。</p>
+<p>LMK机制可能刚好把广播进程杀掉，导致ANR，此时pid为0。（自动化测试时可以判断pid为0时不报ANR异常）</p>
+<h2 id="Service超时"><a href="#Service超时" class="headerlink" title="Service超时"></a>Service超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Service超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>客户端启动服务</li>
+<li>system_server接收请求，向AMS发送消息，埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>system_server通知Service进程创建Service</li>
+<li>Service进程接收消息，发到主线程</li>
+<li>主线程调用Service生命周期，执行任务，并等待SP持久化</li>
+<li>执行完成之后向system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="BroadcastReceiver超时"><a href="#BroadcastReceiver超时" class="headerlink" title="BroadcastReceiver超时"></a>BroadcastReceiver超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-BroadcastReceiver超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+
+
+<ol>
+<li>客户端发送广播</li>
+<li>system_server接收广播，向AMS发送消息</li>
+<li>AMS埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>AMS通知注册的BroadcastReceiver进程</li>
+<li>BroadcastReceiver进程接收消息，发到主线程。主线程调用BroadcastReceiver生命周期，执行任务</li>
+<li>执行完成向通知system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="ContentProvider超时"><a href="#ContentProvider超时" class="headerlink" title="ContentProvider超时"></a>ContentProvider超时</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-ContentProvider超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>客户端请求ContentProvider数据</li>
+<li>system_server接收请求，如果未启动，则先通过zygote fork新进程</li>
+<li>ContentProvider进程向system_server注册</li>
+<li>AMS埋”定时雷”。如果时间到了没有拆除则触发ANR。</li>
+<li>system_server通知Provider进程</li>
+<li>Provider进程接收消息，发到主线程执行任务</li>
+<li>执行完成向通知system_server汇报</li>
+<li>system_server向AMS发送消息，拆除定时炸弹</li>
+</ol>
+<h2 id="输入事件无响应"><a href="#输入事件无响应" class="headerlink" title="输入事件无响应"></a>输入事件无响应</h2><img src="/2021/01/14/android-2021-01-14-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-ANR/ANR-Input超时原理.png" alt="GPU渲染" style="zoom:67%;">
+
+<ol>
+<li>InputReader线程通过EventHub监听<code>/dev/input</code>读取输入事件，发给InputDispatcher。InputDispatcher线程负责将事件分发给目标应用窗口<ol>
+<li>mInboundQueue队列记录接收的事件</li>
+<li>outboundQueue队列记录即将分发的事件</li>
+<li>waitQueue记录已分发，且目标应用未处理完成的事件</li>
+</ol>
+</li>
+<li>InputDispatcher开始分发事件<ol>
+<li>先检测是否有正在处理的事件（mPendingEvent），如果没有则取出mInboundQueue队头的事件，赋值给mPendingEvent，并重置ANR时间。否则不会取出事件，也不会重置时间</li>
+<li>检查窗口是否就绪（checkWindowReadyForMoreInputLocked）</li>
+<li>满足以下条件，进入扫雷，终止本轮事件分发<ol>
+<li>对于按键事件判断outboundQueue或者waitQueue不为空</li>
+<li>对于非按键事件，判断waitQueue不为空且等待队头时间超时5s</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>当窗口准备就绪后，将mPendingEvent放到outboundQueue队列</li>
+<li>从outboundQueue中取出事件，放入waitQueue队列</li>
+<li>InputDispatcher通过Socket发送事件给目标应用进程（APP进程初始化时就已经创建双向通信Socket）</li>
+<li>目标进程收到事件后，转发给目标窗口处理，进行View事件分发处理</li>
+<li>处理完成后向system_server汇报，从waitQueue队列中移除事件</li>
+</ol>
+<p>原理：InputDispatcher运行在system_server中，接收底层传上来的设备事件，然后检测上一个事件是否已经处理完毕，如果超时，会调用WMS的notifyANR提示弹窗。应用程序主线程通过InputChannel读取输入事件，交给View处理。</p>
+<p>如果没有新事件，即使超时了也不会主动上报。系统推测这个时候用户可能没有关注手机，过一段时间阻塞可能会自行消失，因此会”隐瞒不报”。</p>
+<h2 id="窗口获取焦点超时"><a href="#窗口获取焦点超时" class="headerlink" title="窗口获取焦点超时"></a>窗口获取焦点超时</h2><p>属于输入事件超时：由于窗口获取不到焦点，导致应用无法接收事件，因此InputDispatcher会上报ANR。</p>
+<p>一般发生在窗口切换时：</p>
+<ol>
+<li>焦点在A应用窗口</li>
+<li>切换应用B</li>
+<li>A应用onPause，焦点丢失</li>
+<li>B进程创建，焦点丢失</li>
+<li>B应用onResume，获取焦点</li>
+</ol>
+<p>其中3、4过程中焦点为null，如果超过了5s，且新事件到来，则会产生ANR。</p>
+<p>此时报告ANR的应用可能是A或者B，但不一定是真正超时的应用，需要具体分析：</p>
+<ul>
+<li>A应用onPause慢</li>
+<li>B应用创建慢，onCreate、onStart、onResume耗时</li>
+<li>系统整体性能慢</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<ul>
+<li><a href="http://gityuan.com/2016/07/02/android-anr/">理解Android ANR的触发原理</a></li>
+<li><a href="https://blog.csdn.net/zjy764219923/article/details/102897066">ANR解决方法研究</a></li>
+</ul>
 ]]></content>
       <categories>
-        <category>笔记</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>Android</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android性能分析大全-优化篇</title>
+    <url>/2021/01/06/android-2021-01-06-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E4%BC%98%E5%8C%96%E7%AF%87/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里只介绍思路，不介绍具体实现方法（持续补充），光一个内存泄漏就可以写一篇。针对内容较多的点，后续可能会单独写文章。</p>
+<p>之所以不放在分析方法中，是因为很难归类，穿插到性能分析中的话会有很多重复的地方。（强迫症纠结了好久）</p>
+<p>例如布局优化，同时包括了CPU、内存、卡顿优化方法；图片压缩能同时提高运行效率，降低内存占用。</p>
+<p><img src="/2021/01/06/android-2021-01-06-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E4%BC%98%E5%8C%96%E7%AF%87/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%B1%87%E6%80%BB.png"></p>
+<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><h2 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h2><ol>
+<li>去除无用背景，包括Theme的背景</li>
+<li>减少布局层级<ol>
+<li>merge标签：替代顶层无用布局</li>
+<li>ViewStub标签：懒加载，适当的时机手动inflate</li>
+<li>include：布局复用</li>
+<li>使用ConstraintLayout</li>
+<li>图标+文字：使用TextView+CompoundDrawable</li>
+</ol>
+</li>
+<li>减少半透明对象：例如灰色文本，可以使用黑色+半透明实现，也可以直接用灰色文本</li>
+</ol>
+<h2 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h2><ol>
+<li>子线程处理位图，例如圆角、渐变、叠加、混合等</li>
+<li>复杂图形可以开启硬件加速</li>
+<li>使用saveLayer离屏绘制</li>
+<li>避免使用LinearLayout的weight或者RelativeLayout：计算复杂，可能会触发子布局的多次测量，影响性能</li>
+<li>复杂布局使用SurfaceView或TextureView，可以在子线程渲染。TextureView支持移动、旋转、缩放，SurfaceView不支持</li>
+<li>使用不同分辨率资源</li>
+</ol>
+<h2 id="RecyclerView优化"><a href="#RecyclerView优化" class="headerlink" title="RecyclerView优化"></a>RecyclerView优化</h2><ol>
+<li>使用局部刷新，利用DiffUtil，避免<code>notifyDatasetChanged</code>、<code>setAdapter</code>等</li>
+<li>多个RecyclerView嵌套，可以共享RecycledViewPool</li>
+<li>避免inflate多种布局，相似的布局可以共用，bind的时候进行修改即可</li>
+<li>上拉预取数据，避免用户等待加载</li>
+</ol>
+<h1 id="启动优化"><a href="#启动优化" class="headerlink" title="启动优化"></a>启动优化</h1><ol>
+<li>懒加载或异步加载SDK</li>
+<li>布局优化：复杂布局解析耗时</li>
+<li>白屏优化：<ol>
+<li>禁用启动页：主题设置windowDisablePreview属性。在Activity onCreate之前恢复正常主题</li>
+<li>设置启动页：主题设置windowBackground属性，可以使用layer-list图片替代大图。在Activity onCreate之前恢复正常主题</li>
+</ol>
+</li>
+</ol>
+<h1 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>基本呢和常见内存泄漏场景对应</p>
+<ol>
+<li>使用静态内部类</li>
+<li>使用弱引用WeakReference</li>
+<li>Activity退出时移除Handler消息</li>
+<li>手动释放静态对象和单例对象引用的对象</li>
+<li>观察者解注册</li>
+</ol>
+<h2 id="内存大小占用"><a href="#内存大小占用" class="headerlink" title="内存大小占用"></a>内存大小占用</h2><ol>
+<li>资源压缩</li>
+<li>释放策略：例如应用退到后台，可以释放一些屏幕外的资源、对象或者View</li>
+<li>数据结构和缓存优化</li>
+<li>代码和包体积优化</li>
+</ol>
+<h1 id="包体积优化"><a href="#包体积优化" class="headerlink" title="包体积优化"></a>包体积优化</h1><ol>
+<li>ProGuard压缩和混淆，去除无用资源</li>
+<li>图片压缩，使用webp、svg等</li>
+<li>so优化</li>
+<li>动态下发</li>
+<li>去除无用三方依赖库，或自行封装：有的时候三方库会包含很多用不到的功能</li>
+<li>使用Bundle打包，结合splitApk</li>
+</ol>
+<h1 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h1><ol>
+<li>图片：ImageCache，Glide、Picasso等框架自带缓存</li>
+<li>线程缓存和复用：合适的线程池参数</li>
+<li>View缓存：RecyclerView替代ListView，减少inflate和findViewById次数</li>
+<li>I/O缓存：使用Buffered I/O类替代普通I/O类，适用于网络和文件I/O</li>
+<li>消息缓存：使用obtainMessage获取Message对象，减少Message创建开销</li>
+</ol>
+<h1 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h1><p>代码优化（Clean Code）：之后单独开一篇Clean Code和编码规范</p>
+<ol>
+<li>不要提前创建变量，用到的时候再创建</li>
+<li>不常用的对象使用完之后主动释放</li>
+<li>代码可读性：<ol>
+<li>利用设计模式消除回调地狱</li>
+</ol>
+</li>
+</ol>
+<p>交互设计优化：通过交互设计来提升用户体验。</p>
+<ol>
+<li>一些确实耗时的操作，合理利用进度条、加载圈提示用户。</li>
+<li>页面不要放太多东西，一次性加载耗时，可以结合抽屉栏、菜单、子页面等</li>
+</ol>
+<p>算法优化：使用合适的数据结构和算法，例如SparseArray替代HaspMap、ArrayMap。提高插入和查询效率</p>
+<p>数据库和存储优化：合理的建表和使用索引</p>
+<p>网络优化：网络请求慢也是影响用户体验的因素</p>
+<ol>
+<li>合并请求</li>
+<li>传输数据优化</li>
+<li>多节点部署、负载均衡</li>
+</ol>
+<p>耗电优化</p>
+<p>编译优化：</p>
+<ol>
+<li>使用合适版本的AGP</li>
+<li>自定义Task和Plugin，提高开发效率</li>
+</ol>
+<p>崩溃优化：捕获崩溃异常上报，友好提示</p>
+<p>线上监控</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料</p>
+<ul>
+<li><a href="https://developer.android.com/studio/profile">AndroidStudio指南-分析应用性能</a></li>
+<li><a href="https://developer.android.com/topic/performance">Android指南-性能与功耗</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android性能分析大全-方法篇</title>
+    <url>/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>性能分析分为很多领域，关系比较难理清，比如卡顿分析和内存、CPU、布局都有关系，对应的优化也是从这几方面入手。导致文章结构比较难组织，这里就罗列一下各种分析方法。</p>
+<p>总体方法：</p>
+<ol>
+<li>查看基本信息：应用和系统整体CPU、内存等情况</li>
+<li>合理假设、缩小范围验证</li>
+<li>捕获具体信息：例如堆分配、方法调用栈、方法耗时等</li>
+<li>分析详细信息：找到具体影响因素</li>
+<li>解决、优化：<strong>没有完美的方案，需要找到平衡点，以提升用户体验为最终目的</strong>，例如空间换时间、时间换空间<ol>
+<li>在不影响用户体验情况下进行优化，例如LMK会根据进程优先级决定杀死顺序，ANR会根据前后台设置超时时间</li>
+<li>对于不影响用户体验的地方可以降低优先级</li>
+</ol>
+</li>
+</ol>
+<p>性能分析不准确？</p>
+<ul>
+<li>关闭<code>Instance Run</code>，避免影响性能</li>
+<li>一般情况下只能对debuggable应用进行分析，而debuggable应用未经优化，导致性能分析不准确。Android 10（API 29）可以在应用清单文件中添加<code>&lt;profileable android:shell=&quot;true&quot;/&gt;</code>，标记为profileable应用，对性能影响较小。可分析应用功能有限，只具备部分CPU和内存分析功能。</li>
+<li>频繁的GC会影响性能</li>
+<li>分析工具运行的时候会对App运行效率有一定影响，因此应该对比相对性能。</li>
+</ul>
+<h1 id="CPU分析"><a href="#CPU分析" class="headerlink" title="CPU分析"></a>CPU分析</h1><img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/CPU分析大纲.png" style="zoom:100%;">
+
+<h2 id="跟踪"><a href="#跟踪" class="headerlink" title="跟踪"></a>跟踪</h2><p>方法和函数跟踪：</p>
+<ol>
+<li>生成<code>.trace</code>跟踪文件：5.0以上可以设置采样间隔，避免影响性能。<ol>
+<li>手动开始/停止跟踪：DDMS或者CPU Profiler</li>
+<li>代码中调用<code>Debug.startMethodTracing</code>和<code>Debug.stopMethodTracing</code>开始/结束跟踪</li>
+</ol>
+</li>
+<li>查看和分析<code>.trace</code>文件：<ol>
+<li>DDMS中的TraceView工具</li>
+<li>AS中的CPU Profiler</li>
+</ol>
+</li>
+</ol>
+<p>系统跟踪：</p>
+<ol>
+<li>生成Systrace或Perfetto文件<ol>
+<li>使用CPU Profiler，选择CPU记录配置为系统跟踪</li>
+<li>Systrace命令行工具：在PC上运行</li>
+<li>Perfetto命令行工具：在设备端运行，Android 10以上</li>
+<li>System Tracing App生成：Android 9以上</li>
+</ol>
+</li>
+<li>查看和分析：<ol>
+<li><a href="https://ui.perfetto.dev/">可视化界面-Perfetto UI</a>中查看</li>
+<li>直接打开HTML文件</li>
+</ol>
+</li>
+</ol>
+<h2 id="使用Debug类生成Trace文件"><a href="#使用Debug类生成Trace文件" class="headerlink" title="使用Debug类生成Trace文件"></a>使用Debug类生成Trace文件</h2><p>参考<a href="https://developer.android.com/studio/profile/generate-trace-logs?hl=zh-cn">通过应用插桩生成跟踪日志</a></p>
+<p>对于间隔时间较短，或难以手动启动/停止记录的场景。可以使用Debug类进行跟踪，生成<code>.trace</code>文件导入CPU Profiler中查看。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//开启跟踪，可以指定文件名称</span></span><br><span class="line">Debug.startMethodTracing(path)</span><br><span class="line"><span class="comment">//停止跟踪</span></span><br><span class="line">Debug.stopMethodTracing()</span><br></pre></td></tr></table></figure>
+
+<p>注：</p>
+<ul>
+<li>生成文件存储在<code>getExternalFilesDir()</code>路径下<code>/sdcard/Android/data/$packagename/files</code>。</li>
+<li>启用剖析功能后，应用的运行速度会减慢，因此应该对比相对时间，而不是绝对时间。</li>
+<li>存在8M的缓冲空间限制，对于持续较长时间的记录，需要使用CPU Profiler</li>
+<li>Android 5.0（API 级别 21）以上，新增<code>Debug.startMethodTracingSampling(String tracePath, int bufferSize, int intervalUs)</code>方法，可以基于采样的方法跟踪，可以设置采样间隔，减少对性能的影响。</li>
+<li>未指定新的文件名称，调用多次跟踪方法，旧文件会被覆盖。可以动态的重命名文件，如下</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> dateFormat: DateFormat = SimpleDateFormat(<span class="string">&quot;dd_MM_yyyy_hh_mm_ss&quot;</span>, Locale.getDefault())</span><br><span class="line"><span class="keyword">val</span> logDate: String = dateFormat.format(Date())</span><br><span class="line">Debug.startMethodTracing(<span class="string">&quot;sample-<span class="variable">$logDate</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="内存分析"><a href="#内存分析" class="headerlink" title="内存分析"></a>内存分析</h1><img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/内存分析大纲.png" style="zoom:100%;">
+
+<p>USS&lt;PSS&lt;RSS&lt;VSS：</p>
+<ul>
+<li>独占内存大小 (USS，Unique Set Size)：应用使用的非共享页面大小（不包括共享页面）</li>
+<li>按比例分摊的内存大小 (PSS，Proportional Set Size)：应用使用的非共享页面的内存+共享页面的均匀分摊大小（例如，如果三个进程共享 3MB，则每个进程的 PSS 为 1MB）。</li>
+<li>常驻内存大小 (RSS，Resident Set Size)：应用使用的非共享页面+共享页面大小</li>
+<li>虚拟内存大小（VSS，Virtual Set Size）：应用使用的非共享页面+共享页面+分配但未使用的内存大小</li>
+</ul>
+<blockquote>
+<p>比较有用的是USS和PSS</p>
+<p>PSS需要确定共享的页面和共享页面的进程数量，因此计算较慢。PSS加起来即所有进程占用的实际内存。</p>
+</blockquote>
+<p>共享内存：</p>
+<ol>
+<li>Zygote启动并加载通用Framework代码和资源，新进程只加载和运行应用代码</li>
+<li>大部分静态数据可被其他进程共享：例如Dalvik代码（预加载的odex文件）、应用资源、so库</li>
+<li>Android明确分配的共享内存区域，例如窗口Surface和屏幕合成器之间共享的内存</li>
+</ol>
+<h2 id="查看内存分配"><a href="#查看内存分配" class="headerlink" title="查看内存分配"></a>查看内存分配</h2><ol>
+<li>生成hprof文件：<ol>
+<li>手动点击dump按钮</li>
+<li>命令行：<code>am dumpheap &lt;pid&gt; &lt;file&gt;</code></li>
+<li>代码中调用<code>Debug.dumpHprofData (String fileName)</code></li>
+</ol>
+</li>
+<li>查看内存分配<ol>
+<li>Java内存分配：<ol>
+<li>Memory Profiler</li>
+<li>MAT工具</li>
+<li>DDMS：Heap、Allocation Tracker</li>
+<li>Perfetto的Java Heap Profiler：Android11及以上设备</li>
+</ol>
+</li>
+<li>Native内存分配：Android10及以上设备<ol>
+<li>使用Perfetto的heapprofd工具</li>
+<li>Memory Profiler：基于Perfetto的heapprofd实现</li>
+</ol>
+</li>
+<li>JNI全局引用：Memory Profiler</li>
+</ol>
+</li>
+</ol>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏：指本该回收的对象，由于被生命周期更长的对象引用，导致GC无法回收这块内存（GC可达，被GC Root对象引用）。内存泄漏最终会导致内存溢出。</p>
+<p>检查方法：运行代码，执行操作（例如旋转设备、切换应用），尝试强制GC，检查内存和对象数是否会回到稳定值。</p>
+<p>常见内存泄漏场景：</p>
+<ul>
+<li>Activity、Context、View、Drawable等对象被引用，导致Activity或Context无法回收</li>
+<li>非静态内部类，默认持有外部类引用。例如Handler、Runnable未结束，导致Activity无法被回收</li>
+<li>单例或static对象引用其他对象</li>
+<li>观察者模式未解注册</li>
+<li>Android特殊组件：<ul>
+<li>数据库Cursor未销毁</li>
+<li>数据库、网络Socket、文件连接未close</li>
+<li>自定义控件TypedArray未recycle</li>
+<li>Bitmap未recycle</li>
+</ul>
+</li>
+</ul>
+<p>类型：</p>
+<ul>
+<li>常发性内存泄漏：每次执行都会泄漏。</li>
+<li>一次性内存泄漏：多次执行只泄漏一次，例如单例持有Context，每次打开新的页面都替换新的Context，原来的Context就可以被释放掉</li>
+</ul>
+<h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC</p>
+<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC</p>
+<h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>OOM（Out of memory，内存溢出）：JVM没有足够的内存来为对象分配空间，GC也已经没有空间可回收，此时会抛出<code>java.lang.OutOfMemoryError</code></p>
+<p>原因：</p>
+<ol>
+<li>JVM分配空间太少</li>
+<li>应用内存占用太多</li>
+<li>应用内存使用完了没释放（内存泄漏）</li>
+</ol>
+<p>类型：</p>
+<ol>
+<li><code>java.lang.OutOfMemoryError: Java heap space</code>：Java堆内存溢出</li>
+<li><code>java.lang.OutOfMemoryError: PermGen space</code>：永久代溢出，即方法区。包括Class信息、静态变量、常量等过多</li>
+<li><code>java.lang.StackOverflowError</code>：虚拟机栈溢出，一般是由于深度递归和死循环造成</li>
+</ol>
+<blockquote>
+<p>对应JVM内存模型，除了程序计数器之外，Java虚拟机栈、Native方法栈、Java堆、方法区都可能发生内存溢出</p>
+</blockquote>
+<h2 id="APP内存限制"><a href="#APP内存限制" class="headerlink" title="APP内存限制"></a>APP内存限制</h2><p>一般是系统配置的，通过<code>getprop</code>或者<code>cat /system/build.prop</code>命令可以查看，例如</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[dalvik.vm.heapgrowthlimit]: [160m] # 默认情况下APP可以使用的Heap最大值</span><br><span class="line">[dalvik.vm.heapmaxfree]: [4m] # 单次Heap调整的最大值</span><br><span class="line">[dalvik.vm.heapminfree]: [512k] # 单次Heap调整的最小值</span><br><span class="line">[dalvik.vm.heapsize]: [224m] # APP清单文件中指定了largeHeap属性，则以此项为最大值</span><br><span class="line">[dalvik.vm.heapstartsize]: [4m] # APP启动时分配的初始大小</span><br><span class="line">[dalvik.vm.heaptargetutilization]: [0.75] # 理想的堆内存利用率，已使用Heap/总Heap。GC之后会根据该值调整Heap大小</span><br></pre></td></tr></table></figure>
+
+<p>应用可以通过<code>ActivityManager</code>的<code>getMemoryClass</code>方法查询：返回整数，单位为M</p>
+<h2 id="LMK机制"><a href="#LMK机制" class="headerlink" title="LMK机制"></a>LMK机制</h2><p>内存不足前会调用<code>onTrimMemory()</code>方法通知应用主动释放内存，否则Android系统的LMK机制（Low Memory Kill），会根据进程<code>oom_adj_score</code>值杀死进程。</p>
+<ul>
+<li><code>cat /proc/进程号/oom_adj</code>：查看当前进程adj值</li>
+<li><code>cat /proc/进程号/oom_score_adj</code>：查看真正有效的adj值</li>
+</ul>
+<p>按进程重要程度分为以下级别，参考<a href="https://developer.android.com/topic/performance/memory-management">开发者文档-进程间的内存分配</a></p>
+<ul>
+<li>系统原生进程：init、kswapd、netd、logd、adbd等</li>
+<li>系统进程：系统服务system_server</li>
+<li>持久性进程：设备核心服务，例如电话、WLAN</li>
+<li>前台进程：用户正在交互所需要的进程<ul>
+<li>拥有正在交互的Activity（前台Activity）</li>
+<li>Service与正在交互的Activity绑定</li>
+<li>运行了前台服务（startForeground）</li>
+<li>正在执行生命周期的Service</li>
+<li>正在执行onReceive的广播</li>
+</ul>
+</li>
+<li>可见进程：不和用户交互，但处于可见状态，用户可感知<ul>
+<li>Activity不处于前台，但仍可见（处于Pause状态）。</li>
+<li>进程的服务和可见Activity绑定</li>
+</ul>
+</li>
+<li>服务进程：运行了不属于上述两类的Service。例如后台播放音乐、后台下载</li>
+<li>Launcher应用：桌面、主屏幕</li>
+<li>上一个应用</li>
+<li>后台进程：Activity不可见（处于Stop状态）</li>
+<li>空进程：不包含活动组件，用于缓存，缩短下次在该进程启动组件的时间。例如Activity Back退出，进程不会立马被杀。</li>
+</ul>
+<p>更多细节参考<a href="http://gityuan.com/2018/05/19/android-process-adj/">解读Android进程优先级ADJ算法</a></p>
+<h1 id="卡顿分析"><a href="#卡顿分析" class="headerlink" title="卡顿分析"></a>卡顿分析</h1><p>卡顿通常是因为主线程存在耗时方法调用，因此同样可以使用Cpu分析方法，使用系统跟踪，找到超出16ms的帧，分析具体方法耗时。</p>
+<h2 id="GPU渲染速度"><a href="#GPU渲染速度" class="headerlink" title="GPU渲染速度"></a>GPU渲染速度</h2><p>查看GPU绘制信息：<code>dumpsys gfxinfo &lt;packageName</code>&gt;`</p>
+<p>打开GPU呈现模式，会显示柱状条和16ms水平线：</p>
+<ul>
+<li>方法一：开发者选项&gt;监控&gt;GPU呈现模式分析</li>
+<li>方法二：<code>setprop debug.hwui.profile [true/visual_bars/false]</code></li>
+</ul>
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染模式.png" alt="GPU渲染" style="zoom:67%;">
+
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png" alt="GPU渲染" style="zoom:67%;">
+
+<h2 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h2><p>打开过度绘制调试：原色（0次，没有过度绘制）–&gt;蓝色（1次）–&gt;绿色（2次）–&gt;粉色（3次）–&gt;红色（3次以上）</p>
+<ul>
+<li>方法一：开发者选项&gt;调试GPU过度绘制</li>
+<li>方法二：<code>setprop debug.hwui.overdraw [false/show/show_deuteranomaly]</code> </li>
+</ul>
+<h2 id="捕获Binder调用"><a href="#捕获Binder调用" class="headerlink" title="捕获Binder调用"></a>捕获Binder调用</h2><p>频繁的进行Binder调用会影响性能。</p>
+<p>捕获Binder调用：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开始捕获</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am trace-ipc start</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行操作：滚动、动画...</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出Binder调用堆栈</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am trace-ipc stop --dump-file /data/<span class="built_in">local</span>/tmp/ipc-trace.txt</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="检测主线程耗时"><a href="#检测主线程耗时" class="headerlink" title="检测主线程耗时"></a>检测主线程耗时</h2><h3 id="Looper循环中添加打印"><a href="#Looper循环中添加打印" class="headerlink" title="Looper循环中添加打印"></a>Looper循环中添加打印</h3><p>如下，loop中不断取出message处理。只要通过<code>Looper.getMainLooper().setMessageLogging()</code>设置打印类即可</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Looper.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Looper me = myLooper();</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      Message msg = queue.next(); <span class="comment">// might block</span></span><br><span class="line">      <span class="keyword">final</span> Printer logging = me.mLogging;</span><br><span class="line">      <span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">        logging.println(<span class="string">&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback + <span class="string">&quot;: &quot;</span> + msg.what);</span><br><span class="line">      &#125;</span><br><span class="line">      msg.target.dispatchMessage(msg);</span><br><span class="line">      <span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">        logging.println(<span class="string">&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用Choregorapher"><a href="#利用Choregorapher" class="headerlink" title="利用Choregorapher"></a>利用Choregorapher</h3><p>Android系统每16ms发送一次VSYNC信号，触发UI绘制，并提供了相应的回调。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//输出日志</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动速度"><a href="#启动速度" class="headerlink" title="启动速度"></a>启动速度</h1><ol>
+<li>冷启动：后台无进程</li>
+<li>热启动：后台有进程，Activity不需要重建，如home键回首页</li>
+<li>温启动：后台有进程，但Activity需要重建或恢复状态，如back键退出Activity，内存不足回收Activity</li>
+</ol>
+<p>查看启动时间：</p>
+<ol>
+<li><code>am start -W -n package/activity</code></li>
+<li>启动应用后查看logcat中Displayed打印，低版本在<code>ActivityManager</code>中打印，高版本在<code>ActivityTaskManager</code>打印</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -W</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> am start -W com.afauria.sample</span></span><br><span class="line">Starting: Intent &#123; act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] pkg=com.afauria.sample &#125;</span><br><span class="line">Status: ok</span><br><span class="line">Activity: com.afauria.sample/.MainActivity</span><br><span class="line">ThisTime: 517</span><br><span class="line">TotalTime: 517</span><br><span class="line">WaitTime: 672</span><br><span class="line">Complete</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> logcat</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> logcat -d |grep ActivityManager</span></span><br><span class="line">03-15 15:01:07.418  3508  7142 I ActivityManager: START u0 &#123;act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.afauria.sample cmp=com.afauria.sample/.MainActivity&#125; from uid 0</span><br><span class="line">03-15 15:01:07.569  3508  3539 I ActivityManager: Start proc 9980:com.afauria.sample/1000 for activity com.afauria.sample/.MainActivity</span><br><span class="line">03-15 15:01:08.088  3508  3547 I ActivityManager: Displayed com.afauria.sample/.MainActivity: +517ms</span><br></pre></td></tr></table></figure>
+
+<p>分析：结合CPU分析方法，找到耗时操作。</p>
+<p>解决：减少Application和Activity的onCreate中的工作</p>
+<h1 id="能耗分析"><a href="#能耗分析" class="headerlink" title="能耗分析"></a>能耗分析</h1><p><code>Energy Profiler</code>，后面用过了再补充</p>
+<p>方法：</p>
+<ol>
+<li><p>重置电池数据收集：<code>adb shell dumpsys batterystats --reset</code></p>
+</li>
+<li><p>断开USB线：充电状态下不会使用电池电量</p>
+</li>
+<li><p>执行操作</p>
+</li>
+<li><p>连接手机</p>
+</li>
+<li><p>输出电池使用情况：<code>adb shell dumpsys batterystats &lt;package_name&gt;</code>，可以看到屏幕耗电和进程cpu耗电</p>
+<img src="/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png" alt="电池使用情况" style="zoom:80%;"></li>
+<li><p>生成报告：</p>
+<ol>
+<li>7.0及以上设备：<code>adb bugreport &gt; [path/]bugreport.zip</code></li>
+<li>6.0及以下设备：<code>adb bugreport &gt; [path/]bugreport.txt</code></li>
+</ol>
+</li>
+<li><p>使用<code>Battery Historian</code>分析报告</p>
+</li>
+</ol>
+<h1 id="网络流量分析"><a href="#网络流量分析" class="headerlink" title="网络流量分析"></a>网络流量分析</h1><p><code>Network Profiler</code></p>
+<h1 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h1><p>开启严格模式，查看Log输出信息，分析I/O、网络等异常情况。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     StrictMode.setThreadPolicy(<span class="keyword">new</span> StrictMode.ThreadPolicy.Builder()</span><br><span class="line">             .detectDiskReads()</span><br><span class="line">             .detectDiskWrites()</span><br><span class="line">             .detectNetwork()   <span class="comment">// or .detectAll() for all detectable problems</span></span><br><span class="line">             .penaltyLog()</span><br><span class="line">             .build());</span><br><span class="line">     StrictMode.setVmPolicy(<span class="keyword">new</span> StrictMode.VmPolicy.Builder()</span><br><span class="line">             .detectLeakedSqlLiteObjects()</span><br><span class="line">             .detectLeakedClosableObjects()</span><br><span class="line">             .penaltyLog()</span><br><span class="line">             .penaltyDeath()</span><br><span class="line">             .build());</span><br><span class="line">     <span class="keyword">super</span>.onCreate();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="性能分析相关命令"><a href="#性能分析相关命令" class="headerlink" title="性能分析相关命令"></a>性能分析相关命令</h1><p>介绍下上面没有提到的命令：</p>
+<ul>
+<li>内存：<ul>
+<li><code>dumpsys meminfo [package_name]</code>：查看某一时刻应用内存信息。</li>
+<li><code>dumpsys procstats</code>：查看进程内存、CPU信息，可以查看一段时间的内存信息</li>
+<li><code>procrank</code>：查看所有进程内存使用</li>
+<li><code>showmap -a &lt;pid&gt;</code>：查看进程内存信息和对应的地址区域</li>
+<li><code>cat /proc/meminfo</code>：查看设备内存</li>
+<li><code>free</code>：查看可用内存</li>
+<li><code>am dumpheap &lt;pid&gt; &lt;file&gt;</code>：捕获堆内存，生成hprof文件</li>
+</ul>
+</li>
+<li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
+<li><code>top</code>：查看<strong>各个进程</strong>信息，内存和CPU使用情况</li>
+<li><code>vmstat</code>：查看<strong>系统整体</strong>内存和CPU使用情况</li>
+<li><code>df -h</code>：查看设备存储空间</li>
+<li><code>tcpdump</code>：网络抓包，结合Wire Shark分析</li>
+</ul>
+<h2 id="dumpsys-prostats"><a href="#dumpsys-prostats" class="headerlink" title="dumpsys prostats"></a>dumpsys prostats</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">应用运行时间百分比 (minPSS-avgPSS-maxPSS/minUSS-avgUSS-maxUSS/minRSS-avgRSS-maxRSS over 样本数)</span></span><br><span class="line">AGGREGATED OVER LAST 3 HOURS:</span><br><span class="line">  * com.android.systemui / u0a37 / v28:</span><br><span class="line">           TOTAL: 100% (15MB-16MB-17MB/7.7MB-8.7MB-9.4MB/7.7MB-9.6MB-84MB over 178)</span><br><span class="line">      Persistent: 100% (15MB-16MB-17MB/7.7MB-8.7MB-9.4MB/7.7MB-9.6MB-84MB over 178)</span><br><span class="line">  ....</span><br><span class="line">  * com.android.gallery3d / u0a62 / v40030:</span><br><span class="line">           TOTAL: 0.01%</span><br><span class="line">        Receiver: 0.01%</span><br><span class="line">        (Cached): 54% (6.4MB-6.5MB-6.9MB/4.4MB-4.4MB-4.4MB/4.4MB-26MB-68MB over 6)</span><br></pre></td></tr></table></figure>
+
+<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p><code>top</code>：查看<strong>各个进程信息</strong>，内存和CPU使用情况</p>
+<ul>
+<li><code>-m &lt;num&gt;</code>：显示多少个进程</li>
+<li><code>-n &lt;num&gt;</code>：刷新次数</li>
+<li><code>-d &lt;num&gt;</code>：刷新间隔</li>
+<li><code>-s &lt;col&gt;</code>：按列排序，如cpu、vss、rss、thr等</li>
+<li><code>-t</code>：显示线程信息</li>
+</ul>
+<p>top一般用于查看进程信息，vmstat一般用于查看系统整体信息</p>
+<h2 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h2><p>Linux命令（Virtual Memory Statistics），查看<strong>系统整体</strong>CPU和内存使用率，虚拟内存交换情况，IO读写情况</p>
+<p>使用方式：<code>vmstat [Delay] [Count]</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vmstat</span></span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa</span><br><span class="line"> 2  0 173136  81416  14100 228904    0    0     1     0    0 1096  5  7 88  0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>procs进程<ul>
+<li>r： 等待执行的任务数。超过CPU个数，则会出现CPU瓶颈</li>
+<li>B：等待IO的进程数量</li>
+</ul>
+</li>
+<li>memory内存<ul>
+<li>swpd：正在使用的虚拟内存大小，单位KB</li>
+<li>free：空闲内存大小</li>
+<li>buff：已用的Buffer大小，对块设备读写进行缓冲</li>
+<li>cache：已用的cache大小，文件系统的cache</li>
+<li>inact：非活跃内存大小，即可回收的内存。使用-a选项显示</li>
+<li>active：活跃的内存大小。使用-a选项显示</li>
+</ul>
+</li>
+<li>Swap：内存交换<ul>
+<li>si：每秒从交换区写入内存的大小，单位KB/s</li>
+<li>so：每秒从内存写入交换区的大小，单位KB/s</li>
+</ul>
+</li>
+<li>IO<ul>
+<li>bi：每秒读取磁盘的块数，单位block，块大小一般为1024bytes</li>
+<li>bo：每秒写入磁盘的块数，单位block</li>
+</ul>
+</li>
+<li>System：值越大，sy就会越大<ul>
+<li>in：每秒中断数</li>
+<li>cs：每秒上下文切换数</li>
+</ul>
+</li>
+<li>CPU：<ul>
+<li>us（User time）：用户进程执行消耗CPU时间</li>
+<li>sy（System time）：系统进程消耗CPU时间</li>
+<li>id：空闲时间（包括IO等待时间），一般us+sy+id=100，us+sy参考值为80%，大于80%可能存在CPU不足</li>
+<li>wa：等待IO时间</li>
+</ul>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>关于优化，文中只提到了一部分，更多优化思路请参考下一篇文章</p>
+<p>ANR是卡顿的极端情况，单独写了一篇文章介绍。</p>
+<p>LMK是系统内存管理的一种机制，后续可能会单独写一篇文章介绍</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://developer.android.com/studio/profile">AndroidStudio指南-分析应用性能</a></li>
+<li><a href="https://developer.android.com/topic/performance">Android指南-性能与功耗</a></li>
+<li><a href="https://developer.android.google.cn/topic/performance/tracing">Android指南-系统跟踪</a></li>
+<li><a href="https://developer.android.com/topic/performance/rendering/inspect-gpu-rendering#profile_rendering">开发者文档-GPU渲染分析</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android性能分析大全-工具篇</title>
+    <url>/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>学习Android性能分析会涉及到一大堆工具。本来想将工具介绍放到性能分析过程中的，但是有的工具包含多个功能、存在功能重叠、或者被废弃了，穿插着讲会比较混乱。因此单独将工具使用拎出来，介绍工具的基本使用、不同工具间的关系、演进。</p>
+<h2 id="工具演进"><a href="#工具演进" class="headerlink" title="工具演进"></a>工具演进</h2><p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%BC%94%E8%BF%9B.png" alt="AndroidDeviceMonitor打开"></p>
+<h2 id="工具作用"><a href="#工具作用" class="headerlink" title="工具作用"></a>工具作用</h2><p>按照作用对工具进行下分类。区分下调试工具和性能分析工具</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Android性能分析工具分类.png" alt="AndroidDeviceMonitor打开" style="zoom:80%;">
+
+<h1 id="Android-Device-Monitor"><a href="#Android-Device-Monitor" class="headerlink" title="Android Device Monitor"></a>Android Device Monitor</h1><p><strong>大部分工具已弃用，被AS工具取代了，参考<a href="https://developer.android.com/studio/profile/monitor">AndroidDeviceMonitor迁移</a></strong></p>
+<p>包含在Android SDK中，囊括调试和分析多个工具</p>
+<ul>
+<li>DDMS：包含设备文件管理，Logcat、线程信息、堆信息、网络统计等功能</li>
+<li>TraceView：分析<code>.trace</code>文件（已弃用，使用AS的CPU Profiler）</li>
+<li>systrace：收集特定Trace信息</li>
+<li>Tracer for OpenGL ES：分析GPU信息</li>
+<li>Hierarchy Viewer：布局查看</li>
+<li>Pixel Perfect</li>
+<li>Network Traffic tool：查看网络传输</li>
+</ul>
+<h2 id="打开方式"><a href="#打开方式" class="headerlink" title="打开方式"></a>打开方式</h2><ol>
+<li>通过<code>&lt;android-sdk&gt;/tools/monitor</code>命令打开。</li>
+<li>旧版本AS可以通过<code>Tools--&gt;Android--&gt;DeviceMonitor</code>打开。（Android Studio3.1中废弃，Android Studio3.2中移除。）</li>
+</ol>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E6%89%93%E5%BC%80.png" alt="AndroidDeviceMonitor打开"></p>
+<p>界面如下：</p>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E7%95%8C%E9%9D%A2.png" alt="Android Device Monitor"></p>
+<h2 id="常用按钮介绍"><a href="#常用按钮介绍" class="headerlink" title="常用按钮介绍"></a>常用按钮介绍</h2><p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidDeviceMonitor%E5%B7%A5%E5%85%B7%E6%A0%8F.png" alt="AndroidDeviceMonitor工具栏"></p>
+<p>从左到右依次介绍：</p>
+<ol>
+<li>Debug：开启调试，需要有源代码</li>
+<li>Update Heap：更新堆使用情况，选中时右侧面板显示堆栈信息</li>
+<li>Dump hprof file：生成堆使用情况hprof文件（Heap Profile）</li>
+<li>Cause GC：触发垃圾回收</li>
+<li>Update Thread：更新线程运行状态，选中时右侧面板显示线程运行状态</li>
+<li>Start/Stop Method Profiling：开启或结束方法跟踪，采集数据，并自动使用TraceView显示图形化界面，可以导出<code>.trace</code>文件</li>
+<li>Stop：结束进程</li>
+<li>Screen Capture：截屏</li>
+<li>Dump View Hierarchy for UI Automator：Dump布局信息</li>
+<li>Capture system wide trace using Android systrace：打开Systrace工具</li>
+</ol>
+<h2 id="DDMS（Dalvik-Debug-Monitor-Server）"><a href="#DDMS（Dalvik-Debug-Monitor-Server）" class="headerlink" title="DDMS（Dalvik Debug Monitor Server）"></a>DDMS（Dalvik Debug Monitor Server）</h2><p>包含窗口和多个工具（调试和分析）：</p>
+<ul>
+<li>Device：用于查看连接的设备</li>
+<li>File Explorer：浏览设备文件</li>
+<li>Logcat：查看日志</li>
+<li>Emulator Control：仿真控制、模拟器控制，如模拟电话、短信、位置、通知等</li>
+<li>System Information：查看系统信息，CPU和内存使用情况等</li>
+<li>Thread：查看所有线程信息</li>
+<li>Heap：用于查看进程堆使用情况，例如Heap Size、Allocated、Free、Used、Objects等</li>
+<li>Allocation Tracker：查看对象内存分配的具体情况</li>
+<li>Network Traffic tool：监测网络使用情况</li>
+</ul>
+<h2 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h2><p>用于方法跟踪和查看，打开<code>.trace</code>文件分析具体方法调用耗时、CPU占用情况。Trace文件生成方式：</p>
+<ol>
+<li>DDMS或者CPU Profiler中手动点击Start/Stop Method Profiling</li>
+<li>代码中调用<code>Debug.startMethodTracing</code>和<code>Debug.stopMethodTracing</code>方法</li>
+</ol>
+<p>TraceView界面：</p>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E7%95%8C%E9%9D%A2.png" alt="TraceView界面"></p>
+<p>TraceView时间轴窗格：每个线程的活动信息</p>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E6%97%B6%E9%97%B4%E8%BD%B4%E7%AA%97%E6%A0%BC.png" alt="TraceView时间轴窗格"></p>
+<p>TraceView分析窗格：方法耗时和CPU使用信息</p>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/TraceView%E5%88%86%E6%9E%90%E7%AA%97%E6%A0%BC.png" alt="TraceView分析窗格"></p>
+<blockquote>
+<ul>
+<li>Incl Cpu Time：占用CPU时间，包括调用的方法</li>
+<li>Excl Cpu Time：占用CPU时间，不包括调用的方法</li>
+<li>Incl Real Time：方法执行真实时间，包括调用的方法</li>
+<li>Excl Cpu Time：方法执行真实时间，不包括调用的方法</li>
+<li>Calls+Recur Calls/Total：方法调用和递归次数占总次数的百分比</li>
+<li>Cpu Time/Call：Cpu占用平均时间</li>
+<li>Real Time/Call：平均执行时间</li>
+</ul>
+</blockquote>
+<h2 id="dmtracedump"><a href="#dmtracedump" class="headerlink" title="dmtracedump"></a>dmtracedump</h2><p>SDK工具：<code>Android/sdk/platform-tools/dmtracedump</code>，将<code>.trace</code>文件生成图形化的方法调用堆栈图</p>
+<p><code>dmtracedump [-ho] [-s sortable] [-d trace-file-name] [-g outfile] trace-file-name</code></p>
+<p><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/dmtracedump.png"></p>
+<h2 id="Systrace工具"><a href="#Systrace工具" class="headerlink" title="Systrace工具"></a>Systrace工具</h2><p>Systrace用于系统跟踪。基于Linux Kenerl的ftrace实现。在系统关键流程中插桩（如ActivityThread），通过category指定启用的Tag（高版本支持更多的Tag）。</p>
+<blockquote>
+<p>Java层的通过<code>android.os.Trace</code>类完成，native层通过<code>ATrace</code>宏完成</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Trace</span> </span>&#123;</span><br><span class="line">    <span class="comment">//系统使用</span></span><br><span class="line">    <span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceBegin</span><span class="params">(<span class="keyword">long</span> traceTag, String methodName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(traceTag)) &#123;</span><br><span class="line">            nativeTraceBegin(traceTag, methodName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceEnd</span><span class="params">(<span class="keyword">long</span> traceTag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(traceTag)) &#123;</span><br><span class="line">            nativeTraceEnd(traceTag);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//APP使用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">beginSection</span><span class="params">(<span class="meta">@NonNull</span> String sectionName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(TRACE_TAG_APP)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (sectionName.length() &gt; MAX_SECTION_NAME_LEN) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;sectionName is too long&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            nativeTraceBegin(TRACE_TAG_APP, sectionName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">endSection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isTagEnabled(TRACE_TAG_APP)) &#123;</span><br><span class="line">            nativeTraceEnd(TRACE_TAG_APP);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>要收集应用Trace，跟踪的时候需要指定<code>-a</code>选项</strong></p>
+<p>应用可以自定义插桩，参考<a href="https://developer.android.com/topic/performance/tracing/custom-events">开发者文档-定义自定义事件</a></p>
+<ul>
+<li>Java或Kotlin调用：<code>Trace.beginSection()</code>、<code>Trace.endSection()</code></li>
+<li>Native调用：引入头文件<code>#include &lt;android/trace.h&gt;</code>，调用<code>ATrace_beginSection()</code>、<code>ATrace_endSection()</code></li>
+</ul>
+<p>注：</p>
+<ol>
+<li>begin和end调用一一对应</li>
+<li>begin和end必须在同一个线程</li>
+<li>systrace要求app是debuggable的，但是debug版本apk和release有差距，会导致结果不准确。可以打包release版本，通过反射调用<code>Trace.setAppTracingAllowed(true)</code>方法开启</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Class&lt;?&gt; trace = Class.forName(&quot;android.os.Trace&quot;);</span><br><span class="line">Method setAppTracingAllowed = trace.getDeclaredMethod(&quot;setAppTracingAllowed&quot;, boolean.class);</span><br><span class="line">setAppTracingAllowed.invoke(null, true);</span><br></pre></td></tr></table></figure>
+
+<h3 id="图形界面使用"><a href="#图形界面使用" class="headerlink" title="图形界面使用"></a>图形界面使用</h3><p>DDMS中打开Systrace工具</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/DDMS-Systrace打开.png" style="zoom:67%;">
+
+<p>选择输出路径、跟踪时长、Buffer大小、Tag等</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/DDMS-Systrace.png" style="zoom:67%;">
+
+<h3 id="命令行使用"><a href="#命令行使用" class="headerlink" title="命令行使用"></a>命令行使用</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 例如</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Android/sdk/platform-tools/systrace</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./systrace.py --time=10 -o mynewtrace.html <span class="built_in">sched</span> gfx view wm binder_driver hal dalvik input res</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Systrace使用说明：</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> systrace.py [options] [category1 [category2 ...]]</span></span><br><span class="line"></span><br><span class="line">1. option为选项：可用`systrace.py -h`查看</span><br><span class="line">   1. `-t N`或者`--time=N`：指定跟踪时长</span><br><span class="line">   2. `-b N`或者`--buf-size=N`：指定跟踪缓冲区大小</span><br><span class="line">   3. `-a &lt;package-name&gt;`或者`--app=&lt;package-name&gt;`：开启指定包名应用中自定义插桩的Trace</span><br><span class="line">   4. `-l`或者`--list-categories`：查看设备支持的category</span><br><span class="line">   5. `-o`：输出文件，默认输出`trace.html`</span><br><span class="line">   6. `-j`：生成json文件</span><br><span class="line">2. category为要捕获的信息：可用`systrace.py -l`查看</span><br><span class="line">   1. `gfx`：Graphics信息，分析卡顿</span><br><span class="line">   2. `input`：输入事件</span><br><span class="line">   3. `sched`：cpu调度、线程信息</span><br><span class="line">   4. `view`：View绘制</span><br><span class="line">   5. `am`：ActivityManager调用信息，分析启动过程</span><br><span class="line">   6. `dalvik`：虚拟机信息，分析GC</span><br><span class="line">   7. `binder_driver`：分析Binder IPC</span><br><span class="line">   8. `core_services`：SystemServer信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="分析报告"><a href="#分析报告" class="headerlink" title="分析报告"></a>分析报告</h3><p><a href="https://developer.android.google.cn/topic/performance/tracing/navigate-report">分析报告</a>：可以使用Perfetto UI查看，选择”Open with legacy UI”。</p>
+<p>如下图，绿色圆圈是正常的帧，红色和黄色表示存在卡顿。（无法看到具体调用栈，可以结合TraceView或CPU Profiler分析）</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Systrace卡顿帧.png" style="zoom:70%;">
+
+<p><strong>TraceView和systrace区别：</strong></p>
+<ul>
+<li>TraceView：捕获某个时间段内所有方法调用再全部分析，对性能影响较大（一个人犯罪了，把全国人民抓起来审问），高版本可以设置采样间隔。</li>
+<li>systrace：更加精细的控制，对性能影响较小，在系统关键流程中插桩，收集特定范围内的信息，可以选择记录指定的TAG。</li>
+</ul>
+<h1 id="Android-Studio工具"><a href="#Android-Studio工具" class="headerlink" title="Android Studio工具"></a>Android Studio工具</h1><p>包括多个工具，部分功能是集成Android SDK中的工具</p>
+<ul>
+<li>Logcat</li>
+<li>Android Emulator：模拟器。低版本是打开SDK的模拟器，高版本可以直接在AS中运行模拟器</li>
+<li>Debug Window：断点调试</li>
+<li>Device File Explorer：设备文件管理</li>
+<li>ADB</li>
+<li>Layout Inspector：布局查看</li>
+<li>性能分析：AS 3.0以下使用Android Monitor，AS 3.0及以上使用Android Profiler</li>
+<li>…</li>
+</ul>
+<h2 id="Android-Monitor"><a href="#Android-Monitor" class="headerlink" title="Android Monitor"></a>Android Monitor</h2><p>Android Studio3.0以下，包含Logcat、Memory、Network、CPU、GPU</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidMonitor界面.png" style="zoom: 67%;">
+
+<h2 id="Android-Profiler"><a href="#Android-Profiler" class="headerlink" title="Android Profiler"></a>Android Profiler</h2><p>Android Studio3.0及以上，包含CPU（可以进行卡顿检测）、Memory、Network、Energy能耗分析器</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/AndroidProfiler界面.png" alt="AndroidProfiler界面" style="zoom: 40%;">
+
+<p>可以单独启动Profiler，而不运行Android Studio：<code>&lt;studio-installation-folder&gt;/Contents/bin/profiler.sh</code></p>
+<h3 id="高级性能分析"><a href="#高级性能分析" class="headerlink" title="高级性能分析"></a>高级性能分析</h3><p>低版本设备（Android 7.1（API 25）及以下）不支持部分高级功能，Profiler中会显示：”Advanced profiling is unavailable for the selected process”。例如：</p>
+<ol>
+<li>不支持事件时间轴</li>
+<li>Memory Profiler中不支持显示GC事件</li>
+<li>Memory Profiler中不支持实时显示已分配对象数量</li>
+<li>Network Profiler中不支持已传输文件的详细信息</li>
+<li>…</li>
+</ol>
+<p>低版本设备要使用高级功能，需要修改配置：</p>
+<ol>
+<li>打开Run &gt; Edit Configurations</li>
+<li>选择应用Module</li>
+<li>选择Profiling，打开”Enable additional support for older devices (API level &lt; 26)”</li>
+<li>再次构建运行APP</li>
+</ol>
+<p>原理：在编译时往应用内插桩，会降低编译速度。</p>
+<h2 id="CPU-Profiler"><a href="#CPU-Profiler" class="headerlink" title="CPU Profiler"></a>CPU Profiler</h2><p>检查CPU使用率和线程活动，记录和查看方法调用轨迹。包括Java方法（Method Trace）、C/C++方法（Function Trace），系统方法（System Trace）。</p>
+<h3 id="主界面"><a href="#主界面" class="headerlink" title="主界面"></a>主界面</h3><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler.png" style="zoom:67%;">
+
+<ol>
+<li>事件时间轴：显示Activity生命周期状态和用户交互事件等。（高级功能，低版本设备不支持）</li>
+<li>CPU时间轴：实时显示应用CPU使用率（百分比）和当前应用线程总数，以及其他进程CPU使用率</li>
+<li>线程活动时间轴：列出应用所有线程和活动。<ol>
+<li>绿色：线程处于活跃状态或正准备使用CPU（就绪）。</li>
+<li>黄色：线程处于活跃状态，正在等待I/O操作（磁盘或网络）。</li>
+<li>灰色：线程休眠，并且没有消耗CPU。例如访问不可用资源。</li>
+</ol>
+</li>
+</ol>
+<p>采样方式：</p>
+<ol>
+<li><p>对Java方法采样：间隔一段时间捕获应用调用堆栈，比较捕获的数据集，推导应用Java方法执行时间和资源使用情况。</p>
+<blockquote>
+<p>如果一个方法在间隔期间执行完毕，则可能不会被记录。对于这种生命周期较短的方法，应使用插桩跟踪</p>
+</blockquote>
+</li>
+<li><p>跟踪Java方法：对每个Java方法调用开始和结束时记录时间戳。</p>
+<blockquote>
+<p>记录每个方法，会影响运行时性能，进而影响分析数据。另外也会造成生成文件过大。</p>
+</blockquote>
+</li>
+<li><p>对C/C++函数采样：捕获Native方法采样数据。</p>
+</li>
+<li><p>跟踪系统调用：基于systrace，记录应用和系统方法调用情况。</p>
+</li>
+<li><p>自定义配置</p>
+</li>
+</ol>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
+<li>点击Record开始跟踪</li>
+<li>应用执行操作</li>
+<li>点击Stop停止跟踪</li>
+<li>自动打开分析窗格，也可以导出<code>.trace</code>跟踪文件</li>
+</ol>
+<h3 id="分析窗格"><a href="#分析窗格" class="headerlink" title="分析窗格"></a>分析窗格</h3><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler分析窗格.png" style="zoom:67%;">
+
+<ul>
+<li>Top Down：展开方法的被调用方<ul>
+<li>Self：方法本身执行时间</li>
+<li>Children：子方法执行时间</li>
+<li>Total：方法执行总时间</li>
+</ul>
+</li>
+<li>Bottom Up：展开方法的调用方</li>
+<li>Call Chart：调用图。横轴是时间，纵轴是调用栈<ul>
+<li>橙色：系统方法</li>
+<li>绿色：应用自身方法</li>
+<li>蓝色：三方API方法（包括Java API）</li>
+</ul>
+</li>
+<li>Flame Chart：火焰图。将相同的调用栈汇总为较长的横条，横轴不代表时间轴，而是每个方法执行的相对时间<ul>
+<li>橙色：系统方法</li>
+<li>黄色：三方API方法</li>
+<li>米黄色：应用自身方法</li>
+</ul>
+</li>
+</ul>
+<p>系统调用跟踪分析窗格，Display部分会显示系统图形流水线信息</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/CPU Profiler卡顿分析.png" style="zoom:70%;">
+
+<ul>
+<li>Frames：主线程和RenderThread时间，<strong>超出16ms会显示红色</strong></li>
+<li>SurfaceFlinger：SurfaceFinger处理帧缓冲区的时间，负责将缓冲区内容送到显示器</li>
+<li>VSYNC：与显示流水线保持同步的信号</li>
+<li>BufferQueue：显示缓冲队列有多少帧在等待SurfaceFlinger使用。值为2表示处于三重缓冲状态。</li>
+</ul>
+<h2 id="Memory-Profiler"><a href="#Memory-Profiler" class="headerlink" title="Memory Profiler"></a>Memory Profiler</h2><h3 id="主界面-1"><a href="#主界面-1" class="headerlink" title="主界面"></a>主界面</h3><img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Memory Profiler.png" style="zoom:67%;">
+
+<blockquote>
+<p>事件时间轴和实时已分配对象属于高级性能分析功能，低版本设备不支持。</p>
+</blockquote>
+<p>Allocation Tracking采样方式：</p>
+<ul>
+<li>Full：捕获内存中的所有对象分配。低版本AS中（Android Studio 3.2及以下）的默认行为。影响运行速度。</li>
+<li>Sampled：定期对内存中的对象分配情况进行采样。默认选项，在进行性能剖析时对应用性能的影响较小。在短时间内分配大量对象的应用仍可能会表现出明显的速度减慢。</li>
+<li>Off：停止跟踪应用的内存分配。</li>
+</ul>
+<p>内存计算方式：</p>
+<ul>
+<li>Java：Java或Kotlin对象大小</li>
+<li>Native：C或C++对象大小</li>
+<li>Graphics：图形BufferQueue内存大小</li>
+<li>Stack：原生堆栈和Java堆栈大小，与线程数有关</li>
+<li>Code：代码和资源（如Dex字节码、so库等）内存大小</li>
+<li>Allocated：分配的Java/Kotlin对象数。不包含Native对象。</li>
+</ul>
+<h3 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
+<li>查看内存使用量时间轴。</li>
+<li>高版本（Android 8.0及以上）默认持续跟踪内存分配。低版本（Android 8.0以下）需要点击Record memory allocations按钮开始记录和停止记录。</li>
+<li>执行操作</li>
+<li>点击强制GC按钮进行垃圾回收</li>
+<li>点击dump按钮捕获堆内存状态，生成hprof文件</li>
+<li>查看内存具体分配情况，或者导出hprof文件</li>
+</ol>
+<h3 id="分析窗格-1"><a href="#分析窗格-1" class="headerlink" title="分析窗格"></a>分析窗格</h3><ol>
+<li>Class Name：类分配情况</li>
+<li>Instance：实例分配情况</li>
+<li>Instance Detail：实例的引用链和实例的成员变量</li>
+</ol>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Memory Profiler堆信息.png" style="zoom:67%;">
+
+<ul>
+<li>Allocations：分配的对象数</li>
+<li>Depth：GC Root到对象实例的最短跳数</li>
+<li>Native Size：对象在Native内存中的大小</li>
+<li>Shallow Size：对象本身的大小</li>
+<li>Retained Size：对象被释放掉后真正能够减少的大小，包括递归引用的对象。如果有多个对象引用同一个对象，则不会被计算进来。</li>
+</ul>
+<h2 id="Energy-Profiler"><a href="#Energy-Profiler" class="headerlink" title="Energy Profiler"></a>Energy Profiler</h2><p>比较少用到</p>
+<h2 id="Network-Profiler"><a href="#Network-Profiler" class="headerlink" title="Network Profiler"></a>Network Profiler</h2><p>比较少用到</p>
+<h1 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h1><h2 id="Perfetto命令行工具"><a href="#Perfetto命令行工具" class="headerlink" title="Perfetto命令行工具"></a>Perfetto命令行工具</h2><ul>
+<li><a href="https://perfetto.dev/docs/">官方文档</a></li>
+<li><a href="https://developer.android.google.cn/studio/command-line/perfetto">使用介绍</a></li>
+<li><a href="https://ui.perfetto.dev/">可视化界面-Perfetto UI</a></li>
+</ul>
+<p><strong>Android10引入的新一代分析工具，用于替代systrace工具</strong>。大文件打开比systrace快，能长时间跟踪，systrace记录短时间设备活动。</p>
+<ol>
+<li>ftrace：收集内核Trace信息</li>
+<li>atrace：收集用户态Trace信息</li>
+<li>Java Heap Profiler：收集Java内存分配信息，Android11及以上</li>
+<li>heapprofd：收集Native内存分配信息，Android10以上</li>
+</ol>
+<p>Perfetto UI界面如下，很容易找到超出16ms的块，再进一步放大检查调用栈</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/Perfetto卡顿帧.png" style="zoom:70%;">
+
+<p>Perfetto可以兼容显示Systrace界面：选择”Legacy UI”打开</p>
+<h2 id="System-Tracing-App"><a href="#System-Tracing-App" class="headerlink" title="System Tracing App"></a>System Tracing App</h2><p>Android 9.0以上包含一个Sytem Tracing的系统应用，用于跟踪设备活动，生成Trace文件。可以直接在设备进行记录，再获取跟踪文件，无需通过adb连接到电脑。参考<a href="https://developer.android.google.cn/topic/performance/tracing/on-device">System Tracing App介绍</a></p>
+<p>步骤如下：</p>
+<ol>
+<li><p>打开System Tracing应用：”开发者选项&gt;System Tracing”</p>
+<img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/System Tracing App.png" style="zoom:50%;"></li>
+<li><p>开始记录：有两种方式</p>
+<ol>
+<li>打开”Record Trace”开关</li>
+<li>打开”Show Quick Settings Tile”开关，将图标添加到快捷设置面板中，点击快捷图标开启”记录系统Trace”。</li>
+</ol>
+</li>
+<li><p>应用执行操作</p>
+</li>
+<li><p>停止记录，会保存Trace文件</p>
+<ol>
+<li>Android10及以上版本使用<code>.perfetto-trace</code>后缀保存（Perfetto格式，可以转换成Systrace格式，参考<a href="https://perfetto.dev/docs/quickstart/traceconv">Trace conversion</a>）</li>
+<li>Android9以上版本使用<code>.ctrace</code>后缀保存（Systrace格式）</li>
+</ol>
+</li>
+<li><p>共享跟踪记录</p>
+<ol>
+<li>使用adb：<code>adb pull /data/local/trace/ .</code></li>
+<li>使用Intent，通过电子邮件或其他应用共享给应用开发者</li>
+</ol>
+</li>
+<li><p>Perfetto UI中打开Trace文件分析</p>
+</li>
+</ol>
+<h2 id="AGI（Android-GPU-Inspector）"><a href="#AGI（Android-GPU-Inspector）" class="headerlink" title="AGI（Android GPU Inspector）"></a>AGI（Android GPU Inspector）</h2><p>图形分析器，包括Trace跟踪，CPU、GPU、内存、电池使用、Vulkan API调用等功能。参考<a href="https://developer.android.com/agi">Android GPU 检查器 (AGI)</a></p>
+<h2 id="MAT（Memory-Analyzer-Tool）"><a href="#MAT（Memory-Analyzer-Tool）" class="headerlink" title="MAT（Memory Analyzer Tool）"></a>MAT（Memory Analyzer Tool）</h2><p>Java堆分析工具，和Eclipse一起使用。用于分析hprof文件。也有独立运行的MAT。参考<a href="https://www.jianshu.com/p/d8e247b1e7b2">MAT使用入门</a></p>
+<h1 id="抓包工具"><a href="#抓包工具" class="headerlink" title="抓包工具"></a>抓包工具</h1><p>方法一：参考<a href="https://www.cnblogs.com/sgtb/p/3708566.html">Android端抓包方法</a></p>
+<ol>
+<li>tcpdump抓包（需root）：<code>tcpdump -p -vv -s 0 -w /mnt/sdcard/capture.pcap</code></li>
+<li>Wire Shark中分析。</li>
+</ol>
+<p>方法二：参考<a href="https://www.cnblogs.com/shoshana-kong/p/14161898.html">使用Fiddler实现手机抓包</a></p>
+<ol>
+<li>电脑安装Fiddler</li>
+<li>启动Fiddler代理服务</li>
+<li>手机设置网络代理为电脑IP地址，端口默认为8888</li>
+<li>手机端请求网络，请求会经过PC代理转发</li>
+<li>Fiddler分析网络包</li>
+</ol>
+<h1 id="性能分析脚本"><a href="#性能分析脚本" class="headerlink" title="性能分析脚本"></a>性能分析脚本</h1><p>见<a href="https://github.com/Afauria/PerformanceCheck">GitHub-PerformanceCheck</a></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<ul>
+<li><a href="https://developer.android.com/studio/profile">AndroidStudio指南-分析应用性能</a></li>
+<li><a href="https://developer.android.com/topic/performance">Android指南-性能与功耗</a></li>
+<li><a href="https://developer.android.google.cn/topic/performance/tracing">Android指南-系统跟踪</a></li>
+<li><a href="https://developer.android.com/agi">Android GPU 检查器 (AGI)</a></li>
+<li><a href="https://www.jianshu.com/p/d8e247b1e7b2">MAT使用入门</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -13886,81 +14801,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/tool-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-<li><code>git count-objects -vH</code>：查看仓库大小</li>
-<li><code>git gc</code>：Git垃圾回收</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
-<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
-<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快捷键笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
-<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
-<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
-<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-TerminalCommand/</url>
     <content><![CDATA[<p>mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别</p>
@@ -14064,6 +14904,81 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/tool-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+<li><code>git count-objects -vH</code>：查看仓库大小</li>
+<li><code>git gc</code>：Git垃圾回收</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
+<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
+<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快捷键笔记</title>
+    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
+<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
+<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
+<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>加密算法</title>
     <url>/2018/08/14/tech-2018-08-14-Encrypt/</url>
     <content><![CDATA[<h1 id="密钥交换算法"><a href="#密钥交换算法" class="headerlink" title="密钥交换算法"></a>密钥交换算法</h1><h2 id="Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理："><a href="#Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理：" class="headerlink" title="Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理："></a>Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理：</h2><ol>
@@ -14142,8 +15057,32 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>RPC和RPC框架【转载】</title>
+    <url>/2018/07/24/network-2018-07-25-RPC/</url>
+    <content><![CDATA[<h2 id="转载"><a href="#转载" class="headerlink" title="[转载]"></a>[转载]</h2><p>作者：EnjoyMoving</p>
+<p>链接：<a href="https://www.zhihu.com/question/25536695/answer/285844835">https://www.zhihu.com/question/25536695/answer/285844835</a></p>
+<p>RPC：远程调用。通过RPC框架，使得我们可以像调用本地方法一样地调用远程机器上的方法：</p>
+<p>1、本地调用某个函数方法</p>
+<p>2、本地机器的RPC框架把这个调用信息封装起来（调用的函数、入参等），序列化(json、xml等)后，通过网络传输发送给远程服务器</p>
+<p>3、远程服务器收到调用请求后，远程机器的RPC框架反序列化获得调用信息，并根据调用信息定位到实际要执行的方法，执行完这个方法后，序列化执行结果，通过网络传输把执行结果发送回本地机器</p>
+<p>4、本地机器的RPC框架反序列化出执行结果，函数return这个结果</p>
+<p>服务调用端（本地机器）：</p>
+<p><img src="/2018/07/24/network-2018-07-25-RPC/RPC01.png" alt="img"></p>
+<p>服务提供端（远程机器）：</p>
+<p><img src="/2018/07/24/network-2018-07-25-RPC/RPC02.png" alt="img"></p>
+<p>Java Netty 是在TCP(Socket)层对nio进行封装的框架，在RPC框架中可用于解决网络传输问题。</p>
+<p>现在流行的微服务框架（dubbo、spring cloud等），实际上就是各种各样的RPC框架</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mina心跳检测实现</title>
-    <url>/2018/07/24/tech-2018-07-24-MinaHeartbeat/</url>
+    <url>/2018/07/24/network-2018-07-24-MinaHeartbeat/</url>
     <content><![CDATA[<p>上一篇文章讲了Mina的简单使用，这一篇将要讲讲怎么用Mina实现心跳检测。网上有很多相关的文章，但是我觉得比较难理解，自己折腾了好久才明白，所以想用我觉得容易理解的话总结一下。也给自己做个笔记。</p>
 <h1 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h1><p>​    1.心跳机制有什么用？<br>在TCP的长连接中，有可能两端有很长一段时间没有数据往来，理论上连接应该是一直保持的。但实际情况中，如果中间节点出现故障，连接断开（如防火墙，或者断网等），这时候故障是难以知道的。</p>
 <p>比如客户端因为某种情况断开了连接，服务端并不会收到消息，可能还傻傻的等待对方发送消息过来。反过来也一样。</p>
@@ -14153,7 +15092,7 @@ dispatchMessage-->判断是否是通知消息
 <p>如果客户端“在一定时间（即超时时间）”没有收到回复包则表示中间出错了，可以尝试重新连接或者做出相应的操作。</p>
 <p>当然一般我们会设置一个变量，“多次判断”有没有收到回复包。比如3次没收到回复包，才判断连接出错。如果收到了回复包，则把变量重置为0。</p>
 <p>由谁（客户端还是服务端）发起请求其实都一样，当然也可以两边都发，具体情况看需求和方便性。比如为了减轻服务端压力，由客户端发出请求较合适。</p>
-<p><img src="/2018/07/24/tech-2018-07-24-MinaHeartbeat/mina_heartbeat01.png" alt="mina心跳包01"></p>
+<p><img src="/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat01.png" alt="mina心跳包01"></p>
 <p>​    3.心跳包是什么？</p>
 <p>心跳包其实就是双方规定的一个信息，可以是一个数字、一串字符、也可以是一个结构对象，只要接收方能够判断就行。</p>
 <p>我把发出请求的心跳包叫做心跳请求包，把回复的心跳包叫做心跳回复包。</p>
@@ -14184,7 +15123,7 @@ dispatchMessage-->判断是否是通知消息
 <p>有四个方法，isRequest，isResponse，getRequest，getResponse需要我们实现，这些方法具体作用如下：</p>
 <p>isRequest：判断接收到的消息是不是心跳请求包<br>isResponse：判断接收到的消息是不是心跳回复包<br>getRequest：获取心跳请求包<br>getResponse：获取心跳回复包</p>
 <p><strong>关键要理解这些方法返回值的含义和调用时机：</strong></p>
-<p>以服务端发送心跳请求包为例（反过来也一样），流程如下：<br><img src="/2018/07/24/tech-2018-07-24-MinaHeartbeat/mina_heartbeat02.png" alt="mina心跳包02"></p>
+<p>以服务端发送心跳请求包为例（反过来也一样），流程如下：<br><img src="/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat02.png" alt="mina心跳包02"></p>
 <p>可以看到，客户端和服务端都需要创建拦截器，实现KeepAliveMessageFactory接口方法，只不过写法不一样。其他的发送消息流程并不需要关心</p>
 <p>除此之外，发送请求包的一方还可以实现超时处理接口，如下：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KeepAliveRequestTimeoutHandlerImpl</span> <span class="keyword">implements</span> <span class="title">KeepAliveRequestTimeoutHandler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span><span class="comment">//在超时时间范围内没有收到消息会调用此方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">keepAliveRequestTimedOut</span><span class="params">(KeepAliveFilter keepAliveFilter, IoSession ioSession)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;心跳超时！&quot;</span>);<span class="comment">//做出相应处理</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -14216,40 +15155,15 @@ dispatchMessage-->判断是否是通知消息
 <p>以上是我的理解，如有谬误，恳请各位前辈指出。有不懂得也可以留言。</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>计算机网络</category>
       </categories>
       <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>RPC和RPC框架【转载】</title>
-    <url>/2018/07/24/tech-2018-07-24-RPC/</url>
-    <content><![CDATA[<h2 id="转载"><a href="#转载" class="headerlink" title="[转载]"></a>[转载]</h2><p>作者：EnjoyMoving</p>
-<p>链接：<a href="https://www.zhihu.com/question/25536695/answer/285844835">https://www.zhihu.com/question/25536695/answer/285844835</a></p>
-<p>RPC：远程调用。通过RPC框架，使得我们可以像调用本地方法一样地调用远程机器上的方法：</p>
-<p>1、本地调用某个函数方法</p>
-<p>2、本地机器的RPC框架把这个调用信息封装起来（调用的函数、入参等），序列化(json、xml等)后，通过网络传输发送给远程服务器</p>
-<p>3、远程服务器收到调用请求后，远程机器的RPC框架反序列化获得调用信息，并根据调用信息定位到实际要执行的方法，执行完这个方法后，序列化执行结果，通过网络传输把执行结果发送回本地机器</p>
-<p>4、本地机器的RPC框架反序列化出执行结果，函数return这个结果</p>
-<p>服务调用端（本地机器）：</p>
-<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC01.png" alt="img"></p>
-<p>服务提供端（远程机器）：</p>
-<p><img src="/2018/07/24/tech-2018-07-24-RPC/RPC02.png" alt="img"></p>
-<p>Java Netty 是在TCP(Socket)层对nio进行封装的框架，在RPC框架中可用于解决网络传输问题。</p>
-<p>现在流行的微服务框架（dubbo、spring cloud等），实际上就是各种各样的RPC框架</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
+        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
     <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/</url>
+    <url>/2018/07/23/network-2018-07-23-Mina/</url>
     <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
 <li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
 <li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
@@ -14270,7 +15184,7 @@ dispatchMessage-->判断是否是通知消息
 <p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
 <p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
 <p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina01.png" alt="Mina流程"></p>
+<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/2018/07/23/network-2018-07-23-Mina/mina01.png" alt="Mina流程"></p>
 <ol>
 <li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
@@ -14287,7 +15201,7 @@ dispatchMessage-->判断是否是通知消息
 </ol>
 <h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
 <p>Binaries是jar包，Sources是源码</p>
-<p><img src="/2018/07/23/tech-2018-07-23-JavaNetBase-Mina/mina02.png" alt="导入包"></p>
+<p><img src="/2018/07/23/network-2018-07-23-Mina/mina02.png" alt="导入包"></p>
 <h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -14308,79 +15222,49 @@ dispatchMessage-->判断是否是通知消息
 <p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>计算机网络</category>
       </categories>
       <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
+        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
-    <title>网络编程和Mina入门</title>
-    <url>/2018/07/23/tech-2018-07-23-Mina/</url>
-    <content><![CDATA[<h1 id="网络编程的一些知识点"><a href="#网络编程的一些知识点" class="headerlink" title="网络编程的一些知识点"></a>网络编程的一些知识点</h1><ol>
-<li>首先需要知道网络的几层架构，有好几种分类方式，如五层架构：物理层、数据链路层、网络层、传输层、应用层。其中IP是网络层协议，IP协议用于在互联网中找到对应的主机，TCP和UDP是传输层协议，应用层协议就很多了，最常用的就是HTTP协议。 </li>
-<li>了解整个网络的过程是怎么样的很重要，以后学到的才可以一一对应进去。 </li>
-<li>然后一些相关概念要掌握：ip、端口、协议、服务器、Socket（客户端、服务端等）、线程、阻塞、非阻塞、长连接、短连接、心跳机制（用于维持长连接的技术）、RPC（远程过程调用）、还有许多相关的协议。 </li>
+    <title>ElasticSearch+Logstash+Kibana</title>
+    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
+    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
+<li>Elasticsearch：后台分布式存储以及全文检索</li>
+<li>Logstash: 日志加工、“搬运工” </li>
+<li>Kibana：数据可视化展示。</li>
 </ol>
-<h2 id="一些注意的点："><a href="#一些注意的点：" class="headerlink" title="一些注意的点："></a>一些注意的点：</h2><ol>
-<li>TCP是传输层协议，主要用于建立连接。我们常说的Socket连接、Http连接等其实指的就是TCP连接。</li>
-<li>网络是语言无关的，所以可以用两种不同的语言实现TCP连接，然后进行通信。</li>
-<li>长连接和短连接是相对的：但都是TCP连接</li>
-<li>对于HTTP协议，它是基于TCP/IP协议的。HTTP连接指的是TCP连接，TCP建立连接后，HTTP可以在这条连接上发出请求， 还有接受响应。因此HTTP连接叫做Http请求和Http响应更为合适。</li>
-<li>HTTP1.0默认是短连接，即完成一次网络请求就断开连接（发出HTTP请求并且接受到响应的过程）。</li>
-<li>HTTP1.1可以长连接，即客户端和服务端都不调用close方法。</li>
-<li>UDP是无连接、不可靠的。不可靠是相对的：不保证传输的到，不保证按顺序到达，不保证错误重发等。不过可以通过代码控制来保证。</li>
-</ol>
-<h1 id="Mina入门"><a href="#Mina入门" class="headerlink" title="Mina入门"></a>Mina入门</h1><h2 id="Mina是什么？"><a href="#Mina是什么？" class="headerlink" title="Mina是什么？"></a>Mina是什么？</h2><p>Apache Mina是一个网络通信应用框架，实现了java NIO（非阻塞）技术，支持多种协议，能够帮助我们快速进行网络开发。 </p>
-<p>除了mina框架外，还有netty框架。</p>
-<h2 id="为什么要有Mina？"><a href="#为什么要有Mina？" class="headerlink" title="为什么要有Mina？"></a>为什么要有Mina？</h2><p>TCP和UDP较为高深。Socket对TCP和UDP的接口进行了封装，方便程序员使用，程序员可以通过socket 创建服务端和客户端，建立连接，进行通信。</p>
-<p>但是使用Socket会有很多线程还有并发的问题需要解决（可以使用线程池，异步IO等方法），java NIO技术就是为了解决这些而提出的一套方案。</p>
-<p>但是java NIO编程也很复杂，因此开发出了Mina框架，让我们能够快速的进行网络编程，而不用自己去实现一套NIO方案。Mina除了实现底层IO操作外，还支持多种协议的通信，总之是十分强大的一套框架。</p>
-<p>在Mina之上还有一些第三方平台可以实现网络通讯功能，如融云等，当然借助第三方平台也受限于第三方平台。简单的项目用第三方平台是完全没问题的。</p>
-<h2 id="Mina工作流程？"><a href="#Mina工作流程？" class="headerlink" title="Mina工作流程？"></a>Mina工作流程？</h2><p><img src="/images/Mina/mina01.png" alt="Mina流程"></p>
-<ol>
-<li><p>IoService：封装了IO操作，我们只需要使用即可，不需要自己实现异步和线程</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IoAcceptor和IoConnector都实现了IoService接口，其中</span><br><span class="line">	IoAcceptor创建服务端口，用于接受连接</span><br><span class="line">	IoConnector创建与服务端的连接</span><br></pre></td></tr></table></figure></li>
-<li><p>IoFilterChain：过滤器/拦截器，对数据进行过滤或拦截，Mina自带许多封装好的过滤器，当然我们也可以自己实现</p>
+<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
+<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
+<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li><p>Cluster ：集群。</p>
+<p>多个搜索服务器的集合</p>
 </li>
-<li><p>IoHandler：提供回调方法，我们只需要在里面实现业务逻辑。</p>
+<li><p>Node：节点。</p>
+<p>组成集群的单个服务器</p>
 </li>
-</ol>
-<p>流程如图所示，因此我们编写代码也是按这个步骤。客户端和服务端代码基本相同，步骤如下：</p>
-<ol>
-<li>首先创建IoService</li>
-<li>添加过滤器/拦截器IoFilterChain</li>
-<li>实现IoHandler对数据进行业务逻辑处理</li>
-</ol>
-<h2 id="怎么用Mina？"><a href="#怎么用Mina？" class="headerlink" title="怎么用Mina？"></a>怎么用Mina？</h2><p>首先去<a href="%22http://mina.apache.org/downloads-mina.html%22">官网</a>下载mina包，导入这两个包（必须），Mina还有很多其他的包和功能，在这里就不介绍了，其实我也不会。 </p>
-<p>Binaries是jar包，Sources是源码</p>
-<p><img src="/images/Mina/mina02.png" alt="导入包"></p>
-<h3 id="编写服务端代码"><a href="#编写服务端代码" class="headerlink" title="编写服务端代码"></a>编写服务端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 第一步，新建accepter：服务端（等待客户端连接，所以命名为acceptor）</span></span><br><span class="line">            NioSocketAcceptor acceptor = <span class="keyword">new</span> NioSocketAcceptor();</span><br><span class="line">            <span class="comment">// 第二步，设置Handler，需要实现IOHandler接口，用于处理消息（主要有创建、连接、接收、发送、关闭、异常、闲置7个状态回调）</span></span><br><span class="line">            acceptor.setHandler(<span class="keyword">new</span> MinaServerHandler());</span><br><span class="line">            <span class="comment">// 第三步，设置拦截器</span></span><br><span class="line">            <span class="comment">//设置log拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;log&quot;</span>, <span class="keyword">new</span> LoggingFilter());</span><br><span class="line">            <span class="comment">//设定消息编码规则拦截器</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">           <span class="comment">//添加socket配置</span></span><br><span class="line">            <span class="comment">/*设置读取数据缓冲区大小</span></span><br><span class="line"><span class="comment">            指定缓冲区大小以通知底层操作系统为读取的数据分配多少空间。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setReadBufferSize(<span class="number">2048</span>);</span><br><span class="line">            <span class="comment">/*指定了什么时候检查空闲 session。</span></span><br><span class="line"><span class="comment">            第一个参数用于判断session是否闲置的条件</span></span><br><span class="line"><span class="comment">            有三个状态：1.不读取也不写入时判断为闲置，2.不读取时判断为闲置，3.不写入时判断为闲置，默认为2</span></span><br><span class="line"><span class="comment">            第二个参数表示session闲置时在10秒后调用Handler的sessionIdle方法。*/</span></span><br><span class="line">            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br><span class="line">            <span class="comment">// 第四步，创建端口，等待连接，端口号2001，客户端需要连接到该端口</span></span><br><span class="line">            acceptor.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">2001</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaServerHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;<span class="comment">//Mina会自动调用这些方法，具体要在什么时候做什么需要自行实现</span></span><br><span class="line">    <span class="comment">//发生异常回调，可打印异常</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端捕捉：&quot;</span> + cause);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收到消息时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息接收：&quot;</span> + message.toString());</span><br><span class="line">        <span class="comment">//收到客户端消息为quit时，关闭该会话</span></span><br><span class="line">        <span class="keyword">if</span> (message.toString().trim().equalsIgnoreCase(<span class="string">&quot;quit&quot;</span>)) &#123;</span><br><span class="line">            session.closeNow();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//向客户端发送消息，会调用messageSent</span></span><br><span class="line">        session.write(<span class="string">&quot;回复消息：&quot;</span> + message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发送消息成功时调用，注意发送消息不能用这个方法，而是用session.write();</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接断开时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接创建时调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//连接闲置时调用，闲置状态通过setIdleTime第一个参数判断，调用频率通过setIdleTime第二个参数设置，这里是10s一次</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接成功时回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;服务端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="编写客户端代码"><a href="#编写客户端代码" class="headerlink" title="编写客户端代码"></a>编写客户端代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 第一步，建立一个connecter</span></span><br><span class="line">        NioSocketConnector connecter = <span class="keyword">new</span> NioSocketConnector();</span><br><span class="line">        <span class="comment">// 第二步，设置消息处理的Handler，和服务端一模一样，实现IOHandler接口即可</span></span><br><span class="line">        connecter.setHandler(<span class="keyword">new</span> MinaClientHandler());</span><br><span class="line">        <span class="comment">// 第三步，设置拦截器，编码规则应该和服务端一样，即TextLineCodecFactory，除了mina自带的编码方式之外，还可以自己定义编码协议</span></span><br><span class="line">        connecter.getFilterChain().addLast(<span class="string">&quot;codec&quot;</span>, <span class="keyword">new</span> ProtocolCodecFilter(<span class="keyword">new</span> TextLineCodecFactory()));</span><br><span class="line">        <span class="comment">// 第四步，连接服务器，127.0.0.1代表本机ip，2001是端口号</span></span><br><span class="line">        ConnectFuture future = connecter.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">2001</span>));</span><br><span class="line">        <span class="comment">// 阻塞直到和服务器连接成功</span></span><br><span class="line">        future.awaitUninterruptibly();</span><br><span class="line">        <span class="comment">//下面代码用于测试，从客户端控制台输入</span></span><br><span class="line">        BufferedReader inputReader = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in, <span class="string">&quot;utf-8&quot;</span>)); <span class="comment">// 从控制台读取的输入内容</span></span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span> (!(s = inputReader.readLine()).equals(<span class="string">&quot;exit&quot;</span>)) &#123;</span><br><span class="line">                future.getSession().write(<span class="string">&quot;客户端发送消息：&quot;</span> + s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MinaClientHandler</span> <span class="keyword">extends</span> <span class="title">IoHandlerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(IoSession session, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端异常捕捉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端消息发送:&quot;</span> + message.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionClosed</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session关闭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端session闲置&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionOpened</span><span class="params">(IoSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端连接成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端接收消息：&quot;</span> + message.toString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>好了，总共只要4个类就可实现简单的异步IO通讯，将客户端和服务端代码分别运行（先运行服务端，否则客户端可能会找不到端口），然后可以从客户端控制台输入，查看输出，理解各方法的调用时机。 </p>
-<p>补充：看到Mina中的XXXFuture就说明这个方法是异步执行的</p>
-<p>客户端的<code>future.awaitUninterruptibly();</code>相当于把异步执行转变为同步执行，因此在这个方法下面的其他语句是没法执行的。这是为了防止使用<code>future.getSession();</code>等方法时无法返回对象的情况</p>
-<p>可以用下面的方法代替上面的阻塞方法，这个方法用于添加监听器，在异步执行结果返回时调用监听器中的回调方法，这个方法下面的语句是能正常执行的。future.getSession();的获取可以写在回调方法里。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">future.addListener(<span class="keyword">new</span> IoFutureListener&lt;IoFuture&gt;() &#123;<span class="comment">//异步执行直到结果返回时回调方法</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationComplete</span><span class="params">(IoFuture ioFuture)</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这里有一篇mina详解，讲的比较详细，有兴趣的朋友可以看这篇文章：<a href="http://tbstone.iteye.com/blog/1976487">mina框架详解</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>第一次写博客，表达可能不是很到位，排版和字体大小应该也有问题，希望大家多多担待和支持。</p>
-<p>下一篇将介绍如何用mina框架进行心跳检测。</p>
-<p>以上是我自己的一些理解，如有谬误，恳请各位前辈指出！</p>
+<li><p>Shard：分片。</p>
+<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
+<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
+</li>
+<li><p>Replia：副本。</p>
+<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
+</li>
+</ul>
+<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
+<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
+<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
+<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>技术</tag>
-        <tag>网络编程</tag>
+        <tag>工具</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -14446,45 +15330,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>ElasticSearch+Logstash+Kibana</title>
-    <url>/2018/07/15/tool-2018-07-15-ELK/</url>
-    <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
-<li>Elasticsearch：后台分布式存储以及全文检索</li>
-<li>Logstash: 日志加工、“搬运工” </li>
-<li>Kibana：数据可视化展示。</li>
-</ol>
-<p>Logstash(收集服务器上的日志文件)<br>保存到 ElasticSearch(搜索引擎)<br>Kibana提供友好的web界面(从ElasticSearch读取数据进行展示)</p>
-<h2 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h2><p>实现后台分布式存储以及全文检索<br>（全文检索就是对一篇文章进行索引，可以根据关键字搜索）</p>
-<p>elasticsearch基于lucene的搜索服务器，lucene是一个库，elastic对其进行了封装，减少复杂度。<br>elasticsearch可以检索数据，返回统计结果，速度快。</p>
-<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
-<li><p>Cluster ：集群。</p>
-<p>多个搜索服务器的集合</p>
-</li>
-<li><p>Node：节点。</p>
-<p>组成集群的单个服务器</p>
-</li>
-<li><p>Shard：分片。</p>
-<p>当有大量的文档时，由于内存的限制、磁盘处理能力不足、无法足够快的响应客户端的请求等，一个节点可能不够。这种情况下，数据可以分为较小的分片。每个分片放到不同的服务器上。 </p>
-<p>当你查询的索引分布在多个分片上时，ES会把查询发送给每个相关的分片，并将结果组合在一起，而应用程序并不知道分片的存在。即：这个过程对用户来说是透明的</p>
-</li>
-<li><p>Replia：副本。</p>
-<p>为提高查询吞吐量或实现高可用性，可以使用分片副本。<br>副本是一个分片的精确复制，每个分片可以有零个或多个副本。ES中可以有许多相同的分片，其中之一被选择更改索引操作，这种特殊的分片称为主分片。<br>当主分片丢失时，如：该分片所在的数据不可用时，集群将副本提升为新的主分片。</p>
-</li>
-</ul>
-<h3 id="对应数据库概念"><a href="#对应数据库概念" class="headerlink" title="对应数据库概念"></a>对应数据库概念</h3><p><img src="/2018/07/15/tool-2018-07-15-ELK/ElasticSearch.jpg" alt="Elastic概念对应数据库"></p>
-<h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><p>Kibana 是一个开源分析和可视化平台，旨在可视化操作 Elasticsearch 。Kibana可以用来搜索，查看和与存储在 Elasticsearch 索引中的数据进行交互。可以轻松地进行高级数据分析，并可在各种图表，表格和地图中显示数据。</p>
-<p> Kibana 可以轻松理解海量数据。其简单的基于浏览器的界面使您能够快速创建和共享动态仪表板，实时显示 Elasticsearch 查询的更改。</p>
-<p>安装Kibana简单快速。您可以安装 Kibana ，并在几分钟内开始探索您的 Elasticsearch 索引 - 不需要代码，也不需要需额外的基础架构。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>静态代码分析平台SonarQube</title>
     <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
     <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
@@ -14507,6 +15352,33 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
+</ul>
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>博君一笑图</title>
     <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
     <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
@@ -14526,256 +15398,147 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>作为一个诗人</title>
-    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
-    <content><![CDATA[<center>
-    <b><font size="5">越人歌</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-    今夕何夕兮搴洲中流。<br>
-    今日何日兮得与王子同舟。<br>
-    蒙羞被好兮不訾诟耻。<br>
-    心几烦而不绝兮得知王子。<br>
-    山有木兮木有枝。<br>
-    心悦君兮君不知。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
-    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
-    一尺深红胜曲尘，天生旧物不如新。<br>
-    合欢桃核终堪恨，里许元来别有人。<br>
-    井底点灯深烛伊，共郎长行莫围棋。<br>
-    玲珑骰子安红豆，入骨相思知不知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
-    <font size="2">【作者】姜夔 【朝代】宋</font><br>
-       肥水东流无尽期。当初不合种相思。<br>
-    梦中未比丹青见，暗里忽惊山鸟啼。<br>
-    春未绿，鬓先丝。人间别久不成悲。<br>
-    谁教岁岁红莲夜，两处沉吟各自知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       十三与君初相识，王侯宅里弄丝竹。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    再见君时妾十五，且为君作霓裳舞。<br>
-    可叹年华如朝露，何时衔泥巢君屋？<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       君似明月我似雾，雾随月隐空留露。<br>
-    君善抚琴我善舞，曲终人离心若堵。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    魂随君去终不悔, 绵绵相思为君苦。<br>
-    相思苦，凭谁诉？遥遥不知君何处。<br>
-    扶门切思君之嘱，登高望断天涯路。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">绸缪</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
-    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
-    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
-</center>
-
-
-<center>
-    <b><font size="5">我亦好歌亦好酒</font></b><br>
-    <font size="2">【作者】殊同 【朝代】现代</font><br>
-       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
-    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
-    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
-    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
-    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
-    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
-    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
-    <font size="2">【作者】刘过 【朝代】宋</font><br>
-       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
-    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
-    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
-       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
-    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
-    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
-    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
-    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
-       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
-    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-       花非花，雾非雾。<br>
-    夜半来，天明去。<br>
-    来如春梦不多时，去似朝云无觅处。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花 ·花曲</font></b><br>
-    <font size="2"></font><br>
-       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
-    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
-    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
-    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">将进酒</font></b><br>
-    <font size="2">【作者】李白 【朝代】唐</font><br>
-       君不见，黄河之水天上来，奔流到海不复回。<br>
-    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
-    人生得意须尽欢，莫使金樽空对月。<br>
-    天生我材必有用，千金散尽还复来。<br>
-    烹羊宰牛且为乐，会须一饮三百杯。<br>
-    岑夫子，丹丘生，将进酒，杯莫停。<br>
-    与君歌一曲，请君为我倾耳听。<br>
-    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
-    古来圣贤皆寂寞，惟有饮者留其名。<br>
-    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
-    主人何为言少钱，径须沽取对君酌。<br>
-    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">长恨歌</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
-    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
-    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
-    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
-    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
-    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
-    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
-    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
-    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
-    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
-    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
-    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
-    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
-    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
-    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
-    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
-    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
-    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
-    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
-    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
-    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
-    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
-    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
-    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
-    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
-    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
-    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
-    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
-    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
-    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
-</center>
-
-
-<center>
-    <b><font size="5">贺新郎</font></b><br>
-    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
-   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
-</center>
-​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
-​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
-
-<center>
-    <b><font size="5">宽心谣</font></b><br>
-    <font size="2">【作者】赵朴初</font><br>
-    日出东海落西山，愁也一天，喜也一天。<br>
-    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
-    每月领取养老钱，多也喜欢，少也喜欢。<br>
-    少荤多素日三餐，粗也香甜，细也香甜。<br>
-    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
-    常与知己聊聊天，古也谈谈，今也谈谈。<br>
-    内孙外孙同样看，儿也心欢，女也心欢。<br>
-    全家老少互慰勉，贫也相安，富也相安。<br>
-    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
-    心宽体健养天年，不是神仙，胜似神仙。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">观猎</font></b><br>
-    <font size="2">【作者】王维</font><br>
-    风劲角弓鸣，将军猎渭城。<br>
-    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
-    忽过新丰市，还归细柳营。<br>
-    回看射雕处，千里暮云平。<br>
-</center>
-
-
-<center>
-    <b><font size="5">国风·秦风·小戎</font></b><br>
-    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
-    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
-    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
-    <font size="2">【作者】韦庄</font><br>
-    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
-    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
-</center>
-
-
-<center>
-    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
-    <font size="2">【作者】欧阳修</font><br>
-    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
-    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
-</center>
-
+    <title>道</title>
+    <url>/2018/04/14/personal-2018-04-14-Think/</url>
+    <content><![CDATA[<ul>
+<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
+</li>
+<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
+</li>
+<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
+<ul>
+<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
+</ul>
+</li>
+<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
+</li>
+<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
+</li>
+<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
+</li>
+<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
+</li>
+<li><p>忍一时越想越气，退一步越想越亏</p>
+<ul>
+<li>同是射手（王者荣耀）</li>
+</ul>
+</li>
+<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
+<ul>
+<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
+</ul>
+</li>
+<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
+</li>
+<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
+</li>
+<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
+</li>
+<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
+</li>
+<li><p>自从用了网易云，我把《故事会》退订了</p>
+</li>
+<li><p>幸福的人用童年治愈一生，不幸的人用一生治愈童年</p>
+</li>
+<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
+</li>
+<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
+</li>
+<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
+</li>
+<li><p>心比长相好，懂比爱重要。</p>
+</li>
+<li><p>我从来都不喜欢分享我的朋友给别人</p>
+</li>
+<li><p>爱笑的男孩子运气不会太差</p>
+<ul>
+<li>因为运气差的男孩子笑不出来。</li>
+</ul>
+</li>
+<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
+</li>
+<li><p>买名表算不算缴智商税</p>
+<ul>
+<li>你要是戴着名表去忽悠人，那不是智商税</li>
+<li>你要是被忽悠着去买名表，那就是智商税</li>
+<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
+</ul>
+</li>
+<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
+<ul>
+<li>我tm在上班的时候，他们不是在睡觉吗？</li>
+</ul>
+</li>
+<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
+</li>
+<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
+</li>
+<li><p>这个世上没有感同身受，只有冷暖自知</p>
+</li>
+<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
+</li>
+<li><p>你要的是幸福，还是对错</p>
+</li>
+<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
+</li>
+<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
+</li>
+<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
+</li>
+<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
+</li>
+<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
+</li>
+<li><p>我养了两盆一帆风顺，总是忘了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
+</li>
+<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
+</li>
+<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
+</li>
+<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
+</li>
+<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
+</li>
+<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
+</li>
+<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
+</li>
+<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
+</li>
+<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
+</li>
+<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
+</li>
+<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
+</li>
+<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
+</li>
+<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
+<ul>
+<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
+</ul>
+</li>
+<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
+</li>
+<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
+</li>
+</ul>
+<ul>
+<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
+</li>
+<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
+<ol start="2">
+<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
+<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
+<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
+<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
+</ol>
+</li>
+<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
+</li>
+<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -15158,24 +15921,256 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
-<ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
-</ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+    <title>作为一个诗人</title>
+    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
+    <content><![CDATA[<center>
+    <b><font size="5">越人歌</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+    今夕何夕兮搴洲中流。<br>
+    今日何日兮得与王子同舟。<br>
+    蒙羞被好兮不訾诟耻。<br>
+    心几烦而不绝兮得知王子。<br>
+    山有木兮木有枝。<br>
+    心悦君兮君不知。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
+    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
+    一尺深红胜曲尘，天生旧物不如新。<br>
+    合欢桃核终堪恨，里许元来别有人。<br>
+    井底点灯深烛伊，共郎长行莫围棋。<br>
+    玲珑骰子安红豆，入骨相思知不知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
+    <font size="2">【作者】姜夔 【朝代】宋</font><br>
+       肥水东流无尽期。当初不合种相思。<br>
+    梦中未比丹青见，暗里忽惊山鸟啼。<br>
+    春未绿，鬓先丝。人间别久不成悲。<br>
+    谁教岁岁红莲夜，两处沉吟各自知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       十三与君初相识，王侯宅里弄丝竹。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    再见君时妾十五，且为君作霓裳舞。<br>
+    可叹年华如朝露，何时衔泥巢君屋？<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       君似明月我似雾，雾随月隐空留露。<br>
+    君善抚琴我善舞，曲终人离心若堵。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    魂随君去终不悔, 绵绵相思为君苦。<br>
+    相思苦，凭谁诉？遥遥不知君何处。<br>
+    扶门切思君之嘱，登高望断天涯路。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">绸缪</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
+    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
+    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
+</center>
+
+
+<center>
+    <b><font size="5">我亦好歌亦好酒</font></b><br>
+    <font size="2">【作者】殊同 【朝代】现代</font><br>
+       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
+    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
+    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
+    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
+    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
+    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
+    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
+    <font size="2">【作者】刘过 【朝代】宋</font><br>
+       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
+    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
+    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
+       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
+    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
+    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
+    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
+    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
+       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
+    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+       花非花，雾非雾。<br>
+    夜半来，天明去。<br>
+    来如春梦不多时，去似朝云无觅处。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花 ·花曲</font></b><br>
+    <font size="2"></font><br>
+       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
+    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
+    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
+    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">将进酒</font></b><br>
+    <font size="2">【作者】李白 【朝代】唐</font><br>
+       君不见，黄河之水天上来，奔流到海不复回。<br>
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
+    人生得意须尽欢，莫使金樽空对月。<br>
+    天生我材必有用，千金散尽还复来。<br>
+    烹羊宰牛且为乐，会须一饮三百杯。<br>
+    岑夫子，丹丘生，将进酒，杯莫停。<br>
+    与君歌一曲，请君为我倾耳听。<br>
+    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
+    古来圣贤皆寂寞，惟有饮者留其名。<br>
+    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
+    主人何为言少钱，径须沽取对君酌。<br>
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">长恨歌</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
+    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
+    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
+    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
+    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
+    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
+    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
+    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
+    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
+    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
+    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
+    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
+    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
+    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
+    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
+    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
+    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
+    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
+    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
+    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
+    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
+    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
+    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
+    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
+    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
+    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
+    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
+    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
+    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
+    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
+</center>
+
+
+<center>
+    <b><font size="5">贺新郎</font></b><br>
+    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
+   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
+</center>
+​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
+​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
+
+<center>
+    <b><font size="5">宽心谣</font></b><br>
+    <font size="2">【作者】赵朴初</font><br>
+    日出东海落西山，愁也一天，喜也一天。<br>
+    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
+    每月领取养老钱，多也喜欢，少也喜欢。<br>
+    少荤多素日三餐，粗也香甜，细也香甜。<br>
+    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
+    常与知己聊聊天，古也谈谈，今也谈谈。<br>
+    内孙外孙同样看，儿也心欢，女也心欢。<br>
+    全家老少互慰勉，贫也相安，富也相安。<br>
+    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
+    心宽体健养天年，不是神仙，胜似神仙。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">观猎</font></b><br>
+    <font size="2">【作者】王维</font><br>
+    风劲角弓鸣，将军猎渭城。<br>
+    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
+    忽过新丰市，还归细柳营。<br>
+    回看射雕处，千里暮云平。<br>
+</center>
+
+
+<center>
+    <b><font size="5">国风·秦风·小戎</font></b><br>
+    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
+    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
+    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
+    <font size="2">【作者】韦庄</font><br>
+    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
+    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
+</center>
+
+
+<center>
+    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
+    <font size="2">【作者】欧阳修</font><br>
+    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
+    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
+</center>
+
 ]]></content>
       <categories>
         <category>其他</category>
@@ -16609,156 +17604,6 @@ dispatchMessage-->判断是否是通知消息
 <li>小生不才，愿用一夜冲动换姑娘十月安稳，若姑娘不愿，但请莫怪小生用三年牢狱之灾换姑娘一生阴影。</li>
 <li>身不在高，米五就行。胸不在大，有型则灵。斯是萝莉，为吾是侵，洋装猫耳朵，小嘴大眼睛，短发很俏丽，长发也飘逸，可以给糖果，玩亲亲。无八卦之乱耳，无血拼之劳行。学校游泳室，公园小凉亭。孔子云：三年起步，最高死刑。</li>
 <li>之前打排位，一个安其拉突然说：我男朋友想要，我先挂机。她还开着麦，最后我们四个硬生生守了两个小时</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>道</title>
-    <url>/2018/04/14/personal-2018-04-14-Think/</url>
-    <content><![CDATA[<ul>
-<li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
-</li>
-<li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
-</li>
-<li><p>古代的药房门口写着：但愿世上无疾苦，宁可架上药生尘</p>
-<ul>
-<li>现在的药房门口写着：会员积分，买十赠二，消费58送15个鸡蛋</li>
-</ul>
-</li>
-<li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
-</li>
-<li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
-</li>
-<li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
-</li>
-<li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
-</li>
-<li><p>忍一时越想越气，退一步越想越亏</p>
-<ul>
-<li>同是射手（王者荣耀）</li>
-</ul>
-</li>
-<li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
-<ul>
-<li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
-</ul>
-</li>
-<li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
-</li>
-<li><p>女孩想看世俗，在身上挂了个牌子写：我是艾滋病人，抱抱我好吗？结果她看到行人绕着她走，对她指指点点。当她暗笑那些人时，跑来个男孩抱了她，她很诧异，他告诉她：别怕，我也是艾滋病患者。她听到后像疯一样推开了他</p>
-</li>
-<li><p>你好。<br>很幸运看到你的问题。<br>但是又很遗憾到现在还没有人回答你的问题。也可能你现在已经在别的地方找到了答案，那就得恭喜你啦。<br>对于你的问题我爱莫能助！<br>可能是你问的问题有些专业了。或者别人没有遇到或者接触过你的问题，所以帮不了你。建议你去问题的相关论坛去求助，那里的人通常比较多，也比较热心，可能能快点帮你解决问题。<br>希望我的回答也能够帮到你！<br>快过年了，<br>最后祝您全家幸福健康快乐每一天！</p>
-</li>
-<li><p>小丑只是想吓一下女孩，没想到却得到了一个拥抱，孤单的人害怕有人靠近，却也渴望拥抱</p>
-</li>
-<li><p>自从用了网易云，我把《故事会》退订了</p>
-</li>
-<li><p>幸福的人用童年治愈一生，不幸的人用一生治愈童年</p>
-</li>
-<li><p>邪正看眼鼻，真假看嘴唇，功名看气概，富贵看精神，主意看指爪，风波看脚筋，若要看条理，全在言语中。</p>
-</li>
-<li><p>压死骆驼的不是最后一根稻草，而是每一根稻草</p>
-</li>
-<li><p>一个五岁的小男孩在一群大人的争执中不知所措。他小心翼翼地问道：收养是什么意思。旁边地小女孩低头思考了一下，说：收养的意思就是，你不是怀在妈妈肚子里，而是心里。</p>
-</li>
-<li><p>心比长相好，懂比爱重要。</p>
-</li>
-<li><p>我从来都不喜欢分享我的朋友给别人</p>
-</li>
-<li><p>爱笑的男孩子运气不会太差</p>
-<ul>
-<li>因为运气差的男孩子笑不出来。</li>
-</ul>
-</li>
-<li><p>幸亏长得丑，没体验过各位的爱恨情仇</p>
-</li>
-<li><p>买名表算不算缴智商税</p>
-<ul>
-<li>你要是戴着名表去忽悠人，那不是智商税</li>
-<li>你要是被忽悠着去买名表，那就是智商税</li>
-<li>你要是被戴着名表的人忽悠了，那你既没有智商，也没有钱去缴智商税</li>
-</ul>
-</li>
-<li><p>为什么美国富强，因为你晚上睡觉时，美国人正在努力工作。</p>
-<ul>
-<li>我tm在上班的时候，他们不是在睡觉吗？</li>
-</ul>
-</li>
-<li><p>“你是如何搞砸一段关系的？”——“正常发挥”</p>
-</li>
-<li><p>“你感情路不顺吗？”——“顺啊，一路上都没什么人”</p>
-</li>
-<li><p>这个世上没有感同身受，只有冷暖自知</p>
-</li>
-<li><p>我曾经很奇怪为什么是瓶邪而不是灵邪，毕竟张起灵和吴邪听起来更配一些。直到我看到盗墓笔记的那句话，世上有很多张起灵，却只此一个闷油瓶。后来，我明白，张起灵是张家的张起灵，闷油瓶却是吴邪的闷油瓶。</p>
-</li>
-<li><p>你要的是幸福，还是对错</p>
-</li>
-<li><p>当矛盾发生时，一个不服软，一个在赌气，觉得对方在无理取闹，一个是有心事却得不到关心，这时往往便是疏远的开始。</p>
-</li>
-<li><p>《骆驼祥子》里有一段话：这世间真话本就不多，一个女子的脸红，胜过一大段对白。可后来有了胭脂，便分不清是真情还是假意。</p>
-</li>
-<li><p>神雕以写情见长，却狗血地加上尹志平与小龙女一段不堪事。多曾不以为然，而今明了。杨过龙女，一失臂一失贞，好似明镜蒙尘，白璧多瑕。这对璧人虽失去彼此所珍，十六年守望和一生相濡，却将世间一切虚妄地蚊子血米饭粒活成现世地明月光朱砂痣。</p>
-</li>
-<li><p>如果所有人都说你好，那么你已经死了；如果所有人都说你不好，那么你离死不远了；如果有人说你好，有人说你不好，那么你还活着。</p>
-</li>
-<li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
-</li>
-<li><p>我养了两盆一帆风顺，总是忘了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
-</li>
-<li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
-</li>
-<li><p>物有本末，事有终始，知所先后，则近道矣。《大学》</p>
-</li>
-<li><p>陈平安的顺序学说有分先后，审大小，定善恶和知行合一这四个关键点，后来又发展出了脉络学说，也是为定善恶查漏补缺。分先后，不仅时间要分先后，逻辑也要分先后；审大小，应该小到一家人情，一地风俗，大到一国律法，一洲礼仪；定善恶，应要持中正态度，不度入个人情感，不受外物干扰。最为关键的是要按脉络从头到尾捋一遍，站在对方角度看待问题，再去判对错，定善恶。最后，知道了答案那就起而行之，知行合一。</p>
-</li>
-<li><p>物来顺应，未来不迎，当时不杂，既往不恋</p>
-</li>
-<li><p>把所有“我不会”变成“我可以学”，把所有“我怕我不行”变成“我可以试试”</p>
-</li>
-<li><p>男人有两大爱好，拉良家妇女下水，劝风尘女子从良;女人有两大爱好，和穷人总是谈钱，和富人谈的全是感情。如今客户也有两大爱好：和质量好的谈价格，和价格低的谈质量！市场虽然很透明，但你却什么也看不清，我只能告诉你，水很深，熟人是想给你最好的，只是你不信任罢了！</p>
-</li>
-<li><p>电影院里一个小孩问妈妈：“怎么这么多大人？大人也爱看动漫么？” 妈妈说“是看动漫的小孩都长大了”</p>
-</li>
-<li><p>如果一个人住，千万不要在下午时睡觉，一觉睡到六七点，等你一睁开眼，看着朦胧黑黑的天空和空荡的房间，会有一种被世界遗弃的感觉，孤独在这一刻体现得淋漓尽致。</p>
-</li>
-<li><p>戏一旦开了口，哪怕台下没有人也要唱完。人不听，鬼神听。记得两年前上课听老师讲过民国戏子和《桃花扇》的故事，后来发现了这首曲，感受愈加深刻。都道戏子无情，怎知戏子也有心。“俺曾见，金陵玉树莺声晓，秦淮水榭花开早，谁知道容易冰消！眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡过风流觉，把五十年兴亡看饱。那乌衣巷，不姓王；莫愁湖，鬼夜哭；凤凰台，栖枭鸟!残山梦最真，旧境丢难掉。不信这舆图换稿，诌一套‘哀江南’，放悲声唱到老。”</p>
-</li>
-<li><p>酒逢知己千杯少，话不投机半句多，遥知湖上一樽酒，能忆天涯万里人</p>
-</li>
-<li><p>我用了半小时赞了500条评论，我知道，我能做的就只有这样。一个小小的赞，让你们开心一点。。陌生人。胃不好别吃辣的冷的，想哭就哭吧。累了就听听歌吧，带上耳机，坐在你爱的地方。你会发现生活没有什么多烦，多痛。有的只有你心中的哪片向往的生活。</p>
-</li>
-<li><p>歪理一：爱情不分先来后到，只要她还没结婚，我就有机会</p>
-<ul>
-<li>爱情不是任何插足行为的挡箭牌，如果喜欢的人已经有了恋爱关系，那请你和她保持距离，克制自己的感情，不要逾越。公平竞争只存在于单身的情况下，不管你有多喜欢一个人，只要他有恋人，另一方就是无辜的，爱情不是伤害别人的借口。因为它虽然不分先来后到，但是讲礼义廉耻</li>
-</ul>
-</li>
-<li><p>于是，当我们开启上帝视角会发现：从女生的角度讲，设定了重重条件，渴望的得不到，得到的却不渴望；从男生的角度讲，千辛万苦越过护城河，爬过高墙，却发现姑娘内心的城堡仍然层层防御，壁垒森严。如果你不能打开她的内心，那么做再多感动、惊喜、有心的事，可能也无济于事。你对高原很有反应，高原对你毫无反应。现在回到最初的问题：为什么很多好女孩没有男朋友。我的看法是，如果没有爱情，条件就是一切，需要占据压倒性优势；有了爱情，条件不过是张启程票，只要让她一开始不排斥你就行。</p>
-</li>
-<li><p>Z姑娘总是抱怨身边没什么条件合适的人，但是通过***才发现，条件比她好的男生一抓一大把。我后来总结：这就像是春运，都知道火车票很难抢，但你要是上了车，会发现，身边个个都有票。条件这种东西，当你不具备的时候，它很关键，是一切的前提；但当你具备的时候，他就没那么重要了，只是起步的基础。这就像春运，上车前抢到票是关键，而一旦上了车，你会发现有没有座位，是软座还是硬座，是站着还是躺着，旁边的人是翩翩公子还是抠脚大汉，才是真正影响这一路上你的体验和心情的根本因素。在爱情面前，所有的条件都只是铺垫，价值交换只能满足社会需要，并不能满足情感的需要。就像Z姑娘引用一部电影的台词说道：曾经以为生命中最糟糕的事，就是孤独终老。其实不是，最糟糕的是，与那些让你感到孤独的人一起终老。</p>
-</li>
-</ul>
-<ul>
-<li><p>1.如果一个人足够聪明，知道在不同场合，不同时间，对不同的人，做不一样的行为，说不一样的话，展现不一样的情绪，呈现不同的状态，给不同的人不一样的印象。知道什么是对的什么是错的，什么是好的什么是坏的。但这并不会有什么帮助，因为心理学只能帮他知道这些却不能帮他做出选择。比如有些事明明知道不好也会去做。<br>2.有心为善、虽善不赏，有心为恶、虽恶不罚。情绪是否有好坏，如果有好坏是否就对应好人和坏人。如果没有好坏，为什么要在知道自己是焦虑，敌对等状态的时候去隐藏他，表现出合群，合理，圆滑，世故。我们选择这么做，往往不是为了自己好过，而是为了别人好过，给别人一个好的印象，让别人不会不舒服，给事情不会造成坏的影响。所以，是不是心理学第一步是认识自己，第二步在了解自己的前提下做出改变，不是为了让自己变得更好，而是为了给别人留下一个更好的自己。如果人人都是心理学专家，是不是人人都没有自我，因为这个自我已经被改变，人人都做那心理学定义了的”好人”</p>
-</li>
-<li><p>1.需要先明白为什么要参加社交（群体活动、场合）才能针对社恐或者社交障碍做出改变。就好像只讲了方法却没讲为什么要这么做。</p>
-<ol start="2">
-<li>针对第一个问题为什么要参加社交，再提出疑问：社交是否应该带有目的性或者功利性？<br>3.针对第2个问题，如果不应该，那再反问第一个问题，为什么要参加社交？</li>
-<li>针对第2个问题，如果应该，我们称之为“应酬”，如果只是单纯不喜欢参加这种“应酬”，该怎么做？</li>
-<li>针对第4个问题，如果答案是要参加，那再反问第1个问题，为什么要参加这种应酬，罗列应酬的好处优势，让大家喜欢上应酬？</li>
-<li>针对第5个问题，如果答案是要参加但是可以不喜欢，只是为了在“不得不或者必要的场合”能够做合适的应对，那社交应该是一种辅助技能，目的并不是为了改变自我</li>
-</ol>
-</li>
-<li><p>对于明确要求：更应该让需求方主动说清楚，以5w2h方式建立需求，而不是一点一点挤牙膏去问。如果一个一个问，一般需求方每次只会回答一小点，需要追问。如果一次问7个问题打7个问号，一个是显得不太礼貌。另一个是需求方并不一定会一次回答7个问题。还需要再追问。</p>
-</li>
-<li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
-</li>
 </ul>
 ]]></content>
       <categories>

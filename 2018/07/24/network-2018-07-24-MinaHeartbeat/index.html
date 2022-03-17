@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Mina心跳检测实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mina心跳检测实现">
+<meta property="og:url" content="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="Mina心跳检测实现">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat01.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat02.png">
+<meta property="article:published_time" content="2018-07-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-17T01:05:09.361Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat01.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mina心跳检测实现 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2018/07/24/network-2018-07-24-MinaHeartbeat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mina心跳检测实现
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-24 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-24T00:00:00+08:00">2018-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-17 09:05:09" itemprop="dateModified" datetime="2022-03-17T09:05:09+08:00">2022-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/07/24/network-2018-07-24-MinaHeartbeat/" class="post-meta-item leancloud_visitors" data-flag-title="Mina心跳检测实现" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/07/24/network-2018-07-24-MinaHeartbeat/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/07/24/network-2018-07-24-MinaHeartbeat/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">Mina心跳检测实现</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇文章讲了Mina的简单使用，这一篇将要讲讲怎么用Mina实现心跳检测。网上有很多相关的文章，但是我觉得比较难理解，自己折腾了好久才明白，所以想用我觉得容易理解的话总结一下。也给自己做个笔记。</p>
+<h1 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h1><p>​    1.心跳机制有什么用？<br>在TCP的长连接中，有可能两端有很长一段时间没有数据往来，理论上连接应该是一直保持的。但实际情况中，如果中间节点出现故障，连接断开（如防火墙，或者断网等），这时候故障是难以知道的。</p>
+<p>比如客户端因为某种情况断开了连接，服务端并不会收到消息，可能还傻傻的等待对方发送消息过来。反过来也一样。</p>
+<p>所以发明了心跳机制来维持长连接，保活。</p>
+<p>​    2.心跳机制是什么？</p>
+<p>心跳机制原理很简单，就是客户端每隔一段时间发送一个“请求心跳包”到服务端，服务端收到“请求心跳包”之后回复一个心跳包，客户端接收到“回复心跳包”后判断连接正常。</p>
+<p>如果客户端“在一定时间（即超时时间）”没有收到回复包则表示中间出错了，可以尝试重新连接或者做出相应的操作。</p>
+<p>当然一般我们会设置一个变量，“多次判断”有没有收到回复包。比如3次没收到回复包，才判断连接出错。如果收到了回复包，则把变量重置为0。</p>
+<p>由谁（客户端还是服务端）发起请求其实都一样，当然也可以两边都发，具体情况看需求和方便性。比如为了减轻服务端压力，由客户端发出请求较合适。</p>
+<p><img src="/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat01.png" alt="mina心跳包01"></p>
+<p>​    3.心跳包是什么？</p>
+<p>心跳包其实就是双方规定的一个信息，可以是一个数字、一串字符、也可以是一个结构对象，只要接收方能够判断就行。</p>
+<p>我把发出请求的心跳包叫做心跳请求包，把回复的心跳包叫做心跳回复包。</p>
+<p>心跳包之所以叫心跳包是因为：他像心跳一样每隔一定时间发送一次，以此告诉对方，自己还活着。</p>
+<h1 id="Mina实现心跳机制"><a href="#Mina实现心跳机制" class="headerlink" title="Mina实现心跳机制"></a>Mina实现心跳机制</h1><p>​    上一篇文章讲了Mina的简单使用，我们通过设置IoHandler来处理业务逻辑，IoHandler中有messageReceived方法，当接收到消息时回调此方法。</p>
+<p>​    <strong>1.很容易想到的方法</strong></p>
+<p>所以我们很容易想到，只要在任何一端（假设为A端）设置一个定时器，定时发送一个心跳请求包。然后在另一端（假设为B端）的messageReceived方法中判断接收到的消息是不是心跳请求包。如果是，则发出一个心跳回复包，同样在A端的messageReceived方法中判断接收到的消息是不是一个心跳回复包。如果是则判断连接成功。</p>
+<p>​    <strong>2.定时器</strong></p>
+<p>上面说的思路肯定是能够实现的，现在我们来说下这个定时器怎么设置。</p>
+<p>上一篇文章中还提到了一个函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个函数会在判断当前Session为闲置状态时，每隔10S调用一次IoHandler的sessionIdle方法，因此我们可以使用这个函数设置合适的时间，在sessionIdle中发出心跳请求包，就不用自己写一个定时器了。</p>
+<p>​    <strong>3.这么容易满足吗？</strong></p>
+<p>上面说的已经能够实现正常的心跳机制了。但是把所有的代码和判断都放在IoHandler的业务逻辑处理中，是否不够优雅？</p>
+<p>在上篇文章中，我们提到了消息是通过IoService接收，通过层层拦截器IoFilterChain，然后才传递到IoHandler中进行业务逻辑处理，处理之后的发送也需要通过层层拦截器才能发送出去。</p>
+<p>因此我们想心跳包检测要是能在拦截器阶段就被消费掉，是否就不用传递到IoHandler中了，IoHandler就可以只处理业务逻辑，将心跳检测独立出来。</p>
+<p>很庆幸，Mina已经将这个拦截器给我们封装好了，我们只需要知道如何使用即可。</p>
+<p>​    <strong>4.Mina的心跳检测拦截器/过滤器</strong></p>
+<p><strong>创建拦截器：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">            <span class="comment">//实现KeepAliveMessageFactory接口方法</span></span><br><span class="line">            HeartRequestFactoryImpl heartRequestFactory = <span class="keyword">new</span> HeartRequestFactoryImpl();</span><br><span class="line">            <span class="comment">//创建拦截器，第一个参数是心跳处理接口，第二个参数是心跳超时处理接口</span></span><br><span class="line">            KeepAliveFilter kaf = <span class="keyword">new</span> KeepAliveFilter(heartRequestFactory, <span class="keyword">new</span> KeepAliveRequestTimeoutHandlerImpl());</span><br><span class="line">            <span class="comment">//设置请求间隔，单位s</span></span><br><span class="line">            kaf.setRequestInterval(<span class="number">20</span>);</span><br><span class="line">            <span class="comment">//设置超时时间</span></span><br><span class="line">            kaf.setRequestTimeout(<span class="number">10</span>);</span><br><span class="line">            <span class="comment">//设置是否forward到下一个filter,默认为false</span></span><br><span class="line"><span class="comment">//            kaf.setForwardEvent(true);</span></span><br><span class="line">            acceptor.getFilterChain().addLast(<span class="string">&quot;heart&quot;</span>, kaf);</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>需要注意的是：</strong></p>
+<p>（1）客户端也需要添加心跳检测拦截器，只不过KeepAliveMessageFactory实现方法不同</p>
+<p>（2）由服务端发出心跳请求包的话，客户端不需要实现超时处理方法，即KeepAliveRequestTimeoutHandler。超时方法是一定时间内没有收到“心跳回复包”才调用的，而客户端只会收到心跳请求包，不会收到心跳回复包</p>
+<p>我们需要做的主要是实现KeepAliveMessageFactory接口方法</p>
+<p>有四个方法，isRequest，isResponse，getRequest，getResponse需要我们实现，这些方法具体作用如下：</p>
+<p>isRequest：判断接收到的消息是不是心跳请求包<br>isResponse：判断接收到的消息是不是心跳回复包<br>getRequest：获取心跳请求包<br>getResponse：获取心跳回复包</p>
+<p><strong>关键要理解这些方法返回值的含义和调用时机：</strong></p>
+<p>以服务端发送心跳请求包为例（反过来也一样），流程如下：<br><img src="/2018/07/24/network-2018-07-24-MinaHeartbeat/mina_heartbeat02.png" alt="mina心跳包02"></p>
+<p>可以看到，客户端和服务端都需要创建拦截器，实现KeepAliveMessageFactory接口方法，只不过写法不一样。其他的发送消息流程并不需要关心</p>
+<p>除此之外，发送请求包的一方还可以实现超时处理接口，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KeepAliveRequestTimeoutHandlerImpl</span> <span class="keyword">implements</span> <span class="title">KeepAliveRequestTimeoutHandler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span><span class="comment">//在超时时间范围内没有收到消息会调用此方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">keepAliveRequestTimedOut</span><span class="params">(KeepAliveFilter keepAliveFilter, IoSession ioSession)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;心跳超时！&quot;</span>);<span class="comment">//做出相应处理</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>分析源码：</strong></p>
+<p>心跳拦截器KeepAliveFliter源码，关键部分如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageReceived</span><span class="params">(NextFilter nextFilter, IoSession session, Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.messageFactory.isRequest(session, message)) &#123;</span><br><span class="line">            Object pongMessage = <span class="keyword">this</span>.messageFactory.getResponse(session, message);</span><br><span class="line">            <span class="keyword">if</span>(pongMessage != <span class="keyword">null</span>) &#123;</span><br><span class="line">                nextFilter.filterWrite(session, <span class="keyword">new</span> DefaultWriteRequest(pongMessage));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.messageFactory.isResponse(session, message)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.resetStatus(session);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">this</span>.isKeepAliveMessage(session, message)) &#123;</span><br><span class="line">            nextFilter.messageReceived(session, message);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">messageSent</span><span class="params">(NextFilter nextFilter, IoSession session, WriteRequest writeRequest)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Object message = writeRequest.getMessage();</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">this</span>.isKeepAliveMessage(session, message)) &#123;</span><br><span class="line">        nextFilter.messageSent(session, writeRequest);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionIdle</span><span class="params">(NextFilter nextFilter, IoSession session, IdleStatus status)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(status == <span class="keyword">this</span>.interestedIdleStatus) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!session.containsAttribute(<span class="keyword">this</span>.WAITING_FOR_RESPONSE)) &#123;</span><br><span class="line">            Object pingMessage = <span class="keyword">this</span>.messageFactory.getRequest(session);</span><br><span class="line">            <span class="keyword">if</span>(pingMessage != <span class="keyword">null</span>) &#123;</span><br><span class="line">                nextFilter.filterWrite(session, <span class="keyword">new</span> DefaultWriteRequest(pingMessage));</span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">this</span>.getRequestTimeoutHandler() != KeepAliveRequestTimeoutHandler.DEAF_SPEAKER) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.markStatus(session);</span><br><span class="line">                    <span class="keyword">if</span>(<span class="keyword">this</span>.interestedIdleStatus == IdleStatus.BOTH_IDLE) &#123;</span><br><span class="line">                        session.setAttribute(<span class="keyword">this</span>.IGNORE_READER_IDLE_ONCE);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">this</span>.resetStatus(session);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.handlePingTimeout(session);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(status == IdleStatus.READER_IDLE &amp;&amp; session.removeAttribute(<span class="keyword">this</span>.IGNORE_READER_IDLE_ONCE) == <span class="keyword">null</span> &amp;&amp; session.containsAttribute(<span class="keyword">this</span>.WAITING_FOR_RESPONSE)) &#123;</span><br><span class="line">        <span class="keyword">this</span>.handlePingTimeout(session);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.forwardEvent) &#123;</span><br><span class="line">        nextFilter.sessionIdle(session, status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（1）我们设置了setRequestInterval，每隔一定时间就会调用sessionIdle方法，该方法最主要的就是下面几句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object pingMessage = <span class="keyword">this</span>.messageFactory.getRequest(session);<span class="comment">//调用getRequest获得返回值</span></span><br><span class="line"><span class="keyword">if</span>(pingMessage != <span class="keyword">null</span>) &#123;                                        <span class="comment">//如果有返回值</span></span><br><span class="line">    nextFilter.filterWrite(session, <span class="keyword">new</span> DefaultWriteRequest(pingMessage));<span class="comment">//将该该返回值发送出去，因此该返回值表示的含义就是心跳请求包</span></span><br><span class="line">    …………                 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>即如果getRequest方法设置了返回值，就会将该返回值发送出去，所以这个返回值的意义就是“心跳请求包”。</p>
+<p>（2）客户端收到消息，会调用拦截器的messageReceived方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.messageFactory.isRequest(session, message)) &#123;<span class="comment">//我们在isRequest方法中判断接收到的是不是心跳请求包，如果是返回为true</span></span><br><span class="line">        Object pongMessage = <span class="keyword">this</span>.messageFactory.getResponse(session, message);<span class="comment">//然后调用getResponse方法获得返回值</span></span><br><span class="line">        <span class="keyword">if</span>(pongMessage != <span class="keyword">null</span>) &#123;                                                <span class="comment">//如果有返回值</span></span><br><span class="line">            nextFilter.filterWrite(session, <span class="keyword">new</span> DefaultWriteRequest(pongMessage));<span class="comment">//则将该返回值发送出去，因此该返回值的意义就是心跳回复包</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.messageFactory.isResponse(session, message)) &#123;<span class="comment">//我们在isResponse方法中判断接收到的是不是心跳回复包，如果是返回为true</span></span><br><span class="line">        <span class="keyword">this</span>.resetStatus(session);                        <span class="comment">//接收到了心跳回复包，需要重置状态，如重新开始计时</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">this</span>.isKeepAliveMessage(session, message)) &#123;<span class="comment">//该方法执行了一遍isRequest和isResponse，如果接收到的消息既不是心跳请求包，也不是回复包</span></span><br><span class="line">        nextFilter.messageReceived(session, message);<span class="comment">//则将该消息往下传递，即交给下个拦截器或者交给Handler的messageReceive方法处理</span></span><br><span class="line">    &#125;<span class="comment">//如果接收到的消息是心跳请求包“或者”心跳回复包，则在上面几句中就已经将该消息消费掉了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意上面还有一句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">            <span class="comment">//设置是否forward到下一个filter,默认为false</span></span><br><span class="line"><span class="comment">//            kaf.setForwardEvent(true);</span></span><br></pre></td></tr></table></figure>
+
+
+<p>这句话的作用从源码中可以看出来，源码的sessionIdle方法后面有这么一段</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">this</span>.forwardEvent) &#123;</span><br><span class="line">    nextFilter.sessionIdle(session, status);<span class="comment">//如果设置为true，会将该状态往下传递</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>不知道大家还记不记得IoHandler里面也有sessionIdle方法，上面已经讲过，它的调用时机是通过setIdleTime来设置的，而setForwardEvent设置为false的话，则会将Idle事件拦截掉，不往下传递到IoHandle的sessionIdle，即该方法失效。</p>
+<p>总的来说，就是设置了setRequestInterval的话，则设置setIdleTime将会失去意义。</p>
+<p>以上是我的理解，如有谬误，恳请各位前辈指出。有不懂得也可以留言。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/23/network-2018-07-23-Mina/" rel="prev" title="网络编程和Mina入门">
+      <i class="fa fa-chevron-left"></i> 网络编程和Mina入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/24/network-2018-07-25-RPC/" rel="next" title="RPC和RPC框架【转载】">
+      RPC和RPC框架【转载】 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">心跳机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mina%E5%AE%9E%E7%8E%B0%E5%BF%83%E8%B7%B3%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Mina实现心跳机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2022&#x2F;01&#x2F;01&#x2F;reader-2022-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">534k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:06</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":250,"height":500},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
