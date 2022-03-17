@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Android性能分析大全-优化篇
-date: 2021-12-16
-description: 介绍Android常用性能优化方法和思路
+title: Clean Code
+date: 2021-01-20
+description: 代码整洁之道、Android编码规范梳理
 categories: Android
 tags: 
 - Android

@@ -246,7 +246,7 @@ $ cd <代码根目录>
 # 进入Docker容器
 $ docker_aml_u16_build
 $ export OPENLINUX_BUILD=1
-# 通过脚本设置编译目标，重复设置会导致local.conf增加很多重复的变量
+# 设置环境变量等，重复设置会导致local.conf增加很多重复的变量
 $ source meta-meson/aml-setenv.sh mesont5d-lib32-am301
 # 整包编译
 $ bitbake lib32-amlogic-yocto
