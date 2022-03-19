@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb架构.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png">
 <meta property="article:published_time" content="2021-12-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-13T10:54:15.434Z">
+<meta property="article:modified_time" content="2022-03-18T02:57:30.117Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-13 18:54:15" itemprop="dateModified" datetime="2022-03-13T18:54:15+08:00">2022-03-13</time>
+                <time title="修改时间：2022-03-18 10:57:30" itemprop="dateModified" datetime="2022-03-18T10:57:30+08:00">2022-03-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -365,8 +365,8 @@
 </tbody></table>
 <h1 id="Flutter架构"><a href="#Flutter架构" class="headerlink" title="Flutter架构"></a>Flutter架构</h1><p>Flutter源码包含两部分：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络IO、插件通道、Dart运行时、平台嵌入层等</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口和开发调试工具。类似Android SDK，应用开发者只需要下载和使用SDK，一般不需要接触底层系统代码。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络I/O、插件通道、Dart运行时、平台嵌入层、编译工具链等</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口（布局、组件、函数）和开发调试工具。应用开发者只需要下载和使用SDK，一般不需要接触引擎层。</li>
 </ol>
 <blockquote>
 <p>Flutter SDK默认会缓存官方构建好的引擎artifact，打包到应用中</p>

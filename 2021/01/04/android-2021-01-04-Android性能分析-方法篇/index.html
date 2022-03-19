@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png">
 <meta property="article:published_time" content="2021-01-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-17T03:28:56.401Z">
+<meta property="article:modified_time" content="2022-03-19T05:07:20.082Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="工具">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-17 11:28:56" itemprop="dateModified" datetime="2022-03-17T11:28:56+08:00">2022-03-17</time>
+                <time title="修改时间：2022-03-19 13:07:20" itemprop="dateModified" datetime="2022-03-19T13:07:20+08:00">2022-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,7 +284,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.2k</span>
+              <span>9.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -411,12 +411,15 @@
 </ol>
 </li>
 </ol>
-<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏：指本该回收的对象，由于被生命周期更长的对象引用，导致GC无法回收这块内存（GC可达，被GC Root对象引用）。内存泄漏最终会导致内存溢出。</p>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏：指本该回收的对象，由于被生命周期更长的对象引用，导致GC无法回收这块内存（GC可达，被GC Root对象引用）。内存泄漏不会有直接的异常或崩溃，但是持续的泄漏最终会导致内存溢出。</p>
+<blockquote>
+<p>就像水龙头漏水，漏的多了会导致池子变满溢出</p>
+</blockquote>
 <p>检查方法：运行代码，执行操作（例如旋转设备、切换应用），尝试强制GC，检查内存和对象数是否会回到稳定值。</p>
 <p>常见内存泄漏场景：</p>
 <ul>
 <li>Activity、Context、View、Drawable等对象被引用，导致Activity或Context无法回收</li>
-<li>非静态内部类，默认持有外部类引用。例如Handler、Runnable未结束，导致Activity无法被回收</li>
+<li>非静态内部类，默认持有外部类引用。例如Handler、Runnable、AysncTask、TimerTask未结束，导致Activity无法被回收</li>
 <li>单例或static对象引用其他对象</li>
 <li>观察者模式未解注册</li>
 <li>Android特殊组件：<ul>
