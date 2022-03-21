@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png">
 <meta property="article:published_time" content="2021-01-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-19T05:07:20.082Z">
+<meta property="article:modified_time" content="2022-03-21T01:06:46.367Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="工具">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-19 13:07:20" itemprop="dateModified" datetime="2022-03-19T13:07:20+08:00">2022-03-19</time>
+                <time title="修改时间：2022-03-21 09:06:46" itemprop="dateModified" datetime="2022-03-21T09:06:46+08:00">2022-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -435,7 +435,7 @@
 <li>常发性内存泄漏：每次执行都会泄漏。</li>
 <li>一次性内存泄漏：多次执行只泄漏一次，例如单例持有Context，每次打开新的页面都替换新的Context，原来的Context就可以被释放掉</li>
 </ul>
-<h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC</p>
+<h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC。例如在循环中、或者<code>onDraw</code>、<code>onBindViewHolder</code>等频繁调用的方法中创建对象</p>
 <p>分析：CPU Profiler或者Systrace检查是否频繁发生GC</p>
 <h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>OOM（Out of memory，内存溢出）：JVM没有足够的内存来为对象分配空间，GC也已经没有空间可回收，此时会抛出<code>java.lang.OutOfMemoryError</code></p>
 <p>原因：</p>
@@ -448,7 +448,7 @@
 <ol>
 <li><code>java.lang.OutOfMemoryError: Java heap space</code>：Java堆内存溢出</li>
 <li><code>java.lang.OutOfMemoryError: PermGen space</code>：永久代溢出，即方法区。包括Class信息、静态变量、常量等过多</li>
-<li><code>java.lang.StackOverflowError</code>：虚拟机栈溢出，一般是由于深度递归和死循环造成</li>
+<li><code>java.lang.StackOverflowError</code>：虚拟机栈溢出，一般是由于深度递归和死循环造成。栈满时再入栈叫”上溢”，栈空时再退栈叫”下溢”</li>
 </ol>
 <blockquote>
 <p>对应JVM内存模型，除了程序计数器之外，Java虚拟机栈、Native方法栈、Java堆、方法区都可能发生内存溢出</p>
@@ -756,7 +756,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -853,13 +853,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">528k</span>
+    <span title="站点总字数">518k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:01</span>
+    <span title="站点阅读时长">7:51</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
