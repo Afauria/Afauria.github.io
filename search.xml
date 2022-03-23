@@ -8527,16 +8527,14 @@ end</pre>
     <content><![CDATA[<h1 id="ANR分析"><a href="#ANR分析" class="headerlink" title="ANR分析"></a>ANR分析</h1><p>ANR（Application Not Response，应用无响应）：ANR可以看作是卡顿的极端情况，系统有一套检测机制</p>
 <p>原因：</p>
 <ol>
-<li><p><strong>主线程</strong>做了太多阻塞耗时操作：</p>
-<ol>
+<li><strong>主线程</strong>做了太多阻塞耗时操作：<ol>
 <li>I/O</li>
 <li>同步Binder调用</li>
 <li>长时间计算</li>
 <li>等待阻塞其他线程资源的锁：Thread的join、sleep、wait方法</li>
 </ol>
 </li>
-<li><p>系统整体性能慢：CPU和内存满载、内存碎片化、GC慢等</p>
-</li>
+<li>系统整体性能慢：CPU和内存满载、内存碎片化、GC慢等</li>
 </ol>
 <p>分析：</p>
 <ol>
@@ -8562,28 +8560,23 @@ end</pre>
 </ol>
 <p>触发机制</p>
 <ul>
-<li><p>Service生命周期超时：前台20s、后台200s</p>
-<ul>
+<li>Service生命周期超时：前台20s、后台200s<ul>
 <li><code>Reason: Executing service</code></li>
 </ul>
 </li>
-<li><p>BroadcastReceiver生命周期超时：前台10s、后台60s</p>
-<ul>
+<li>BroadcastReceiver生命周期超时：前台10s、后台60s<ul>
 <li><code>Reason: Broadcast of Intent &#123; ... &#125;</code></li>
 </ul>
 </li>
-<li><p>ContentProvider启动超时：10s</p>
-<ul>
+<li>ContentProvider启动超时：10s<ul>
 <li><code>Reason: ContentProvider not responding</code></li>
 </ul>
 </li>
-<li><p>前台Activity响应输入事件超时：5s</p>
-<ul>
+<li>前台Activity响应输入事件超时：5s<ul>
 <li><code>Reason: Input dispatching timed out (Waiting because the focused window has not finished processing the input events that were previously delivered to it.)</code></li>
 </ul>
 </li>
-<li><p>窗口获取焦点超时：5s</p>
-<ul>
+<li>窗口获取焦点超时：5s<ul>
 <li><code>Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)</code></li>
 </ul>
 </li>
@@ -9311,22 +9304,17 @@ end</pre>
 </ol>
 <p>采样方式：</p>
 <ol>
-<li><p>对Java方法采样：间隔一段时间捕获应用调用堆栈，比较捕获的数据集，推导应用Java方法执行时间和资源使用情况。</p>
-<blockquote>
-<p>如果一个方法在间隔期间执行完毕，则可能不会被记录。对于这种生命周期较短的方法，应使用插桩跟踪</p>
-</blockquote>
+<li>对Java方法采样：间隔一段时间捕获应用调用堆栈，比较捕获的数据集，推导应用Java方法执行时间和资源使用情况。<ol>
+<li>如果一个方法在间隔期间执行完毕，则可能不会被记录。对于这种生命周期较短的方法，应使用插桩跟踪</li>
+</ol>
 </li>
-<li><p>跟踪Java方法：对每个Java方法调用开始和结束时记录时间戳。</p>
-<blockquote>
-<p>记录每个方法，会影响运行时性能，进而影响分析数据。另外也会造成生成文件过大。</p>
-</blockquote>
+<li>跟踪Java方法：对每个Java方法调用开始和结束时记录时间戳。<ol>
+<li>记录每个方法，会影响运行时性能，进而影响分析数据。另外也会造成生成文件过大。</li>
+</ol>
 </li>
-<li><p>对C/C++函数采样：捕获Native方法采样数据。</p>
-</li>
-<li><p>跟踪系统调用：基于systrace，记录应用和系统方法调用情况。</p>
-</li>
-<li><p>自定义配置</p>
-</li>
+<li>对C/C++函数采样：捕获Native方法采样数据。</li>
+<li>跟踪系统调用：基于systrace，记录应用和系统方法调用情况。</li>
+<li>自定义配置</li>
 </ol>
 <h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><ol>
 <li>点击Record开始跟踪</li>
@@ -9429,7 +9417,7 @@ end</pre>
 <h2 id="System-Tracing-App"><a href="#System-Tracing-App" class="headerlink" title="System Tracing App"></a>System Tracing App</h2><p>Android 9.0以上包含一个Sytem Tracing的系统应用，用于跟踪设备活动，生成Trace文件。可以直接在设备进行记录，再获取跟踪文件，无需通过adb连接到电脑。参考<a href="https://developer.android.google.cn/topic/performance/tracing/on-device">System Tracing App介绍</a></p>
 <p>步骤如下：</p>
 <ol>
-<li><p>打开System Tracing应用：”开发者选项&gt;System Tracing”</p>
+<li><p>打开System Tracing应用：【开发者选项&gt;System Tracing】</p>
 <img src="/2021/01/01/android-2021-01-01-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E5%B7%A5%E5%85%B7%E7%AF%87/System Tracing App.png" style="zoom:50%;"></li>
 <li><p>开始记录：有两种方式</p>
 <ol>
@@ -17321,28 +17309,6 @@ dispatchMessage-->判断是否是通知消息
 <td></td>
 </tr>
 </tbody></table>
-<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>多个并发进程因争夺系统资源而产生相互等待的现象。</p>
-<h3 id="产生的条件"><a href="#产生的条件" class="headerlink" title="产生的条件"></a>产生的条件</h3><ul>
-<li>互斥：一个资源每次只能被一个进程使用。</li>
-<li>请求与保持：一个进程因请求资源而阻塞时，对已获得的资源保持不放。不主动释放</li>
-<li>不可抢占：进程已获得的资源，在末使用完之前，不能强行剥夺。</li>
-<li>循环等待：若干进程之间形成一种头尾相接的循环等待资源关系。</li>
-</ul>
-<h2 id="预防死锁"><a href="#预防死锁" class="headerlink" title="预防死锁"></a>预防死锁</h2><ul>
-<li>打破互斥条件：允许进程同时访问某个资源</li>
-<li>打破请求与保持：资源利用率低，降低并发性，不能动态分配资源<ul>
-<li>一次性申请全部资源</li>
-<li>进程获得运行初期需要的资源，运行过程中逐步释放掉已经用完的资源，再请求新的资源</li>
-</ul>
-</li>
-<li>打破不可抢占：进程请求新的资源时，如果无法被满足，则释放所占有的资源，以后重新申请。</li>
-<li>打破循环等待：实行资源有序分配策略。采用这种策略，即把资源事先分类编号，按号分配，使进程在申请，占用资源时不会形成环路。所有进程对资源的请求必须严格按资源序号递增的顺序提出。进程占用了小号资源，才能申请大号资源。</li>
-</ul>
-<h2 id="避免死锁"><a href="#避免死锁" class="headerlink" title="避免死锁"></a>避免死锁</h2><ul>
-<li>如果一个进程的请求会导致死锁，则不启动该进程</li>
-<li>如果一个进程的增加资源请求会导致死锁 ，则拒绝该申请。</li>
-</ul>
-<p>银行家算法</p>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>位（bit）是计算机存储的最小单位，字节是计算机处理数据的最小单位，1字节=8位</p>
 ]]></content>
       <categories>
