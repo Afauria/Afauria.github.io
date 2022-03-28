@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/GPU渲染.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/01/04/android-2021-01-04-Android%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-%E6%96%B9%E6%B3%95%E7%AF%87/电池使用情况.png">
 <meta property="article:published_time" content="2021-01-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-21T01:06:46.367Z">
+<meta property="article:modified_time" content="2022-03-23T12:01:59.857Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="工具">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-21 09:06:46" itemprop="dateModified" datetime="2022-03-21T09:06:46+08:00">2022-03-21</time>
+                <time title="修改时间：2022-03-23 20:01:59" itemprop="dateModified" datetime="2022-03-23T20:01:59+08:00">2022-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,14 +284,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.3k</span>
+              <span>9.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>9 分钟</span>
             </span>
             <div class="post-description">介绍Android性能分析方法和思路</div>
 
@@ -436,7 +436,7 @@
 <li>一次性内存泄漏：多次执行只泄漏一次，例如单例持有Context，每次打开新的页面都替换新的Context，原来的Context就可以被释放掉</li>
 </ul>
 <h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC。例如在循环中、或者<code>onDraw</code>、<code>onBindViewHolder</code>等频繁调用的方法中创建对象</p>
-<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC</p>
+<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC。观察内存曲线是否抖动。</p>
 <h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>OOM（Out of memory，内存溢出）：JVM没有足够的内存来为对象分配空间，GC也已经没有空间可回收，此时会抛出<code>java.lang.OutOfMemoryError</code></p>
 <p>原因：</p>
 <ol>
@@ -487,6 +487,11 @@
 <li>空进程：不包含活动组件，用于缓存，缩短下次在该进程启动组件的时间。例如Activity Back退出，进程不会立马被杀。</li>
 </ul>
 <p>更多细节参考<a target="_blank" rel="noopener" href="http://gityuan.com/2018/05/19/android-process-adj/">解读Android进程优先级ADJ算法</a></p>
+<h2 id="Kswapd"><a href="#Kswapd" class="headerlink" title="Kswapd"></a>Kswapd</h2><p>kernel swap daemon，作为一个守护进程会一直监控系统内存的使用，剩余内存达到低点(阈值)时触发回收操作，剩余内存达到高点(阈值)时停止回收操作。回收策略：</p>
+<ol>
+<li>删除缓存的内存：缓存本是用来以空间换时间的，现在空间不足了，就释放掉。</li>
+<li>压缩内存中的数据：这些数据删除就丢失了，于是压缩后放在内存中的特定区域，节省了空间。</li>
+</ol>
 <h1 id="卡顿分析"><a href="#卡顿分析" class="headerlink" title="卡顿分析"></a>卡顿分析</h1><p>卡顿通常是因为主线程存在耗时方法调用，因此同样可以使用Cpu分析方法，使用系统跟踪，找到超出16ms的帧，分析具体方法耗时。</p>
 <h2 id="GPU渲染速度"><a href="#GPU渲染速度" class="headerlink" title="GPU渲染速度"></a>GPU渲染速度</h2><p>查看GPU绘制信息：<code>dumpsys gfxinfo &lt;packageName</code>&gt;`</p>
 <p>打开GPU呈现模式，会显示柱状条和16ms水平线：</p>
@@ -740,7 +745,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">CPU分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%B8%AA"><span class="nav-number">2.1.</span> <span class="nav-text">跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Debug%E7%B1%BB%E7%94%9F%E6%88%90Trace%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">使用Debug类生成Trace文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">内存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">3.1.</span> <span class="nav-text">查看内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8A%96%E5%8A%A8"><span class="nav-number">3.3.</span> <span class="nav-text">内存抖动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="nav-number">3.5.</span> <span class="nav-text">APP内存限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LMK%E6%9C%BA%E5%88%B6"><span class="nav-number">3.6.</span> <span class="nav-text">LMK机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%A1%E9%A1%BF%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">卡顿分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU%E6%B8%B2%E6%9F%93%E9%80%9F%E5%BA%A6"><span class="nav-number">4.1.</span> <span class="nav-text">GPU渲染速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E5%BA%A6%E7%BB%98%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">过度绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7Binder%E8%B0%83%E7%94%A8"><span class="nav-number">4.3.</span> <span class="nav-text">捕获Binder调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E4%B8%BB%E7%BA%BF%E7%A8%8B%E8%80%97%E6%97%B6"><span class="nav-number">4.4.</span> <span class="nav-text">检测主线程耗时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Looper%E5%BE%AA%E7%8E%AF%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%89%93%E5%8D%B0"><span class="nav-number">4.4.1.</span> <span class="nav-text">Looper循环中添加打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Choregorapher"><span class="nav-number">4.4.2.</span> <span class="nav-text">利用Choregorapher</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">启动速度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">能耗分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">网络流量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">严格模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">性能分析相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys-prostats"><span class="nav-number">9.1.</span> <span class="nav-text">dumpsys prostats</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top"><span class="nav-number">9.2.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vmstat"><span class="nav-number">9.3.</span> <span class="nav-text">vmstat</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">10.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">CPU分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%B8%AA"><span class="nav-number">2.1.</span> <span class="nav-text">跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Debug%E7%B1%BB%E7%94%9F%E6%88%90Trace%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">使用Debug类生成Trace文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">内存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">3.1.</span> <span class="nav-text">查看内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8A%96%E5%8A%A8"><span class="nav-number">3.3.</span> <span class="nav-text">内存抖动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="nav-number">3.5.</span> <span class="nav-text">APP内存限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LMK%E6%9C%BA%E5%88%B6"><span class="nav-number">3.6.</span> <span class="nav-text">LMK机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kswapd"><span class="nav-number">3.7.</span> <span class="nav-text">Kswapd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%A1%E9%A1%BF%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">卡顿分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU%E6%B8%B2%E6%9F%93%E9%80%9F%E5%BA%A6"><span class="nav-number">4.1.</span> <span class="nav-text">GPU渲染速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E5%BA%A6%E7%BB%98%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">过度绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7Binder%E8%B0%83%E7%94%A8"><span class="nav-number">4.3.</span> <span class="nav-text">捕获Binder调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E4%B8%BB%E7%BA%BF%E7%A8%8B%E8%80%97%E6%97%B6"><span class="nav-number">4.4.</span> <span class="nav-text">检测主线程耗时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Looper%E5%BE%AA%E7%8E%AF%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%89%93%E5%8D%B0"><span class="nav-number">4.4.1.</span> <span class="nav-text">Looper循环中添加打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Choregorapher"><span class="nav-number">4.4.2.</span> <span class="nav-text">利用Choregorapher</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">启动速度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%BD%E8%80%97%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">能耗分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">7.</span> <span class="nav-text">网络流量分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">严格模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">性能分析相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys-prostats"><span class="nav-number">9.1.</span> <span class="nav-text">dumpsys prostats</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top"><span class="nav-number">9.2.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vmstat"><span class="nav-number">9.3.</span> <span class="nav-text">vmstat</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">10.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -756,7 +761,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -853,13 +858,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">518k</span>
+    <span title="站点总字数">508k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:51</span>
+    <span title="站点阅读时长">7:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

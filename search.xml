@@ -235,84 +235,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Flutter引擎源码分析</title>
-    <url>/2022/03/01/flutter-2022-03-01-Flutter%E5%BC%95%E6%93%8E%E6%BA%90%E7%A0%81/</url>
-    <content><![CDATA[<p>Linux入口main.cc、Android入口FlutterActivity</p>
-<p>homescreen main.cc</p>
-<h1 id="target-sysroot"><a href="#target-sysroot" class="headerlink" title="target-sysroot"></a>target-sysroot</h1><p>查看Flutter引擎编译配置，<code>gclinet sync</code>的时候会通过<code>install-sysroot.py</code>脚本去下载对应的sysroot用于构建，例如<code>debian_sid_arm64-sysroot</code>。没有下载arm的sysroot</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//src/flutter/DEPS</span></span><br><span class="line">&#123;</span><br><span class="line">   &#x27;name&#x27;: &#x27;linux_sysroot_x64&#x27;,</span><br><span class="line">   &#x27;pattern&#x27;: &#x27;.&#x27;,</span><br><span class="line">   &#x27;condition&#x27;: &#x27;download_linux_deps&#x27;,</span><br><span class="line">   &#x27;action&#x27;: [</span><br><span class="line">     &#x27;python3&#x27;,</span><br><span class="line">     &#x27;src/build/linux/sysroot_scripts/install-sysroot.py&#x27;,</span><br><span class="line">     &#x27;--arch=x64&#x27;],</span><br><span class="line"> &#125;,</span><br><span class="line"> &#123;</span><br><span class="line">   &#x27;name&#x27;: &#x27;linux_sysroot_arm64&#x27;,</span><br><span class="line">   &#x27;pattern&#x27;: &#x27;.&#x27;,</span><br><span class="line">   &#x27;condition&#x27;: &#x27;download_linux_deps&#x27;,</span><br><span class="line">   &#x27;action&#x27;: [</span><br><span class="line">     &#x27;python3&#x27;,</span><br><span class="line">     &#x27;src/build/linux/sysroot_scripts/install-sysroot.py&#x27;,</span><br><span class="line">     &#x27;--arch=arm64&#x27;],</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
-
-<p>分析<code>install-sysroot.py</code>脚本，会从<a href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter官方预构建引擎sysroot</a>手动下载sysroot并使用<code>tar -xf</code>命令解压。源码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># src/build/linux/sysroot_scripts/install-sysroot.py</span></span><br><span class="line">URL_PREFIX = <span class="string">&#x27;https://commondatastorage.googleapis.com&#x27;</span></span><br><span class="line">URL_PATH = <span class="string">&#x27;chrome-linux-sysroot/toolchain&#x27;</span></span><br><span class="line"></span><br><span class="line">VALID_ARCHS = (<span class="string">&#x27;arm&#x27;</span>, <span class="string">&#x27;arm64&#x27;</span>, <span class="string">&#x27;i386&#x27;</span>, <span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析sysroots.json文件，获取文件名和Sha1校验码</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GetSysrootDict</span>(<span class="params">target_platform, target_arch</span>):</span></span><br><span class="line">  <span class="keyword">if</span> target_arch <span class="keyword">not</span> <span class="keyword">in</span> VALID_ARCHS:</span><br><span class="line">    <span class="keyword">raise</span> Error(<span class="string">&#x27;Unknown architecture: %s&#x27;</span> % target_arch)</span><br><span class="line"></span><br><span class="line">  sysroots_file = os.path.join(SCRIPT_DIR, <span class="string">&#x27;sysroots.json&#x27;</span>)</span><br><span class="line">  sysroots = json.load(<span class="built_in">open</span>(sysroots_file))</span><br><span class="line">  sysroot_key = <span class="string">&#x27;%s_%s&#x27;</span> % (target_platform, target_arch)</span><br><span class="line">  <span class="keyword">if</span> sysroot_key <span class="keyword">not</span> <span class="keyword">in</span> sysroots:</span><br><span class="line">    <span class="keyword">raise</span> Error(<span class="string">&#x27;No sysroot for: %s %s&#x27;</span> % (target_platform, target_arch))</span><br><span class="line">  <span class="keyword">return</span> sysroots[sysroot_key]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拼接URL，下载并解压sysroot</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">InstallSysroot</span>(<span class="params">target_platform, target_arch</span>):</span></span><br><span class="line">  sysroot_dict = GetSysrootDict(target_platform, target_arch)</span><br><span class="line">  tarball_filename = sysroot_dict[<span class="string">&#x27;Tarball&#x27;</span>]</span><br><span class="line">  tarball_sha1sum = sysroot_dict[<span class="string">&#x27;Sha1Sum&#x27;</span>]</span><br><span class="line">  <span class="comment"># TODO(thestig) Consider putting this elsewhere to avoid having to recreate</span></span><br><span class="line">  <span class="comment"># it on every build.</span></span><br><span class="line">  linux_dir = os.path.dirname(SCRIPT_DIR)</span><br><span class="line">  sysroot = os.path.join(linux_dir, sysroot_dict[<span class="string">&#x27;SysrootDir&#x27;</span>])</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 例如：https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/013a1c4e9a58f34c5daaaf342247d5ce262b8470/debian_sid_arm64_sysroot.tar.xz</span></span><br><span class="line">  url = <span class="string">&#x27;%s/%s/%s/%s&#x27;</span> % (URL_PREFIX, URL_PATH, tarball_sha1sum,</span><br><span class="line">                         tarball_filename)</span><br></pre></td></tr></table></figure>
-
-<p>分析编译配置，没有指定<code>--target-sysroot</code>的话，默认会用<code>debian_sid_arm64-sysroot</code>，缺少arm的sysroot</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># src/build/config/sysroot.gni</span></span><br><span class="line"><span class="comment"># 添加调试日志</span></span><br><span class="line">print(<span class="string">&quot;current_toolchain&quot;</span>, current_toolchain)</span><br><span class="line">print(<span class="string">&quot;default_toolchain&quot;</span>, default_toolchain)</span><br><span class="line">print(<span class="string">&quot;target_sysroot&quot;</span>, target_sysroot)</span><br><span class="line"></span><br><span class="line">if (current_toolchain == default_toolchain &amp;&amp; target_sysroot != <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">  sysroot = target_sysroot</span><br><span class="line">&#125; <span class="keyword">else</span> if (is_android) &#123;</span><br><span class="line">  import(<span class="string">&quot;//build/config/android/config.gni&quot;</span>)</span><br><span class="line">  sysroot = rebase_path(<span class="string">&quot;$llvm_android_toolchain_root/sysroot&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> if (is_linux &amp;&amp; !is_chromeos) &#123;</span><br><span class="line">  if (use_default_linux_sysroot &amp;&amp; !is_fuchsia) &#123;</span><br><span class="line">    if (current_cpu == <span class="string">&quot;x64&quot;</span>) &#123;</span><br><span class="line">      sysroot = rebase_path(<span class="string">&quot;//build/linux/debian_sid_amd64-sysroot&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment"># 默认使用ARM64 sysroot</span></span><br><span class="line">      sysroot = rebase_path(<span class="string">&quot;//build/linux/debian_sid_arm64-sysroot&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    assert(</span><br><span class="line">        exec_script(<span class="string">&quot;//build/dir_exists.py&quot;</span>, [ sysroot ], <span class="string">&quot;string&quot;</span>) == <span class="string">&quot;True&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Missing sysroot ($sysroot). To fix, run: build/linux/sysroot_scripts/install-sysroot.py --arch=$current_cpu&quot;</span>)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sysroot = <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> if (is_mac) &#123;</span><br><span class="line">  import(<span class="string">&quot;//build/config/mac/mac_sdk.gni&quot;</span>)</span><br><span class="line">  sysroot = mac_sdk_path</span><br><span class="line">&#125; <span class="keyword">else</span> if (is_ios) &#123;</span><br><span class="line">  import(<span class="string">&quot;//build/config/ios/ios_sdk.gni&quot;</span>)</span><br><span class="line">  sysroot = ios_sdk_path</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  sysroot = <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 添加调试日志</span></span><br><span class="line">print(<span class="string">&quot;sysroot&quot;</span>, sysroot)</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>Flutter引擎默认只下载x64和arm64的sysroot，不会自动下载arm的sysroot。需要手动下载或者自行制作</li>
-<li>Flutter官方sysroot下载方式：<ol>
-<li>手动执行<code>install-sysroot.py</code>脚本</li>
-<li>修改DEPS文件，执行<code>gclient sync</code></li>
-<li>从<a href="https://commondatastorage.googleapis.com/chrome-linux-sysroot">Flutter引擎预构建sysroot下载地址</a>手动下载。</li>
-</ol>
-</li>
-<li>自行制作sysroot，参考<a href="/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91">交叉编译</a></li>
-<li>编译Linux arm目标的时候需要指定<code>--target-sysroot</code>，或者修改<code>sysroot.gni</code>配置</li>
-</ol>
-<h1 id="target-triple"><a href="#target-triple" class="headerlink" title="target-triple"></a>target-triple</h1><p>源码中搜索了下<code>--target-triple</code>，发现会拼接编译工具名，并且在执行gcc和binutils相关的命令时会指定<code>--target</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">build/toolchain/custom/BUILD.gn:15:  ar = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-ar&quot;</span><br><span class="line">build/toolchain/custom/BUILD.gn:17:  readelf = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-readelf&quot;</span><br><span class="line">build/toolchain/custom/BUILD.gn:18:  nm = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-nm&quot;</span><br><span class="line">build/toolchain/custom/BUILD.gn:19:  strip = &quot;$&#123;toolchain_bin&#125;/$&#123;custom_target_triple&#125;-strip&quot;</span><br><span class="line">build/toolchain/custom/BUILD.gn:21:  target_triple_flags = &quot;--target=$&#123;custom_target_triple&#125;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>如果使用Clang/LLVM编译，需要修改<code>BUILD.gn</code>文件，如下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> build/toolchain/custom/BUILD.gn</span></span><br><span class="line">ar = &quot;$&#123;toolchain_bin&#125;/llvm-ar&quot;</span><br><span class="line">readelf = &quot;$&#123;toolchain_bin&#125;/llvm-readelf&quot;</span><br><span class="line">nm = &quot;$&#123;toolchain_bin&#125;/llvm-nm&quot;</span><br><span class="line">strip = &quot;$&#123;toolchain_bin&#125;/llvm-strip&quot;</span><br></pre></td></tr></table></figure>
-
-<h1 id="prebuilt-dart-sdk"><a href="#prebuilt-dart-sdk" class="headerlink" title="prebuilt-dart-sdk"></a>prebuilt-dart-sdk</h1><p>查看Flutter引擎编译配置，<code>gclinet sync</code>的时候会通过<code>download_dart_sdk.py</code>脚本去下载预构建的DartSDK。</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//src/flutter/DEPS</span></span><br><span class="line">hooks = [</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;name&#x27;: &#x27;Download prebuilt Dart SDK&#x27;,</span><br><span class="line">    &#x27;pattern&#x27;: &#x27;.&#x27;,</span><br><span class="line">    &#x27;action&#x27;: [</span><br><span class="line">      &#x27;python3&#x27;,</span><br><span class="line">      &#x27;src/flutter/tools/download_dart_sdk.py&#x27;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<p>分析<code>download_dart_sdk.py</code>脚本，会从<a href="https://storage.googleapis.com/dart-archive">Flutter官方预构建Dart SDK仓库</a>中下载并解压。默认会下载x64和arm64的Dart SDK。源码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line"><span class="comment"># Downloads a Dart SDK to //flutter/prebuilts.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">DownloadDartSDK</span>(<span class="params">channel, version, os_name, arch, verbose</span>):</span></span><br><span class="line">  file = <span class="string">&#x27;dartsdk-&#123;&#125;-&#123;&#125;-release.zip&#x27;</span>.<span class="built_in">format</span>(os_name, arch)</span><br><span class="line">  <span class="comment"># 例如：https://storage.googleapis.com/dart-archive/channels/stable/raw/2.14.4/sdk/dartsdk-macos-x64-release.zip</span></span><br><span class="line">  url = <span class="string">&#x27;https://storage.googleapis.com/dart-archive/channels/&#123;&#125;/raw/&#123;&#125;/sdk/&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(</span><br><span class="line">    channel, version, file,</span><br><span class="line">  )</span><br><span class="line">  dest = os.path.join(FLUTTER_PREBUILTS_DIR, file)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line"><span class="comment"># Extracts a Dart SDK in //fluter/prebuilts</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ExtractDartSDK</span>(<span class="params">archive, os_name, arch, verbose</span>):</span></span><br><span class="line">  os_arch = <span class="string">&#x27;&#123;&#125;-&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(os_name, arch)</span><br><span class="line">  dart_sdk = os.path.join(FLUTTER_PREBUILTS_DIR, os_arch, <span class="string">&#x27;dart-sdk&#x27;</span>)</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 只会下载x64和arm64的Dart SDK，Windows没有arm64架构</span></span><br><span class="line"><span class="comment"># For os `os_name` return a list of architectures for which prebuilts are</span></span><br><span class="line"><span class="comment"># supported. Kepp in sync with `can_use_prebuilt_dart` in //flutter/tools/gn.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ArchitecturesForOS</span>(<span class="params">os_name</span>):</span></span><br><span class="line">  <span class="keyword">if</span> os_name == <span class="string">&#x27;linux&#x27;</span>:</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">&#x27;x64&#x27;</span>, <span class="string">&#x27;arm64&#x27;</span>]</span><br><span class="line">  <span class="keyword">elif</span> os_name == <span class="string">&#x27;macos&#x27;</span>:</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">&#x27;x64&#x27;</span>, <span class="string">&#x27;arm64&#x27;</span>]</span><br><span class="line">  <span class="keyword">elif</span> os_name ==<span class="string">&#x27;windows&#x27;</span>:</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">&#x27;x64&#x27;</span>]</span><br><span class="line">  eprint(<span class="string">&#x27;Could not determine architectures for os &quot;%s&quot;&#x27;</span> % os_name)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-
-<p>分析gn命令脚本：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> src/flutter/tools/gn</span></span><br><span class="line">def to_gn_args(args):</span><br><span class="line">    if args.prebuilt_dart_sdk: # 使用了--prebuilt-dart-sdk选项</span><br><span class="line">      if can_use_prebuilt_dart(args): # x64或者arm64的话可以使用预构建的Dart SDK</span><br><span class="line">        gn_args[&#x27;flutter_prebuilt_dart_sdk&#x27;] = True</span><br><span class="line">        gn_args[&#x27;dart_sdk_output&#x27;] = &#x27;built-dart-sdk&#x27;</span><br><span class="line">      else:</span><br><span class="line">        print(&#x27;--prebuilt-dart-sdk was specified, but an appropriate prebuilt &#x27;</span><br><span class="line">              &#x27;could not be found! Try running &#x27;</span><br><span class="line">              &#x27;flutter/tools/download_dart_sdk.py manually.&#x27;)</span><br><span class="line">    elif args.target_os is None or args.target_os == &#x27;linux&#x27;:</span><br><span class="line">      # dart_platform_sdk is only defined for host builds, linux arm host builds</span><br><span class="line">      # specify target_os=linux.</span><br><span class="line">      # dart_platform_sdk=True means exclude web-related files, e.g. dart2js,</span><br><span class="line">      # dartdevc, web SDK kernel and source files.</span><br><span class="line">      # 非Web平台，full_dart_sdk为false</span><br><span class="line">      gn_args[&#x27;dart_platform_sdk&#x27;] = not args.full_dart_sdk</span><br><span class="line">    # 包含Web平台</span><br><span class="line">    gn_args[&#x27;full_dart_sdk&#x27;] = args.full_dart_sdk</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Determines whether a prebuilt Dart SDK can be used instead of building one.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> We can use a prebuilt Dart SDK when:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 1. It is a host build, or a build targeting desktop</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2. The prebuilt SDK exists under //flutter/prebuilts/<span class="variable">$OS</span>-<span class="variable">$ARCH</span>.</span></span><br><span class="line">def can_use_prebuilt_dart(args):</span><br><span class="line">  prebuilt = None</span><br><span class="line">  if args.target_os == None: # 本地编译</span><br><span class="line">    if sys.platform.startswith((&#x27;cygwin&#x27;, &#x27;win&#x27;)):</span><br><span class="line">      prebuilt = &#x27;windows-x64&#x27;</span><br><span class="line">    elif sys.platform == &#x27;darwin&#x27;:</span><br><span class="line">      prebuilt = &#x27;macos-x64&#x27;</span><br><span class="line">    else:</span><br><span class="line">      prebuilt = &#x27;linux-x64&#x27;</span><br><span class="line">  elif args.target_os == &#x27;linux&#x27; and args.linux_cpu in [&#x27;x64&#x27;, &#x27;arm64&#x27;]: # x64、arm64目标平台编译</span><br><span class="line">    prebuilt = &#x27;linux-%s&#x27; % args.linux_cpu</span><br><span class="line">  elif args.target_os == &#x27;mac&#x27; and args.mac_cpu in [&#x27;x64&#x27;, &#x27;arm64&#x27;]:</span><br><span class="line">    prebuilt = &#x27;macos-%s&#x27; % args.mac_cpu</span><br><span class="line">  elif args.target_os in [&#x27;win&#x27;, &#x27;winuwp&#x27;] and args.windows_cpu == &#x27;x64&#x27;:</span><br><span class="line">    prebuilt = &#x27;windows-%s&#x27; % args.windows_cpu</span><br><span class="line"></span><br><span class="line">  prebuilts_dir = None</span><br><span class="line">  if prebuilt != None:</span><br><span class="line">    prebuilts_dir = os.path.join(SRC_ROOT, &#x27;flutter&#x27;, &#x27;prebuilts&#x27;, prebuilt)</span><br><span class="line">  return prebuilts_dir != None and os.path.isdir(prebuilts_dir)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<ul>
-<li><code>--prebuilt-dart-sdk</code>选项：是否下载编译好的Dart SDK，而不是重新编译Dart源码。旧版本引擎默认为false，新版本默认为true。</li>
-<li><code>--full-dart-sdk</code>：是否包含dart2js和dartdevc快照，用于Web平台，默认为false，对应<code>--no-full-dart-sdk</code></li>
-</ul>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> src/flutter/BUILD.gn</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Flutter SDK artifacts should only be built when either doing host builds, or <span class="keyword">for</span> cross-compiled desktop targets.</span></span><br><span class="line">_build_engine_artifacts = current_toolchain == host_toolchain || (is_linux &amp;&amp; !is_chromeos) || is_mac</span><br><span class="line"></span><br><span class="line">group(&quot;dart_sdk&quot;) &#123;</span><br><span class="line">  if (_build_engine_artifacts) &#123;</span><br><span class="line">    if (flutter_prebuilt_dart_sdk) &#123; # x64或者arm64桌面系统</span><br><span class="line">      public_deps = [ &quot;:copy_dart_sdk&quot; ]</span><br><span class="line">    &#125; else &#123; # 构建其他目标时会编译Dart SDK</span><br><span class="line">      public_deps = [ &quot;//third_party/dart:create_sdk&quot; ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>只有Linux、MacOS、Windows的x64和arm64架构才会下载Flutter官方预构建的Dart SDK。（Windows没有arm64架构）</li>
-<li>对于Linux ARM，或者Android、iOS目标平台，引擎编译时会编译Dart SDK，用于生成Flutter SDK。</li>
-<li>默认使用预构建的Dart SDK，预构建的Dart SDK会下载到<code>src/flutter/prebuilts/</code>目录下。</li>
-<li>需要自行编译Dart源码的时候使用<code>--no-prebuilt-dart-sdk</code>选项。</li>
-<li>既不想使用预编译Dart SDK，也不想自己编译，可以修改<code>BUILD.gn</code>文件，将<code>_build_engine_artifacts</code>改为false</li>
-</ol>
-<p>编译ARM目标平台时，Dart SDK会执行失败，因此需要跳过Flutter SDK编译，高版本引擎已经修复该问题，如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Flutter SDK artifacts should only be built when either doing host builds, or</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> cross-compiled desktop targets.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TODO: We can<span class="string">&#x27;t build the engine artifacts for arm (32-bit) right now;</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> see https://github.com/flutter/flutter/issues/74322</span></span><br><span class="line">_build_engine_artifacts =</span><br><span class="line">    current_toolchain == host_toolchain ||</span><br><span class="line">    (is_linux &amp;&amp; !is_chromeos &amp;&amp; current_cpu != &quot;arm&quot;) || is_mac</span><br></pre></td></tr></table></figure>
-
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>gn脚本选项：</p>
-<ul>
-<li><code>--clang</code>：使用clang编译，默认为true，对应<code>--no-clang</code></li>
-<li><code>--stripped</code>：删除调试符号，默认为true，对应<code>--no-stripped</code></li>
-</ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders">Custom Flutter Engine Embedders</a></li>
-<li><a href="https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedding-in-AOT-Mode">Custom Flutter Engine Embedding in AOT Mode</a></li>
-<li><a href="https://flutter.cn/embedded">Embedded support for Flutter</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Flutter</category>
-      </categories>
-      <tags>
-        <tag>Flutter</tag>
-        <tag>跨平台</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Flutter编译环境搭建探索</title>
     <url>/2022/02/14/flutter-2022-02-14-Flutter%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8E%A2%E7%B4%A2/</url>
     <content><![CDATA[<h1 id="探索过程总结"><a href="#探索过程总结" class="headerlink" title="探索过程总结"></a>探索过程总结</h1><p>环境配置较复杂，遇到的问题、涉及到的技术栈较多，导致文章内容比较零散。</p>
@@ -4031,7 +3953,7 @@
 <blockquote>
 <p>使用了JavaSPI（Service Provider Interface，服务发现接口）机制。关于JavaSPI机制可以阅读<a href="/2021/12/06/architecture-2021-12-06-SPI/">另一篇文章</a></p>
 </blockquote>
-<p>原理：APT运行的时候加载Processor接口，通过<code>ServiceLoader</code>读取services下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。（类似于<code>AndroidManifest</code>注册组件）</p>
+<p>原理：APT运行的时候加载Processor接口，通过<code>ServiceLoader</code>读取services文件夹下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。（类似于<code>AndroidManifest</code>注册组件）</p>
 <p>具体介绍和配置可以参考<a href="/2021/12/08/tech-2021-12-08-APT/">APT介绍和实践</a></p>
 <h2 id="增量注解处理器"><a href="#增量注解处理器" class="headerlink" title="增量注解处理器"></a>增量注解处理器</h2><p>注意到<code>ButterKnife</code>中还依赖了一个<code>incap</code>的库，并且使用了它的注解<code>@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.DYNAMIC)</code>。</p>
 <blockquote>
@@ -4044,7 +3966,7 @@
 <p>通过源码注解+APT方式生成XXX_ViewBinding类，并在onCreate调用<code>ButterKnife.bind(...)</code>注入字段。</p>
 <p>ButterKnife存在问题：高版本AGP（Android Gradle Plugin）生成的R文件不再是常量（模块化中可能和三方库产生id冲突），而编译时注解要求在编译期就确定值。因此在Library模块中会编译失败。</p>
 <p>可以添加ButterKnife提供的插件，生成R2资源id解决。</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 根目录 build.gradle引入插件</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">	dependencies &#123;</span><br><span class="line">		classpath <span class="string">&#x27;com.jakewharton:butterknife-gradle-plugin:10.2.3&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. library模块build.gradle应用插件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.library&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jakewharton.butterknife&#x27;</span> <span class="comment">//生成R2资源id</span></span><br><span class="line"><span class="comment">//3. 代码中使用R2替代R引用资源id</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 根目录 build.gradle引入插件</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">  dependencies &#123;</span><br><span class="line">    classpath <span class="string">&#x27;com.jakewharton:butterknife-gradle-plugin:10.2.3&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. library模块build.gradle应用插件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.library&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jakewharton.butterknife&#x27;</span> <span class="comment">//生成R2资源id</span></span><br><span class="line"><span class="comment">//3. 代码中使用R2替代R引用资源id</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="KAE（Kotlin-Android-Extensions）"><a href="#KAE（Kotlin-Android-Extensions）" class="headerlink" title="KAE（Kotlin Android Extensions）"></a>KAE（Kotlin Android Extensions）</h2><p><strong>已经被宣布废弃</strong>。</p>
 <p>使用方式：<code>build.gradle</code>添加插件即可<code>apply plugin: &#39;kotlin-android-extensions&#39;</code></p>
@@ -4061,7 +3983,7 @@
 <li><code>RecyclerView.Adapter onBindiViewHolder</code>中直接使用，会生成findViewById代码，丧失ViewHolder复用优势</li>
 </ul>
 <h2 id="ViewBinding"><a href="#ViewBinding" class="headerlink" title="ViewBinding"></a>ViewBinding</h2><p><a href="https://developer.android.com/topic/libraries/view-binding">官方文档</a>。内置Gradle插件，根据layout布局文件生成XXXBinding类。</p>
-<p>与findViewById相比：ViewBinding能保证空安全、类型安全。</p>
+<p>与findViewById相比：ViewBinding能保证<strong>空安全、类型安全</strong>。</p>
 <p>与DataBinding相比：ViewBinding更轻量，但不支持布局变量和布局表达式，不支持数据绑定</p>
 <p>使用方式如下：</p>
 <ol>
@@ -4073,9 +3995,10 @@
 <li>编写layout布局文件，build生成Binding类。如果想忽略布局文件，可以添加属性<code>tools:viewBindingIgnore=&quot;true&quot;</code></li>
 <li>代码中使用</li>
 </ol>
-<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragment</span> <span class="title">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="comment">//需要build之后才能生成Binding类</span></span><br><span class="line">		<span class="keyword">private</span> ResultProfileBinding binding;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">        binding = ResultProfileBinding.inflate(inflater, container, <span class="literal">false</span>);</span><br><span class="line">        View view = binding.getRoot();</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> void onDestroyView() &#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroyView();</span><br><span class="line">      	<span class="comment">//在Fragment中使用，onDestroyView的时候需要释放binding对象。</span></span><br><span class="line">        binding = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragment</span> <span class="title">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="comment">//需要build之后才能生成Binding类</span></span><br><span class="line">    <span class="keyword">private</span> ResultProfileBinding binding;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">        binding = ResultProfileBinding.inflate(inflater, container, <span class="literal">false</span>);</span><br><span class="line">        View view = binding.getRoot();</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> void onDestroyView() &#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroyView();</span><br><span class="line">      	<span class="comment">//在Fragment中使用，onDestroyView的时候需要释放binding对象。</span></span><br><span class="line">        binding = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="未来？"><a href="#未来？" class="headerlink" title="未来？"></a>未来？</h2><p>响应式布局。最好的视图绑定就是不需要findViewById</p>
+<h2 id="未来？"><a href="#未来？" class="headerlink" title="未来？"></a>未来？</h2><p>响应式布局。</p>
+<p>最好的视图绑定就是不需要findViewById</p>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -5913,7 +5836,6 @@ end</pre>
 <li>ART优化了垃圾回收机制，和运行时内存空间分配：新增<code>Image Space</code>和<code>Large Object Space</code></li>
 </ol>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>结构有点乱，基本是想到哪写到哪，不断延伸扩展出来相关的一些知识点</p>
-<p>经典语录：<strong>java和c++之间有一堵由动态内存分配和垃圾收集技术所围成的’高墙’，墙外的人想进去，墙内的人想出来</strong></p>
 <p>参考资料：</p>
 <ul>
 <li><a href="https://www.cnblogs.com/jmsjh/p/7808764.html">C为什么不能跨平台</a></li>
@@ -8087,6 +8009,57 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>远程服务器操作</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
+<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
+<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
+<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
+<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
+<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
+<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
+<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
+
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
+
+<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
+
+<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
+<blockquote>
+<p>除了scp之外，还可以使用rsync同步文件</p>
+</blockquote>
+<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
+<ol>
+<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
+<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
+<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
+</ol>
+</li>
+</ol>
+<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
+
+<ol start="2">
+<li>通过堡垒机登录远程主机</li>
+<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
+</ol>
+<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
+<ol>
+<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
+<li>登录远程主机，使用pull获取文件。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>linux</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>前端网站部署</title>
     <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
@@ -8189,57 +8162,6 @@ end</pre>
       <tags>
         <tag>前端</tag>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>远程服务器操作</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
-<p>ssh（Secure Shell）： Linux下实现远程登录功能的服务，默认 ssh 服务端口号为 22。</p>
-<h2 id="堡垒机登录远程主机"><a href="#堡垒机登录远程主机" class="headerlink" title="堡垒机登录远程主机"></a>堡垒机登录远程主机</h2><p>有的公司会采用堡垒机来访问服务器，堡垒机用于多台服务器统一监控和管理、身份认证、账号管理、登录等。</p>
-<p>使用堡垒机登录不需要知道主机用户名和密码，而是输入统一4A账号。堡垒机验证之后选择该账号下的主机登录</p>
-<p><img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/%E5%A0%A1%E5%9E%92%E6%9C%BA%E7%99%BB%E5%BD%95.png"></p>
-<h1 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h1><p>如何将本地文件拷贝到远程主机上？</p>
-<h2 id="SMB连接：知道主机用户名和密码"><a href="#SMB连接：知道主机用户名和密码" class="headerlink" title="SMB连接：知道主机用户名和密码"></a>SMB连接：知道主机用户名和密码</h2><p>SMB（Server Message Block）：可以用于跨平台文件传输</p>
-<p>Mac电脑连接步骤：Finder-&gt;前往-&gt;连接服务器-&gt;输入<code>smb:username@host</code>-&gt;输入远程主机密码</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb1.png" width="200">
-
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb2.png" width="500">
-
-<p>连接成功之后可以通过Finder访问或者拷贝文件夹</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/连接smb3.png" width="700">
-
-<h2 id="SCP：不知道主机用户名和密码"><a href="#SCP：不知道主机用户名和密码" class="headerlink" title="SCP：不知道主机用户名和密码"></a>SCP：不知道主机用户名和密码</h2><p>scp（secure copy）：scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。</p>
-<blockquote>
-<p>除了scp之外，还可以使用rsync同步文件</p>
-</blockquote>
-<p>如果使用堡垒机登录，不知道用户名和密码，无法通过SMB传输文件。此时可以使用SCP命令。步骤如下</p>
-<ol>
-<li>打开本机ssh服务，让远程主机能够通过ssh登录到本机。没打开的话ssh登录本机会报错<code>ssh: connect to host localhost port 22: Connection refused</code><ol>
-<li>打开系统偏好设置-&gt;共享-&gt;远程登录</li>
-<li>或者使用命令<code>sudo systemsetup -f -setremotelogin on</code></li>
-</ol>
-</li>
-</ol>
-<img src="/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/mac允许远程登录.png" width="600">
-
-<ol start="2">
-<li>通过堡垒机登录远程主机</li>
-<li>通过scp命令拷贝文件<code>scp -r 用户名@本地主机:本地文件路径 ./</code>，输入本机密码：-r表示拷贝文件夹，<code>./</code>表示拷贝到远程主机当前目录</li>
-</ol>
-<h2 id="通过远程仓库获取文件"><a href="#通过远程仓库获取文件" class="headerlink" title="通过远程仓库获取文件"></a>通过远程仓库获取文件</h2><p>一种取巧的方式</p>
-<ol>
-<li>将本地文件push到远程仓库如git仓库、docker仓库等。</li>
-<li>登录远程主机，使用pull获取文件。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-        <tag>linux</tag>
-        <tag>服务器</tag>
       </tags>
   </entry>
   <entry>
@@ -8934,7 +8856,7 @@ end</pre>
 <li>一次性内存泄漏：多次执行只泄漏一次，例如单例持有Context，每次打开新的页面都替换新的Context，原来的Context就可以被释放掉</li>
 </ul>
 <h2 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h2><p>内存抖动：频繁创建对象，触发GC。例如在循环中、或者<code>onDraw</code>、<code>onBindViewHolder</code>等频繁调用的方法中创建对象</p>
-<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC</p>
+<p>分析：CPU Profiler或者Systrace检查是否频繁发生GC。观察内存曲线是否抖动。</p>
 <h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>OOM（Out of memory，内存溢出）：JVM没有足够的内存来为对象分配空间，GC也已经没有空间可回收，此时会抛出<code>java.lang.OutOfMemoryError</code></p>
 <p>原因：</p>
 <ol>
@@ -8985,6 +8907,11 @@ end</pre>
 <li>空进程：不包含活动组件，用于缓存，缩短下次在该进程启动组件的时间。例如Activity Back退出，进程不会立马被杀。</li>
 </ul>
 <p>更多细节参考<a href="http://gityuan.com/2018/05/19/android-process-adj/">解读Android进程优先级ADJ算法</a></p>
+<h2 id="Kswapd"><a href="#Kswapd" class="headerlink" title="Kswapd"></a>Kswapd</h2><p>kernel swap daemon，作为一个守护进程会一直监控系统内存的使用，剩余内存达到低点(阈值)时触发回收操作，剩余内存达到高点(阈值)时停止回收操作。回收策略：</p>
+<ol>
+<li>删除缓存的内存：缓存本是用来以空间换时间的，现在空间不足了，就释放掉。</li>
+<li>压缩内存中的数据：这些数据删除就丢失了，于是压缩后放在内存中的特定区域，节省了空间。</li>
+</ol>
 <h1 id="卡顿分析"><a href="#卡顿分析" class="headerlink" title="卡顿分析"></a>卡顿分析</h1><p>卡顿通常是因为主线程存在耗时方法调用，因此同样可以使用Cpu分析方法，使用系统跟踪，找到超出16ms的帧，分析具体方法耗时。</p>
 <h2 id="GPU渲染速度"><a href="#GPU渲染速度" class="headerlink" title="GPU渲染速度"></a>GPU渲染速度</h2><p>查看GPU绘制信息：<code>dumpsys gfxinfo &lt;packageName</code>&gt;`</p>
 <p>打开GPU呈现模式，会显示柱状条和16ms水平线：</p>
@@ -14342,66 +14269,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/tool-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-<li><code>git count-objects -vH</code>：查看仓库大小</li>
-<li><code>git gc</code>：Git垃圾回收</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
-<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
-<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-TerminalCommand/</url>
     <content><![CDATA[<p>mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别</p>
@@ -14502,6 +14369,66 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/tool-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+<li><code>git count-objects -vH</code>：查看仓库大小</li>
+<li><code>git gc</code>：Git垃圾回收</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
+<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
+<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -15500,6 +15427,53 @@ dispatchMessage-->判断是否是通知消息
     庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
     雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
 </center>
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
 
 ]]></content>
       <categories>
@@ -16944,33 +16918,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
-<ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
-</ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>道</title>
     <url>/2018/04/14/personal-2018-04-14-Think/</url>
     <content><![CDATA[<ul>
@@ -17140,44 +17087,24 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
 </ul>
-</li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
 ]]></content>
       <categories>
         <category>其他</category>

@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2021/12/09/android-2021-12-09-ButterKnife/ButterKnife%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2021/12/09/android-2021-12-09-ButterKnife/ButterKnife%E5%8E%9F%E7%90%86.png">
 <meta property="article:published_time" content="2021-12-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-13T07:02:55.768Z">
+<meta property="article:modified_time" content="2022-03-25T01:14:58.040Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="APT">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-13 15:02:55" itemprop="dateModified" datetime="2021-12-13T15:02:55+08:00">2021-12-13</time>
+                <time title="修改时间：2022-03-25 09:14:58" itemprop="dateModified" datetime="2022-03-25T09:14:58+08:00">2022-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -423,7 +423,7 @@
 <blockquote>
 <p>使用了JavaSPI（Service Provider Interface，服务发现接口）机制。关于JavaSPI机制可以阅读<a href="/2021/12/06/architecture-2021-12-06-SPI/">另一篇文章</a></p>
 </blockquote>
-<p>原理：APT运行的时候加载Processor接口，通过<code>ServiceLoader</code>读取services下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。（类似于<code>AndroidManifest</code>注册组件）</p>
+<p>原理：APT运行的时候加载Processor接口，通过<code>ServiceLoader</code>读取services文件夹下的服务文件，找到Processor接口的实现类（可以有多个），遍历初始化和执行多个注解处理器。（类似于<code>AndroidManifest</code>注册组件）</p>
 <p>具体介绍和配置可以参考<a href="/2021/12/08/tech-2021-12-08-APT/">APT介绍和实践</a></p>
 <h2 id="增量注解处理器"><a href="#增量注解处理器" class="headerlink" title="增量注解处理器"></a>增量注解处理器</h2><p>注意到<code>ButterKnife</code>中还依赖了一个<code>incap</code>的库，并且使用了它的注解<code>@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.DYNAMIC)</code>。</p>
 <blockquote>
@@ -436,7 +436,7 @@
 <p>通过源码注解+APT方式生成XXX_ViewBinding类，并在onCreate调用<code>ButterKnife.bind(...)</code>注入字段。</p>
 <p>ButterKnife存在问题：高版本AGP（Android Gradle Plugin）生成的R文件不再是常量（模块化中可能和三方库产生id冲突），而编译时注解要求在编译期就确定值。因此在Library模块中会编译失败。</p>
 <p>可以添加ButterKnife提供的插件，生成R2资源id解决。</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 根目录 build.gradle引入插件</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">	dependencies &#123;</span><br><span class="line">		classpath <span class="string">&#x27;com.jakewharton:butterknife-gradle-plugin:10.2.3&#x27;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. library模块build.gradle应用插件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.library&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jakewharton.butterknife&#x27;</span> <span class="comment">//生成R2资源id</span></span><br><span class="line"><span class="comment">//3. 代码中使用R2替代R引用资源id</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 根目录 build.gradle引入插件</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">  dependencies &#123;</span><br><span class="line">    classpath <span class="string">&#x27;com.jakewharton:butterknife-gradle-plugin:10.2.3&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. library模块build.gradle应用插件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.library&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jakewharton.butterknife&#x27;</span> <span class="comment">//生成R2资源id</span></span><br><span class="line"><span class="comment">//3. 代码中使用R2替代R引用资源id</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="KAE（Kotlin-Android-Extensions）"><a href="#KAE（Kotlin-Android-Extensions）" class="headerlink" title="KAE（Kotlin Android Extensions）"></a>KAE（Kotlin Android Extensions）</h2><p><strong>已经被宣布废弃</strong>。</p>
 <p>使用方式：<code>build.gradle</code>添加插件即可<code>apply plugin: &#39;kotlin-android-extensions&#39;</code></p>
@@ -453,7 +453,7 @@
 <li><code>RecyclerView.Adapter onBindiViewHolder</code>中直接使用，会生成findViewById代码，丧失ViewHolder复用优势</li>
 </ul>
 <h2 id="ViewBinding"><a href="#ViewBinding" class="headerlink" title="ViewBinding"></a>ViewBinding</h2><p><a target="_blank" rel="noopener" href="https://developer.android.com/topic/libraries/view-binding">官方文档</a>。内置Gradle插件，根据layout布局文件生成XXXBinding类。</p>
-<p>与findViewById相比：ViewBinding能保证空安全、类型安全。</p>
+<p>与findViewById相比：ViewBinding能保证<strong>空安全、类型安全</strong>。</p>
 <p>与DataBinding相比：ViewBinding更轻量，但不支持布局变量和布局表达式，不支持数据绑定</p>
 <p>使用方式如下：</p>
 <ol>
@@ -465,9 +465,10 @@
 <li>编写layout布局文件，build生成Binding类。如果想忽略布局文件，可以添加属性<code>tools:viewBindingIgnore=&quot;true&quot;</code></li>
 <li>代码中使用</li>
 </ol>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragment</span> <span class="title">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="comment">//需要build之后才能生成Binding类</span></span><br><span class="line">		<span class="keyword">private</span> ResultProfileBinding binding;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">        binding = ResultProfileBinding.inflate(inflater, container, <span class="literal">false</span>);</span><br><span class="line">        View view = binding.getRoot();</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> void onDestroyView() &#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroyView();</span><br><span class="line">      	<span class="comment">//在Fragment中使用，onDestroyView的时候需要释放binding对象。</span></span><br><span class="line">        binding = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragment</span> <span class="title">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="comment">//需要build之后才能生成Binding类</span></span><br><span class="line">    <span class="keyword">private</span> ResultProfileBinding binding;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">        binding = ResultProfileBinding.inflate(inflater, container, <span class="literal">false</span>);</span><br><span class="line">        View view = binding.getRoot();</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> void onDestroyView() &#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroyView();</span><br><span class="line">      	<span class="comment">//在Fragment中使用，onDestroyView的时候需要释放binding对象。</span></span><br><span class="line">        binding = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="未来？"><a href="#未来？" class="headerlink" title="未来？"></a>未来？</h2><p>响应式布局。最好的视图绑定就是不需要findViewById</p>
+<h2 id="未来？"><a href="#未来？" class="headerlink" title="未来？"></a>未来？</h2><p>响应式布局。</p>
+<p>最好的视图绑定就是不需要findViewById</p>
 
     </div>
 
@@ -590,7 +591,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -687,13 +688,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">518k</span>
+    <span title="站点总字数">508k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:51</span>
+    <span title="站点阅读时长">7:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
