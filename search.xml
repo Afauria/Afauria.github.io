@@ -76,7 +76,7 @@
 <p><code>-g</code>保存依赖信息到<code>pn-buildlist</code>文件中</p>
 </blockquote>
 <p><code>bitbake -e &lt;recipe&gt; | grep ^S=</code>：查看Package编译工作目录</p>
-<p><code>bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</code>：查看软件源码下载路径</p>
+<p><code>bitbake -e lib32-flutter-sdk | grep ^SRC_URI=</code>：查看软件源码下载路径</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 32位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/armv7at2hf-neon-pokymllib32-linux-gnueabi/lib32-flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 64位工作目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e flutter-sdk | grep ^S=</span></span><br><span class="line">S=&quot;/home/code/build/tmp/work/aarch64-poky-linux/flutter-sdk/git-r0/git&quot;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 软件源码下载路径</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> bitbake -e lib32-flutter-sdk |grep ^SRC_URI=</span></span><br><span class="line">SRC_URI=&quot;git://github.com/flutter/flutter.git;protocol=https;nobranch=1&quot;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -3352,41 +3352,6 @@
       </tags>
   </entry>
   <entry>
-    <title>《提问的智慧》</title>
-    <url>/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/</url>
-    <content><![CDATA[<p>//todo</p>
-<p><img src="/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png" alt="思维导图"></p>
-<p><img src="/2021/12/30/reader-2021-12-30-%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE2.png" alt="思维导图"></p>
-<p>X-Y问题</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
-<ul>
-<li><a href="http://www.catb.org/~esr/faqs/smart-questions.html">原文-How To Ask Questions The Smart Way</a>：作者Eric S. Raymond，Rick Moen</li>
-<li><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way">中文翻译版</a></li>
-<li><a href="https://blog.csdn.net/qq_34804120/article/details/89117072">提问的智慧-精读注解版</a></li>
-<li><a href="https://ld246.com/article/1536377163156">提问的智慧</a></li>
-</ul>
-<p>推荐两位大佬的站点：</p>
-<ul>
-<li><a href="http://www.catb.org/esr/">Eric Raymond的站点</a>：一位优秀的黑客和作家</li>
-<li><a href="http://linuxmafia.com/">Rick Moen的站点</a></li>
-</ul>
-<p>相关阅读：</p>
-<ul>
-<li><a href="http://www.catb.org/~esr/faqs/hacker-howto.html">How To Become A Hacker</a>：如何成为一名黑客</li>
-<li><a href="http://catb.org/~esr/faqs/hacking-howto.html">How To Learn Hacking</a>：如何学习黑客</li>
-<li><a href="http://www.catb.org/~esr/faqs/hacker-hist.html">A Brief History of Hackerdom</a>：黑客简史</li>
-<li><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/hacker-revenge/">Revenge of the Hackers</a>：黑客的复仇</li>
-<li><a href="https://www.ruanyifeng.com/blog/2008/02/notes_on_the_cathedral_and_the_bazaar.html">https://www.ruanyifeng.com/blog/2008/02/notes_on_the_cathedral_and_the_bazaar.html</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>阅读</category>
-      </categories>
-      <tags>
-        <tag>阅读</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Flutter简介</title>
     <url>/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h1 id="Flutter简介"><a href="#Flutter简介" class="headerlink" title="Flutter简介"></a>Flutter简介</h1><p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
@@ -6350,9 +6315,7 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
     <title>线程同步的方式【转】</title>
     <url>/2021/09/15/kotlin-2021-09-15-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p>引自：<a href="https://mp.weixin.qq.com/s/eLxDiOgUiOl9BWu7FrvR2A">建议收藏！Kotlin 线程同步的 N 种方法</a></p>
-<h1 id="线程同步的方式"><a href="#线程同步的方式" class="headerlink" title="线程同步的方式"></a>线程同步的方式</h1><blockquote>
-<p>问题： 现有 Task1、Task2 等多个并行任务，如何等待全部任务执行完成后，开始执行 Task3 ? </p>
-</blockquote>
+<h1 id="线程同步的方式"><a href="#线程同步的方式" class="headerlink" title="线程同步的方式"></a>线程同步的方式</h1><p>问题： 现有 Task1、Task2 等多个并行任务，如何等待全部任务执行完成后，开始执行 Task3 ? </p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> task1: () -&gt; String = &#123;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;Hello&quot;</span>.also &#123; println(<span class="string">&quot;task1 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> task2: () -&gt; String = &#123;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;World&quot;</span>.also &#123; println(<span class="string">&quot;task2 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> task3: (String, String) -&gt; String = &#123; p1, p2 -&gt;</span><br><span class="line">    sleep(<span class="number">2000</span>)</span><br><span class="line">    <span class="string">&quot;<span class="variable">$p1</span> <span class="variable">$p2</span>&quot;</span>.also &#123; println(<span class="string">&quot;task3 finished: <span class="variable">$it</span>&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="Thread-join"><a href="#Thread-join" class="headerlink" title="Thread.join"></a>Thread.join</h2><p><code>join</code>方法：让当前所在线程挂起，让指定线程先执行</p>
@@ -6372,7 +6335,7 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_ReentrantLock</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> lock = ReentrantLock()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		lock.lock()</span><br><span class="line">		s1 = task1()</span><br><span class="line">		lock.unlock()</span><br><span class="line">	&#125;.start()</span><br><span class="line">  </span><br><span class="line">	s2 = task2()</span><br><span class="line">  </span><br><span class="line">	lock.lock()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">	lock.unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>多个并行任务需要创建多个Lock管理不同的任务</p>
-<h2 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h2><p>阻塞队列：阻塞队列内部也是通过 Lock 实现的。</p>
+<h2 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h2><p>阻塞队列：阻塞队列内部也是通过 ReentrantLock 实现的。</p>
 <p>阻塞队列更多是使用在生产/消费场景中的同步。</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_blockingQueue</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> queue = SynchronousQueue&lt;<span class="built_in">Unit</span>&gt;()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		queue.put(<span class="built_in">Unit</span>)</span><br><span class="line">	&#125;.start()</span><br><span class="line">	s2 = task2()</span><br><span class="line">	queue.take()</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -6388,9 +6351,15 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_cas</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	<span class="keyword">val</span> cas = AtomicInteger(<span class="number">2</span>)</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cas.getAndDecrement()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cas.getAndDecrement()</span><br><span class="line">	&#125;.start()</span><br><span class="line">	<span class="keyword">while</span> (cas.<span class="keyword">get</span>() != <span class="number">0</span>) &#123;&#125;</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>while</code> 循环空转看起来有些浪费资源，但是自旋锁的本质就是这样，所以 CAS 仅仅适用于一些cpu密集型的短任务同步。</p>
-<h2 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h2><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_Volatile</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	<span class="keyword">while</span> (cnt != <span class="number">0</span>) &#123;&#125;</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h2><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Volatile</span></span><br><span class="line"><span class="keyword">var</span> cnt = <span class="number">2</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_Volatile</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s1: String</span><br><span class="line">	<span class="keyword">lateinit</span> <span class="keyword">var</span> s2: String</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s1 = task1()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	Thread &#123;</span><br><span class="line">		s2 = task2()</span><br><span class="line">		cnt--</span><br><span class="line">	&#125;.start()</span><br><span class="line">	<span class="keyword">while</span> (cnt != <span class="number">0</span>) &#123;&#125;</span><br><span class="line">	task3(s1, s2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>注意，这种写法是错误的<code>volatile</code> 能保证可见性，但是不能保证原子性，<code>cnt--</code> 并非线程安全，需要加锁操作</strong></p>
+<p><strong>注意，这种写法是错误的，<code>volatile</code> 能保证可见性，但是不能保证原子性，<code>cnt--</code> 并非线程安全，需要加锁操作</strong></p>
+<ol>
+<li>获取cnt变量位2</li>
+<li>操作数-1</li>
+<li>写回内存</li>
+</ol>
+<p>volatile只能保证读取的时候是最新的，当两个线程都读完之后，分别执行了2步骤，再写回内存，结果被覆盖</p>
 <h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>上面无论有锁操作还是无锁操作，都需要定义两个变量<code>s1</code>、<code>s2</code>记录结果非常不方便。Java 1.5 开始，提供了 <code>Callable</code> 和 <code>Future</code> ，可以在任务执行结束时返回结果。</p>
 <p>通过 <code>future.get()</code>，可以同步等待结果返回，写起来非常方便</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test_future</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">val</span> future1 = FutureTask(Callable(task1))</span><br><span class="line">	<span class="keyword">val</span> future2 = FutureTask(Callable(task2))</span><br><span class="line">	Executors.newCachedThreadPool().execute(future1)</span><br><span class="line">	Executors.newCachedThreadPool().execute(future2)</span><br><span class="line">	task3(future1.<span class="keyword">get</span>(), future2.<span class="keyword">get</span>())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -8326,6 +8295,43 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>NPM笔记</title>
+    <url>/2021/04/12/note-2021-04-12-NPM/</url>
+    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
+<ol>
+<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
+<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
+</ul>
+</li>
+<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
+<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
+<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
+</ul>
+</li>
+<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
+<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
+<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
+<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
+</ul>
+</li>
+<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
+<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
+<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
+<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Github笔记</title>
     <url>/2021/04/12/note-2021-04-12-Github/</url>
     <content><![CDATA[<h1 id="GitHub笔记"><a href="#GitHub笔记" class="headerlink" title="GitHub笔记"></a>GitHub笔记</h1><ol>
@@ -8371,43 +8377,6 @@ end</pre>
 <h2 id="GitPage博客无法访问"><a href="#GitPage博客无法访问" class="headerlink" title="GitPage博客无法访问"></a>GitPage博客无法访问</h2><p>同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。</p>
 <p>困扰已久的问题，一直以为是需要翻墙vpn，原来是DNS服务器限制。</p>
 <p>当然有时候也确实和网络有关。</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NPM笔记</title>
-    <url>/2021/04/12/note-2021-04-12-NPM/</url>
-    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
-<ol>
-<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
-<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
-</ul>
-</li>
-<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
-<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
-<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
-</ul>
-</li>
-<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
-<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
-<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
-<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
-</ul>
-</li>
-<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
-<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
-<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
-<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
-</ul>
-</li>
-</ol>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -8888,22 +8857,22 @@ end</pre>
 <li>系统进程：系统服务system_server</li>
 <li>持久性进程：设备核心服务，例如电话、WLAN</li>
 <li>前台进程：用户正在交互所需要的进程<ul>
-<li>拥有正在交互的Activity（前台Activity）</li>
-<li>Service与正在交互的Activity绑定</li>
-<li>运行了前台服务（startForeground）</li>
+<li>这个进程拥有正在交互的Activity（前台Activity）</li>
+<li>这个进程的Service与正在交互的Activity绑定</li>
+<li>这个进程运行了前台服务（<code>startForegroundService</code>和<code>startForeground(id,notification)</code>）</li>
 <li>正在执行生命周期的Service</li>
 <li>正在执行onReceive的广播</li>
 </ul>
 </li>
 <li>可见进程：不和用户交互，但处于可见状态，用户可感知<ul>
-<li>Activity不处于前台，但仍可见（处于Pause状态）。</li>
+<li>Activity不处于前台，但仍可见（处于Pause状态）。例如前台activity启动一个对话框。</li>
 <li>进程的服务和可见Activity绑定</li>
 </ul>
 </li>
-<li>服务进程：运行了不属于上述两类的Service。例如后台播放音乐、后台下载</li>
+<li>服务进程：运行了不属于上述两类的Service。通过<code>startService() </code>启动的进程。例如后台播放音乐、后台下载</li>
 <li>Launcher应用：桌面、主屏幕</li>
 <li>上一个应用</li>
-<li>后台进程：Activity不可见（处于Stop状态）</li>
+<li>后台进程：Activity不可见（处于Stop状态），多个后台进程被保存在一个LRU列表</li>
 <li>空进程：不包含活动组件，用于缓存，缩短下次在该进程启动组件的时间。例如Activity Back退出，进程不会立马被杀。</li>
 </ul>
 <p>更多细节参考<a href="http://gityuan.com/2018/05/19/android-process-adj/">解读Android进程优先级ADJ算法</a></p>
@@ -14269,6 +14238,66 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/tool-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+<li><code>git count-objects -vH</code>：查看仓库大小</li>
+<li><code>git gc</code>：Git垃圾回收</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
+<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
+<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-TerminalCommand/</url>
     <content><![CDATA[<p>mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别</p>
@@ -14369,66 +14398,6 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/tool-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-<li><code>git count-objects -vH</code>：查看仓库大小</li>
-<li><code>git gc</code>：Git垃圾回收</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
-<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
-<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -17158,9 +17127,9 @@ dispatchMessage-->判断是否是通知消息
 <p>位数越多、刻度越多：</p>
 <ul>
 <li>如2位：能表示-2~1的数。1=01、-1=11、-2=2=10，模=100=01+11=10+10=进一位。进一位表示：2=010、-2=110，第一位表示符号位。</li>
-<li>如3位：能表示-4~3的数。1=001、-1=111、-4=4=100，模为=001+111=100+100=1000=进一位。进一位表示：4=0100、-4=1100，第一位表示符号位.模为1000</li>
+<li>如3位：能表示-4~3的数。1=001、-1=111、-4=4=100，模为=001+111=100+100=1000=进一位。进一位表示：4=0100、-4=1100，第一位表示符号位。模为1000</li>
 <li>如8位：能表示-128~127的数。1=00000001、-1=11111111、-128=128=10000000</li>
-<li>可以总结出。n为位数，-2^(n-1)=2^(n-1)，进一位：即模=</li>
+<li>可以总结出：n为位数，能表示-2^(n-1)=2^(n-1)</li>
 </ul>
 <h2 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h2><h3 id="二进制转十进制"><a href="#二进制转十进制" class="headerlink" title="二进制转十进制"></a>二进制转十进制</h3><p>例：二进制<code>00001000</code>转换为十进制</p>
 <p><code>(2^0)*0+(2^1)*0+(2^2)*0+(2^3)*1 = 8</code></p>
