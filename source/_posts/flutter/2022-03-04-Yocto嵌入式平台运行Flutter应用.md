@@ -158,7 +158,7 @@ Yocto的发行版：zeus（3.0）、dunfell（3.1）、gatesgarth（3.2）、har
 
 `bitbake -e <recipe> | grep ^S=`：查看Package编译工作目录
 
-`bitbake -e lib32-flutter-sdk |grep ^SRC_URI=`：查看软件源码下载路径
+`bitbake -e lib32-flutter-sdk | grep ^SRC_URI=`：查看软件源码下载路径
 
 ```shell
 # 32位工作目录
