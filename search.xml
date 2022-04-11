@@ -5768,44 +5768,6 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>加密算法</title>
-    <url>/2018/08/14/tech-2018-08-14-Encrypt/</url>
-    <content><![CDATA[<h1 id="密钥交换算法"><a href="#密钥交换算法" class="headerlink" title="密钥交换算法"></a>密钥交换算法</h1><h2 id="Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理："><a href="#Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理：" class="headerlink" title="Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理："></a>Diffie-Hellman（迪菲-赫尔曼）密钥交换算法原理：</h2><ol>
-<li>Alice与Bob确定两个大素数n和g，这两个数不用保密</li>
-<li>Alice选择另一个大随机数x，并计算A如下：A=gx mod n</li>
-<li>Alice将A发给Bob</li>
-<li>Bob  选择另一个大随机数y，并计算B如下：B=gy mod n</li>
-<li>Bob将B发给Alice</li>
-<li>计算密钥K1如下：K1=Bx mod n</li>
-<li>计算密钥K2如下：K2=Ay mod n</li>
-<li>K1=K2，因此Alice和Bob可以用其进行加解密</li>
-</ol>
-<h2 id="RSA加密算法"><a href="#RSA加密算法" class="headerlink" title="RSA加密算法"></a>RSA加密算法</h2><p>rsa加密算法是基于这样的数学事实：两个大素数（质数）相乘容易，而对得到的乘积求因子则很难。加密过程如下：</p>
-<ol>
-<li>选择两个大素数P、Q</li>
-<li>计算N=P*Q</li>
-<li>选择一个公钥（加密密钥）E，使其不是(P-1)与(Q-1)的因子</li>
-<li>选择私钥（解密密钥）D，满足条件：<code>(D*E) mod (P-1)(Q-1)=1</code></li>
-<li>加密时，明文PT计算密文CT：<code>CT=PTE mod N</code></li>
-<li>解密时，从密文CT计算明文PT：PT=CTD mod N 这也是SSL中会用一种密钥交换算法。</li>
-</ol>
-<h1 id="公钥和私钥、加密和解密、签名和认证"><a href="#公钥和私钥、加密和解密、签名和认证" class="headerlink" title="公钥和私钥、加密和解密、签名和认证"></a>公钥和私钥、加密和解密、签名和认证</h1><p>公钥（public key）可以公开，私钥（private key）自己持有。用其中一个进行加密，只能用另一个进行解密</p>
-<h2 id="在加密的场景下，公钥用来加密，私钥用来解密。"><a href="#在加密的场景下，公钥用来加密，私钥用来解密。" class="headerlink" title="在加密的场景下，公钥用来加密，私钥用来解密。"></a>在加密的场景下，<strong>公钥用来加密，私钥用来解密</strong>。</h2><p>Bob用Alice的公钥对消息进行加密，并把加密之后的消息传回给Alice；Alice应该保存好与这个公钥相对应的私钥，当Alice收到Bob发来的加密过的消息后，通过手里的私钥对其进行解密。</p>
-<p>只有私钥可以解密，而公钥不可以，所以即使公钥被窃听者Eve知道也没有关系。</p>
-<h2 id="在签名的场景下，私钥用来加密，公钥用来解密"><a href="#在签名的场景下，私钥用来加密，公钥用来解密" class="headerlink" title="在签名的场景下，私钥用来加密，公钥用来解密"></a>在签名的场景下，私钥用来加密，公钥用来解密</h2><p>签名是对上述过程的反向应用，即在此场景下，用私钥进行“加密”，而公钥进行“解密”，更清晰的说法是：在此场景下，用私钥进行“签名”，用公钥进行“认证”。目的是保证内容是Alice发出的</p>
-<p>因为私钥只有Alice自己知道，所以用私钥对消息进行签名后，只有与之对应的公钥才能对这个签过名的消息进行认证，而公钥是公开的，通过这个过程可以知道该消息确实是属于Alice的。</p>
-<p>如使用ssh登录GitHub仓库，本地持有私钥，服务器发送一段文本，本地使用私钥进行加密发送给服务器，服务器进行解密并验证通过</p>
-<p><strong>参考</strong></p>
-<p><a href="https://www.zhihu.com/question/25912483">知乎：RSA的公钥和私钥到底哪个才是用来加密和哪个用来解密？</a></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
@@ -10096,932 +10058,6 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
       </tags>
   </entry>
   <entry>
-    <title>书单（挖坑）</title>
-    <url>/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/</url>
-    <content><![CDATA[<style>
-  .item-list {
-  }
-  .item {
-    margin: 0 12px 12px 0;
-    border: 1px solid #ccc;
-    background: #fbfbfb;
-    position: static;
-    border-radius: 4px;
-    transition: box-shadow 0.3s ease-in-out;
-    padding: 10px 15px 10px 8px;
-    color: #444;
-  }
-  .item:hover {
-    box-shadow: 0 3px 8px 0 rgb(0 0 0 / 20%);
-  }
-  .item-title {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .item-desc {
-    border-top: 1px solid #ddd;
-    margin-top: 8px;
-    padding: 10px 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .item-url {
-    color: #999;
-  }
-  .item-list tbody {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(750px, 1fr));
-    justify-content: space-evenly;
-    border: none;
-    padding-left: 8px;
-  }
-  .item-list tbody tr {
-    margin: 0 12px 12px 0;
-    background: #fbfbfb;
-    position: static;
-    border-radius: 4px;
-    transition: box-shadow 0.3s ease-in-out;
-    padding: 8px 14px;
-    color: #444;
-    position: relative;
-  }
-  .item-list td,
-  .item-list tr {
-    display: block;
-    border: none;
-  }
-  .item-list thead,
-  .item-list th {
-    display: none;
-  }
-  .item-list tr:hover {
-    box-shadow: 0 3px 8px 0 rgb(0 0 0 / 20%);
-  }
-  .item-list tbody tr td:first-child {
-    font-size: 18px;
-    font-weight: bold;
-    display: inline-block;
-    padding: 0px 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .item-list tbody tr td:first-child a{
-    color: #66D;
-  }
-  .item-list tbody tr td:nth-child(2) {
-    font-size: 12px;
-    color: #999;
-    display: inline-block;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    word-break: break-all;
-    overflow: hidden;
-    text-align: right;
-    text-overflow: ellipsis;
-    padding: 0px 8px;
-  }
-  .item-list tbody tr td:last-child {
-    font-size: 14px;
-    color: #999;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    word-break: break-all;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0px 8px;
-  }
-  .item-list td a {
-    text-decoration: none;
-    border: none;
-  }
-</style>
-
-<div class="item-list">
-
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>收藏一些好书，有链接的用蓝色显示，待阅读补充介绍</p>
-<p>//todo</p>
-<h1 id="生活-amp-情感-amp-娱乐"><a href="#生活-amp-情感-amp-娱乐" class="headerlink" title="生活&amp;情感&amp;娱乐"></a>生活&amp;情感&amp;娱乐</h1><p>休闲阅读的书：扩宽视野</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>如何阅读一本书</td>
-<td>[美] 莫提默·J·艾德勒；查尔斯·范多伦</td>
-<td>阅读指南</td>
-</tr>
-<tr>
-<td>那些古怪又让人忧心的问题</td>
-<td></td>
-<td>回答了一系列荒谬但又有趣的问题，例如需要多少兵蚁才能在一个小时内咬断我的腿</td>
-</tr>
-<tr>
-<td>生命中最简单又最困难的事</td>
-<td></td>
-<td>来自华莱士的公开演讲，你除了需要扩大对历史、科学或任何随机事实的知识，还需要扩大对周围人的理解和认识。</td>
-</tr>
-<tr>
-<td>爱的五种语言</td>
-<td></td>
-<td>表达和接受爱的五种不同方式</td>
-</tr>
-<tr>
-<td><a href="https://what-if.xkcd.com/">《What If : Serious Scientific Answers to Absurd Hypothetical Questions》</a></td>
-<td></td>
-<td>假如 : 对荒谬假设性问题的严肃科学解答<br><a href="https://zhuanlan.zhihu.com/p/20116067?from_voters_page=true">知乎-What if？</a></td>
-</tr>
-<tr>
-<td>三体</td>
-<td>刘慈欣</td>
-<td>“中国科幻文学里程碑“式的作品</td>
-</tr>
-<tr>
-<td>白鹿原</td>
-<td>陈忠实</td>
-<td>渭河平原的雄奇史诗，中国农村的斑斓画卷</td>
-</tr>
-<tr>
-<td>围城</td>
-<td>钱钟书</td>
-<td>”城里的人想逃出来，城外的人想冲进去，对婚姻也罢、职业也罢，人生的愿望大都如此。“</td>
-</tr>
-<tr>
-<td>我们仨</td>
-<td>杨绛</td>
-<td>回忆一家三口快乐而艰难，爱与痛交织的日子</td>
-</tr>
-<tr>
-<td>呼兰河传</td>
-<td>萧红</td>
-<td>感受萧红笔下爱恨交织的故乡情</td>
-</tr>
-<tr>
-<td>长恨歌</td>
-<td>王安忆</td>
-<td>一个女人四十年的请与爱，一座城市四十年的常与变</td>
-</tr>
-<tr>
-<td>解忧杂货铺</td>
-<td>[日] 东野圭吾</td>
-<td></td>
-</tr>
-<tr>
-<td>白夜行</td>
-<td>[日] 村上春树</td>
-<td></td>
-</tr>
-<tr>
-<td>挪威的森林</td>
-<td>[日] 村上春树</td>
-<td>动人心弦、平缓舒雅、略带感伤的恋爱小说</td>
-</tr>
-<tr>
-<td>海边的卡夫卡</td>
-<td>[日] 村上春树</td>
-<td></td>
-</tr>
-<tr>
-<td>雪国</td>
-<td>[日] 川端康成</td>
-<td></td>
-</tr>
-<tr>
-<td>瓦尔登湖</td>
-<td>[美] 梭罗</td>
-<td>记录了作家长达两年的日常生活状态以及所思所想。在小木屋旁开荒种地，春种秋收，自给自足</td>
-</tr>
-<tr>
-<td>月亮与六便士</td>
-<td>[英] 毛姆</td>
-<td></td>
-</tr>
-<tr>
-<td>追风筝的人</td>
-<td>[美] 卡勒德·胡塞尼</td>
-<td></td>
-</tr>
-<tr>
-<td>叫魂：1768年中国妖术大恐慌</td>
-<td>孔飞力</td>
-<td></td>
-</tr>
-<tr>
-<td>霍乱时期的爱情</td>
-<td>[哥伦比亚] 加西亚·马尔克斯，拉丁美洲魔幻现实主义文学代表人物</td>
-<td>跨越半个多世纪的爱情史诗，穷尽所有爱情的可能性</td>
-</tr>
-<tr>
-<td>百年孤独</td>
-<td>[哥伦比亚] 加西亚·马尔克斯</td>
-<td></td>
-</tr>
-<tr>
-<td>牧羊少年的奇幻之旅</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>偷影子的人</td>
-<td>[法] 马克·李维</td>
-<td></td>
-</tr>
-<tr>
-<td>了不起的盖茨比</td>
-<td>[美] FS菲兹杰拉德</td>
-<td>”他的梦想看起来离他如此之近，他几乎无法错过它“</td>
-</tr>
-<tr>
-<td>小王子</td>
-<td>[法] 安东尼·德·圣·埃克苏佩里</td>
-<td></td>
-</tr>
-<tr>
-<td>人类的群星闪耀时</td>
-<td>[奥地利] 史蒂夫·茨威格</td>
-<td>撷取十四个历史时刻加以刻画。</td>
-</tr>
-<tr>
-<td>老人与海</td>
-<td>[美] 海明威</td>
-<td></td>
-</tr>
-<tr>
-<td>玩偶之家</td>
-<td>[挪威] 亨利·易卜生</td>
-<td></td>
-</tr>
-<tr>
-<td>红与黑</td>
-<td>[法] 司汤达</td>
-<td></td>
-</tr>
-<tr>
-<td>人性的弱点</td>
-<td>[美] 戴尔·卡耐基</td>
-<td></td>
-</tr>
-<tr>
-<td>悲惨世界</td>
-<td>[法] 维克多·雨果</td>
-<td></td>
-</tr>
-<tr>
-<td>这里</td>
-<td>[美]理查德·麦奎尔</td>
-<td>被称为“带上孤岛的图像小说”</td>
-</tr>
-</tbody></table>
-<h1 id="哲学-amp-历史-amp-人文-amp-科学-amp-神话"><a href="#哲学-amp-历史-amp-人文-amp-科学-amp-神话" class="headerlink" title="哲学&amp;历史&amp;人文&amp;科学&amp;神话"></a>哲学&amp;历史&amp;人文&amp;科学&amp;神话</h1><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>史记</td>
-<td>[汉] 司马迁</td>
-<td>纪传体通史，十二本纪（记历代帝王政绩）、三十世家（记诸侯国和汉代诸侯、勋贵兴亡）、七十列传（记重要人物的言行事迹，主要叙人臣，其中最后一篇为自序）、十表（大事年表）、八书（记各种典章制度记礼、乐、音律、历法、天文、封禅、水利、财用）</td>
-</tr>
-<tr>
-<td>资治通鉴</td>
-<td>[北宋] 司马光</td>
-<td>编年体通史</td>
-</tr>
-<tr>
-<td>孙子兵法</td>
-<td>[春秋] 孙武</td>
-<td></td>
-</tr>
-<tr>
-<td>山海经</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>社会契约论</td>
-<td>卢梭</td>
-<td>第一卷论述了社会结构和社会契约，第二卷阐述主权及其权利，第三卷阐述政府及其运作形式，第四卷讨论几种社会组织。《社会契约论》中主权在民的思想，是现代民主制度的基石，深刻地影响了欧洲的革命运动和英属北美殖民地的独立战争。</td>
-</tr>
-<tr>
-<td>万物简史</td>
-<td></td>
-<td>解答了关于宇宙、生命、人类等的一些基本问题。</td>
-</tr>
-<tr>
-<td>人类简史：从动物到上帝</td>
-<td>[以色列] 尤瓦尔·赫拉利</td>
-<td>填补传统人类史的3大鸿沟：历史观与哲学观的鸿沟、人类和生态系统之间的鸿沟、集体与个人之间的鸿沟</td>
-</tr>
-<tr>
-<td>时间简史</td>
-<td>[英] 史蒂夫·霍金</td>
-<td></td>
-</tr>
-<tr>
-<td>国富论</td>
-<td>[英] 亚当·斯密</td>
-<td>总结近代初期各国资本主义发展经验，批判地吸收当时重要的经济理论，提出一套系统全面地经济学说</td>
-</tr>
-<tr>
-<td>资本论</td>
-<td>[德] 马克思</td>
-<td>哲学、政治经济学、科学社会主义</td>
-</tr>
-<tr>
-<td>西方哲学史</td>
-<td>[美] 罗素</td>
-<td></td>
-</tr>
-<tr>
-<td>菊与刀</td>
-<td>[美] 鲁斯·本尼迪克特</td>
-<td>日本文化，二战后美日国际关系史</td>
-</tr>
-<tr>
-<td>理想国</td>
-<td>[古希腊] 柏拉图</td>
-<td>人类正义问题的开山之作，规划未来理想社会的蓝本</td>
-</tr>
-<tr>
-<td>不能承受的生命之轻</td>
-<td>[法] 米兰·昆德拉</td>
-<td>揭示人类命运、爱情、斗争和结局</td>
-</tr>
-<tr>
-<td>明朝那些事儿</td>
-<td>当年明月</td>
-<td></td>
-</tr>
-<tr>
-<td>大数据时代：生活、工作与思维的大变革</td>
-<td>[英] 迈尔·舍恩伯格；库克耶</td>
-<td></td>
-</tr>
-<tr>
-<td>平凡的世界</td>
-<td>路遥</td>
-<td>浓缩中国西北农村历史变迁过程</td>
-</tr>
-<tr>
-<td>万历十五年</td>
-<td>黄仁宇</td>
-<td></td>
-</tr>
-<tr>
-<td>1984</td>
-<td>乔治•奥威尔</td>
-<td>反乌托邦三部代表作：英国赫胥黎《美丽新世界》、俄国扎米亚京《我们》</td>
-</tr>
-</tbody></table>
-<h1 id="思想-amp-心理-amp-感悟"><a href="#思想-amp-心理-amp-感悟" class="headerlink" title="思想&amp;心理&amp;感悟"></a>思想&amp;心理&amp;感悟</h1><p>有点内涵、思想的书</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>乌合之众</td>
-<td>[法] 古斯塔夫·勒庞</td>
-<td>解析群体心理的经典名著，了解集体，也了解每个个体</td>
-</tr>
-<tr>
-<td>清醒思考的艺术</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>梦的解析</td>
-<td>[奥] 西格蒙德·弗洛伊德</td>
-<td></td>
-</tr>
-<tr>
-<td>Seeking Wisdom</td>
-<td></td>
-<td>探索真正的智慧</td>
-</tr>
-<tr>
-<td>异类：不一样的成功启示录</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>拖延心理学</td>
-<td>简·博克、莱诺拉·袁</td>
-<td></td>
-</tr>
-<tr>
-<td>影响力</td>
-<td>[美] 罗伯特·西奥迪尼</td>
-<td>一是当你真正的意图是要说“不”时，你不会再说“是”，二是可以令你自己变得比以前更具影响力。</td>
-</tr>
-<tr>
-<td>设计心理学</td>
-<td>唐纳德·A·诺曼</td>
-<td></td>
-</tr>
-<tr>
-<td>策略思维</td>
-<td>阿维纳什·K·迪克西特 / 巴里·J·奈尔伯夫</td>
-<td></td>
-</tr>
-<tr>
-<td>无价</td>
-<td>威廉·庞德斯通</td>
-<td>价格只是一场集体幻觉。在心理学里，人们无法准确地估计“公平价格”，反而受到无意识、不理性、政治等不正确因素的强烈影响。</td>
-</tr>
-<tr>
-<td>浅薄</td>
-<td>尼古拉斯·卡尔</td>
-<td>互联网正在按照自己的面目改造我们。我们变得对扫描和略读越来越得心应手，但是，我们正在丧失的却是专注能力、沉思能力和反省能力。</td>
-</tr>
-<tr>
-<td>定位</td>
-<td>艾·里斯 / 杰克·特劳特</td>
-<td>如何进入用户心智以赢得用户</td>
-</tr>
-<tr>
-<td>高效能人士的七个习惯</td>
-<td>史蒂芬·柯维</td>
-<td></td>
-</tr>
-<tr>
-<td>语言的魔力</td>
-<td>罗伯特·迪尔茨</td>
-<td></td>
-</tr>
-<tr>
-<td>思考，快与慢</td>
-<td>[美]丹尼尔·卡尼曼</td>
-<td>指导我们如何做出更好的选择，以及如何运用不同技巧来避免思维失误</td>
-</tr>
-</tbody></table>
-<h1 id="程序员必读书单"><a href="#程序员必读书单" class="headerlink" title="程序员必读书单"></a>程序员必读书单</h1><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>黑客与画家</td>
-<td>保罗•格雷厄姆，硅谷创业之父</td>
-<td></td>
-</tr>
-<tr>
-<td><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/">大教堂和集市</a></td>
-<td>Eric Raymond</td>
-<td>开源</td>
-</tr>
-<tr>
-<td>人月神话</td>
-<td></td>
-<td>一个需要10天才能干完的活，不可能让10个人在1天干完</td>
-</tr>
-<tr>
-<td>漫步华尔街</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>代码整洁之道</td>
-<td>Robert C.Martin（Uncle Bob）</td>
-<td>《Clean Code》：如何提高自己的代码质量。<br>《The Clean Coder》：如何成为一名更优秀的开发者。</td>
-</tr>
-<tr>
-<td>重构：改善既有代码的设计</td>
-<td>Martin Fowler，《重构》一书作者，敏捷开发大师</td>
-<td></td>
-</tr>
-<tr>
-<td>修改代码的艺术</td>
-<td>[美] Michael C. Feathers</td>
-<td></td>
-</tr>
-<tr>
-<td>程序员修炼之道</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>程序员的思维修炼</td>
-<td>[美国] 亨特（Andy Hunt）,敏捷开发权威人士，敏捷宣言首倡者之一</td>
-<td></td>
-</tr>
-<tr>
-<td><a href="https://www.ruanyifeng.com/blog/2021/06/drunk-post-of-a-programmer.html">程序员的酒后真言</a></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h1 id="技术书籍"><a href="#技术书籍" class="headerlink" title="技术书籍"></a>技术书籍</h1><h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>图解HTTP</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>图解TCP/IP</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>网络是怎样连接的</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>计算机网络-自顶向下方法</td>
-<td>[美] James，F.Kurose，Keith，W.Ross</td>
-<td></td>
-</tr>
-<tr>
-<td>TCP/IP详解</td>
-<td>[美] W.Richard Stevens</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>大话数据结构</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>剑指Offer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>数据结构与算法分析</td>
-<td>[美] 马克·艾伦·维斯</td>
-<td></td>
-</tr>
-<tr>
-<td>算法图解</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>计算机程序设计艺术</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>编程珠玑</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>算法（第四版）</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>算法导论</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="架构和设计模式"><a href="#架构和设计模式" class="headerlink" title="架构和设计模式"></a>架构和设计模式</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>设计模式</td>
-<td>GoF，四人帮</td>
-<td>设计模式开山之作，提出经典的23种设计模式</td>
-</tr>
-<tr>
-<td>Head First设计模式</td>
-<td>[美] 弗里曼（Freeman E.）</td>
-<td></td>
-</tr>
-<tr>
-<td>深入浅出面向对象分析与设计</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>软件建模与设计：UML、用例、模式和软件体系结构</td>
-<td>[美] Hassan Gomaa</td>
-<td></td>
-</tr>
-<tr>
-<td>架构之美：行业思想领袖揭秘软件设计之美</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Java编程思想</td>
-<td>[美] Bruce Eckel</td>
-<td></td>
-</tr>
-<tr>
-<td>深入理解Java虚拟机</td>
-<td>周志明</td>
-<td></td>
-</tr>
-<tr>
-<td>Java核心技术</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Effective Java</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Java 性能优化权威指南</td>
-<td>Charlie Hunt，Binu John</td>
-<td></td>
-</tr>
-<tr>
-<td>Java并发编程实战</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Java并发编程的艺术</td>
-<td>方腾飞</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>C程序设计语言</td>
-<td>[美] 布莱恩·W.克尼汉，[美] 丹尼斯·M.里奇</td>
-<td></td>
-</tr>
-<tr>
-<td>C和指针</td>
-<td>[美] 里科（Kenneth·Reek）</td>
-<td></td>
-</tr>
-<tr>
-<td>C专家编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>C陷阱与缺陷</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>C++ Primer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Effective C++</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据库系统概念</td>
-<td>[美] Abraham Silberschatz，Henry F.Korth，S.Sudarshan</td>
-<td></td>
-</tr>
-<tr>
-<td>MySQL技术内幕：InnoDB存储引擎</td>
-<td>姜承尧</td>
-<td></td>
-</tr>
-<tr>
-<td>MySQL必知必会</td>
-<td>[英] Ben Forta</td>
-<td></td>
-</tr>
-<tr>
-<td>高性能MySQL</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Redis设计与实现</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Redis深度历险</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>计算机科学导论</td>
-<td>[美] 贝赫鲁兹.佛罗赞（Behrouz Forouzan）</td>
-<td></td>
-</tr>
-<tr>
-<td>计算机组成原理</td>
-<td>唐朔飞</td>
-<td></td>
-</tr>
-<tr>
-<td>汇编语言</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>编译原理</td>
-<td>[美] Alfred V.Aho，[美] Monica S.Lam，[美] Ravi Sethi 等 著</td>
-<td></td>
-</tr>
-<tr>
-<td>计算机组成与设计 硬件/软件接口</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>离散数学及其应用</td>
-<td>[美] 肯尼思·H·罗森</td>
-<td></td>
-</tr>
-<tr>
-<td>编码</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>计算机程序的构造和解释（SICP）</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作者</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>现代操作系统</td>
-<td>Andrew S. Tanenbaum，Herbert Bos</td>
-<td>主要内容包括进程与线程、内存管理、文件系统、输入/输出、死锁、虚拟化和云、多处理机系统、安全，以及关于UNIX、Linux、Android和Windows的实例研究等。</td>
-</tr>
-<tr>
-<td>操作系统真象还原</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>现代操作系统：原理与实现</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>深入理解计算机系统</td>
-<td>[美] 兰德尔 E.布莱恩特 （Randal E.·Bryant）</td>
-<td></td>
-</tr>
-<tr>
-<td>鸟哥的Linux私房菜</td>
-<td></td>
-<td>鸟哥</td>
-</tr>
-<tr>
-<td>UNIX环境高级编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>程序员自我修养</td>
-<td></td>
-<td>系统软件的运行机制和原理，涉及在Windows和Linux两个系统平台上，一个应用程序在编译、链接和运行时刻所发生的各种事项</td>
-</tr>
-<tr>
-<td>UNIX网络编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>TCP/IP网络编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Linux高性能服务器编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Linux多线程服务端编程</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>深入Linux内核架构</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>深入理解Linux内核</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h1 id="其他推荐"><a href="#其他推荐" class="headerlink" title="其他推荐"></a>其他推荐</h1><p>三大推理文学宗师：松本清张、阿加莎·克里斯蒂、阿瑟·柯南·道尔</p>
-<p>中国武侠四大宗师：金庸、古龙、梁羽生、温瑞安</p>
-<p>四大名著</p>
-</div>
-
-<p><a href="http://www.catb.org/esr/">Eric Raymond的站点</a>：一位优秀的黑客和作家，《大教堂和集市》作者</p>
-<ul>
-<li><a href="http://www.catb.org/~esr/faqs/hacker-howto.html">How To Become A Hacker</a>：如何成为一名黑客</li>
-<li><a href="http://catb.org/~esr/faqs/hacking-howto.html">How To Learn Hacking</a>：如何学习黑客</li>
-<li><a href="http://www.catb.org/~esr/faqs/hacker-hist.html">A Brief History of Hackerdom</a>：黑客简史</li>
-<li><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/hacker-revenge/">Revenge of the Hackers</a>：黑客的复仇</li>
-<li><a href="http://www.catb.org/~esr/faqs/smart-questions.html">How To Ask Questions The Smart Way</a>：如何聪明的提问</li>
-<li>…</li>
-</ul>
-<p><a href="http://www.everypoet.com/archive/">Every Poet站点</a>：收录世界经典诗歌</p>
-<p><a href="https://www.tuicool.com/books">推酷书单推荐</a></p>
-<p><a href="http://gen.lib.rus.ec/">书籍下载</a></p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
-<li>一个人一生实际上只用读5、6本书，就能解决人生所有的困惑；但为了找到生命中的6本书，他需要去读上千本。——马家辉</li>
-<li>千万不要指望通过阅读就能有所改变，如果不思考不行动，看什么书都没用。</li>
-<li>看那么书有什么用？最后不都忘了吗？<ul>
-<li>——你每天吃那么多饭菜有什么用？最后也不都拉了吗？！食物消化后被拉了，但营养都被吸收到了血液和骨髓里，读书亦是如此！</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>阅读</category>
-      </categories>
-      <tags>
-        <tag>阅读</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>独角戏</title>
     <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
     <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
@@ -13870,11 +12906,59 @@ end</pre>
 <td>实时流协议</td>
 <td>可以发送暂停，播放，停止等请求</td>
 </tr>
+</tbody></table>
+<h2 id="OJ术语"><a href="#OJ术语" class="headerlink" title="OJ术语"></a>OJ术语</h2><table>
+<thead>
 <tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<th>缩写</th>
+<th>全称</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OJ</td>
+<td>Online Judge</td>
+<td>在线判题系统</td>
+</tr>
+<tr>
+<td>AC</td>
+<td>Accepted</td>
+<td>通过</td>
+</tr>
+<tr>
+<td>WA</td>
+<td>Wrong Answer</td>
+<td>答案错误</td>
+</tr>
+<tr>
+<td>TLE</td>
+<td>Time Limit Exceed</td>
+<td>超时</td>
+</tr>
+<tr>
+<td>OLE</td>
+<td>Output Limit Exceed</td>
+<td>超过输出限制</td>
+</tr>
+<tr>
+<td>MLE</td>
+<td>Memory Limit Exceed</td>
+<td>超内存</td>
+</tr>
+<tr>
+<td>RE</td>
+<td>Runtime Error</td>
+<td>运行时错误</td>
+</tr>
+<tr>
+<td>PE</td>
+<td>Presentation Error</td>
+<td>格式错误</td>
+</tr>
+<tr>
+<td>CE</td>
+<td>Compile Error</td>
+<td>无法编译</td>
 </tr>
 </tbody></table>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>IETF：国际互联网工程任务组（The Internet Engineering Task Force，简称 IETF）是一个公开性质的大型民间国际团体，汇集了与互联网架构和互联网顺利运作相关的网络设计者、运营者、投资人和研究人员，并欢迎所有对此行业感兴趣的人士参与。</p>
@@ -17380,6 +16464,932 @@ end</pre>
       </categories>
       <tags>
         <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>书单（挖坑）</title>
+    <url>/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<style>
+  .item-list {
+  }
+  .item {
+    margin: 0 12px 12px 0;
+    border: 1px solid #ccc;
+    background: #fbfbfb;
+    position: static;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 10px 15px 10px 8px;
+    color: #444;
+  }
+  .item:hover {
+    box-shadow: 0 3px 8px 0 rgb(0 0 0 / 20%);
+  }
+  .item-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .item-desc {
+    border-top: 1px solid #ddd;
+    margin-top: 8px;
+    padding: 10px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .item-url {
+    color: #999;
+  }
+  .item-list tbody {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(750px, 1fr));
+    justify-content: space-evenly;
+    border: none;
+    padding-left: 8px;
+  }
+  .item-list tbody tr {
+    margin: 0 12px 12px 0;
+    background: #fbfbfb;
+    position: static;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 8px 14px;
+    color: #444;
+    position: relative;
+  }
+  .item-list td,
+  .item-list tr {
+    display: block;
+    border: none;
+  }
+  .item-list thead,
+  .item-list th {
+    display: none;
+  }
+  .item-list tr:hover {
+    box-shadow: 0 3px 8px 0 rgb(0 0 0 / 20%);
+  }
+  .item-list tbody tr td:first-child {
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0px 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .item-list tbody tr td:first-child a{
+    color: #66D;
+  }
+  .item-list tbody tr td:nth-child(2) {
+    font-size: 12px;
+    color: #999;
+    display: inline-block;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    padding: 0px 8px;
+  }
+  .item-list tbody tr td:last-child {
+    font-size: 14px;
+    color: #999;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0px 8px;
+  }
+  .item-list td a {
+    text-decoration: none;
+    border: none;
+  }
+</style>
+
+<div class="item-list">
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>收藏一些好书，有链接的用蓝色显示，待阅读补充介绍</p>
+<p>//todo</p>
+<h1 id="生活-amp-情感-amp-娱乐"><a href="#生活-amp-情感-amp-娱乐" class="headerlink" title="生活&amp;情感&amp;娱乐"></a>生活&amp;情感&amp;娱乐</h1><p>休闲阅读的书：扩宽视野</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>如何阅读一本书</td>
+<td>[美] 莫提默·J·艾德勒；查尔斯·范多伦</td>
+<td>阅读指南</td>
+</tr>
+<tr>
+<td>那些古怪又让人忧心的问题</td>
+<td></td>
+<td>回答了一系列荒谬但又有趣的问题，例如需要多少兵蚁才能在一个小时内咬断我的腿</td>
+</tr>
+<tr>
+<td>生命中最简单又最困难的事</td>
+<td></td>
+<td>来自华莱士的公开演讲，你除了需要扩大对历史、科学或任何随机事实的知识，还需要扩大对周围人的理解和认识。</td>
+</tr>
+<tr>
+<td>爱的五种语言</td>
+<td></td>
+<td>表达和接受爱的五种不同方式</td>
+</tr>
+<tr>
+<td><a href="https://what-if.xkcd.com/">《What If : Serious Scientific Answers to Absurd Hypothetical Questions》</a></td>
+<td></td>
+<td>假如 : 对荒谬假设性问题的严肃科学解答<br><a href="https://zhuanlan.zhihu.com/p/20116067?from_voters_page=true">知乎-What if？</a></td>
+</tr>
+<tr>
+<td>三体</td>
+<td>刘慈欣</td>
+<td>“中国科幻文学里程碑“式的作品</td>
+</tr>
+<tr>
+<td>白鹿原</td>
+<td>陈忠实</td>
+<td>渭河平原的雄奇史诗，中国农村的斑斓画卷</td>
+</tr>
+<tr>
+<td>围城</td>
+<td>钱钟书</td>
+<td>”城里的人想逃出来，城外的人想冲进去，对婚姻也罢、职业也罢，人生的愿望大都如此。“</td>
+</tr>
+<tr>
+<td>我们仨</td>
+<td>杨绛</td>
+<td>回忆一家三口快乐而艰难，爱与痛交织的日子</td>
+</tr>
+<tr>
+<td>呼兰河传</td>
+<td>萧红</td>
+<td>感受萧红笔下爱恨交织的故乡情</td>
+</tr>
+<tr>
+<td>长恨歌</td>
+<td>王安忆</td>
+<td>一个女人四十年的请与爱，一座城市四十年的常与变</td>
+</tr>
+<tr>
+<td>解忧杂货铺</td>
+<td>[日] 东野圭吾</td>
+<td></td>
+</tr>
+<tr>
+<td>白夜行</td>
+<td>[日] 村上春树</td>
+<td></td>
+</tr>
+<tr>
+<td>挪威的森林</td>
+<td>[日] 村上春树</td>
+<td>动人心弦、平缓舒雅、略带感伤的恋爱小说</td>
+</tr>
+<tr>
+<td>海边的卡夫卡</td>
+<td>[日] 村上春树</td>
+<td></td>
+</tr>
+<tr>
+<td>雪国</td>
+<td>[日] 川端康成</td>
+<td></td>
+</tr>
+<tr>
+<td>瓦尔登湖</td>
+<td>[美] 梭罗</td>
+<td>记录了作家长达两年的日常生活状态以及所思所想。在小木屋旁开荒种地，春种秋收，自给自足</td>
+</tr>
+<tr>
+<td>月亮与六便士</td>
+<td>[英] 毛姆</td>
+<td></td>
+</tr>
+<tr>
+<td>追风筝的人</td>
+<td>[美] 卡勒德·胡塞尼</td>
+<td></td>
+</tr>
+<tr>
+<td>叫魂：1768年中国妖术大恐慌</td>
+<td>孔飞力</td>
+<td></td>
+</tr>
+<tr>
+<td>霍乱时期的爱情</td>
+<td>[哥伦比亚] 加西亚·马尔克斯，拉丁美洲魔幻现实主义文学代表人物</td>
+<td>跨越半个多世纪的爱情史诗，穷尽所有爱情的可能性</td>
+</tr>
+<tr>
+<td>百年孤独</td>
+<td>[哥伦比亚] 加西亚·马尔克斯</td>
+<td></td>
+</tr>
+<tr>
+<td>牧羊少年的奇幻之旅</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>偷影子的人</td>
+<td>[法] 马克·李维</td>
+<td></td>
+</tr>
+<tr>
+<td>了不起的盖茨比</td>
+<td>[美] FS菲兹杰拉德</td>
+<td>”他的梦想看起来离他如此之近，他几乎无法错过它“</td>
+</tr>
+<tr>
+<td>小王子</td>
+<td>[法] 安东尼·德·圣·埃克苏佩里</td>
+<td></td>
+</tr>
+<tr>
+<td>人类的群星闪耀时</td>
+<td>[奥地利] 史蒂夫·茨威格</td>
+<td>撷取十四个历史时刻加以刻画。</td>
+</tr>
+<tr>
+<td>老人与海</td>
+<td>[美] 海明威</td>
+<td></td>
+</tr>
+<tr>
+<td>玩偶之家</td>
+<td>[挪威] 亨利·易卜生</td>
+<td></td>
+</tr>
+<tr>
+<td>红与黑</td>
+<td>[法] 司汤达</td>
+<td></td>
+</tr>
+<tr>
+<td>人性的弱点</td>
+<td>[美] 戴尔·卡耐基</td>
+<td></td>
+</tr>
+<tr>
+<td>悲惨世界</td>
+<td>[法] 维克多·雨果</td>
+<td></td>
+</tr>
+<tr>
+<td>这里</td>
+<td>[美]理查德·麦奎尔</td>
+<td>被称为“带上孤岛的图像小说”</td>
+</tr>
+</tbody></table>
+<h1 id="哲学-amp-历史-amp-人文-amp-科学-amp-神话"><a href="#哲学-amp-历史-amp-人文-amp-科学-amp-神话" class="headerlink" title="哲学&amp;历史&amp;人文&amp;科学&amp;神话"></a>哲学&amp;历史&amp;人文&amp;科学&amp;神话</h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>史记</td>
+<td>[汉] 司马迁</td>
+<td>纪传体通史，十二本纪（记历代帝王政绩）、三十世家（记诸侯国和汉代诸侯、勋贵兴亡）、七十列传（记重要人物的言行事迹，主要叙人臣，其中最后一篇为自序）、十表（大事年表）、八书（记各种典章制度记礼、乐、音律、历法、天文、封禅、水利、财用）</td>
+</tr>
+<tr>
+<td>资治通鉴</td>
+<td>[北宋] 司马光</td>
+<td>编年体通史</td>
+</tr>
+<tr>
+<td>孙子兵法</td>
+<td>[春秋] 孙武</td>
+<td></td>
+</tr>
+<tr>
+<td>山海经</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>社会契约论</td>
+<td>卢梭</td>
+<td>第一卷论述了社会结构和社会契约，第二卷阐述主权及其权利，第三卷阐述政府及其运作形式，第四卷讨论几种社会组织。《社会契约论》中主权在民的思想，是现代民主制度的基石，深刻地影响了欧洲的革命运动和英属北美殖民地的独立战争。</td>
+</tr>
+<tr>
+<td>万物简史</td>
+<td></td>
+<td>解答了关于宇宙、生命、人类等的一些基本问题。</td>
+</tr>
+<tr>
+<td>人类简史：从动物到上帝</td>
+<td>[以色列] 尤瓦尔·赫拉利</td>
+<td>填补传统人类史的3大鸿沟：历史观与哲学观的鸿沟、人类和生态系统之间的鸿沟、集体与个人之间的鸿沟</td>
+</tr>
+<tr>
+<td>时间简史</td>
+<td>[英] 史蒂夫·霍金</td>
+<td></td>
+</tr>
+<tr>
+<td>国富论</td>
+<td>[英] 亚当·斯密</td>
+<td>总结近代初期各国资本主义发展经验，批判地吸收当时重要的经济理论，提出一套系统全面地经济学说</td>
+</tr>
+<tr>
+<td>资本论</td>
+<td>[德] 马克思</td>
+<td>哲学、政治经济学、科学社会主义</td>
+</tr>
+<tr>
+<td>西方哲学史</td>
+<td>[美] 罗素</td>
+<td></td>
+</tr>
+<tr>
+<td>菊与刀</td>
+<td>[美] 鲁斯·本尼迪克特</td>
+<td>日本文化，二战后美日国际关系史</td>
+</tr>
+<tr>
+<td>理想国</td>
+<td>[古希腊] 柏拉图</td>
+<td>人类正义问题的开山之作，规划未来理想社会的蓝本</td>
+</tr>
+<tr>
+<td>不能承受的生命之轻</td>
+<td>[法] 米兰·昆德拉</td>
+<td>揭示人类命运、爱情、斗争和结局</td>
+</tr>
+<tr>
+<td>明朝那些事儿</td>
+<td>当年明月</td>
+<td></td>
+</tr>
+<tr>
+<td>大数据时代：生活、工作与思维的大变革</td>
+<td>[英] 迈尔·舍恩伯格；库克耶</td>
+<td></td>
+</tr>
+<tr>
+<td>平凡的世界</td>
+<td>路遥</td>
+<td>浓缩中国西北农村历史变迁过程</td>
+</tr>
+<tr>
+<td>万历十五年</td>
+<td>黄仁宇</td>
+<td></td>
+</tr>
+<tr>
+<td>1984</td>
+<td>乔治•奥威尔</td>
+<td>反乌托邦三部代表作：英国赫胥黎《美丽新世界》、俄国扎米亚京《我们》</td>
+</tr>
+</tbody></table>
+<h1 id="思想-amp-心理-amp-感悟"><a href="#思想-amp-心理-amp-感悟" class="headerlink" title="思想&amp;心理&amp;感悟"></a>思想&amp;心理&amp;感悟</h1><p>有点内涵、思想的书</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>乌合之众</td>
+<td>[法] 古斯塔夫·勒庞</td>
+<td>解析群体心理的经典名著，了解集体，也了解每个个体</td>
+</tr>
+<tr>
+<td>清醒思考的艺术</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>梦的解析</td>
+<td>[奥] 西格蒙德·弗洛伊德</td>
+<td></td>
+</tr>
+<tr>
+<td>Seeking Wisdom</td>
+<td></td>
+<td>探索真正的智慧</td>
+</tr>
+<tr>
+<td>异类：不一样的成功启示录</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>拖延心理学</td>
+<td>简·博克、莱诺拉·袁</td>
+<td></td>
+</tr>
+<tr>
+<td>影响力</td>
+<td>[美] 罗伯特·西奥迪尼</td>
+<td>一是当你真正的意图是要说“不”时，你不会再说“是”，二是可以令你自己变得比以前更具影响力。</td>
+</tr>
+<tr>
+<td>设计心理学</td>
+<td>唐纳德·A·诺曼</td>
+<td></td>
+</tr>
+<tr>
+<td>策略思维</td>
+<td>阿维纳什·K·迪克西特 / 巴里·J·奈尔伯夫</td>
+<td></td>
+</tr>
+<tr>
+<td>无价</td>
+<td>威廉·庞德斯通</td>
+<td>价格只是一场集体幻觉。在心理学里，人们无法准确地估计“公平价格”，反而受到无意识、不理性、政治等不正确因素的强烈影响。</td>
+</tr>
+<tr>
+<td>浅薄</td>
+<td>尼古拉斯·卡尔</td>
+<td>互联网正在按照自己的面目改造我们。我们变得对扫描和略读越来越得心应手，但是，我们正在丧失的却是专注能力、沉思能力和反省能力。</td>
+</tr>
+<tr>
+<td>定位</td>
+<td>艾·里斯 / 杰克·特劳特</td>
+<td>如何进入用户心智以赢得用户</td>
+</tr>
+<tr>
+<td>高效能人士的七个习惯</td>
+<td>史蒂芬·柯维</td>
+<td></td>
+</tr>
+<tr>
+<td>语言的魔力</td>
+<td>罗伯特·迪尔茨</td>
+<td></td>
+</tr>
+<tr>
+<td>思考，快与慢</td>
+<td>[美]丹尼尔·卡尼曼</td>
+<td>指导我们如何做出更好的选择，以及如何运用不同技巧来避免思维失误</td>
+</tr>
+</tbody></table>
+<h1 id="程序员必读书单"><a href="#程序员必读书单" class="headerlink" title="程序员必读书单"></a>程序员必读书单</h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>黑客与画家</td>
+<td>保罗•格雷厄姆，硅谷创业之父</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/">大教堂和集市</a></td>
+<td>Eric Raymond</td>
+<td>开源</td>
+</tr>
+<tr>
+<td>人月神话</td>
+<td></td>
+<td>一个需要10天才能干完的活，不可能让10个人在1天干完</td>
+</tr>
+<tr>
+<td>漫步华尔街</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>代码整洁之道</td>
+<td>Robert C.Martin（Uncle Bob）</td>
+<td>《Clean Code》：如何提高自己的代码质量。<br>《The Clean Coder》：如何成为一名更优秀的开发者。</td>
+</tr>
+<tr>
+<td>重构：改善既有代码的设计</td>
+<td>Martin Fowler，《重构》一书作者，敏捷开发大师</td>
+<td></td>
+</tr>
+<tr>
+<td>修改代码的艺术</td>
+<td>[美] Michael C. Feathers</td>
+<td></td>
+</tr>
+<tr>
+<td>程序员修炼之道</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>程序员的思维修炼</td>
+<td>[美国] 亨特（Andy Hunt）,敏捷开发权威人士，敏捷宣言首倡者之一</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://www.ruanyifeng.com/blog/2021/06/drunk-post-of-a-programmer.html">程序员的酒后真言</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="技术书籍"><a href="#技术书籍" class="headerlink" title="技术书籍"></a>技术书籍</h1><h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>图解HTTP</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>图解TCP/IP</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>网络是怎样连接的</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>计算机网络-自顶向下方法</td>
+<td>[美] James，F.Kurose，Keith，W.Ross</td>
+<td></td>
+</tr>
+<tr>
+<td>TCP/IP详解</td>
+<td>[美] W.Richard Stevens</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>大话数据结构</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>剑指Offer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数据结构与算法分析</td>
+<td>[美] 马克·艾伦·维斯</td>
+<td></td>
+</tr>
+<tr>
+<td>算法图解</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>计算机程序设计艺术</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>编程珠玑</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>算法（第四版）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>算法导论</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="架构和设计模式"><a href="#架构和设计模式" class="headerlink" title="架构和设计模式"></a>架构和设计模式</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设计模式</td>
+<td>GoF，四人帮</td>
+<td>设计模式开山之作，提出经典的23种设计模式</td>
+</tr>
+<tr>
+<td>Head First设计模式</td>
+<td>[美] 弗里曼（Freeman E.）</td>
+<td></td>
+</tr>
+<tr>
+<td>深入浅出面向对象分析与设计</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>软件建模与设计：UML、用例、模式和软件体系结构</td>
+<td>[美] Hassan Gomaa</td>
+<td></td>
+</tr>
+<tr>
+<td>架构之美：行业思想领袖揭秘软件设计之美</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java编程思想</td>
+<td>[美] Bruce Eckel</td>
+<td></td>
+</tr>
+<tr>
+<td>深入理解Java虚拟机</td>
+<td>周志明</td>
+<td></td>
+</tr>
+<tr>
+<td>Java核心技术</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Effective Java</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Java 性能优化权威指南</td>
+<td>Charlie Hunt，Binu John</td>
+<td></td>
+</tr>
+<tr>
+<td>Java并发编程实战</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Java并发编程的艺术</td>
+<td>方腾飞</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C程序设计语言</td>
+<td>[美] 布莱恩·W.克尼汉，[美] 丹尼斯·M.里奇</td>
+<td></td>
+</tr>
+<tr>
+<td>C和指针</td>
+<td>[美] 里科（Kenneth·Reek）</td>
+<td></td>
+</tr>
+<tr>
+<td>C专家编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C陷阱与缺陷</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C++ Primer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Effective C++</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库系统概念</td>
+<td>[美] Abraham Silberschatz，Henry F.Korth，S.Sudarshan</td>
+<td></td>
+</tr>
+<tr>
+<td>MySQL技术内幕：InnoDB存储引擎</td>
+<td>姜承尧</td>
+<td></td>
+</tr>
+<tr>
+<td>MySQL必知必会</td>
+<td>[英] Ben Forta</td>
+<td></td>
+</tr>
+<tr>
+<td>高性能MySQL</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Redis设计与实现</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Redis深度历险</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计算机科学导论</td>
+<td>[美] 贝赫鲁兹.佛罗赞（Behrouz Forouzan）</td>
+<td></td>
+</tr>
+<tr>
+<td>计算机组成原理</td>
+<td>唐朔飞</td>
+<td></td>
+</tr>
+<tr>
+<td>汇编语言</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>编译原理</td>
+<td>[美] Alfred V.Aho，[美] Monica S.Lam，[美] Ravi Sethi 等 著</td>
+<td></td>
+</tr>
+<tr>
+<td>计算机组成与设计 硬件/软件接口</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>离散数学及其应用</td>
+<td>[美] 肯尼思·H·罗森</td>
+<td></td>
+</tr>
+<tr>
+<td>编码</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>计算机程序的构造和解释（SICP）</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作者</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>现代操作系统</td>
+<td>Andrew S. Tanenbaum，Herbert Bos</td>
+<td>主要内容包括进程与线程、内存管理、文件系统、输入/输出、死锁、虚拟化和云、多处理机系统、安全，以及关于UNIX、Linux、Android和Windows的实例研究等。</td>
+</tr>
+<tr>
+<td>操作系统真象还原</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>现代操作系统：原理与实现</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>深入理解计算机系统</td>
+<td>[美] 兰德尔 E.布莱恩特 （Randal E.·Bryant）</td>
+<td></td>
+</tr>
+<tr>
+<td>鸟哥的Linux私房菜</td>
+<td></td>
+<td>鸟哥</td>
+</tr>
+<tr>
+<td>UNIX环境高级编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>程序员自我修养</td>
+<td></td>
+<td>系统软件的运行机制和原理，涉及在Windows和Linux两个系统平台上，一个应用程序在编译、链接和运行时刻所发生的各种事项</td>
+</tr>
+<tr>
+<td>UNIX网络编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>TCP/IP网络编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Linux高性能服务器编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Linux多线程服务端编程</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>深入Linux内核架构</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>深入理解Linux内核</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="其他推荐"><a href="#其他推荐" class="headerlink" title="其他推荐"></a>其他推荐</h1><p>三大推理文学宗师：松本清张、阿加莎·克里斯蒂、阿瑟·柯南·道尔</p>
+<p>中国武侠四大宗师：金庸、古龙、梁羽生、温瑞安</p>
+<p>四大名著</p>
+</div>
+
+<p><a href="http://www.catb.org/esr/">Eric Raymond的站点</a>：一位优秀的黑客和作家，《大教堂和集市》作者</p>
+<ul>
+<li><a href="http://www.catb.org/~esr/faqs/hacker-howto.html">How To Become A Hacker</a>：如何成为一名黑客</li>
+<li><a href="http://catb.org/~esr/faqs/hacking-howto.html">How To Learn Hacking</a>：如何学习黑客</li>
+<li><a href="http://www.catb.org/~esr/faqs/hacker-hist.html">A Brief History of Hackerdom</a>：黑客简史</li>
+<li><a href="http://www.catb.org/~esr/writings/cathedral-bazaar/hacker-revenge/">Revenge of the Hackers</a>：黑客的复仇</li>
+<li><a href="http://www.catb.org/~esr/faqs/smart-questions.html">How To Ask Questions The Smart Way</a>：如何聪明的提问</li>
+<li>…</li>
+</ul>
+<p><a href="http://www.everypoet.com/archive/">Every Poet站点</a>：收录世界经典诗歌</p>
+<p><a href="https://www.tuicool.com/books">推酷书单推荐</a></p>
+<p><a href="http://gen.lib.rus.ec/">书籍下载</a></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
+<li>一个人一生实际上只用读5、6本书，就能解决人生所有的困惑；但为了找到生命中的6本书，他需要去读上千本。——马家辉</li>
+<li>千万不要指望通过阅读就能有所改变，如果不思考不行动，看什么书都没用。</li>
+<li>看那么书有什么用？最后不都忘了吗？<ul>
+<li>——你每天吃那么多饭菜有什么用？最后也不都拉了吗？！食物消化后被拉了，但营养都被吸收到了血液和骨髓里，读书亦是如此！</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>阅读</category>
+      </categories>
+      <tags>
+        <tag>阅读</tag>
       </tags>
   </entry>
 </search>

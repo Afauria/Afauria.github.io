@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.afauria.xyz/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/</loc>
+    <lastmod>2022-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
+    <lastmod>2022-04-07</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2018/04/10/basic-2018-04-10-ProgramBasic/</loc>
     <lastmod>2022-03-30</lastmod>
   </url>
@@ -90,10 +98,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2022-03-14</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/01/01/reader-2022-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/</loc>
     <lastmod>2022-03-14</lastmod>
   </url>
   <url>
@@ -197,10 +201,6 @@
     <lastmod>2022-02-22</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
-    <lastmod>2022-02-14</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/</loc>
     <lastmod>2022-01-10</lastmod>
   </url>
@@ -297,10 +297,6 @@
     <lastmod>2021-11-08</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/08/14/tech-2018-08-14-Encrypt/</loc>
-    <lastmod>2021-11-08</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2018/10/19/blog-2018-10-19-HexoTheme-NexT/</loc>
     <lastmod>2021-11-08</lastmod>
   </url>
@@ -341,11 +337,11 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
