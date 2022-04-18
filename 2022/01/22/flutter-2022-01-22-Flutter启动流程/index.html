@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Flutter加载和启动流程介绍，源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter启动流程">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="Flutter加载和启动流程介绍，源码分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterActivity#onCreate.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterEngine%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterView%E5%85%B3%E8%81%94%E5%BC%95%E6%93%8E.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterActivity#onStart.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/nativeAttach调用流程.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/nativeRunBundleAndSnapshotFromLibrary%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/Flutter嵌入层调用关系.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/Isolate%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.png">
+<meta property="article:published_time" content="2022-01-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-18T03:55:15.236Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterActivity#onCreate.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter启动流程 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter启动流程
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-22T00:00:00+08:00">2022-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-18 11:55:15" itemprop="dateModified" datetime="2022-04-18T11:55:15+08:00">2022-04-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter启动流程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>34k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>31 分钟</span>
+            </span>
+            <div class="post-description">Flutter加载和启动流程介绍，源码分析</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Flutter启动流程-Java层"><a href="#Flutter启动流程-Java层" class="headerlink" title="Flutter启动流程-Java层"></a>Flutter启动流程-Java层</h1><h2 id="程序入口"><a href="#程序入口" class="headerlink" title="程序入口"></a>程序入口</h2><h3 id="FlutterActivity-onCreate"><a href="#FlutterActivity-onCreate" class="headerlink" title="FlutterActivity#onCreate"></a>FlutterActivity#onCreate</h3><ol>
+<li>创建代理类，并传入this。Host接口提供子类Hook，代理类中会在特定时机回调接口通知宿主，例如配置<code>FlutterEngine</code></li>
+<li><code>delegate.onAttach</code>：创建<code>FlutterEngine</code></li>
+<li><code>delegate.onCreateView</code>：创建<code>FlutterView</code>，设置为ContentView</li>
+<li><code>getFlutterShellArgs()</code>：从Intent中获取Flutter参数</li>
+</ol>
+<blockquote>
+<p>通过代理的方式，使<code>FlutterActivity</code>和<code>FlutterFragment</code>共用代理类逻辑，避免重复编码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//./shell/platform/android/io/flutter/embedding/android/FlutterActivity.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span></span><br><span class="line"><span class="class">  <span class="keyword">implements</span> <span class="title">FlutterActivityAndFragmentDelegate</span>.<span class="title">Host</span>, <span class="title">LifecycleOwner</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(<span class="meta">@Nullable</span> Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Activity和Fragment继承Host接口，可以实现不同Hook方法逻辑</span></span><br><span class="line">    delegate = <span class="keyword">new</span> FlutterActivityAndFragmentDelegate(<span class="keyword">this</span>);</span><br><span class="line">    delegate.onAttach(<span class="keyword">this</span>);</span><br><span class="line">    delegate.onRestoreInstanceState(savedInstanceState);</span><br><span class="line">    <span class="comment">// 通过代理类创建FlutterView，添加到界面上</span></span><br><span class="line">    setContentView(createFlutterView());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@NonNull</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> View <span class="title">createFlutterView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> delegate.onCreateView(...);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//从Intent中解析Flutter参数</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> FlutterShellArgs <span class="title">getFlutterShellArgs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FlutterShellArgs.fromIntent(getIntent());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="FlutterActivityAndFragmentDelegate"><a href="#FlutterActivityAndFragmentDelegate" class="headerlink" title="FlutterActivityAndFragmentDelegate"></a>FlutterActivityAndFragmentDelegate</h3><ol>
+<li><code>setupFlutterEngine</code>：<strong>创建<code>FlutterEngine</code></strong></li>
+<li>配置PlatformPlugin（平台插件）：用于接收Flutter消息，调用系统方法，例如播放声音，状态栏、导航栏、剪贴板等</li>
+<li>配置引擎：例如注册FlutterPlugin（Flutter插件）</li>
+<li>**创建<code>FlutterSurfaceView</code>或者<code>FlutterTextureView</code>**：默认使用SurfaceView，无法像普通View一样使用动画和z-index</li>
+<li><strong>实例化FlutterView</strong>：addView添加<code>FlutterSurfaceView</code>，并添加首帧渲染监听（最终会注册到FlutterJNI中，由Native层回调通知）</li>
+<li><code>flutterView.attachToFlutterEngine</code>：<strong>FlutterView绑定引擎</strong></li>
+<li>如果配置了闪屏页，还会启动闪屏页，在Flutter引擎初始化、到首帧渲染完成之间显示。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ./shell/platform/android/io/flutter/embedding/android/FlutterActivityAndFragmentDelegate.java</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterActivityAndFragmentDelegate</span> </span>&#123;</span><br><span class="line">  FlutterActivityAndFragmentDelegate(<span class="meta">@NonNull</span> Host host) &#123;</span><br><span class="line">    <span class="keyword">this</span>.host = host; <span class="comment">// 保存FlutterActivity对象</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onAttach</span><span class="params">(<span class="meta">@NonNull</span> Context context)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建Flutter引擎</span></span><br><span class="line">    setupFlutterEngine();</span><br><span class="line">    <span class="comment">// 创建PlatformPlugin，和Activity绑定</span></span><br><span class="line">    <span class="comment">// Fragment每次绑定Activity的时候都会重新创建</span></span><br><span class="line">    platformPlugin = host.providePlatformPlugin(host.getActivity(), flutterEngine);</span><br><span class="line">    <span class="comment">// 配置Flutter引擎</span></span><br><span class="line">    host.configureFlutterEngine(flutterEngine);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@NonNull</span></span><br><span class="line">  <span class="function">View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, <span class="meta">@Nullable</span> ViewGroup container, <span class="meta">@Nullable</span> Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建FlutterSurfaceView，用于提供绘制Flutter UI的Surface。也可以是FlutterTextureView</span></span><br><span class="line">    FlutterSurfaceView flutterSurfaceView = <span class="keyword">new</span> FlutterSurfaceView(host.getContext(), host.getTransparencyMode() == TransparencyMode.transparent);</span><br><span class="line">    <span class="comment">// 通知子类Hook</span></span><br><span class="line">    host.onFlutterSurfaceViewCreated(flutterSurfaceView);</span><br><span class="line">    <span class="comment">// 创建FlutterView</span></span><br><span class="line">    flutterView = <span class="keyword">new</span> FlutterView(host.getContext(), flutterSurfaceView);</span><br><span class="line">    <span class="comment">// 添加首帧渲染监听，通知子类Hook，最终会注册到FlutterJNI中，由Native层调用</span></span><br><span class="line">    flutterView.addOnFirstFrameRenderedListener(flutterUiDisplayListener);</span><br><span class="line">    <span class="comment">// 绑定Flutter引擎</span></span><br><span class="line">    flutterView.attachToFlutterEngine(flutterEngine);</span><br><span class="line">    <span class="comment">// 显示闪屏页，从Manifest中读取</span></span><br><span class="line">    SplashScreen splashScreen = host.provideSplashScreen();</span><br><span class="line">    <span class="keyword">if</span> (splashScreen != <span class="keyword">null</span>) &#123;</span><br><span class="line">      FlutterSplashView flutterSplashView = <span class="keyword">new</span> FlutterSplashView(host.getContext());</span><br><span class="line">      flutterSplashView.setId(ViewUtils.generateViewId(FLUTTER_SPLASH_VIEW_FALLBACK_ID));</span><br><span class="line">      flutterSplashView.displayFlutterViewWithSplash(flutterView, splashScreen);</span><br><span class="line">      <span class="keyword">return</span> flutterSplashView;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flutterView;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">return</span> flutterSplashView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>这里包含两个关键步骤：由于流程比较长，拆开来介绍</p>
+<ol>
+<li><p>创建<code>FlutterEngine</code>：</p>
+<ol>
+<li>加载Flutter资源</li>
+<li>解析Intent参数</li>
+<li>绑定<code>FlutterJNI</code>实例</li>
+</ol>
+</li>
+<li><p><code>FlutterView</code>绑定Flutter引擎</p>
+<ol>
+<li>创建<code>FlutterView</code>和<code>FlutterSurfaceView</code></li>
+<li>创建<code>FlutterRenderer</code></li>
+<li>将Surface和<code>FlutterRenderer</code>关联，并传给Flutter引擎</li>
+<li>创建触摸、按键等监听器，将Android View事件发给Flutter引擎</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterActivity#onCreate.png"></p>
+<h2 id="创建FlutterEngine"><a href="#创建FlutterEngine" class="headerlink" title="创建FlutterEngine"></a>创建FlutterEngine</h2><h3 id="setupFlutterEngine"><a href="#setupFlutterEngine" class="headerlink" title="setupFlutterEngine"></a>setupFlutterEngine</h3><p>首先看下<code>setupFlutterEngine()</code>方法如何获取FlutterEngine：</p>
+<ol>
+<li>从<code>FlutterEngineCache</code>缓存中获取预热的引擎，重写<code>getCachedEngineId()</code></li>
+<li>子类自行创建引擎，重写<code>provideFlutterEngine</code>方法</li>
+<li>创建默认引擎</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterActivityAndFragmentDelegate</span> </span>&#123; </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setupFlutterEngine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// First, check if the host wants to use a cached FlutterEngine.</span></span><br><span class="line">    String cachedEngineId = host.getCachedEngineId();</span><br><span class="line">    <span class="keyword">if</span> (cachedEngineId != <span class="keyword">null</span>) &#123;</span><br><span class="line">      flutterEngine = FlutterEngineCache.getInstance().get(cachedEngineId);</span><br><span class="line">      isFlutterEngineFromHost = <span class="keyword">true</span>;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Second, defer to subclasses for a custom FlutterEngine.</span></span><br><span class="line">    flutterEngine = host.provideFlutterEngine(host.getContext());</span><br><span class="line">    <span class="keyword">if</span> (flutterEngine != <span class="keyword">null</span>) &#123;</span><br><span class="line">      isFlutterEngineFromHost = <span class="keyword">true</span>;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//接收Activity解析Intent的参数</span></span><br><span class="line">    flutterEngine = <span class="keyword">new</span> FlutterEngine(host.getContext(), host.getFlutterShellArgs().toArray(),</span><br><span class="line">            <span class="comment">/*automaticallyRegisterPlugins=*/</span> <span class="keyword">false</span>,</span><br><span class="line">            <span class="comment">/*willProvideRestorationData=*/</span> host.shouldRestoreAndSaveState());</span><br><span class="line">    isFlutterEngineFromHost = <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续看FlutterEngine实例化：</p>
+<ol>
+<li><code>FlutterJNI</code>：沟通Android和Flutter引擎Native代码</li>
+<li><code>FlutterLoader</code>：加载Flutter资源、Kernel或者AOT Library路径。通过FlutterJNI初始化Native引擎</li>
+<li><code>DartExecutor</code>：用于配置、启动、执行Dart代码。<strong>原生通过JNI和Dart通信</strong>。<ol>
+<li>Java层调用<code>FlutterJNI.dispatchPlatformMessage</code>将消息发到Native层</li>
+<li>Native层调用<code>FlutterJNI.handlePlatformMessage</code>通知Java层</li>
+</ol>
+</li>
+<li><code>XXXChannel</code>：创建不同的消息通道，监听和处理固定的事件，需要通过<code>DartMessenger</code>来传递消息<ol>
+<li><code>PlatformChannel</code>：内部使用<code>MethodChannel</code>，通知Dart层SystemUI变化，接收Dart层消息修改SystemUI、设置剪贴板等</li>
+<li><code>LifecycleChannel</code>：内部使用<code>BasicMessageChannel</code>，生命周期变化时通知Dart层</li>
+<li>…</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>Channel只是封装了不同类型的消息，以及响应和处理特定消息。最终都是通过<code>DartExecutor</code>调用JNI方法将消息发给Native层。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterEngine</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">FlutterEngine</span><span class="params">(...)</span> </span>&#123;</span><br><span class="line">    FlutterInjector injector = FlutterInjector.instance();</span><br><span class="line">    <span class="keyword">if</span> (flutterJNI == <span class="keyword">null</span>) &#123;</span><br><span class="line">      flutterJNI = injector.getFlutterJNIFactory().provideFlutterJNI();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.flutterJNI = flutterJNI;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过AssetManager获取Assets资源</span></span><br><span class="line">    <span class="keyword">this</span>.dartExecutor = <span class="keyword">new</span> DartExecutor(flutterJNI, assetManager);</span><br><span class="line">    <span class="comment">//注册PlatformMessageHandler，FlutterJNI收到Dart调用后转发给DartExecutor，再分发给特定的处理者</span></span><br><span class="line">    <span class="keyword">this</span>.dartExecutor.onAttachedToJNI();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建各个消息通道（例如触摸、按键、生命周期、导航跳转等），将消息发送给Dart，并且接收Dart的onMethodCall</span></span><br><span class="line">    xxxChannel = <span class="keyword">new</span> XXXChannel(dartExecutor, flutterJNI);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (flutterLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">      flutterLoader = injector.flutterLoader();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//加载Flutter资源、Kernel或者AOT Library路径</span></span><br><span class="line">    <span class="keyword">if</span> (!flutterJNI.isAttached()) &#123;</span><br><span class="line">      <span class="comment">//异步加载Flutter资源</span></span><br><span class="line">      flutterLoader.startInitialization(context.getApplicationContext());</span><br><span class="line">      <span class="comment">//获取Activity中的Intent参数，通过FlutterJNI传给Flutter引擎</span></span><br><span class="line">      flutterLoader.ensureInitializationComplete(context, dartVmArgs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//对于spawn生成的引擎，Native已经绑定过JNI实例，因此FlutterJNI由Native Shell创建，不需要再attach</span></span><br><span class="line">    <span class="comment">// It should typically be a fresh, unattached JNI. But on a spawned engine, the JNI instance</span></span><br><span class="line">    <span class="comment">// is already attached to a native shell. In that case, the Java FlutterEngine is created around</span></span><br><span class="line">    <span class="comment">// an existing shell.</span></span><br><span class="line">    <span class="keyword">if</span> (!flutterJNI.isAttached()) &#123;</span><br><span class="line">      attachToJni();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.renderer = <span class="keyword">new</span> FlutterRenderer(flutterJNI);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Spawn方法用于创建多个Flutter引擎，通过<code>FlutterEngineGroup</code>类进行管理，spawn引擎都由第一个引擎生成，避免重复绑定JNI对象</p>
+</blockquote>
+<h3 id="加载Flutter资源，解析Intent参数"><a href="#加载Flutter资源，解析Intent参数" class="headerlink" title="加载Flutter资源，解析Intent参数"></a>加载Flutter资源，解析Intent参数</h3><ol>
+<li><p><code>ApplicationInfoLoader.load</code>从<code>meta-data</code>配置中读取Flutter资源名称，不配置的话默认值如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterApplicationInfo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_AOT_SHARED_LIBRARY_NAME = <span class="string">&quot;libapp.so&quot;</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_VM_SNAPSHOT_DATA = <span class="string">&quot;vm_snapshot_data&quot;</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_ISOLATE_SNAPSHOT_DATA = <span class="string">&quot;isolate_snapshot_data&quot;</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_FLUTTER_ASSETS_DIR = <span class="string">&quot;flutter_assets&quot;</span>;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>异步从Apk中提取Flutter资源，加载Flutter引擎so库</p>
+</li>
+<li><p><code>ensureInitializationComplete</code>：获取Activity中的Intent参数，通过<code>FlutterJNI</code>传给Flutter引擎：</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FlutterLoader.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterLoader</span> </span>&#123;</span><br><span class="line">  <span class="comment">//异步加载Flutter资源</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startInitialization</span><span class="params">(<span class="meta">@NonNull</span> Context applicationContext, <span class="meta">@NonNull</span> Settings settings)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//只会初始化一次</span></span><br><span class="line">    <span class="comment">// Do not run startInitialization more than once.</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.settings != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.settings = settings;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//检查是否在主线程调用</span></span><br><span class="line">    <span class="keyword">if</span> (Looper.myLooper() != Looper.getMainLooper()) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;startInitialization must be called on the main thread&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//从配置的meta-data中读取so库、snapshot、assets目录等名称</span></span><br><span class="line">    flutterApplicationInfo = ApplicationInfoLoader.load(appContext);</span><br><span class="line">    Callable&lt;InitResult&gt; initTask = <span class="keyword">new</span> Callable&lt;InitResult&gt;() &#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="function"><span class="keyword">public</span> InitResult <span class="title">call</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//从Apk中提取资源：snapshot、kernel中间代码等</span></span><br><span class="line">            ResourceExtractor resourceExtractor = initResources(appContext);</span><br><span class="line">            <span class="comment">//加载Native库</span></span><br><span class="line">            flutterJNI.loadLibrary();</span><br><span class="line">            ...</span><br><span class="line">            <span class="keyword">if</span> (resourceExtractor != <span class="keyword">null</span>) &#123;</span><br><span class="line">              resourceExtractor.waitForCompletion();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> InitResult(</span><br><span class="line">                PathUtils.getFilesDir(appContext),</span><br><span class="line">                PathUtils.getCacheDirectory(appContext),</span><br><span class="line">                PathUtils.getDataDirectory(appContext));</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    <span class="comment">//子线程执行</span></span><br><span class="line">    initResultFuture = Executors.newSingleThreadExecutor().submit(initTask);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//获取Activity中的Intent参数，通过`FlutterJNI`传给Flutter引擎</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ensureInitializationComplete</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="meta">@NonNull</span> Context applicationContext, <span class="meta">@Nullable</span> String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (initialized) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">//等待资源初始化完毕</span></span><br><span class="line">      InitResult result = initResultFuture.get();</span><br><span class="line">      List&lt;String&gt; shellArgs = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      ...</span><br><span class="line">      <span class="comment">//初始化FlutterJNI，以shell参数的形式传给Native</span></span><br><span class="line">      flutterJNI.init(</span><br><span class="line">          applicationContext,</span><br><span class="line">          shellArgs.toArray(<span class="keyword">new</span> String[<span class="number">0</span>]),</span><br><span class="line">          kernelPath,</span><br><span class="line">          result.appStoragePath,</span><br><span class="line">          result.engineCachesPath,</span><br><span class="line">          initTimeMillis);</span><br><span class="line">      initialized = <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      Log.e(TAG, <span class="string">&quot;Flutter initialization failed.&quot;</span>, e);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="FlutterJNI实例和引擎绑定"><a href="#FlutterJNI实例和引擎绑定" class="headerlink" title="FlutterJNI实例和引擎绑定"></a>FlutterJNI实例和引擎绑定</h3><p><code>FlutterEngine.attachToJni();</code>中调用<code>FlutterJNI.attachToNative</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FlutterJNI.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterJNI</span> </span>&#123;</span><br><span class="line">  <span class="meta">@UiThread</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attachToNative</span><span class="params">(<span class="keyword">boolean</span> isBackgroundView)</span> </span>&#123;</span><br><span class="line">    ensureRunningOnMainThread();</span><br><span class="line">    ensureNotAttachedToNative();</span><br><span class="line">    nativeShellHolderId = performNativeAttach(<span class="keyword">this</span>, isBackgroundView);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@VisibleForTesting</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">performNativeAttach</span><span class="params">(<span class="meta">@NonNull</span> FlutterJNI flutterJNI, <span class="keyword">boolean</span> isBackgroundView)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> nativeAttach(flutterJNI, isBackgroundView);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">long</span> <span class="title">nativeAttach</span><span class="params">(<span class="meta">@NonNull</span> FlutterJNI flutterJNI, <span class="keyword">boolean</span> isBackgroundView)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><p>创建和绑定Flutter引擎</p>
+<ol>
+<li><code>DartExecutor</code>：注册平台通信通道，直接和<code>FlutterJNI</code>通信</li>
+<li><code>XXXChannel</code>：注册监听和响应特定的Dart消息，通过<code>DartExecutor</code>分发消息，不直接和<code>FlutterJNI</code>交互</li>
+<li><code>FlutterLoader</code>：<ol>
+<li><code>startInitialization()</code>：异步从APK中提取资源</li>
+<li><code>ensureInitializationComplete()</code>：调用<code>FlutterJNI.nativeInit()</code>方法法，解析和保存Intent参数</li>
+</ol>
+</li>
+<li><code>FlutterJNI.nativeAttach()</code>：创建和绑定Flutter引擎</li>
+</ol>
+<blockquote>
+<p>这里涉及到两个JNI方法<code>nativeInit和nativeAttach</code>，后面会分析到</p>
+</blockquote>
+<p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterEngine%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B.png"></p>
+<h2 id="FlutterView关联引擎"><a href="#FlutterView关联引擎" class="headerlink" title="FlutterView关联引擎"></a>FlutterView关联引擎</h2><p>查看<code>FlutterView.attachToFlutterEngine</code>源码</p>
+<ol>
+<li><code>FlutterRenderer</code>：Flutter渲染在Java层的代言人，封装渲染相关的操作，通过<code>FlutterJNI</code>和Native交互</li>
+<li><code>FlutterSurfaceView</code>：创建Android Surface，通过<code>FlutterRenderer</code>传给Native操作</li>
+<li>通过<code>KeyBoardManager</code>和<code>AndroidTouchProcessor</code>等将Android事件传递给引擎</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterView</span> <span class="keyword">extends</span> <span class="title">FrameLayout</span> <span class="keyword">implements</span> <span class="title">MouseCursorPlugin</span>.<span class="title">MouseCursorViewDelegate</span> </span>&#123;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attachToFlutterEngine</span><span class="params">(<span class="meta">@NonNull</span> FlutterEngine flutterEngine)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.flutterEngine = flutterEngine;</span><br><span class="line">    FlutterRenderer flutterRenderer = <span class="keyword">this</span>.flutterEngine.getRenderer();</span><br><span class="line">    <span class="comment">//FlutterSurfaceView的Surface提供给引擎的Renderer，将Flutter UI绘制到FlutterSurfaceView</span></span><br><span class="line">    renderSurface.attachToRenderer(flutterRenderer);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建KeyBoardManager和AndroidTouchProcessor等，将Android事件传给Dart和Native层</span></span><br><span class="line">    keyboardManager = <span class="keyword">new</span> KeyboardManager(<span class="keyword">this</span>, textInputPlugin, <span class="keyword">new</span> KeyChannelResponder[] &#123;</span><br><span class="line">      <span class="keyword">new</span> KeyChannelResponder(flutterEngine.getKeyEventChannel())</span><br><span class="line">    &#125;);</span><br><span class="line">    androidTouchProcessor =</span><br><span class="line">        <span class="keyword">new</span> AndroidTouchProcessor(<span class="keyword">this</span>.flutterEngine.getRenderer(), <span class="comment">/*trackMotionEvents=*/</span> <span class="keyword">false</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将安卓系统配置发给Flutter，例如字体缩放、日期格式、夜间模式、Locale等</span></span><br><span class="line">    sendUserSettingsToFlutter();</span><br><span class="line">    localizationPlugin.sendLocalesToFlutter(getResources().getConfiguration());</span><br><span class="line">    sendViewportMetricsToFlutter();</span><br><span class="line">    </span><br><span class="line">    flutterEngine.getPlatformViewsController().attachToView(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//设置ViewPort</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sendViewportMetricsToFlutter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    flutterEngine.getRenderer().setViewportMetrics(viewportMetrics);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>attachToRenderer</code>：调用<code>nativeSurfaceCreated()</code>将<code>Surface</code>传到Native层</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterRenderer</span> <span class="keyword">implements</span> <span class="title">TextureRegistry</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attachToRenderer</span><span class="params">(<span class="meta">@NonNull</span> FlutterRenderer flutterRenderer)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//如果已经连接一个Renderer，则移除，重新连接新的Renderer </span></span><br><span class="line">    <span class="comment">//onSurfaceCreated之后可以连接Renderer</span></span><br><span class="line">    <span class="keyword">if</span> (isSurfaceAvailableForRendering) &#123;</span><br><span class="line">      connectSurfaceToRenderer();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">connectSurfaceToRenderer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//Renderer、getHolder不为空</span></span><br><span class="line">    flutterRenderer.startRenderingToSurface(getHolder().getSurface());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startRenderingToSurface</span><span class="params">(<span class="meta">@NonNull</span> Surface surface)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.surface != <span class="keyword">null</span>) &#123;</span><br><span class="line">      stopRenderingToSurface();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.surface = surface;</span><br><span class="line">    <span class="comment">//将surface传给Native层</span></span><br><span class="line">    flutterJNI.onSurfaceCreated(surface);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterView%E5%85%B3%E8%81%94%E5%BC%95%E6%93%8E.png"></p>
+<h2 id="Flutter代码执行入口"><a href="#Flutter代码执行入口" class="headerlink" title="Flutter代码执行入口"></a>Flutter代码执行入口</h2><p>上面几步完成了Flutter引擎、FlutterView、FlutterJNI等创建和绑定。但是还没执行开发者写的Flutter代码。</p>
+<h3 id="FlutterActivity-onStart"><a href="#FlutterActivity-onStart" class="headerlink" title="FlutterActivity#onStart"></a>FlutterActivity#onStart</h3><p>还是从<code>FlutterActivity</code>开始分析</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span></span><br><span class="line"><span class="class">  <span class="keyword">implements</span> <span class="title">FlutterActivityAndFragmentDelegate</span>.<span class="title">Host</span>, <span class="title">LifecycleOwner</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onStart();</span><br><span class="line">    lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);</span><br><span class="line">    <span class="keyword">if</span> (stillAttachedForEvent(<span class="string">&quot;onStart&quot;</span>)) &#123;</span><br><span class="line">      <span class="comment">//调用代理类的onStart方法</span></span><br><span class="line">      delegate.onStart();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="FlutterActivityAndFragmentDelegate-1"><a href="#FlutterActivityAndFragmentDelegate-1" class="headerlink" title="FlutterActivityAndFragmentDelegate"></a>FlutterActivityAndFragmentDelegate</h3><ol>
+<li>检查Dart代码是否已经执行</li>
+<li>从Intent中获取Flutter初始页面路由</li>
+<li>找到Dart程序入口，执行Dart代码</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FlutterActivityAndFragmentDelegate</span> <span class="keyword">implements</span> <span class="title">ExclusiveAppComponent</span>&lt;<span class="title">Activity</span>&gt; </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.v(TAG, <span class="string">&quot;onStart()&quot;</span>);</span><br><span class="line">    ensureAlive();</span><br><span class="line">    doInitialFlutterViewRun();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doInitialFlutterViewRun</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Don&#x27;t attempt to start a FlutterEngine if we&#x27;re using a cached FlutterEngine.</span></span><br><span class="line">    <span class="keyword">if</span> (host.getCachedEngineId() != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//onStart每次页面切换都会调用，只需要执行一次</span></span><br><span class="line">    <span class="keyword">if</span> (flutterEngine.getDartExecutor().isExecutingDart()) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//从Activity或者Intent中获取Flutter初始页面路由</span></span><br><span class="line">    String initialRoute = host.getInitialRoute();</span><br><span class="line">    <span class="keyword">if</span> (initialRoute == <span class="keyword">null</span>) &#123;</span><br><span class="line">      initialRoute = maybeGetInitialRouteFromIntent(host.getActivity().getIntent());</span><br><span class="line">      <span class="keyword">if</span> (initialRoute == <span class="keyword">null</span>) &#123;</span><br><span class="line">        initialRoute = DEFAULT_INITIAL_ROUTE;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//设置初始路由</span></span><br><span class="line">    flutterEngine.getNavigationChannel().setInitialRoute(initialRoute);</span><br><span class="line">    String appBundlePathOverride = host.getAppBundlePath();</span><br><span class="line">    <span class="keyword">if</span> (appBundlePathOverride == <span class="keyword">null</span> || appBundlePathOverride.isEmpty()) &#123;</span><br><span class="line">      appBundlePathOverride = FlutterInjector.instance().flutterLoader().findAppBundlePath();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//配置Dart代码执行入口，一般是main函数</span></span><br><span class="line">    DartExecutor.DartEntrypoint entrypoint =</span><br><span class="line">        <span class="keyword">new</span> DartExecutor.DartEntrypoint(appBundlePathOverride, host.getDartEntrypointFunctionName());</span><br><span class="line">    <span class="comment">//执行Dart代码</span></span><br><span class="line">    flutterEngine.getDartExecutor().executeDartEntrypoint(entrypoint);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终会调用<code>FlutterJNI</code>的<code>nativeRunBundleAndSnapshotFromLibrary</code></p>
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/FlutterActivity#onStart.png"></p>
+<h1 id="FlutterJNI动态注册Native方法"><a href="#FlutterJNI动态注册Native方法" class="headerlink" title="FlutterJNI动态注册Native方法"></a>FlutterJNI动态注册Native方法</h1><p>Flutter引擎和Flutter代码最终会被打包成Native动态库<code>libengine.so</code>、<code>libapp.so</code>。</p>
+<p>而JNI是Java和Native通信的桥梁，因此这里先介绍下Flutter注册的方法，后面分析源码时可以直接找到对应的Native方法。</p>
+<p>Flutter在Java层提供了唯一的入口<code>FlutterJNI</code>，在Native层对应多个类，核心接口是<code>PlatformViewAndroid</code></p>
+<ol>
+<li><code>FlutterMain</code>：主要负责解析Java层参数</li>
+<li><code>PlatformViewAndroid</code>：实现<code>PlatformView</code><strong>平台通用接口</strong>，负责Surface创建，事件分发，PlatformMessage通知等</li>
+<li><code>VsyncWaiterAndroid</code>：实现<code>VsyncWaiter</code><strong>平台通用接口</strong>，监听Vsync信号，通知引擎进行绘制。</li>
+<li><code>AndroidImageGenerator</code>：备用的图片解码方法，引擎根据需要调用Android方法进行解码，解码完成之后通知Native层</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//library_loader.cc</span></span><br><span class="line"><span class="comment">// 首次加载so库时，由虚拟机调用</span></span><br><span class="line"><span class="comment">// This is called by the VM when the shared library is first loaded.</span></span><br><span class="line"><span class="function">JNIEXPORT jint <span class="title">JNI_OnLoad</span><span class="params">(JavaVM* vm, <span class="keyword">void</span>* reserved)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Initialize the Java VM.</span></span><br><span class="line">  fml::jni::<span class="built_in">InitJavaVM</span>(vm);</span><br><span class="line">  JNIEnv* env = fml::jni::<span class="built_in">AttachCurrentThread</span>();</span><br><span class="line">  <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// 初始化Native代码，解析参数</span></span><br><span class="line">  <span class="comment">// Register FlutterMain.</span></span><br><span class="line">  result = flutter::FlutterMain::<span class="built_in">Register</span>(env);</span><br><span class="line">  <span class="built_in">FML_CHECK</span>(result);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Register PlatformView</span></span><br><span class="line">  result = flutter::PlatformViewAndroid::<span class="built_in">Register</span>(env);</span><br><span class="line">  <span class="built_in">FML_CHECK</span>(result);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Register VSyncWaiter.</span></span><br><span class="line">  result = flutter::VsyncWaiterAndroid::<span class="built_in">Register</span>(env);</span><br><span class="line">  <span class="built_in">FML_CHECK</span>(result);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Register AndroidImageDecoder.</span></span><br><span class="line">  result = flutter::AndroidImageGenerator::<span class="built_in">Register</span>(env);</span><br><span class="line">  <span class="built_in">FML_CHECK</span>(result);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> JNI_VERSION_1_4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以<code>FlutterMain</code>为例，JNI方法<code>FlutterJNI.nativeInit</code>对应<code>FlutterMain.Init</code>方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flutter_main.cc</span></span><br><span class="line"><span class="comment">//动态注册FlutterJNI方法</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">FlutterMain::Register</span><span class="params">(JNIEnv* env)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> JNINativeMethod methods[] = &#123;</span><br><span class="line">      &#123;</span><br><span class="line">          .name = <span class="string">&quot;nativeInit&quot;</span>,</span><br><span class="line">          .signature = <span class="string">&quot;(Landroid/content/Context;[Ljava/lang/String;Ljava/&quot;</span></span><br><span class="line">                       <span class="string">&quot;lang/String;Ljava/lang/String;Ljava/lang/String;J)V&quot;</span>,</span><br><span class="line">          .fnPtr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>*&gt;(&amp;Init),</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">          .name = <span class="string">&quot;nativePrefetchDefaultFontManager&quot;</span>,</span><br><span class="line">          .signature = <span class="string">&quot;()V&quot;</span>,</span><br><span class="line">          .fnPtr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>*&gt;(&amp;PrefetchDefaultFontManager),</span><br><span class="line">      &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  jclass clazz = env-&gt;<span class="built_in">FindClass</span>(<span class="string">&quot;io/flutter/embedding/engine/FlutterJNI&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (clazz == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> env-&gt;<span class="built_in">RegisterNatives</span>(clazz, methods, fml::<span class="built_in">size</span>(methods)) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Flutter启动流程-Native层"><a href="#Flutter启动流程-Native层" class="headerlink" title="Flutter启动流程-Native层"></a>Flutter启动流程-Native层</h1><p>上文分析过Java层的调用流程，涉及几个JNI方法，下面分析下Native层做了哪些事情</p>
+<ol>
+<li><code>nativeInit</code>：对应<code>flutter_main.cc</code>的<code>Init()</code>方法，解析Intent参数，保存到Settings结构体中</li>
+<li><code>nativeAttach</code>：对应<code>platform_view_android_jni_impl.cc</code>的<code>AttachJNI()</code>方法<ol>
+<li>创建<code>AndroidShellHolder</code></li>
+<li>创建4个<code>TaskRunner</code>并指定线程，保存到<code>TaskRunners</code>中</li>
+<li>在指定线程创建Shell、DartVM、Engine、PlatformView、Rasterizer、ShellIOManager等实例</li>
+</ol>
+</li>
+<li><code>nativeSurfaceCreated</code>：<code>FlutterView</code>将Surface传给引擎</li>
+<li><code>nativeRunBundleAndSnapshotFromLibrary</code>：执行Flutter代码</li>
+</ol>
+<blockquote>
+<p>主要分析nativeAttach方法，其他方法分析流程类似</p>
+</blockquote>
+<h2 id="nativeInit"><a href="#nativeInit" class="headerlink" title="nativeInit"></a>nativeInit</h2><ol>
+<li>调用<code>shell/common/switches.cc</code>的<code>SettingsFromCommandLine</code>解析参数，保存到<code>Settings</code>结构体中。</li>
+<li>注意这里<code>switches</code>和<code>settings</code>都属于common包，所有平台通用</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flutter_main.cc</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;flutter/shell/platform/android/flutter_main.h&quot;</span></span></span><br><span class="line"><span class="keyword">namespace</span> flutter &#123;</span><br><span class="line">FlutterMain::<span class="built_in">FlutterMain</span>(flutter::Settings settings)</span><br><span class="line">    <span class="comment">//这种写法是给成员变量settings_赋值，引用settings变量</span></span><br><span class="line">    : <span class="built_in">settings_</span>(std::<span class="built_in">move</span>(settings)), <span class="built_in">observatory_uri_callback_</span>() &#123;&#125;</span><br><span class="line">  ...</span><br><span class="line"><span class="function"><span class="keyword">const</span> flutter::Settings&amp; <span class="title">FlutterMain::GetSettings</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> settings_;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//FlutterJNI.nativeInit</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FlutterMain::Init</span><span class="params">(JNIEnv* env,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jclass clazz,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jobject context,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jobjectArray jargs,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jstring kernelPath,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jstring appStoragePath,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jstring engineCachesPath,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jlong initTimeMillis)</span> </span>&#123;</span><br><span class="line">  std::vector&lt;std::string&gt; args;</span><br><span class="line">  args.<span class="built_in">push_back</span>(<span class="string">&quot;flutter&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; arg : fml::jni::<span class="built_in">StringArrayToVector</span>(env, jargs)) &#123;</span><br><span class="line">    args.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(arg));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">auto</span> command_line = fml::<span class="built_in">CommandLineFromIterators</span>(args.<span class="built_in">begin</span>(), args.<span class="built_in">end</span>());</span><br><span class="line">  <span class="comment">//shell/common/switches.cc</span></span><br><span class="line">  <span class="comment">//解析参数，保存到Settings架构体中</span></span><br><span class="line">  <span class="keyword">auto</span> settings = <span class="built_in">SettingsFromCommandLine</span>(command_line);</span><br><span class="line">  ...</span><br><span class="line">  g_flutter_main.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in">FlutterMain</span>(std::<span class="built_in">move</span>(settings)));</span><br><span class="line">&#125;</span><br><span class="line">&#125;  <span class="comment">// namespace flutter</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="nativeAttach"><a href="#nativeAttach" class="headerlink" title="nativeAttach"></a>nativeAttach</h2><h3 id="AttachJNI"><a href="#AttachJNI" class="headerlink" title="AttachJNI"></a>AttachJNI</h3><p>实例化<code>AndroidShellHolder</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//platform_view_android_jni_impl.cc</span></span><br><span class="line"><span class="comment">// Called By Java</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> jlong <span class="title">AttachJNI</span><span class="params">(JNIEnv* env,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jclass clazz,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jobject flutterJNI,</span></span></span><br><span class="line"><span class="function"><span class="params">                       jboolean is_background_view)</span> </span>&#123;</span><br><span class="line">  fml::<span class="function">jni::JavaObjectWeakGlobalRef <span class="title">java_object</span><span class="params">(env, flutterJNI)</span></span>;</span><br><span class="line">  std::shared_ptr&lt;PlatformViewAndroidJNI&gt; jni_facade =</span><br><span class="line">      std::make_shared&lt;PlatformViewAndroidJNIImpl&gt;(java_object);</span><br><span class="line">  <span class="comment">//实例化AndroidShellHolder</span></span><br><span class="line">  <span class="comment">//Settings在前面`FlutterLoader`初始化的时候调用`nativeInit`解析过了</span></span><br><span class="line">  <span class="keyword">auto</span> shell_holder = std::make_unique&lt;AndroidShellHolder&gt;(</span><br><span class="line">      FlutterMain::<span class="built_in">Get</span>().<span class="built_in">GetSettings</span>(), jni_facade, is_background_view);</span><br><span class="line">  <span class="keyword">if</span> (shell_holder-&gt;<span class="built_in">IsValid</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(shell_holder.<span class="built_in">release</span>());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AndroidShellHolder"><a href="#AndroidShellHolder" class="headerlink" title="AndroidShellHolder"></a>AndroidShellHolder</h3><p><code>AndroidShellHolder</code>是<code>FlutterEngine</code>在C++端的顶级类，将<code>Shell</code>和<code>PlatformViewAndroid</code>等组合在一起。每个FlutterEngine对应一个<code>AndroidShellHolder</code>和一个<code>PlatformViewAndroid</code>。</p>
+<ol>
+<li>创建4个<code>TaskRunner</code>，通过<code>ThreadHost</code>指定线程，设置优先级，放到<code>TaskRunners</code>中统一管理</li>
+<li>通过<code>Shell::Create</code>创建Shell对象，创建成功后回调将shell设置为<code>PlatformViewAndroid</code>的委托</li>
+<li><code>GetPlatformView</code>函数返回<code>PlatformViewAndroid</code>对象，JNI几乎所有的调用都是通过<code>AndroidShellHolder</code>转发给<code>PlatformViewAndroid</code>处理</li>
+<li>Launch函数用于启动引擎执行Dart代码</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//android_shell_holder.cc</span></span><br><span class="line">AndroidShellHolder::<span class="built_in">AndroidShellHolder</span>(</span><br><span class="line">    flutter::Settings settings,</span><br><span class="line">    std::shared_ptr&lt;PlatformViewAndroidJNI&gt; jni_facade,</span><br><span class="line">    <span class="keyword">bool</span> is_background_view)</span><br><span class="line">    : <span class="built_in">settings_</span>(std::<span class="built_in">move</span>(settings)), <span class="built_in">jni_facade_</span>(jni_facade) &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">size_t</span> thread_host_count = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">auto</span> thread_label = std::<span class="built_in">to_string</span>(thread_host_count++);</span><br><span class="line">  <span class="comment">//4个Runner：Platform、UI、IO、GPU，可以运行在不同线程，也可以运行在相同线程</span></span><br><span class="line">  thread_host_ = std::make_shared&lt;ThreadHost&gt;();</span><br><span class="line">  <span class="keyword">if</span> (is_background_view) &#123;</span><br><span class="line">    <span class="comment">//Runner共用一个线程</span></span><br><span class="line">    *thread_host_ = &#123;thread_label, ThreadHost::Type::UI&#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//每个Runner独立线程</span></span><br><span class="line">    *thread_host_ = &#123;thread_label, ThreadHost::Type::UI |</span><br><span class="line">                                       ThreadHost::Type::RASTER |</span><br><span class="line">                                       ThreadHost::Type::IO&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  fml::WeakPtr&lt;PlatformViewAndroid&gt; weak_platform_view;</span><br><span class="line">  <span class="comment">//Shell创建时回调</span></span><br><span class="line">  Shell::CreateCallback&lt;PlatformView&gt; on_create_platform_view =</span><br><span class="line">      [is_background_view, &amp;jni_facade, &amp;weak_platform_view](Shell&amp; shell) &#123;</span><br><span class="line">        std::unique_ptr&lt;PlatformViewAndroid&gt; platform_view_android;</span><br><span class="line">        <span class="comment">//创建PlatformViewAndroid，委托类是shell对象</span></span><br><span class="line">        platform_view_android = std::make_unique&lt;PlatformViewAndroid&gt;(</span><br><span class="line">            shell,                   <span class="comment">// delegate</span></span><br><span class="line">            shell.<span class="built_in">GetTaskRunners</span>(),  <span class="comment">// task runners</span></span><br><span class="line">            jni_facade,              <span class="comment">// JNI interop</span></span><br><span class="line">            shell.<span class="built_in">GetSettings</span>().enable_software_rendering,  <span class="comment">// use software rendering</span></span><br><span class="line">            !is_background_view              <span class="comment">// create onscreen surface</span></span><br><span class="line">        );</span><br><span class="line">        weak_platform_view = platform_view_android-&gt;<span class="built_in">GetWeakPtr</span>();</span><br><span class="line">        <span class="keyword">auto</span> display = <span class="built_in">Display</span>(jni_facade-&gt;<span class="built_in">GetDisplayRefreshRate</span>());</span><br><span class="line">        shell.<span class="built_in">OnDisplayUpdates</span>(DisplayUpdateType::kStartup, &#123;display&#125;);</span><br><span class="line">        <span class="keyword">return</span> platform_view_android;</span><br><span class="line">      &#125;;</span><br><span class="line">  <span class="comment">//Shell创建时回调</span></span><br><span class="line">  Shell::CreateCallback&lt;Rasterizer&gt; on_create_rasterizer = [](Shell&amp; shell) &#123;</span><br><span class="line">    <span class="keyword">return</span> std::make_unique&lt;Rasterizer&gt;(shell);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The current thread will be used as the platform thread. Ensure that the</span></span><br><span class="line">  <span class="comment">// message loop is initialized.</span></span><br><span class="line">  fml::MessageLoop::<span class="built_in">EnsureInitializedForCurrentThread</span>();</span><br><span class="line">  fml::RefPtr&lt;fml::TaskRunner&gt; raster_runner;</span><br><span class="line">  fml::RefPtr&lt;fml::TaskRunner&gt; ui_runner;</span><br><span class="line">  fml::RefPtr&lt;fml::TaskRunner&gt; io_runner;</span><br><span class="line">  <span class="comment">//PlatformRunner引擎共享，其他三个Runner引擎独立</span></span><br><span class="line">  fml::RefPtr&lt;fml::TaskRunner&gt; platform_runner = fml::MessageLoop::<span class="built_in">GetCurrent</span>().<span class="built_in">GetTaskRunner</span>();</span><br><span class="line">  <span class="keyword">if</span> (is_background_view) &#123;</span><br><span class="line">    <span class="comment">//Runner运行在同一线程</span></span><br><span class="line">    <span class="keyword">auto</span> single_task_runner = thread_host_-&gt;ui_thread-&gt;<span class="built_in">GetTaskRunner</span>();</span><br><span class="line">    raster_runner = single_task_runner;</span><br><span class="line">    ui_runner = single_task_runner;</span><br><span class="line">    io_runner = single_task_runner;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//Runner运行在不同线程</span></span><br><span class="line">    raster_runner = thread_host_-&gt;raster_thread-&gt;<span class="built_in">GetTaskRunner</span>();</span><br><span class="line">    ui_runner = thread_host_-&gt;ui_thread-&gt;<span class="built_in">GetTaskRunner</span>();</span><br><span class="line">    io_runner = thread_host_-&gt;io_thread-&gt;<span class="built_in">GetTaskRunner</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 将四个Runner放到TaskRunners中统一管理</span></span><br><span class="line">  <span class="function">flutter::TaskRunners <span class="title">task_runners</span><span class="params">(thread_label,     <span class="comment">// label</span></span></span></span><br><span class="line"><span class="function"><span class="params">                                    platform_runner,  <span class="comment">// platform</span></span></span></span><br><span class="line"><span class="function"><span class="params">                                    raster_runner,    <span class="comment">// raster</span></span></span></span><br><span class="line"><span class="function"><span class="params">                                    ui_runner,        <span class="comment">// ui</span></span></span></span><br><span class="line"><span class="function"><span class="params">                                    io_runner         <span class="comment">// io</span></span></span></span><br><span class="line"><span class="function"><span class="params">  )</span></span>;</span><br><span class="line">  <span class="comment">//设置线程优先级，越小优先级越高</span></span><br><span class="line">  <span class="comment">//Raster优先级为-5</span></span><br><span class="line">  <span class="comment">//UI优先级为-1</span></span><br><span class="line">  <span class="comment">//IO优先级为1</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">//创建Shell对象，回调创建PlatformView和Rasterizer</span></span><br><span class="line">  shell_ = Shell::<span class="built_in">Create</span>(<span class="built_in">GetDefaultPlatformData</span>(),  <span class="comment">// window data</span></span><br><span class="line">                         task_runners,              <span class="comment">// task runners</span></span><br><span class="line">                         settings_,                 <span class="comment">// settings</span></span><br><span class="line">                         on_create_platform_view,   <span class="comment">// platform view create callback</span></span><br><span class="line">                         on_create_rasterizer       <span class="comment">// rasterizer create callback</span></span><br><span class="line">                        );</span><br><span class="line">  ...</span><br><span class="line">  platform_view_ = weak_platform_view;</span><br><span class="line">  <span class="built_in">FML_DCHECK</span>(platform_view_);</span><br><span class="line">  is_valid_ = shell_ != <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AndroidShellHolder::Launch</span><span class="params">(std::shared_ptr&lt;AssetManager&gt; asset_manager,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">const</span> std::string&amp; entrypoint,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">const</span> std::string&amp; libraryUrl)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">IsValid</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  asset_manager_ = asset_manager;</span><br><span class="line">  <span class="keyword">auto</span> config = <span class="built_in">BuildRunConfiguration</span>(asset_manager, entrypoint, libraryUrl);</span><br><span class="line">  <span class="keyword">if</span> (!config) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//启动引擎</span></span><br><span class="line">  shell_-&gt;<span class="built_in">RunEngine</span>(std::<span class="built_in">move</span>(config.<span class="built_in">value</span>()));</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function">fml::WeakPtr&lt;PlatformViewAndroid&gt; <span class="title">AndroidShellHolder::GetPlatformView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">FML_DCHECK</span>(platform_view_);</span><br><span class="line">  <span class="keyword">return</span> platform_view_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PlatformViewAndroid"><a href="#PlatformViewAndroid" class="headerlink" title="PlatformViewAndroid"></a>PlatformViewAndroid</h3><ol>
+<li><code>Register</code>静态方法，用于动态注册JNI方法</li>
+<li>继承自<code>PlatformView</code>，并且构造函数包含<code>PlatformView::Delegate</code>委托对象和<code>PlatformViewAndroidJNI</code>对象</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//shell/android/platform_view_android.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlatformViewAndroid</span> <span class="keyword">final</span> :</span> <span class="keyword">public</span> PlatformView &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">//动态注册JNI方法</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">Register</span><span class="params">(JNIEnv* env)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">PlatformViewAndroid</span>(PlatformView::Delegate&amp; delegate,</span><br><span class="line">                      flutter::TaskRunners task_runners,</span><br><span class="line">                      std::shared_ptr&lt;PlatformViewAndroidJNI&gt; jni_facade,</span><br><span class="line">                      <span class="keyword">bool</span> use_software_rendering,</span><br><span class="line">                      <span class="keyword">bool</span> create_onscreen_surface);</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">//摘取两个方法分析</span></span><br><span class="line">  <span class="comment">//将平台消息分发给Flutter代码处理</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">DispatchPlatformMessage</span><span class="params">(JNIEnv* env,</span></span></span><br><span class="line"><span class="function"><span class="params">                               std::string name,</span></span></span><br><span class="line"><span class="function"><span class="params">                               jobject message_data,</span></span></span><br><span class="line"><span class="function"><span class="params">                               jint message_position,</span></span></span><br><span class="line"><span class="function"><span class="params">                               jint response_id)</span></span>;</span><br><span class="line">  <span class="comment">//将Flutter代码发出的消息交给Android层处理</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">HandlePlatformMessage</span><span class="params">(std::unique_ptr&lt;flutter::PlatformMessage&gt; message)</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看一下具体的实现：</p>
+<ol>
+<li><code>DispatchPlatformMessage</code>：将JNI传过来的数据转换成<code>PlatformMessage</code>并<strong>转发给父类</strong>的<code>DispatchPlatformMessage</code>方法</li>
+<li><code>HandlePlatformMessage</code>：通过JNI由Native调用Java方法</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//shell/android/platform_view_android.cc</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PlatformViewAndroid::DispatchPlatformMessage</span><span class="params">(JNIEnv* env,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  std::string name,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  jobject java_message_data,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  jint java_message_position,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  jint response_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//封装PlatformMessage</span></span><br><span class="line">  <span class="keyword">uint8_t</span>* message_data = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>*&gt;(env-&gt;<span class="built_in">GetDirectBufferAddress</span>(java_message_data));</span><br><span class="line">  fml::MallocMapping message = fml::MallocMapping::<span class="built_in">Copy</span>(message_data, java_message_position);</span><br><span class="line"></span><br><span class="line">  fml::RefPtr&lt;flutter::PlatformMessageResponse&gt; response;</span><br><span class="line">  <span class="keyword">if</span> (response_id) &#123;</span><br><span class="line">    response = fml::MakeRefCounted&lt;PlatformMessageResponseAndroid&gt;(</span><br><span class="line">        response_id, jni_facade_, task_runners_.<span class="built_in">GetPlatformTaskRunner</span>());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//交给PlatformVIew处理</span></span><br><span class="line">  PlatformView::<span class="built_in">DispatchPlatformMessage</span>(std::make_unique&lt;flutter::PlatformMessage&gt;(</span><br><span class="line">          std::<span class="built_in">move</span>(name), std::<span class="built_in">move</span>(message), std::<span class="built_in">move</span>(response)));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PlatformViewAndroid::HandlePlatformMessage</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    std::unique_ptr&lt;flutter::PlatformMessage&gt; message)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> response_id = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">auto</span> response = message-&gt;<span class="built_in">response</span>()) &#123;</span><br><span class="line">    response_id = next_response_id_++;</span><br><span class="line">    pending_responses_[response_id] = response;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//Native调用Java方法</span></span><br><span class="line">  <span class="comment">// This call can re-enter in InvokePlatformMessageXxxResponseCallback.</span></span><br><span class="line">  jni_facade_-&gt;<span class="built_in">FlutterViewHandlePlatformMessage</span>(std::<span class="built_in">move</span>(message),</span><br><span class="line">                                                response_id);</span><br><span class="line">  message = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PlatformView"><a href="#PlatformView" class="headerlink" title="PlatformView"></a>PlatformView</h3><p><code>PlatformView</code>是平台通用实现，不同平台的Embedder可以继承该类，定制一些自己的方法（一般是将数据格式转换为通用结构），再通过<code>PlatformView</code>交给引擎处理。</p>
+<p>摘取PlatformView部分声明函数</p>
+<ol>
+<li>构造时传入委托对象，上文已经分析过，<code>PlatformViewAndroid</code>创建用的委托对象就是<code>shell/common/shell.cc</code>类</li>
+<li><code>PlatformView</code>声明函数：创建<code>RenderingSurface</code>，将输入事件、平台消息等发给Flutter处理等</li>
+<li><strong>委托类</strong>的函数：基本和<code>PlatformView</code>的函数对应</li>
+<li>比较特殊的是<code>HandlePlatformMessage</code>，这个函数是由<code>Flutter引擎-&gt;委托Shell调用-&gt;PlatformView</code>，交给Android层处理的，因此没有委托方法</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//flutter/shell/common/platform_view.h</span></span><br><span class="line"><span class="keyword">namespace</span> flutter &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shell</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlatformView</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">//代理类，相当于Callback，PlatformView将行为转发给外部，外部实现监听器</span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Delegate</span> &#123;</span></span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//基本和PlatformView类的方法对应</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewCreated</span><span class="params">(std::unique_ptr&lt;Surface&gt; surface)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewDestroyed</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewSetViewportMetrics</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">const</span> ViewportMetrics&amp; metrics)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewDispatchPlatformMessage</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        std::unique_ptr&lt;PlatformMessage&gt; message)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewDispatchPointerDataPacket</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        std::unique_ptr&lt;PointerDataPacket&gt; packet)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnPlatformViewDispatchKeyDataPacket</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        std::unique_ptr&lt;KeyDataPacket&gt; packet,</span></span></span><br><span class="line"><span class="function"><span class="params">        std::function&lt;<span class="keyword">void</span>(<span class="keyword">bool</span> <span class="comment">/* handled */</span>)&gt; callback)</span> </span>= <span class="number">0</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">//构造的时候传入Delegate</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">PlatformView</span><span class="params">(Delegate&amp; delegate, TaskRunners task_runners)</span></span>;</span><br><span class="line">  <span class="comment">//通知引擎PlatformView创建和销毁，可以开始创建Rendering Surface</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">NotifyCreated</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">NotifyDestroyed</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="comment">//设置视图区域</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetViewportMetrics</span><span class="params">(<span class="keyword">const</span> ViewportMetrics&amp; metrics)</span></span>;</span><br><span class="line">  <span class="comment">//Embedder往Flutter发消息，发到root isolate中处理</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">DispatchPlatformMessage</span><span class="params">(std::unique_ptr&lt;PlatformMessage&gt; message)</span></span>;</span><br><span class="line">  <span class="comment">//Embedder处理Flutter发过来的消息</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">HandlePlatformMessage</span><span class="params">(std::unique_ptr&lt;PlatformMessage&gt; message)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Embedder分发点击事件和按键事件给Flutter Framework</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">DispatchPointerDataPacket</span><span class="params">(std::unique_ptr&lt;PointerDataPacket&gt; packet)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">DispatchKeyDataPacket</span><span class="params">(std::unique_ptr&lt;KeyDataPacket&gt; packet, Delegate::KeyDataResponse callback)</span></span>;</span><br><span class="line">  <span class="comment">//指定Texture，用于光栅合成Flutter视图</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">RegisterTexture</span><span class="params">(std::shared_ptr&lt;flutter::Texture&gt; texture)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">UnregisterTexture</span><span class="params">(<span class="keyword">int64_t</span> texture_id)</span></span>;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  PlatformView::Delegate&amp; delegate_;</span><br><span class="line">  <span class="keyword">const</span> TaskRunners task_runners_;</span><br><span class="line"></span><br><span class="line">  PointerDataPacketConverter pointer_data_packet_converter_;</span><br><span class="line">  SkISize size_;</span><br><span class="line">  fml::WeakPtrFactory&lt;PlatformView&gt; weak_factory_;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在GPU Runner中创建RenderingSurface</span></span><br><span class="line">  <span class="comment">// This is the only method called on the raster task runner.</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;Surface&gt; <span class="title">CreateRenderingSurface</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="built_in">FML_DISALLOW_COPY_AND_ASSIGN</span>(PlatformView);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;  <span class="comment">// namespace flutter</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// COMMON_PLATFORM_VIEW_H_</span></span></span><br></pre></td></tr></table></figure>
+
+<p><code>PlatformView</code>自身也不干活，而是交给委托对象处理，这个委托对象实际上就是Shell</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//shell/common/platform_view.cc</span></span><br><span class="line">PlatformView::<span class="built_in">PlatformView</span>(Delegate&amp; delegate, TaskRunners task_runners)</span><br><span class="line">    : <span class="built_in">delegate_</span>(delegate),</span><br><span class="line">      <span class="built_in">task_runners_</span>(std::<span class="built_in">move</span>(task_runners)),</span><br><span class="line">      <span class="built_in">size_</span>(SkISize::<span class="built_in">Make</span>(<span class="number">0</span>, <span class="number">0</span>)),</span><br><span class="line">      <span class="built_in">weak_factory_</span>(<span class="keyword">this</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PlatformView::DispatchPlatformMessage</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    std::unique_ptr&lt;PlatformMessage&gt; message)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//交给委托对象处理</span></span><br><span class="line">  delegate_.<span class="built_in">OnPlatformViewDispatchPlatformMessage</span>(std::<span class="built_in">move</span>(message));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><p>Shell是嵌入层的壳，超出shell基本就到了引擎层，实现了多个组件<code>Delegate</code>类，通过委托的方式将嵌入层的请求转发到引擎层，并且将引擎层的事件发到嵌入层。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//shell/common/shell.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shell</span> <span class="keyword">final</span> :</span> <span class="keyword">public</span> PlatformView::Delegate,</span><br><span class="line">                    <span class="keyword">public</span> Animator::Delegate,</span><br><span class="line">                    <span class="keyword">public</span> Engine::Delegate,</span><br><span class="line">                    <span class="keyword">public</span> Rasterizer::Delegate,</span><br><span class="line">                    <span class="keyword">public</span> ServiceProtocol::Handler &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">//创建Shell</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> std::unique_ptr&lt;Shell&gt; <span class="title">Create</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">const</span> PlatformData&amp; platform_data,</span></span></span><br><span class="line"><span class="function"><span class="params">      TaskRunners task_runners,</span></span></span><br><span class="line"><span class="function"><span class="params">      Settings settings,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">const</span> CreateCallback&lt;PlatformView&gt;&amp; on_create_platform_view,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">const</span> CreateCallback&lt;Rasterizer&gt;&amp; on_create_rasterizer,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">bool</span> is_gpu_disabled = <span class="literal">false</span>)</span></span>;</span><br><span class="line">  <span class="comment">// 启动isolate</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">RunEngine</span><span class="params">(RunConfiguration run_configuration)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">(std::unique_ptr&lt;PlatformView&gt; platform_view,</span></span></span><br><span class="line"><span class="function"><span class="params">             std::unique_ptr&lt;Engine&gt; engine,</span></span></span><br><span class="line"><span class="function"><span class="params">             std::unique_ptr&lt;Rasterizer&gt; rasterizer,</span></span></span><br><span class="line"><span class="function"><span class="params">             std::unique_ptr&lt;ShellIOManager&gt; io_manager)</span></span>;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 持有对象</span></span><br><span class="line">  std::unique_ptr&lt;PlatformView&gt; platform_view_;  <span class="comment">// on platform task runner</span></span><br><span class="line">  std::unique_ptr&lt;Engine&gt; engine_;               <span class="comment">// on UI task runner</span></span><br><span class="line">  std::unique_ptr&lt;Rasterizer&gt; rasterizer_;       <span class="comment">// on raster task runner</span></span><br><span class="line">  std::unique_ptr&lt;ShellIOManager&gt; io_manager_;   <span class="comment">// on IO task runner</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Shell对象创建：<code>Create--&gt;CreateWithSnapshot--&gt;CreateShellOnPlatformThread</code></p>
+<ol>
+<li>创建DartVM</li>
+<li>创建Shell对象</li>
+<li>在GPU Runner中创建<code>Rasterizer</code>：回调<code>on_create_rasterizer</code>，传入shell委托对象<ol>
+<li>负责绘制Engine提交的LayerTree到Surface上</li>
+<li>持有Surface和合成器上下文</li>
+</ol>
+</li>
+<li>在Platform Runner中创建<code>PlatformView</code>：回调<code>on_create_platform_view</code>，传入shell委托对象</li>
+<li>在IO Runner中创建<code>ShellIOManager</code></li>
+<li>在UI Runner中创建<code>Engine</code>：回调<code>on_create_engine</code>，传入shell委托对象</li>
+<li>调用<code>Shell::Setup</code>将上面创建的几个对象保存到Shell中</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;Shell&gt; <span class="title">Shell::Create</span><span class="params">(...)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// Always use the `vm_snapshot` and `isolate_snapshot` provided by the</span></span><br><span class="line">  <span class="comment">// settings to launch the VM.  If the VM is already running, the snapshot</span></span><br><span class="line">  <span class="comment">// arguments are ignored.</span></span><br><span class="line">  <span class="comment">//从Settings中读取快照文件</span></span><br><span class="line">  <span class="keyword">auto</span> vm_snapshot = DartSnapshot::<span class="built_in">VMSnapshotFromSettings</span>(settings);</span><br><span class="line">  <span class="keyword">auto</span> isolate_snapshot = DartSnapshot::<span class="built_in">IsolateSnapshotFromSettings</span>(settings);</span><br><span class="line">  <span class="comment">//创建虚拟机</span></span><br><span class="line">  <span class="keyword">auto</span> vm = DartVMRef::<span class="built_in">Create</span>(settings, vm_snapshot, isolate_snapshot);</span><br><span class="line">  <span class="built_in">FML_CHECK</span>(vm) &lt;&lt; <span class="string">&quot;Must be able to initialize the VM.&quot;</span>;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">CreateWithSnapshot</span>(...);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">std::unique_ptr&lt;Shell&gt; <span class="title">Shell::CreateWithSnapshot</span><span class="params">(...)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  fml::AutoResetWaitableEvent latch;</span><br><span class="line">  std::unique_ptr&lt;Shell&gt; shell;</span><br><span class="line">  <span class="comment">//在PlatformRunner中创建Shell，并Wait直到创建完成</span></span><br><span class="line">  fml::TaskRunner::<span class="built_in">RunNowOrPostTask</span>(</span><br><span class="line">      task_runners.<span class="built_in">GetPlatformTaskRunner</span>(),</span><br><span class="line">      fml::<span class="built_in">MakeCopyable</span>(</span><br><span class="line">            ...</span><br><span class="line">            shell = <span class="built_in">CreateShellOnPlatformThread</span>(...);</span><br><span class="line">            latch.<span class="built_in">Signal</span>();</span><br><span class="line">          &#125;));</span><br><span class="line">  latch.<span class="built_in">Wait</span>();</span><br><span class="line">  <span class="keyword">return</span> shell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">std::unique_ptr&lt;Shell&gt; <span class="title">Shell::CreateShellOnPlatformThread</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DartVMRef vm,</span></span></span><br><span class="line"><span class="function"><span class="params">    TaskRunners task_runners,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> PlatformData&amp; platform_data,</span></span></span><br><span class="line"><span class="function"><span class="params">    Settings settings,</span></span></span><br><span class="line"><span class="function"><span class="params">    fml::RefPtr&lt;<span class="keyword">const</span> DartSnapshot&gt; isolate_snapshot,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Shell::CreateCallback&lt;PlatformView&gt;&amp; on_create_platform_view, <span class="comment">//回调创建PlatformView</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Shell::CreateCallback&lt;Rasterizer&gt;&amp; on_create_rasterizer, <span class="comment">//回调创建Rrasterizer</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Shell::EngineCreateCallback&amp; on_create_engine, <span class="comment">//回调创建Engine</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">bool</span> is_gpu_disabled)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!task_runners.<span class="built_in">IsValid</span>()) &#123;</span><br><span class="line">    <span class="built_in">FML_LOG</span>(ERROR) &lt;&lt; <span class="string">&quot;Task runners to run the shell were invalid.&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 创建Shell对象</span></span><br><span class="line">  <span class="keyword">auto</span> shell = std::unique_ptr&lt;Shell&gt;(<span class="keyword">new</span> <span class="built_in">Shell</span>(std::<span class="built_in">move</span>(vm), task_runners, settings, std::make_shared&lt;VolatilePathTracker&gt;(task_runners.<span class="built_in">GetUITaskRunner</span>(), !settings.skia_deterministic_rendering_on_cpu), is_gpu_disabled));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create the rasterizer on the raster thread.</span></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create the platform view on the platform thread (this thread).</span></span><br><span class="line">  <span class="keyword">auto</span> platform_view = <span class="built_in">on_create_platform_view</span>(*shell.<span class="built_in">get</span>());</span><br><span class="line">  <span class="keyword">if</span> (!platform_view || !platform_view-&gt;<span class="built_in">GetWeakPtr</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Ask the platform view for the vsync waiter. This will be used by the engine</span></span><br><span class="line">  <span class="comment">// to create the animator.</span></span><br><span class="line">  <span class="keyword">auto</span> vsync_waiter = platform_view-&gt;<span class="built_in">CreateVSyncWaiter</span>();</span><br><span class="line">  <span class="keyword">if</span> (!vsync_waiter) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Create the IO manager on the IO thread.</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// Create the engine on the UI thread.</span></span><br><span class="line">  std::promise&lt;std::unique_ptr&lt;Engine&gt;&gt; engine_promise;</span><br><span class="line">  <span class="keyword">auto</span> engine_future = engine_promise.<span class="built_in">get_future</span>();</span><br><span class="line">  fml::TaskRunner::<span class="built_in">RunNowOrPostTask</span>(</span><br><span class="line">      shell-&gt;<span class="built_in">GetTaskRunners</span>().<span class="built_in">GetUITaskRunner</span>(),</span><br><span class="line">      fml::<span class="built_in">MakeCopyable</span>([...]() <span class="keyword">mutable</span> &#123;</span><br><span class="line">        <span class="built_in">TRACE_EVENT0</span>(<span class="string">&quot;flutter&quot;</span>, <span class="string">&quot;ShellSetupUISubsystem&quot;</span>);</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; task_runners = shell-&gt;<span class="built_in">GetTaskRunners</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The animator is owned by the UI thread but it gets its vsync pulses</span></span><br><span class="line">        <span class="comment">// from the platform.</span></span><br><span class="line">        <span class="keyword">auto</span> animator = std::make_unique&lt;Animator&gt;(*shell, task_runners,</span><br><span class="line">                                                   std::<span class="built_in">move</span>(vsync_waiter));</span><br><span class="line"></span><br><span class="line">        engine_promise.<span class="built_in">set_value</span>(<span class="built_in">on_create_engine</span>(*shell,...));</span><br><span class="line">      &#125;));</span><br><span class="line">  <span class="comment">// 等待四个Runner创建好对应的对象，调用Setup保存这四个对象</span></span><br><span class="line">  <span class="keyword">if</span> (!shell-&gt;<span class="built_in">Setup</span>(std::<span class="built_in">move</span>(platform_view),  <span class="comment">//</span></span><br><span class="line">                    engine_future.<span class="built_in">get</span>(),       <span class="comment">//</span></span><br><span class="line">                    rasterizer_future.<span class="built_in">get</span>(),   <span class="comment">//</span></span><br><span class="line">                    io_manager_future.<span class="built_in">get</span>())   <span class="comment">//</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> shell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结-3"><a href="#小结-3" class="headerlink" title="小结"></a>小结</h3><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/nativeAttach调用流程.png" style="zoom:100%;">
+
+<h2 id="nativeRunBundleAndSnapshotFromLibrary"><a href="#nativeRunBundleAndSnapshotFromLibrary" class="headerlink" title="nativeRunBundleAndSnapshotFromLibrary"></a>nativeRunBundleAndSnapshotFromLibrary</h2><p>和上文一样查看Native调用流程，这里顺着搜索代码即可，就不贴源码了</p>
+<p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/nativeRunBundleAndSnapshotFromLibrary%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B.png"></p>
+<h2 id="关系梳理"><a href="#关系梳理" class="headerlink" title="关系梳理"></a>关系梳理</h2><p>嵌入层涉及到很多类，这里梳理一下它们之间引用和调用的关系，如下：</p>
+<ol>
+<li><code>FlutterJNI</code>：Java和Native通信的统一入口</li>
+<li><code>PlatformViewAndroidJNIImpl</code>：Native方法的核心实现</li>
+<li><code>AndroidShellHolder</code>：作为C++层的主要入口，并且负责创建4个Runner线程</li>
+<li><code>PlatformViewAndroid</code>：继承自PlatformView，加一些原生平台的特殊处理和转换后，交给父类执行，对父类功能进行扩充</li>
+<li><code>PlatformView</code>：平台通用接口，负责沟通平台和Shell，没有具体的行为，基本都是委托给Shell处理</li>
+<li><code>Shell</code>：平台通用实现，负责与引擎层交互</li>
+<li><code>Engine</code>：引擎层主要入口，管理<code>RootIsolate</code>，接收Layer渲染请求等</li>
+<li><code>TaskRunners</code>：保存4个<code>TaskRunner</code></li>
+<li><code>ThreadHost</code>：创建线程</li>
+</ol>
+<p>思考：Shell为什么不和PlatformView合并，而要通过<code>PlatformView</code>委托调用Shell？</p>
+<blockquote>
+<ol>
+<li>PlatformView接口是用来约束原生平台的实现</li>
+<li>Shell是嵌入层和引擎层之间的门户，同时作为平台嵌入层和引擎层等的委托对象</li>
+<li>组合优于继承：Shell是平台通用的，如果要添加平台特殊处理，<code>PlatformViewAndroid</code>需要继承Shell，而Shell除了平台接口之外，还实现了引擎的委托接口，这一部分是不应该被继承的。</li>
+</ol>
+</blockquote>
+<img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/Flutter嵌入层调用关系.png" style="zoom:80%;">
+
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="FlutterInjector"><a href="#FlutterInjector" class="headerlink" title="FlutterInjector"></a>FlutterInjector</h2><p><code>FlutterInjector</code>使用Builder创建<code>FlutterLoader</code>和<code>FlutterJNI</code>工厂对象，方便单元测试注入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FlutterInjector.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterInjector</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fillDefaults</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (flutterJniFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//创建FlutterJNI工厂</span></span><br><span class="line">        flutterJniFactory = <span class="keyword">new</span> FlutterJNI.Factory();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (flutterLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//创建FlutterLoader实例</span></span><br><span class="line">        flutterLoader = <span class="keyword">new</span> FlutterLoader(flutterJniFactory.provideFlutterJNI());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FlutterApplication"><a href="#FlutterApplication" class="headerlink" title="FlutterApplication"></a>FlutterApplication</h2><p>这里单独把<code>FlutterApplication</code>拎出来介绍是因为这一步可有可无，在Application中加载是为了<strong>加快<code>FlutterEngine</code>启动速度</strong>。</p>
+<p><strong>注：由于应用可能不使用<code>FlutterApplication</code>，因此<code>FlutterEngine</code>初始化的时候还会再尝试加载资源</strong></p>
+<p>调用<code>FlutterLoader</code>的<code>startInitialization</code>方法进行初始化，异步加载Flutter资源。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FlutterApplication.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlutterApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="meta">@CallSuper</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    FlutterInjector.instance().flutterLoader().startInitialization(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Flutter多线程"><a href="#Flutter多线程" class="headerlink" title="Flutter多线程"></a>Flutter多线程</h1><p>Flutter嵌入层中包含4个Runner：</p>
+<ol>
+<li>Platform Runner：处理平台消息，调用Flutter Engine接口</li>
+<li>UI Runner：执行Flutter Engine的Root Isolate代码，处理Widgets生成Layer Tree</li>
+<li>GPU Runner（Raster Runner）：负责GPU相关的管理和调度，UI Runner将构建的Layer Tree交给GPU Runner，GPU Runner中调用Skia引擎进行渲染</li>
+<li>IO Runner：处理耗时操作，例如图片读取、压缩、渲染，可以向GPU Runner提交渲染请求</li>
+</ol>
+<blockquote>
+<p>Platform Runner多个FlutterEngine共享，其他3个Runner引擎独立。</p>
+<p>Runner不等同于线程，可以运行在同一线程，也可以运行在不同线程</p>
+</blockquote>
+<h1 id="Dart单线程"><a href="#Dart单线程" class="headerlink" title="Dart单线程"></a>Dart单线程</h1><p>Dart默认是单线程处理任务，主线程有一个事件循环，包含两个事件队列：</p>
+<ol>
+<li>microtask queue：自定义Task，优先执行，不应该执行耗时操作，否则会阻塞event队列事件，导致延迟</li>
+<li>event queue：负责处理I/O、UI绘制、触摸事件等</li>
+</ol>
+<p><img src="/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/Isolate%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.png"></p>
+<h2 id="async、await"><a href="#async、await" class="headerlink" title="async、await"></a>async、await</h2><p>协程语法糖，标记await方法，保存async方法上下文环境，事件循环的时候进行检查，如果执行完，则沿着离开的指针继续执行下面的代码。</p>
+<p>async没有真正切换线程，因此无法执行耗时操作，会造成UI延迟</p>
+<h2 id="Isolate"><a href="#Isolate" class="headerlink" title="Isolate"></a>Isolate</h2><p>切换线程需要创建Isolate，和Java线程区别在于线程间内存独立，需要通过Port和其他Isolate通信和交换数据（sendPort、receivePort）</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>以Flutter工程方式为例，模块集成方式类似。源码分析比较枯燥，可以关注每个部分的小结和图片。</p>
+<p>改了很多次，发现源码很深、结构比较乱，最终决定将Java层和Native层分开介绍，可能更利于阅读。</p>
+<p>第一次分析C++的代码，style不是很习惯，很难像Java一样梳理类图关系。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://xiaozhuanlan.com/gityuan_flutter?sort_by=asc">深入理解Flutter引擎架构</a></li>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/u/3698453/blog/4810854">Flutter-Android-Embedder启动流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/394560540">Flutter源码阅读分析：引擎初始化与启动</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340729824">Flutter Engine层核心逻辑梳理</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/20/tool-2022-01-20-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" rel="prev" title="交叉编译">
+      <i class="fa fa-chevron-left"></i> 交叉编译
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/" rel="next" title="图形系统概念扫盲">
+      图形系统概念扫盲 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B-Java%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">Flutter启动流程-Java层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3"><span class="nav-number">1.1.</span> <span class="nav-text">程序入口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FlutterActivity-onCreate"><span class="nav-number">1.1.1.</span> <span class="nav-text">FlutterActivity#onCreate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlutterActivityAndFragmentDelegate"><span class="nav-number">1.1.2.</span> <span class="nav-text">FlutterActivityAndFragmentDelegate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAFlutterEngine"><span class="nav-number">1.2.</span> <span class="nav-text">创建FlutterEngine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setupFlutterEngine"><span class="nav-number">1.2.1.</span> <span class="nav-text">setupFlutterEngine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BDFlutter%E8%B5%84%E6%BA%90%EF%BC%8C%E8%A7%A3%E6%9E%90Intent%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">加载Flutter资源，解析Intent参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlutterJNI%E5%AE%9E%E4%BE%8B%E5%92%8C%E5%BC%95%E6%93%8E%E7%BB%91%E5%AE%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">FlutterJNI实例和引擎绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FlutterView%E5%85%B3%E8%81%94%E5%BC%95%E6%93%8E"><span class="nav-number">1.3.</span> <span class="nav-text">FlutterView关联引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%85%A5%E5%8F%A3"><span class="nav-number">1.4.</span> <span class="nav-text">Flutter代码执行入口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FlutterActivity-onStart"><span class="nav-number">1.4.1.</span> <span class="nav-text">FlutterActivity#onStart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlutterActivityAndFragmentDelegate-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">FlutterActivityAndFragmentDelegate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-2"><span class="nav-number">1.4.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FlutterJNI%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8CNative%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">FlutterJNI动态注册Native方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B-Native%E5%B1%82"><span class="nav-number">3.</span> <span class="nav-text">Flutter启动流程-Native层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nativeInit"><span class="nav-number">3.1.</span> <span class="nav-text">nativeInit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nativeAttach"><span class="nav-number">3.2.</span> <span class="nav-text">nativeAttach</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AttachJNI"><span class="nav-number">3.2.1.</span> <span class="nav-text">AttachJNI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AndroidShellHolder"><span class="nav-number">3.2.2.</span> <span class="nav-text">AndroidShellHolder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PlatformViewAndroid"><span class="nav-number">3.2.3.</span> <span class="nav-text">PlatformViewAndroid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PlatformView"><span class="nav-number">3.2.4.</span> <span class="nav-text">PlatformView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell"><span class="nav-number">3.2.5.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-3"><span class="nav-number">3.2.6.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nativeRunBundleAndSnapshotFromLibrary"><span class="nav-number">3.3.</span> <span class="nav-text">nativeRunBundleAndSnapshotFromLibrary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">关系梳理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FlutterInjector"><span class="nav-number">4.1.</span> <span class="nav-text">FlutterInjector</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FlutterApplication"><span class="nav-number">4.2.</span> <span class="nav-text">FlutterApplication</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">Flutter多线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dart%E5%8D%95%E7%BA%BF%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">Dart单线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#async%E3%80%81await"><span class="nav-number">6.1.</span> <span class="nav-text">async、await</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Isolate"><span class="nav-number">6.2.</span> <span class="nav-text">Isolate</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">7.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">541k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:12</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
