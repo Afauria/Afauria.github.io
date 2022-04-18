@@ -105,8 +105,8 @@ live2d:
     use: live2d-widget-model-koharu
   display:
     position: right
-    width: 250
-    height: 500
+    width: 150
+    height: 300
   mobile:
     show: true
     scale: 0.5
