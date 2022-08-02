@@ -239,4 +239,9 @@ which-command=whence
 ```
 
 
+scp -r build Afauria@172.19.232.28:/Users/Afauria/Desktop/
+
+dart frontend_server.dart.snapshot --target=flutter --aot --tfa -Ddart.vm.profile=false -Ddart.vm.product=true --sdk-root /ssd2/zhangweiyue/flutter/common/flutter_patched_sdk --output-dill app.dill /ssd2/afauria/demo/lib/main.dart
+
+/disk3/afauria/code/flutter_engine/engine_sdk/sdk/clang_x64/gen_snapshot --snapshot_kind=app-aot-elf --elf=libapp.so app.dill
 
