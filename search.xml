@@ -790,6 +790,9 @@
 <li>渲染（绘制）：通过图形API接口绘制图形（包括软件/硬件加速，2D/3D，直接/间接，客户端渲染/服务端渲染），保存到Buffer中（操作内存MMIO、DMA）</li>
 <li>送显：将Buffer中的UI数据，呈现到显示设备上。</li>
 </ol>
+<blockquote>
+<p>渲染管线分为几个步骤：应用阶段-几何阶段（顶点处理）-光栅化阶段-像素处理-合并阶段</p>
+</blockquote>
 <p><strong>由于每个应用都有自己的界面，这些应用共用一个显示设备，或是并列显示，或是层叠显示。因此需要一个程序来管理这些应用界面：负责将各个界面排列、合并最终显示到显示设备，即显示服务器。</strong></p>
 <blockquote>
 <p>如X Window中的X Server、Wayland中的Wayland Server，Android中的Surface Flinger。</p>
@@ -5285,7 +5288,7 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 </blockquote>
 <p>其他工具：</p>
 <ul>
-<li><a href="https://github.com/skylot/jadx">jadx</a>：反编译dex、aar、aab、apk、资源等，可视化操作界面。支持导出Gradle工程。</li>
+<li><a href="https://github.com/skylot/jadx">jadx</a>（强力推荐）：反编译dex、aar、aab、apk、资源等，可视化操作界面。支持导出Gradle工程。</li>
 <li><a href="https://github.com/Jermic/Android-Crack-Tool">CrackTool</a>：反编译、签名、可视化工具</li>
 <li><a href="http://set.ee/jbe/">jbe</a>：字节码编辑器，用于查看和修改class字节码文件</li>
 <li><a href="https://github.com/fourbrother/AXMLEditor">AXMLEditor</a>：<code>AndroidManifest.xml</code>打包之后会被编译成二进制文件，使用apktool可以反编译回来，但是使用apktool有时候无法再编译回apk。可以直接解压apk，使用该工具直接修改二进制文件，再压缩回apk</li>
@@ -9348,6 +9351,7 @@ dispatchMessage-->判断是否是通知消息
 </li>
 </ul>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><code>kill -9 $(pidof com.afauria.sample)</code>：kill某个应用进程，避免每次ps查看进程号</li>
 <li><code>uiautomator dump [file]</code>：输出layout结构层级</li>
 <li><code>logcat -d -f &lt;文件名&gt;</code>：输出日志，-d表示将缓存日志全部输出</li>
 <li><code>dmesg</code>：查看内核日志</li>

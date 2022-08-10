@@ -2,7 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
-    <lastmod>2022-08-02</lastmod>
+    <lastmod>2022-08-10</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2022-08-08</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2022-08-04</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/10/04/note-2018-10-04-TerminalCommand/</loc>
@@ -99,14 +107,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/07/23/network-2018-07-23-Mina/</loc>
     <lastmod>2022-03-17</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2022-03-15</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2022-03-14</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-Think/</loc>
