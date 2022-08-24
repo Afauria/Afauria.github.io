@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
-    <lastmod>2022-08-10</lastmod>
+    <loc>https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</loc>
+    <lastmod>2022-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
+    <lastmod>2022-08-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/19/geek-2022-08-19-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%EF%BC%88%E8%87%B4%E9%80%9D%E5%8E%BB%E7%9A%84%E9%9D%92%E6%98%A5%EF%BC%89/</loc>
+    <lastmod>2022-08-23</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/20/geek-2022-08-20-%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%99%AE%E5%8F%8A/</loc>
+    <lastmod>2022-08-23</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/</loc>
+    <lastmod>2022-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/20/geek-2022-08-20-%E5%AE%9D%E5%8F%AF%E6%A2%A6%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2022-08-22</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2022-08-08</lastmod>
+    <lastmod>2022-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsJoker/</loc>
+    <lastmod>2022-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/04/10/basic-2018-04-10-ProgramBasic/</loc>
+    <lastmod>2022-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2020/12/14/android-2020-12-14-FCM%E6%8E%A8%E9%80%81/</loc>
+    <lastmod>2022-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
+    <lastmod>2022-08-10</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/02/12/tech-2022-02-12-%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F/</loc>
@@ -14,10 +50,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/10/04/note-2018-10-04-TerminalCommand/</loc>
-    <lastmod>2022-07-16</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
     <lastmod>2022-07-16</lastmod>
   </url>
   <url>
@@ -47,10 +79,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/</loc>
     <lastmod>2022-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2018/04/10/basic-2018-04-10-ProgramBasic/</loc>
-    <lastmod>2022-03-30</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/</loc>
@@ -114,10 +142,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsSingler/</loc>
-    <lastmod>2022-03-14</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsJoker/</loc>
     <lastmod>2022-03-14</lastmod>
   </url>
   <url>
@@ -305,10 +329,6 @@
     <lastmod>2021-11-08</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/</loc>
-    <lastmod>2021-11-06</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/</loc>
     <lastmod>2021-11-05</lastmod>
   </url>
@@ -341,15 +361,11 @@
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2021-09-27</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2020/12/14/android-2020-12-14-FCM%E6%8E%A8%E9%80%81/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-27</lastmod>
   </url>
   <url>

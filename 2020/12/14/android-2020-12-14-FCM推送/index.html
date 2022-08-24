@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://blog.afauria.xyz/2020/12/14/android-2020-12-14-FCM%E6%8E%A8%E9%80%81/push_flow.jpeg">
 <meta property="og:image" content="https://blog.afauria.xyz/2020/12/14/android-2020-12-14-FCM%E6%8E%A8%E9%80%81/push_flow.png">
 <meta property="article:published_time" content="2020-12-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-27T01:44:09.031Z">
+<meta property="article:modified_time" content="2022-08-19T07:20:54.294Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Firebase">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-27 09:44:09" itemprop="dateModified" datetime="2021-09-27T09:44:09+08:00">2021-09-27</time>
+                <time title="修改时间：2022-08-19 15:20:54" itemprop="dateModified" datetime="2022-08-19T15:20:54+08:00">2022-08-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -438,13 +438,9 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip install oauth2client</span></span><br><span class="line"><span class="keyword">from</span> oauth2client.service_account <span class="keyword">import</span> ServiceAccountCredentials</span><br><span class="line"></span><br><span class="line">PROJECT_ID = <span class="string">&#x27;smarthome-8684b&#x27;</span></span><br><span class="line">BASE_URL = <span class="string">&#x27;https://fcm.googleapis.com&#x27;</span></span><br><span class="line">FCM_ENDPOINT = <span class="string">&#x27;v1/projects/&#x27;</span> + PROJECT_ID + <span class="string">&#x27;/messages:send&#x27;</span></span><br><span class="line">FCM_URL = BASE_URL + <span class="string">&#x27;/&#x27;</span> + FCM_ENDPOINT</span><br><span class="line">SCOPES = [<span class="string">&#x27;https://www.googleapis.com/auth/firebase.messaging&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># [START retrieve_access_token]</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_access_token</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Retrieve a valid access token that can be used to authorize requests.</span></span><br><span class="line"><span class="string">    :return: Access token.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    credentials = ServiceAccountCredentials.from_json_keyfile_name(</span><br><span class="line">        <span class="string">&#x27;service-account.json&#x27;</span>, SCOPES)</span><br><span class="line">    access_token_info = credentials.get_access_token()</span><br><span class="line">    <span class="built_in">print</span> access_token_info.access_token</span><br><span class="line">    <span class="keyword">return</span> access_token_info.access_token</span><br><span class="line"><span class="comment"># [END retrieve_access_token]</span></span><br><span class="line"></span><br><span class="line">_get_access_token()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-
 <h2 id="REST-API调用模拟发送消息"><a href="#REST-API调用模拟发送消息" class="headerlink" title="REST API调用模拟发送消息"></a>REST API调用模拟发送消息</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Postman请求</span></span><br><span class="line">POST https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send HTTP/1.1</span><br><span class="line"></span><br><span class="line">Content-Type: application/json</span><br><span class="line">Authorization: Bearer ya29.ElqKBGN2Ri_Uz...HnS_uNreA</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">   <span class="attr">&quot;message&quot;</span>:&#123;</span><br><span class="line">      <span class="attr">&quot;token&quot;</span>:<span class="string">&quot;bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;notification&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;body&quot;</span>:<span class="string">&quot;This is an FCM notification message!&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;title&quot;</span>:<span class="string">&quot;FCM Message&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">     <span class="string">&quot;data&quot;</span>: &#123;</span><br><span class="line">     		<span class="attr">&quot;key&quot;</span>: <span class="string">&quot;value&quot;</span></span><br><span class="line">   		&#125;</span><br><span class="line">    <span class="comment">//针对特定平台</span></span><br><span class="line">  	<span class="string">&quot;android&quot;</span>:&#123;</span><br><span class="line">       <span class="attr">&quot;notification&quot;</span>:&#123;</span><br><span class="line">         <span class="attr">&quot;icon&quot;</span>:<span class="string">&quot;stock_ticker_update&quot;</span>,</span><br><span class="line">         <span class="attr">&quot;color&quot;</span>:<span class="string">&quot;#7e55c3&quot;</span></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -H &quot;Authorization: Bearer ya29.ElqKBGN2Ri_Uz...HnS_uNreA&quot; -H &quot;Content-Type: application/json&quot; -d &#x27;&#123;</span><br><span class="line">&quot;message&quot;:&#123;</span><br><span class="line">   &quot;notification&quot;:&#123;</span><br><span class="line">     &quot;title&quot;:&quot;FCM Message&quot;,</span><br><span class="line">     &quot;body&quot;:&quot;This is an FCM Message&quot;</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;token&quot;:&quot;bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...&quot;</span><br><span class="line">&#125;&#125;&#x27; https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send</span><br></pre></td></tr></table></figure>
-
-
 
 <h2 id="Firebase-SDK初始化方式"><a href="#Firebase-SDK初始化方式" class="headerlink" title="Firebase SDK初始化方式"></a>Firebase SDK初始化方式</h2><p><a target="_blank" rel="noopener" href="https://firebase.googleblog.com/2016/12/how-does-firebase-initialize-on-android.html">Firebase初始化原理</a></p>
 <p>多进程初始化问题：（Demo演示）Application调用Firebase</p>
@@ -620,20 +616,20 @@ dispatchMessage-->判断是否是通知消息
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -720,13 +716,13 @@ dispatchMessage-->判断是否是通知消息
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">542k</span>
+    <span title="站点总字数">555k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:13</span>
+    <span title="站点阅读时长">8:25</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

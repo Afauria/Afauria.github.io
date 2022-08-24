@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Google开发者平台，重要地址和一些概念。希望有一个初步的、全面的认识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google开发者平台介绍">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍Google开发者平台，重要地址和一些概念。希望有一个初步的、全面的认识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-24T11:19:41.709Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Google">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Google开发者平台介绍 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Google开发者平台介绍
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-18 00:00:00" itemprop="dateCreated datePublished" datetime="2022-08-18T00:00:00+08:00">2022-08-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-24 19:19:41" itemprop="dateModified" datetime="2022-08-24T19:19:41+08:00">2022-08-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Google/" itemprop="url" rel="index"><span itemprop="name">Google</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/" class="post-meta-item leancloud_visitors" data-flag-title="Google开发者平台介绍" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+            <div class="post-description">介绍Google开发者平台，重要地址和一些概念。希望有一个初步的、全面的认识。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Google开发者平台是一个很庞大的体系，越了解就越觉得牛逼，打算以后慢慢研究，因此单独开个分类。</p>
+<p>之前接入过Firebase推送、YouTube API，对Google开发者平台做了简单的了解。</p>
+<p>最近在研究Google Assistant语音，由于Google内部也有很多业务、产品、软件架构的调整，因此遇到了很多问题。</p>
+<ol>
+<li>一些产品功能有交叉重合：例如Google Assistant API和Speech-to-Text API之间有什么关系？</li>
+<li>有些文档、Sample很久没更新</li>
+<li>不知道该去哪里找有用的资料</li>
+</ol>
+<p>因此花了一定时间了解下Google开发者体系和架构。希望对Google开发者平台有个初步的、全面的认识。</p>
+<blockquote>
+<p>后面逐渐将用到的Google功能和API整合到该分类下，例如FCM、YouTube等</p>
+</blockquote>
+<h1 id="Google开发者"><a href="#Google开发者" class="headerlink" title="Google开发者"></a>Google开发者</h1><p>包含谷歌开发的框架、服务、应用等，以及对应的学习资料（教程、集成文档、Codelab、Google开发者认证等）。</p>
+<p>热门产品：Android、Flutter、Chrome OS、YouTube、Google Cloud、Maps Platform、Google Play等，简单介绍几个</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://firebase.google.com/">Firebase</a>：提供应用开发解决方案，例如消息推送、云服务接口、测试、性能监控、数据分析等</li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/web">Web</a>：包含UI设计、框架、性能、搜索、审核等学习资料</li>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/">Tensor Flow</a>：机器学习框架</li>
+<li><a target="_blank" rel="noopener" href="https://workspace.google.com/">Google Workspace</a>：为企业提供的工作台，用于协同办公，包含企业邮箱、企业文档、会议等工具</li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/google-ads">Google Ads</a>：广告服务</li>
+</ul>
+<blockquote>
+<p>除了Android、Flutter等非云产品，所有涉及到云服务的都依赖Google Cloud Platform，准确来说Android和Flutter源码、依赖库等或多或少也会用到GCP。</p>
+</blockquote>
+<p>重要地址：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/products/develop">Google开发产品</a>：集合所有Google开发产品和资料，可以在这里搜索。</li>
+</ul>
+<h1 id="Google-Cloud-Platform（GCP）"><a href="#Google-Cloud-Platform（GCP）" class="headerlink" title="Google Cloud Platform（GCP）"></a>Google Cloud Platform（GCP）</h1><p><a target="_blank" rel="noopener" href="https://cloud.google.com/">Google Cloud Platform</a>：提供计算、管理、数据分析、存储、运维、人工智能等一系列能力、服务和基础设施。</p>
+<p><a target="_blank" rel="noopener" href="https://console.cloud.google.com/">Google Cloud控制台</a>：管理Cloud项目，例如费用结算、配额和请求管理、生成凭据等。一个项目会用到各种各样的资源，例如API密钥、OAuth客户端、虚拟机、云存储等。</p>
+<p>重要地址：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/docs">Google Cloud产品</a>：Google Cloud自己开发的产品，对应的文档在Cloud中</li>
+<li><a target="_blank" rel="noopener" href="https://console.cloud.google.com/marketplace/browse">Google Cloud市场</a>：除了Google Cloud产品之外，还包含二方（例如Google、Google Enterprise、Firebase、YouTube）、三方合作伙伴（例如JFrog、Jenkins、CentOS）开发的产品，对应的文档在各自的网站中。</li>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/pricing/list?hl=zh-cn">Google Cloud产品价格表</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/googleapis/googleapis">Google Cloud APIs原始接口定义</a>：用于了解接口参数定义等，也可以直接使用客户端库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/googleapis/google-api-python-client/tree/main/docs">google api说明文档</a></li>
+</ul>
+<h2 id="Google-Cloud-APIs"><a href="#Google-Cloud-APIs" class="headerlink" title="Google Cloud APIs"></a>Google Cloud APIs</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/apis/docs/overview">Google Cloud APIs</a>：Google Cloud服务的编程接口，用于管理Cloud服务资源，例如启用或停止某项服务。通常在<code>googleapis.com</code>子网域下运行，例如<code>cloudapis.googleapis.com</code>、<code>speech.googleapis.com</code>、<code>youtube.googleapis.com</code>。</li>
+<li>Google Enterprise API：Google企业级API，更稳定的API，专门的团队支持。</li>
+</ul>
+<blockquote>
+<p>Google Cloud APIs个人理解</p>
+<ul>
+<li>狭义：特指Cloud API基础服务，可以用编程方式管理Cloud资源。所有控制台项目默认启用Google Cloud APIs功能。</li>
+<li>广义：指所有基于GCP开发的API，同样可以通过Google Cloud APIs管理接口。在GCP之上，Firebase、Assistant、Google Home这些产品有自己的控制台，每个控制台可以编辑特定的功能。在这些控制台创建项目之后会在Cloud控制台上创建同样的项目。</li>
+</ul>
+</blockquote>
+<p>一般提供REST API、gRPC、客户端库等方式集成</p>
+<h2 id="Google-Cloud-SDK"><a href="#Google-Cloud-SDK" class="headerlink" title="Google Cloud SDK"></a>Google Cloud SDK</h2><p><a target="_blank" rel="noopener" href="https://cloud.google.com/sdk">Google Cloud SDK</a>主要包含两部分功能：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/cli">gCloud CLI</a>命令行工具快速调用APIs</li>
+<li>不同语言的Google Cloud客户端库：封装了所有Google Cloud APIs调用，持续更新优化。</li>
+</ul>
+<blockquote>
+<p>根据<code>SpeechRecognizationClient</code>项目说明，Java客户端库未针对移动平台优化，例如没有使用java lite版本的protobuf。建议作为示例代码参考。</p>
+<p>使用的时候挑选特定的库即可，不需要全部依赖。</p>
+</blockquote>
+<p>重要地址：</p>
+<ul>
+<li>SDK文档地址：<a target="_blank" rel="noopener" href="https://cloud.google.com/java/docs/reference">Java Cloud Client Libraries</a></li>
+<li>SDK源码地址：<a target="_blank" rel="noopener" href="https://github.com/googleapis/google-cloud-java">google-cloud-java</a>、<a target="_blank" rel="noopener" href="https://github.com/googleapis/google-cloud-python">google-cloud-python</a>。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Google/" rel="tag"><i class="fa fa-tag"></i> Google</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/" rel="prev" title="Yocto嵌入式平台运行Flutter应用">
+      <i class="fa fa-chevron-left"></i> Yocto嵌入式平台运行Flutter应用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/19/geek-2022-08-19-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%EF%BC%88%E8%87%B4%E9%80%9D%E5%8E%BB%E7%9A%84%E9%9D%92%E6%98%A5%EF%BC%89/" rel="next" title="冒险岛私服搭建（致逝去的青春）">
+      冒险岛私服搭建（致逝去的青春） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google%E5%BC%80%E5%8F%91%E8%80%85"><span class="nav-number">2.</span> <span class="nav-text">Google开发者</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google-Cloud-Platform%EF%BC%88GCP%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Google Cloud Platform（GCP）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Cloud-APIs"><span class="nav-number">3.1.</span> <span class="nav-text">Google Cloud APIs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Cloud-SDK"><span class="nav-number">3.2.</span> <span class="nav-text">Google Cloud SDK</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">555k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:25</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
