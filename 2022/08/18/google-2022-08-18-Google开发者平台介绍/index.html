@@ -30,7 +30,7 @@
 <meta property="og:description" content="介绍Google开发者平台，重要地址和一些概念。希望有一个初步的、全面的认识。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-24T11:19:41.709Z">
+<meta property="article:modified_time" content="2022-09-06T12:04:06.330Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Google">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-24 19:19:41" itemprop="dateModified" datetime="2022-08-24T19:19:41+08:00">2022-08-24</time>
+                <time title="修改时间：2022-09-06 20:04:06" itemprop="dateModified" datetime="2022-09-06T20:04:06+08:00">2022-09-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -297,18 +297,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Google开发者平台是一个很庞大的体系，越了解就越觉得牛逼，打算以后慢慢研究，因此单独开个分类。</p>
-<p>之前接入过Firebase推送、YouTube API，对Google开发者平台做了简单的了解。</p>
-<p>最近在研究Google Assistant语音，由于Google内部也有很多业务、产品、软件架构的调整，因此遇到了很多问题。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前接入过Firebase推送、YouTube API，对Google开发者平台做了简单的了解。后面逐渐将用到的Google功能和API整合到该分类下，例如FCM、YouTube等。</p>
+<p>由于Google内部也有很多部门、业务、产品、软件架构的区分和调整，错综复杂。在这样的环境下，Google Cloud能够支撑大量的业务，并且保持架构稳定，是一件很了不起的事情，也了解就越觉得牛逼。不过也遇到了一些问题</p>
 <ol>
-<li>一些产品功能有交叉重合：例如Google Assistant API和Speech-to-Text API之间有什么关系？</li>
+<li>一些产品功能有交叉重合，不同业务之间有什么联系：例如Google Assistant API和Speech-to-Text API，GCM和FCM</li>
 <li>有些文档、Sample很久没更新</li>
 <li>不知道该去哪里找有用的资料</li>
 </ol>
-<p>因此花了一定时间了解下Google开发者体系和架构。希望对Google开发者平台有个初步的、全面的认识。</p>
-<blockquote>
-<p>后面逐渐将用到的Google功能和API整合到该分类下，例如FCM、YouTube等</p>
-</blockquote>
+<p>因此粗浅地了解下Google开发者体系和架构。希望对Google开发者平台有个初步的、全面的认识。</p>
 <h1 id="Google开发者"><a href="#Google开发者" class="headerlink" title="Google开发者"></a>Google开发者</h1><p>包含谷歌开发的框架、服务、应用等，以及对应的学习资料（教程、集成文档、Codelab、Google开发者认证等）。</p>
 <p>热门产品：Android、Flutter、Chrome OS、YouTube、Google Cloud、Maps Platform、Google Play等，简单介绍几个</p>
 <ul>
@@ -317,15 +313,13 @@
 <li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/">Tensor Flow</a>：机器学习框架</li>
 <li><a target="_blank" rel="noopener" href="https://workspace.google.com/">Google Workspace</a>：为企业提供的工作台，用于协同办公，包含企业邮箱、企业文档、会议等工具</li>
 <li><a target="_blank" rel="noopener" href="https://developers.google.com/google-ads">Google Ads</a>：广告服务</li>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/">Google Cloud</a>：提供基础服务、基础设施等。除了Android、Flutter等非云产品，所有云服务都依赖Google Cloud Platform，准确来说Android和Flutter源码、依赖库等或多或少也会用到GCP。</li>
 </ul>
-<blockquote>
-<p>除了Android、Flutter等非云产品，所有涉及到云服务的都依赖Google Cloud Platform，准确来说Android和Flutter源码、依赖库等或多或少也会用到GCP。</p>
-</blockquote>
 <p>重要地址：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://developers.google.com/products/develop">Google开发产品</a>：集合所有Google开发产品和资料，可以在这里搜索。</li>
 </ul>
-<h1 id="Google-Cloud-Platform（GCP）"><a href="#Google-Cloud-Platform（GCP）" class="headerlink" title="Google Cloud Platform（GCP）"></a>Google Cloud Platform（GCP）</h1><p><a target="_blank" rel="noopener" href="https://cloud.google.com/">Google Cloud Platform</a>：提供计算、管理、数据分析、存储、运维、人工智能等一系列能力、服务和基础设施。</p>
+<h1 id="Google-Cloud-Platform（GCP）"><a href="#Google-Cloud-Platform（GCP）" class="headerlink" title="Google Cloud Platform（GCP）"></a>Google Cloud Platform（GCP）</h1><p><a target="_blank" rel="noopener" href="https://cloud.google.com/">Google Cloud Platform</a>：提供计算、管理、数据分析、存储、运维、人工智能等一系列能力、基础服务和基础设施。</p>
 <p><a target="_blank" rel="noopener" href="https://console.cloud.google.com/">Google Cloud控制台</a>：管理Cloud项目，例如费用结算、配额和请求管理、生成凭据等。一个项目会用到各种各样的资源，例如API密钥、OAuth客户端、虚拟机、云存储等。</p>
 <p>重要地址：</p>
 <ul>
@@ -350,10 +344,9 @@
 <h2 id="Google-Cloud-SDK"><a href="#Google-Cloud-SDK" class="headerlink" title="Google Cloud SDK"></a>Google Cloud SDK</h2><p><a target="_blank" rel="noopener" href="https://cloud.google.com/sdk">Google Cloud SDK</a>主要包含两部分功能：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://cloud.google.com/cli">gCloud CLI</a>命令行工具快速调用APIs</li>
-<li>不同语言的Google Cloud客户端库：封装了所有Google Cloud APIs调用，持续更新优化。</li>
+<li>不同语言的Google Cloud客户端库：封装了<strong>所有Google Cloud APIs调用</strong>，持续更新优化。</li>
 </ul>
 <blockquote>
-<p>根据<code>SpeechRecognizationClient</code>项目说明，Java客户端库未针对移动平台优化，例如没有使用java lite版本的protobuf。建议作为示例代码参考。</p>
 <p>使用的时候挑选特定的库即可，不需要全部依赖。</p>
 </blockquote>
 <p>重要地址：</p>
@@ -403,8 +396,8 @@
       <i class="fa fa-chevron-left"></i> Yocto嵌入式平台运行Flutter应用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/08/19/geek-2022-08-19-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%EF%BC%88%E8%87%B4%E9%80%9D%E5%8E%BB%E7%9A%84%E9%9D%92%E6%98%A5%EF%BC%89/" rel="next" title="冒险岛私服搭建（致逝去的青春）">
-      冒险岛私服搭建（致逝去的青春） <i class="fa fa-chevron-right"></i>
+    <a href="/2022/08/19/geek-2022-08-19-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/" rel="next" title="冒险岛私服搭建v079">
+      冒险岛私服搭建v079 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -482,7 +475,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">96</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -582,13 +575,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">555k</span>
+    <span title="站点总字数">572k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:25</span>
+    <span title="站点阅读时长">8:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
