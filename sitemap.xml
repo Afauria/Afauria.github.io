@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/20/geek-2022-08-22-%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%99%AE%E5%8F%8A/</loc>
+    <loc>https://blog.afauria.xyz/2022/08/22/geek-2022-08-22-%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%99%AE%E5%8F%8A/</loc>
     
     <lastmod>2022-09-20</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/19/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/</loc>
+    <loc>https://blog.afauria.xyz/2022/09/01/geek-2022-09-01-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/</loc>
     
     <lastmod>2022-09-20</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/19/geek-2022-09-02-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/</loc>
+    <loc>https://blog.afauria.xyz/2022/09/02/geek-2022-09-02-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/</loc>
     
     <lastmod>2022-09-20</lastmod>
     
@@ -29,7 +29,16 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/19/geek-2022-09-01-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/</loc>
+    <loc>https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/</loc>
+    
+    <lastmod>2022-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/19/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/</loc>
     
     <lastmod>2022-09-20</lastmod>
     
@@ -56,27 +65,9 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/19/geek-2022-08-19-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/</loc>
-    
-    <lastmod>2022-09-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
     
     <lastmod>2022-09-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/</loc>
-    
-    <lastmod>2022-09-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -229,7 +220,7 @@
   <url>
     <loc>https://blog.afauria.xyz/2022/01/22/flutter-2022-01-22-Flutter%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</loc>
     
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -920,7 +911,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -929,7 +920,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
+    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2021-09-27</lastmod>
     
@@ -977,6 +968,13 @@
   </url>
   
   <url>
+    <loc>https://blog.afauria.xyz/tags/%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/tags/Flutter/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -985,6 +983,27 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Linux/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/tags/Google/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/tags/%E6%9E%B6%E6%9E%84/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1019,13 +1038,6 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/tags/%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/tags/%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -1054,6 +1066,20 @@
   </url>
   
   <url>
+    <loc>https://blog.afauria.xyz/tags/%E6%9E%81%E5%AE%A2/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/tags/%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -1062,13 +1088,6 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/kotlin/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1089,14 +1108,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E9%98%85%E8%AF%BB/</loc>
+    <loc>https://blog.afauria.xyz/tags/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1104,13 +1116,6 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E7%94%B5%E5%BD%B1/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1138,7 +1143,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/tags/%E5%90%8E%E7%AB%AF/</loc>
+    <loc>https://blog.afauria.xyz/tags/%E7%BC%96%E8%AF%91/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1146,6 +1151,13 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/Docker/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/tags/%E5%90%8E%E7%AB%AF/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1167,13 +1179,6 @@
   
   <url>
     <loc>https://blog.afauria.xyz/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E7%BC%96%E8%AF%91/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1235,20 +1240,6 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>https://blog.afauria.xyz/tags/Google/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/tags/%E6%9E%81%E5%AE%A2/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
@@ -1259,7 +1250,21 @@
   </url>
   
   <url>
+    <loc>https://blog.afauria.xyz/categories/%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/categories/Flutter/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/categories/Google/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1294,6 +1299,20 @@
   </url>
   
   <url>
+    <loc>https://blog.afauria.xyz/categories/%E6%9E%81%E5%AE%A2/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.afauria.xyz/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2022-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.afauria.xyz/categories/kotlin/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -1308,14 +1327,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/categories/%E9%98%85%E8%AF%BB/</loc>
+    <loc>https://blog.afauria.xyz/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1329,21 +1341,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/categories/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.afauria.xyz/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1357,14 +1355,7 @@
   </url>
   
   <url>
-    <loc>https://blog.afauria.xyz/categories/Google/</loc>
-    <lastmod>2022-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.afauria.xyz/categories/%E6%9E%81%E5%AE%A2/</loc>
+    <loc>https://blog.afauria.xyz/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
