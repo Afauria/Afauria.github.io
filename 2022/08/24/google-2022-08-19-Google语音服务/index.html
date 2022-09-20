@@ -22,26 +22,20 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍Flutter SDK和Engine源码下载和编译。修改源码之后进行替换。">
+  <meta name="description" content="介绍Google语音服务相关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flutter源码下载和编译">
-<meta property="og:url" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/index.html">
+<meta property="og:title" content="Google语音服务">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="介绍Flutter SDK和Engine源码下载和编译。修改源码之后进行替换。">
+<meta property="og:description" content="介绍Google语音服务相关">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置DartSDK.png">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png">
-<meta property="og:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png">
-<meta property="article:published_time" content="2022-01-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-13T09:47:07.453Z">
+<meta property="article:published_time" content="2022-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-06T12:04:06.331Z">
 <meta property="article:author" content="Afauria">
-<meta property="article:tag" content="Flutter">
-<meta property="article:tag" content="跨平台">
+<meta property="article:tag" content="Google">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png">
 
-<link rel="canonical" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">
+<link rel="canonical" href="https://blog.afauria.xyz/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/">
 
 
 <script id="page-configurations">
@@ -54,7 +48,7 @@
   };
 </script>
 
-  <title>Flutter源码下载和编译 | Afauria's Blog</title>
+  <title>Google语音服务 | Afauria's Blog</title>
   
 
 
@@ -213,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -226,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Flutter源码下载和编译
+          Google语音服务
         </h1>
 
         <div class="post-meta">
@@ -237,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-06T00:00:00+08:00">2022-01-06</time>
+              <time title="创建时间：2022-08-24 00:00:00" itemprop="dateCreated datePublished" datetime="2022-08-24T00:00:00+08:00">2022-08-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-13 17:47:07" itemprop="dateModified" datetime="2022-03-13T17:47:07+08:00">2022-03-13</time>
+                <time title="修改时间：2022-09-06 20:04:06" itemprop="dateModified" datetime="2022-09-06T20:04:06+08:00">2022-09-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,12 +246,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                  <a href="/categories/Google/" itemprop="url" rel="index"><span itemprop="name">Google</span></a>
                 </span>
             </span>
 
           
-            <span id="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/" class="post-meta-item leancloud_visitors" data-flag-title="Flutter源码下载和编译" title="阅读次数">
+            <span id="/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/" class="post-meta-item leancloud_visitors" data-flag-title="Google语音服务" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -272,8 +266,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/24/google-2022-08-19-Google%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -283,16 +277,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.3k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>2 分钟</span>
             </span>
-            <div class="post-description">介绍Flutter SDK和Engine源码下载和编译。修改源码之后进行替换。</div>
+            <div class="post-description">介绍Google语音服务相关</div>
 
         </div>
       </header>
@@ -303,145 +297,141 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="SDK下载和编译"><a href="#SDK下载和编译" class="headerlink" title="SDK下载和编译"></a>SDK下载和编译</h1><p>目的：</p>
-<ol>
-<li>学习源码</li>
-<li>定制框架：如修改<code>flutter_tools</code>编译工具等</li>
-</ol>
-<p>方法和搭建Flutter开发环境类似</p>
-<ol>
-<li><p>直接clone或先fork到本地：<code>git clone git@github.com:flutter/flutter.git</code></p>
-</li>
-<li><p>配置环境变量，或者直接进入bin目录执行flutter命令</p>
-</li>
-<li><p>安装依赖包：<code>flutter update-packages</code></p>
-</li>
-<li><p>检查环境：<code>flutter doctor</code></p>
-</li>
-<li><p>Android Studio打开<code>&#123;flutter_framework&#125;/packages/</code>下的项目，默认会当做Android工程，IDE提示<code>Dart SDK is not configured</code>或者<code>Dart support is not enabled for the module &#39;flutter_tools&#39;</code>，如下</p>
-<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS%E6%89%93%E5%BC%80Dart%E9%85%8D%E7%BD%AE.png"></p>
-</li>
-<li><p>配置Flutter工程：直接点击上图的<code>Open Dart Settings</code>或者打开<code>Prefereneces&gt;Language&gt;Dart/Flutter</code>。配置Dart SDK和Flutter SDK路径，对照下Flutter应用项目的配置即可。如下</p>
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置DartSDK.png" style="zoom: 67%;">
-
-<img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/AS配置FlutterSDK.png" style="zoom:67%;"></li>
-<li><p>配置完之后即可在IDE查看和修改源码</p>
-</li>
-<li><p>编译源码</p>
-<ol>
-<li>删除<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.snapshot</code>（Dart快照文件）和<code>&#123;flutter_framework&#125;/bin/cache/flutter_tools.stamp</code>（当前SDK的commit id文件）</li>
-<li>运行flutter命令的时候会自动编译源码，重新生成dart快照文件。</li>
-</ol>
-</li>
-</ol>
-<h1 id="Engine下载和编译"><a href="#Engine下载和编译" class="headerlink" title="Engine下载和编译"></a>Engine下载和编译</h1><p>这里只演示了官方支持的平台编译，还不涉及嵌入层的定制和交叉编译（用于定制的嵌入式平台运行Engine）。</p>
-<p>主要有几个目的</p>
-<ol>
-<li>学习源码</li>
-<li>定制引擎，使得Flutter能够在其他目标平台运行，例如树莓派，鸿蒙系统等</li>
-<li>通过压缩、裁剪引擎优化包体积</li>
-</ol>
-<h2 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">官方文档</a></p>
-<p><code>depot_tools</code>安装：参考<a href="/2022/01/04/%E5%B7%A5%E5%85%B7-2022-01-04-depot_tools%E4%BB%8B%E7%BB%8D/">depot_tools介绍</a></p>
-<ol>
-<li>clone仓库：<code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git</code></li>
-<li>设置环境变量：<code>.bash_profile</code>文件中添加<code>export PATH=$PATH:&#123;your_path&#125;/depot_tools/</code></li>
-</ol>
-<p>生成<code>.gclient</code>文件：<code>gclient config git@github.com:flutter/engine.git --unmanaged --name=src/flutter</code></p>
-<blockquote>
-<p>也可以手动创建文件填写。这里直接使用官方仓库地址，如果要修改提交源码，则需要fork到自己的仓库下载。</p>
-</blockquote>
-<p>下载源码和依赖项目（大概10个G，不要中断下载）：<code>gclient sync --verbose</code></p>
-<blockquote>
-<p>依赖项目如glwf、skia、dart、android sdk等，一般不需要修改，只需要修改flutter engine项目</p>
-</blockquote>
-<p>切换版本：默认获取master分支的版本，建议切换engine版本，与Flutter SDK保持一致，需要进入<code>src/flutter</code>目录执行以下命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> commitId使用和当前Flutter SDK对应的版本：cat bin/internal/engine.version，如下图</span></span><br><span class="line">git reset --hard &lt;commiId&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 再次同步代码：不同engine版本依赖的项目版本可能不同</span></span><br><span class="line">gclient sync --with_branch_heads --with_tags --verbose</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/06/flutter-2022-01-06-Flutter%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91/Flutter%E5%BC%95%E6%93%8E%E7%89%88%E6%9C%AC.png"></p>
-<blockquote>
-<p>主机包含多个版本Dart SDK的时候。Dart编译前端、编译后端、以及Dart运行时的版本必须一致，否则会报错版本不匹配。建议切换engine版本，保持Dart SDK版本一致。否则需要进入对应路径下执行命令。</p>
-<p>详情参考<a href="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/">Dart的编译和执行</a></p>
-</blockquote>
-<h2 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Compiling-the-engine">官方文档</a></p>
-<p>使用<code>gn</code>生成ninja构建文件（参数参考官方文档）：<code>&#123;engine_path&#125;/src/flutter/tools/gn --unoptimized --android --runtime-mode debug --android-cpu arm</code></p>
-<blockquote>
-<p>这里的gn只是一个shell脚本，内部调用<code>gn gen</code>命令执行</p>
-<p>对应的构建产物会有多种组合：</p>
+        <h1 id="Cloud-Speech-to-Text（STT）"><a href="#Cloud-Speech-to-Text（STT）" class="headerlink" title="Cloud Speech-to-Text（STT）"></a>Cloud Speech-to-Text（STT）</h1><table>
+<thead>
+<tr>
+<th>识别方式</th>
+<th>音频格式</th>
+<th>请求方式</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同步识别</td>
+<td>短音频（不超过1分钟）</td>
+<td>REST和gRPC</td>
+<td>全部处理完之后返回结果</td>
+</tr>
+<tr>
+<td>异步识别</td>
+<td>长音频（不超过480分钟）</td>
+<td>REST和gRPC</td>
+<td>定期轮询，返回识别结果</td>
+</tr>
+<tr>
+<td>流式识别</td>
+<td>实时音频</td>
+<td>gRPC</td>
+<td>从麦克风采集实时音频，边讲话边返回识别结果</td>
+</tr>
+</tbody></table>
 <ul>
-<li>平台：iOS, Android, macOS, Linux, Windows</li>
-<li>构建模式：debug, release, profile</li>
-<li>是否优化：opt, unopt</li>
-<li>cpu架构：arm、arm64、x86、x64</li>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/speech-to-text/docs/quickstart?hl=zh-cn">Speech To Text API接入</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/GoogleCloudPlatform/android-docs-samples">Speech To Text Android 示例</a>：Demo运行成功，按照文档配一下凭据即可<ul>
+<li>SpeechRecognitionClient：使用Java客户端SDK方式调用，封装了grpc类。使用简单，但是未对Android进行优化，例如没有使用java-lite的protobuf库</li>
+<li>Speech：使用轻量的protobuf，需要自己定义protobuf类</li>
 </ul>
-<p>产物命名格式：<code>&#123;android/ios/host&#125;_&#123;debug/profile/release&#125;_&#123;unoptimized/optimized&#125;_&#123;cpu架构&#125;</code></p>
-<p>除此之外还可以根据图形后端进行编译：如OpenGL、Vulkan、software</p>
-</blockquote>
-<p>构建完之后生成<code>out</code>目录，根据参数生成不同文件夹，如<code>android_debug_unopt</code>、<code>ios_debug_unopt</code>等。</p>
-<p>内部包括ninja构建文件、<code>compile_commands.json</code>文件（Intellisense，用于编辑器索引）、xcode项目文件等</p>
-<p>进入src目录，使用<code>ninja</code>编译：<code>ninja -C out/android_debug_unopt</code></p>
-<blockquote>
-<p>编译生成的文件在<code>out/android_debug_unopt</code>目录下。</p>
-<ul>
-<li>Android引擎编译主要产物是<code>flutter.jar</code>，其中包含<code>libflutter.so</code>Flutter引擎层代码、<code>flutter_embedding_debug.jar</code>嵌入层代码。</li>
-<li>iOS引擎编译主要产物是<code>Flutter.framework</code>，其中包含Flutter引擎层代码、<code>FlutterEmbedder.framework</code>嵌入层代码和<code>icudtl.dat</code>国际化数据文件。</li>
+</li>
 </ul>
-<p>上述产物是Flutter框架本身编译出的目标代码，除此之外，还包括Dart SDK产物，如front_end和gen_snapshot编译工具等</p>
-</blockquote>
-<h2 id="替换Engine"><a href="#替换Engine" class="headerlink" title="替换Engine"></a>替换Engine</h2><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/The-flutter-tool#using-a-locally-built-engine-with-the-flutter-tool">官方文档</a></p>
-<p><strong>Flutter默认会下载和使用官方构建好的engine</strong>，包括各种架构的版本，位于<code>&#123;flutter_sdk&#125;/bin/cache/artifacts/engine</code>下。要替换自己编译出来的引擎，有几种方式：</p>
-<p>方式一：直接用引擎编译出来的<code>frontend_server.dart.snapshot</code>和<code>gen_snapshot</code>，手动进行前端编译和后端编译。</p>
-<p>方式二：将引擎编译产物拷贝到Flutter SDK缓存路径下，替换官方默认引擎。</p>
-<p>方式三：使用<code>local-engine-src-path</code>和<code>--local-engine</code>选项。如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定的引擎需要与构建模式对应：debug版的引擎编译debug版的应用</span></span><br><span class="line">flutter run --local-engine-src-path &#123;path&#125;/engine/src --local-engine=&#123;path&#125;/engine/src/out/host_debug_unopt</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>flutter引擎和sdk在同级目录下或者<code>-local-engine</code>使用绝对路径，可以省略<code>--local-engine-src-path</code>参数。</p>
-<p>下面会分析<code>flutter_tools</code>解析该参数过程</p>
-</blockquote>
-<p>为Web应用构建，使用主机引擎即可：<code>flutter run --local-engine=host_debug_unopt -d chrome</code></p>
-<h2 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">官方文档</a></p>
-<h3 id="Clion"><a href="#Clion" class="headerlink" title="Clion"></a>Clion</h3><p>将gn生成的<code>compile_commands.json</code>文件复制到<code>src/flutter</code>中，使用Clion打开，indexing之后就可以跟踪和跳转代码</p>
-<blockquote>
-<p>JetBrains系列，需要激活</p>
-</blockquote>
-<h3 id="Xcode【Objective-C-】"><a href="#Xcode【Objective-C-】" class="headerlink" title="Xcode【Objective-C++】"></a>Xcode【Objective-C++】</h3><p>Mac电脑上，对于Objective-C++项目，可以直接打开xcode工程文件<code>open out/host_debug_unopt/flutter_engine.xcodeproj</code></p>
-<h3 id="VSCode【C-C-】"><a href="#VSCode【C-C-】" class="headerlink" title="VSCode【C/C++】"></a>VSCode【C/C++】</h3><ol>
-<li><p>安装cmake：<code>brew install cmake</code></p>
-</li>
-<li><p>安装cquery或者ccls：<code>brew install cquery</code>，<code>brew install ccls</code></p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/jacobdufault/cquery">cquery</a>已经不再维护，推荐<a target="_blank" rel="noopener" href="https://clangd.llvm.org/">clangd</a>和<a target="_blank" rel="noopener" href="https://github.com/MaskRay/ccls">ccls</a></p>
-<p>三者都是语言服务器，用于代码语义分析，通过插件与其他编辑器一起工作。可以给编辑器添加智能功能：代码提示和补全、格式化、代码跳转、编译错误提示等</p>
-<p>ccls源自cquery。clangd基于Clang C++编译器，属于LLVM项目</p>
-</blockquote>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://github.com/jacobdufault/cquery/wiki/Building-cquery">构建cquery</a>或者<a target="_blank" rel="noopener" href="https://github.com/MaskRay/ccls/wiki/Build">构建ccls</a></p>
-</li>
-<li><p>安装VSCode插件，如<code>VSCode-cquery</code>或<code>vscode-ccls</code>，配置插件（参考上面cquery和ccls文档）</p>
-</li>
-<li><p>配置Intellisense文件：</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>TvSpeechService采用的是speech api，使用服务账号json凭据生成AccessToken进行请求</p>
 <ol>
-<li>将gn生成的<code>compile_commands.json</code>文件拷贝到要打开的项目根目录，如<code>src/flutter</code>下，打开项目</li>
-<li>或者在<code>c_cpp_properties.json</code>文件中配置<code>compile_commands.json</code>的绝对路径</li>
+<li>最早直接将json凭据放到raw中</li>
+<li>然后将json凭据放到系统中，进行DES3加密，DES3密钥使用Java常量存储</li>
+<li>再将DES3密钥放到so库中，增加破解难度</li>
+<li>v2将AccessToken生成放到SDK中，SDK内部请求服务端，服务端生成AccessToken返回（Google推荐做法）</li>
+</ol>
+<h1 id="Google-Assistant-App"><a href="#Google-Assistant-App" class="headerlink" title="Google Assistant App"></a>Google Assistant App</h1><p>是Google开发的语音助手App，可以调起其他应用、显示其他应用的小部件或者Slice页面、百科搜索、通过Google Home控制智能家居等。</p>
+<p>依赖gms运行。</p>
+<h1 id="Google-Assistant功能"><a href="#Google-Assistant功能" class="headerlink" title="Google Assistant功能"></a>Google Assistant功能</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/guide/app-actions/overview">App Action</a>：应用定制Action，Google Assistant可以快捷跳转自己的应用或者执行动作，提高应用曝光率。可以结合Slice使用。</li>
+<li><a target="_blank" rel="noopener" href="https://developers.home.google.com/">智能家居</a>：传递智能家居Intent，定制特殊指令。文档从Assistant迁移到Google Home开发者中心。</li>
+<li>Web Action：网页定制Action，Google Assistant可以发现并显示自己的网页内容。</li>
+<li>Media Action：媒体资源定制Action，Google Assistant可以发现并播放内容。</li>
+<li>Conversational Action：支持在控制台定制对话。2023年6月13日将被移除。</li>
+</ul>
+<blockquote>
+<p>实现对话操作有两种方式</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/dialogflow/es/docs">Dialogflow对话流</a></li>
+<li>Google Assistant（旧版）：旧版Google Assistant集成了Dialogflow，2023年将被移除，不再集成Dialogflow，改为使用内置的对话构建器。参考<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/dialogflow/es/docs/integrations/aog">Google助理（旧版）</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/assistant/ca-sunset">Conversational Actions sunset</a></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="Google-Assistant-API和Speech-to-Text-API"><a href="#Google-Assistant-API和Speech-to-Text-API" class="headerlink" title="Google Assistant API和Speech-to-Text API"></a>Google Assistant API和Speech-to-Text API</h2><ul>
+<li><p>Speech-to-Text API：服务接口为<code>speech.googleapis.com</code>，只提供了语音转文字功能。</p>
+<ul>
+<li>价格：$0.004/15 秒</li>
+</ul>
+</li>
+<li><p>Google Assistant API：服务接口为<code>embeddedassistant.googleapis.com</code>，让设备具备类似Google Home的功能，智能音响设备集成SDK，发送语音到云端，云端识别成设备指令后返回。智能音响再去控制其他设备，或者控制自身。</p>
+<ul>
+<li>未标注价格，不过有配额限制，并且声明无法商用</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>个人理解：GoogleAssistant服务内部应该是依赖了Speech-to-Text服务，并且还加入了一些自己的功能。</p>
+<p>正常客户端直接请求speech服务，统计speech的配额和流量。assistant服务帮我们转发了请求，speech的配额和流量由assistant承担。</p>
+</blockquote>
+<h2 id="Google-Assistant接入"><a href="#Google-Assistant接入" class="headerlink" title="Google Assistant接入"></a>Google Assistant接入</h2><p>参考<a target="_blank" rel="noopener" href="https://developers.google.com/assistant/sdk/guides/service/python">Google Assistant Service</a>和<a target="_blank" rel="noopener" href="https://github.com/androidthings/sample-googleassistant">sample-googleassistant示例</a>，大致流程和接入Speech-to-Text类似</p>
+<blockquote>
+<p>主要是针对嵌入式设备控制的</p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://console.actions.google.com/">Action Console</a>中创建项目，<a target="_blank" rel="noopener" href="https://console.cloud.google.com/">Google Cloud</a>中会同步创建项目</li>
+<li>Google Cloud中启用Google Assistant API和OAuth授权功能。（根据需要创建结算账号，关联项目，定期结算）</li>
+<li>下载<a target="_blank" rel="noopener" href="https://github.com/androidthings/sample-googleassistant">sample-googleassistant</a>：该项目基于Android嵌入式树莓派平台，用到了嵌入式平台的类库和控件，在手机上无法直接运行。例如通过Gpio输出电信号，控制IoT设备。</li>
+<li>修改为Android移动平台代码、去掉gradle依赖</li>
+<li>控制台下载凭据：<ol>
+<li>样例中使用<code>google-oauthlib-tool</code>工具生成OAuth凭据，试了一下没成功，不知道为什么提示400</li>
+<li>这里使用服务账号生成凭据：【凭据-&gt;服务账号-&gt;密钥-&gt;添加密钥】，下载私钥的json文件</li>
 </ol>
 </li>
+<li>根据私钥生成Access Token进行请求，或者将私钥传给SDK进行请求：<ol>
+<li>保存json私钥到raw目录（考虑安全性，不应该放到工程中，而是放到服务器上，这里只是作为示例）</li>
+<li>样例中使用<code>UserCredentials</code>读取私钥，需要改为<code>GoogleCredentials</code></li>
 </ol>
-<h3 id="VSCode【Java】"><a href="#VSCode【Java】" class="headerlink" title="VSCode【Java】"></a>VSCode【Java】</h3><p>对于Java项目，VSCode需要配置jar包依赖。</p>
-<ol>
-<li>安装VSCode插件<code>vscjava.vscode-java-pack</code>和<code>vscjava.vscode-java-dependency</code></li>
-<li>添加文件夹路径，如<code>shell/platform/android</code></li>
-<li>打开Java Dependencies资源管理器窗口，或者使用命令打开”Explorer: Focus on Java Dependencies View”</li>
-<li>刷新视图窗口</li>
-<li>配置<code>Referenced Libraries</code>，添加src/third_party/android_embedding_dependencies<code>文件夹。</code></li>
+</li>
+<li>编译运行APP：能够识别语音转文字，但是由于没有注册嵌入式设备，无法进行具体的行为</li>
 </ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//相当于配置settings.json如下</span></span><br><span class="line">&quot;java.project.referencedLibraries&quot;: [</span><br><span class="line">  <span class="string">&quot;&#123;path to engine&#125;/src/third_party/android_embedding_dependencies/lib/**/*.jar&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<blockquote>
+<p>语义识别暂未实验</p>
+</blockquote>
+<h1 id="智能家居相关"><a href="#智能家居相关" class="headerlink" title="智能家居相关"></a>智能家居相关</h1><p><a target="_blank" rel="noopener" href="https://developers.google.com/assistant/smarthome/concepts/homegraph">Home Graph</a>：是一个存储家庭及其设备信息的数据库。本质是家庭的逻辑地图。智能家居的所有操作都依赖Home Graph</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Setting-up-the-Engine-development-environment">Flutter Wiki官方文档</a></li>
+<li>结构Structure：每个房屋对应一个结构<ul>
+<li>管理员Managers：每个结构至少包含一名管理员，可以与其他用户共享结构</li>
+<li>标签Labels：标识结构，例如John‘s House</li>
+<li>房间Rooms：结构包含房间</li>
+<li>设备Devices：结构包含设备</li>
 </ul>
-<p>gclient使用可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xl2432/p/11596695.html">chromium开发工具–gclient</a>、<a target="_blank" rel="noopener" href="https://keyou.github.io/blog/2017/11/02/gclient/">gclient 介绍</a></p>
+</li>
+<li>房间：一个结构包含多个房间<ul>
+<li>标签：标识房间，例如Master Bedroom</li>
+<li>设备：房间包含设备</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/assistant/smarthome/concepts/devices-traits">设备</a>：一个设备必须属于一个结构，最多可以属于一个房间。<ul>
+<li>标签：标识设备，例如Bedroom Lamp</li>
+<li>类型Type：例如灯、摄像头、空调等</li>
+<li>特性Traits：即功能，例如亮度、颜色、开关、模式等。<ul>
+<li>属性Attributes：静态的设备属性，例如模式支持设置哪些选项，颜色支持设置多大范围等。</li>
+<li>状态State：动态变化的设备状态</li>
+<li>命令Command：下发控制指令</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>设备特性传输方式：</p>
+<ul>
+<li>查询：可读，queryOnlyXXX属性（默认为false）表示只支持被查询状态</li>
+<li>控制：可写，commandOnlyXXX属性（默认为false）表示只支持被控制</li>
+<li>可查询可控制：可读写</li>
+</ul>
 
     </div>
 
@@ -471,8 +461,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
-              <a href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag"><i class="fa fa-tag"></i> 跨平台</a>
+              <a href="/tags/Google/" rel="tag"><i class="fa fa-tag"></i> Google</a>
           </div>
 
         
@@ -481,12 +470,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/01/05/flutter-2022-01-05-Dart%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E6%89%A7%E8%A1%8C/" rel="prev" title="Dart的编译和执行原理">
-      <i class="fa fa-chevron-left"></i> Dart的编译和执行原理
+    <a href="/2022/08/20/geek-2022-08-20-%E5%AE%9D%E5%8F%AF%E6%A2%A6%E6%89%8B%E5%86%8C/" rel="prev" title="宝可梦手册">
+      <i class="fa fa-chevron-left"></i> 宝可梦手册
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/01/12/flutter-2022-01-12-Flutter%E5%BA%94%E7%94%A8%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" rel="next" title="Flutter应用构建流程分析">
-      Flutter应用构建流程分析 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/08/27/geek-2022-08-27-%E6%A0%91%E8%8E%93%E6%B4%BE%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/" rel="next" title="树莓派">
+      树莓派 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -548,7 +537,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SDK%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">SDK下载和编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Engine%E4%B8%8B%E8%BD%BD%E5%92%8C%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">Engine下载和编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.1.</span> <span class="nav-text">源码下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91"><span class="nav-number">2.2.</span> <span class="nav-text">源码编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2Engine"><span class="nav-number">2.3.</span> <span class="nav-text">替换Engine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">2.4.</span> <span class="nav-text">源码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clion"><span class="nav-number">2.4.1.</span> <span class="nav-text">Clion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xcode%E3%80%90Objective-C-%E3%80%91"><span class="nav-number">2.4.2.</span> <span class="nav-text">Xcode【Objective-C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90C-C-%E3%80%91"><span class="nav-number">2.4.3.</span> <span class="nav-text">VSCode【C&#x2F;C++】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode%E3%80%90Java%E3%80%91"><span class="nav-number">2.4.4.</span> <span class="nav-text">VSCode【Java】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cloud-Speech-to-Text%EF%BC%88STT%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Cloud Speech-to-Text（STT）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">安全性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google-Assistant-App"><span class="nav-number">2.</span> <span class="nav-text">Google Assistant App</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Google-Assistant%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">Google Assistant功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Assistant-API%E5%92%8CSpeech-to-Text-API"><span class="nav-number">3.1.</span> <span class="nav-text">Google Assistant API和Speech-to-Text API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Assistant%E6%8E%A5%E5%85%A5"><span class="nav-number">3.2.</span> <span class="nav-text">Google Assistant接入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85%E7%9B%B8%E5%85%B3"><span class="nav-number">4.</span> <span class="nav-text">智能家居相关</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
