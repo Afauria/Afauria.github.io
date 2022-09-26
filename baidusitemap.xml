@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/22/geek-2022-08-22-%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%99%AE%E5%8F%8A/</loc>
-    <lastmod>2022-09-20</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/09/01/geek-2022-09-01-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2022-09-20</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/09/02/geek-2022-09-02-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/</loc>
-    <lastmod>2022-09-20</lastmod>
+    <loc>https://blog.afauria.xyz/2022/09/19/geek-2022-09-19-RetroPie%E5%A4%8D%E5%8F%A4%E6%B8%B8%E6%88%8F%E6%9C%BA/</loc>
+    <lastmod>2022-09-26</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/</loc>
+    <lastmod>2022-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/09/01/geek-2022-09-01-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2022-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/27/geek-2022-08-27-%E6%A0%91%E8%8E%93%E6%B4%BE%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</loc>
+    <lastmod>2022-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/08/22/geek-2022-08-22-%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%99%AE%E5%8F%8A/</loc>
+    <lastmod>2022-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
+    <lastmod>2022-09-23</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2022/09/02/geek-2022-09-02-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/</loc>
     <lastmod>2022-09-20</lastmod>
   </url>
   <url>
@@ -21,23 +33,15 @@
     <lastmod>2022-09-20</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2022/09/19/geek-2022-09-19-RetroPie%E5%A4%8D%E5%8F%A4%E6%B8%B8%E6%88%8F%E6%9C%BA/</loc>
-    <lastmod>2022-09-20</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/08/27/geek-2022-08-27-%E6%A0%91%E8%8E%93%E6%B4%BE%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2022-09-20</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2021/11/04/android-2021-11-04-Android%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%8D%E7%BC%96%E8%AF%91/</loc>
     <lastmod>2022-09-19</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/20/geek-2022-08-20-%E5%AE%9D%E5%8F%AF%E6%A2%A6%E6%89%8B%E5%86%8C/</loc>
+    <loc>https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</loc>
     <lastmod>2022-09-06</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</loc>
+    <loc>https://blog.afauria.xyz/2022/08/20/geek-2022-08-20-%E5%AE%9D%E5%8F%AF%E6%A2%A6%E6%89%8B%E5%86%8C/</loc>
     <lastmod>2022-09-06</lastmod>
   </url>
   <url>
@@ -47,10 +51,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/10/04/note-2018-10-04-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2022-09-06</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
-    <lastmod>2022-08-24</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2021/09/04/tech-2021-09-04-CI%E5%9B%9E%E9%A6%96%E6%AF%95%E4%B8%9A%E8%AE%BA%E6%96%87/</loc>
