@@ -31,8 +31,19 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Poky架构.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/Bitbake查看Task.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/pseudoabort问题.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/liberror.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxxnotfound.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxx旧地址.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxx新地址.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/linterpatch失败.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/跳过linter依赖.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/跳过do_patch脚本.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/patchapply失败.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/linternotfound.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/手动克隆linter.png">
 <meta property="article:published_time" content="2022-03-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-29T01:12:02.407Z">
+<meta property="article:modified_time" content="2022-10-13T06:42:11.192Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Flutter">
 <meta property="article:tag" content="Linux">
@@ -244,7 +255,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-29 09:12:02" itemprop="dateModified" datetime="2022-03-29T09:12:02+08:00">2022-03-29</time>
+                <time title="修改时间：2022-10-13 14:42:11" itemprop="dateModified" datetime="2022-10-13T14:42:11+08:00">2022-10-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,14 +294,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>15k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>13 分钟</span>
+              <span>15 分钟</span>
             </span>
             <div class="post-description">介绍Yocto项目构建，嵌入式Linux平台运行Flutter应用</div>
 
@@ -387,7 +398,7 @@
 <li><code>do_fetch</code>：根据<code>meta-flutter</code>中的配方文件下载Flutter引擎源代码</li>
 <li><code>do_unpack</code>：将源码解包到工作目录</li>
 <li><code>do_patch</code>：打补丁，修改Flutter引擎源代码，主要是修改引擎编译配置，<code>meta-flutter/recipes-graphics/flutter-engine/files</code></li>
-<li><code>do_prepare_recipe_sysroo</code>t：在workdir目录下创建两个sysroot(recipe-sysroot和recipe-sysroot-native)</li>
+<li><code>do_prepare_recipe_sysroot</code>：在workdir目录下创建两个sysroot(recipe-sysroot和recipe-sysroot-native)</li>
 <li><code>do_configure</code>：执行gn命令生成构建配置</li>
 <li><code>do_compile</code>：执行ninja编译</li>
 <li><code>do_install</code>：将Flutter引擎产物拷贝到等候区，一般位于<code>$&#123;WORKDIR&#125;/image</code>目录下，使用<code>$&#123;D&#125;</code>表示</li>
@@ -422,8 +433,8 @@
 <ol>
 <li>下载<code>meta-flutter</code>到源码根目录：<code>git clone https://github.com/meta-flutter/meta-flutter.git</code></li>
 <li>下载<code>meta-clang</code>到源码根目录：<code>git clone https://github.com/kraj/meta-clang.git</code></li>
-<li><code>meta-clang</code>切换分支：<code>git checkout -b dunfell origin/dunfell</code></li>
-<li><code>bblayers.conf</code>中配置Layer路径，或者执行<code>bitbake-layers add-layer /home/code/meta-flutter</code></li>
+<li><code>meta-clang</code>和<code>meta-flutter</code>切换到dunfell分支：<code>git checkout -b dunfell origin/dunfell</code></li>
+<li><code>bblayers.conf</code>中配置Layer路径，或者执行<code>bitbake-layers add-layer /home/code/meta-clang</code>、<code>bitbake-layers add-layer /home/code/meta-flutter</code></li>
 <li>设置Flutter SDK版本：<code>local.conf</code>中添加变量<code>FLUTTER_SDK_TAG = &quot;2.8.1&quot;</code></li>
 </ol>
 <h3 id="整包编译"><a href="#整包编译" class="headerlink" title="整包编译"></a>整包编译</h3><ol>
@@ -470,6 +481,57 @@
 <p>解决：只保留homescreen编译成功，<code>IMAGE_INSTALL_append = &quot; lib32-ivi-homescreen-release&quot;</code></p>
 <p>homescreen依赖flutter-engine，因此引擎也会被打包进去。升级软件之后可以直接运行homescreen</p>
 </blockquote>
+<h1 id="10月12日补充问题"><a href="#10月12日补充问题" class="headerlink" title="10月12日补充问题"></a>10月12日补充问题</h1><p>上面配置的flutter引擎版本是2.8.1，时隔几个月之后，Google关掉了部分三方库的服务，迁移了地址，导致其他人用2.8.1版本，出现很多新问题，例如gclient同步依赖库失败。</p>
+<p><strong>建议：更新Flutter引擎版本，重新调试环境</strong>。下面介绍下使用2.8.1版本遇到的问题</p>
+<h2 id="Pseudo-Abort"><a href="#Pseudo-Abort" class="headerlink" title="Pseudo Abort"></a>Pseudo Abort</h2><p>编译过程中遇到Pseudo Abort问题。参考Wiki说明，是由于“路径不匹配”。</p>
+<p>解决方法：<code>bitbake lib32-glib-2.0 -c clean</code>，清除然后重新构建对应的库</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/pseudoabort问题.png" style="zoom:100%;">
+
+<h2 id="liberror库编译失败"><a href="#liberror库编译失败" class="headerlink" title="liberror库编译失败"></a>liberror库编译失败</h2><p>原因未知，<code>bitbake lliberrror-perl -c clean</code>之后再次编译即可</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/liberror.png" style="zoom:100%;">
+
+<h2 id="libcxx-not-found"><a href="#libcxx-not-found" class="headerlink" title="libcxx not found"></a>libcxx not found</h2><p>编译flutter引擎<code>bitbake lib32-flutter-engine-release</code>出错，执行do_patch脚本的时候提示<code>libcxx not found</code></p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxxnotfound.png" style="zoom:100%;">
+
+<p>分析：查看DEPS文件，libcxx在<code>https://fuchisa.googlesource.com</code>中，访问该地址，发现libcxx已经被移除</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxx旧地址.png" style="zoom:100%;">
+
+<p>查看新版本引擎代码，已经迁移到了llvm项目地址中</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/libcxx新地址.png" style="zoom:100%;">
+
+<p>临时解决：直接将之前构建好的libcxx拷贝给其他人使用，在<code>src/thirdtparty</code>目录</p>
+<h2 id="linter找不到远程引用"><a href="#linter找不到远程引用" class="headerlink" title="linter找不到远程引用"></a>linter找不到远程引用</h2><p>修复libcxx之后，do_patch脚本又出现linter找不到远程HEAD问题。原因未知，仓库地址还是可以访问的。</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/linterpatch失败.png" style="zoom:100%;">
+
+<p>分析do_patch脚本，找到出问题的命令：<code>gclient sync --shallow --no-history -R -D --revision &quot;890a5fca2e34db413be624fc83aeea8e61d42ce6&quot; -j 48</code></p>
+<blockquote>
+<p>890a5fca2e34db413be624fc83aeea8e61d42ce6即我们指定的2.8.1的版本</p>
+</blockquote>
+<p>解决：</p>
+<ol>
+<li>先注释掉DEPS中linter的依赖库，版本是1.14.0，跳过下载</li>
+</ol>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/跳过linter依赖.png" style="zoom:100%;">
+
+<ol start="2">
+<li>再手动执行<code>gclient sync</code>，下载其他的依赖库。注意不要指定<code>--revision</code>，否则会还原掉DEPS的修改。</li>
+<li>这个时候patch的动作已经差不多被我们手动执行完了，所以可以跳过<code>do_patch</code>的过程</li>
+<li>修改<code>meta-flutter/recipes-graphics/flutter-engine/flutter-engine.inc</code>配置文件，如下</li>
+</ol>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/跳过do_patch脚本.png" style="zoom:100%;">
+
+<ol start="5">
+<li>顺便注释掉git apply，否则会出现打补丁失败</li>
+</ol>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/patchapply失败.png" style="zoom:100%;">
+
+<h2 id="找不到linter库"><a href="#找不到linter库" class="headerlink" title="找不到linter库"></a>找不到linter库</h2><p>再次编译flutter引擎<code>bitbake lib32-flutter-engine-release</code>，提示找不到linter库</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/linternotfound.png" style="zoom:100%;">
+
+<p>分析：由于上面我们注释掉了linter的依赖库和patch脚本，所以找不到。依赖的linter库的tag是1.14.0</p>
+<p>解决：手动克隆linter库，切到对应tag1.14.0对应的commit id</p>
+<img src="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/手动克隆linter.png" style="zoom:100%;">
+
 <h1 id="Flutter-Linux-ARM应用编译"><a href="#Flutter-Linux-ARM应用编译" class="headerlink" title="Flutter Linux ARM应用编译"></a>Flutter Linux ARM应用编译</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 前端编译生成app.dill</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> dart frontend_server.dart.snapshot \</span></span><br><span class="line"><span class="bash">--target=flutter \</span></span><br><span class="line"><span class="bash">--aot --tfa \</span></span><br><span class="line"><span class="bash">-Ddart.vm.profile=<span class="literal">false</span> -Ddart.vm.product=<span class="literal">true</span> \</span></span><br><span class="line"><span class="bash">--sdk-root flutter_patched_sdk \</span></span><br><span class="line"><span class="bash">--output-dill app.dill \</span></span><br><span class="line"><span class="bash">demo/lib/main.dart</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 后端编译生成libapp.so</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sdk/clang_x64/gen_snapshot \</span></span><br><span class="line"><span class="bash">--snapshot_kind=app-aot-elf \</span></span><br><span class="line"><span class="bash">--elf=libapp.so \</span></span><br><span class="line"><span class="bash">app.dill</span></span><br></pre></td></tr></table></figure>
 
 <p>文件和路径说明：</p>
@@ -511,6 +573,15 @@
 
 <p>系统默认使用WPEFramework运行应用。<a target="_blank" rel="noopener" href="https://webkit.org/wpe/">WPEFramework</a>是嵌入式设备的WebKit引擎，能够运行Web应用。执行以下命令可以打开WPE Launcher应用</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 启动WPEFramework引擎，开启了一个网络端口</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wpeframework.sh &amp;</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过curl请求端口，传入参数启动Launcher应用</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> launcher.sh &amp;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>编译环境搭建会遇到很多问题，需要缩小范围，不断调试。例如</p>
+<ol>
+<li>bitbake整编软件出问题，分析log找到报错的模块，局部编译</li>
+<li>局部编译模块出问题，分析log找到对应的task脚本，手动执行单个脚本</li>
+<li>单个脚本执行失败，分析log找到对应的命令，手动执行单条命令</li>
+<li>分析命令执行原理和过程，尝试修改命令和脚本再运行。</li>
+<li>由于temp目录的脚本是临时的，每次bitbake都会覆盖掉修改的脚本，所以需要想办法修改bb配置文件</li>
+</ol>
 
     </div>
 
@@ -556,8 +627,8 @@
       <i class="fa fa-chevron-left"></i> Flutter编译环境搭建探索
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/" rel="next" title="Google开发者平台介绍">
-      Google开发者平台介绍 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/" rel="next" title="Java编译和运行命令">
+      Java编译和运行命令 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -619,7 +690,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Yocto介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yocto%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Yocto目录结构说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-conf%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">local.conf配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitbake%E7%AC%94%E8%AE%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Bitbake笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90flutter-engine%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">分析flutter-engine构建过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E7%BC%96%E8%AF%91Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">Yocto编译Linux系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.1.</span> <span class="nav-text">原始系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5meta-flutter"><span class="nav-number">3.2.</span> <span class="nav-text">加入meta-flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.1.</span> <span class="nav-text">整包编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.2.</span> <span class="nav-text">局部编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">3.3.</span> <span class="nav-text">踩坑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gn%E4%B8%8D%E6%94%AF%E6%8C%81-no-build-embedder-examples%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.1.</span> <span class="nav-text">gn不支持--no-build-embedder-examples参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E7%BC%96%E8%AF%91Dart-SDK"><span class="nav-number">3.3.2.</span> <span class="nav-text">无法编译Dart SDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3"><span class="nav-number">3.3.3.</span> <span class="nav-text">整包编译空间不足</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-Linux-ARM%E5%BA%94%E7%94%A8%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">Flutter Linux ARM应用编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">Flutter应用启动</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Yocto介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yocto%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Yocto目录结构说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-conf%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">local.conf配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitbake%E7%AC%94%E8%AE%B0"><span class="nav-number">2.3.</span> <span class="nav-text">Bitbake笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90flutter-engine%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">分析flutter-engine构建过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yocto%E7%BC%96%E8%AF%91Linux%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">Yocto编译Linux系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.1.</span> <span class="nav-text">原始系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5meta-flutter"><span class="nav-number">3.2.</span> <span class="nav-text">加入meta-flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.1.</span> <span class="nav-text">整包编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.2.</span> <span class="nav-text">局部编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">3.3.</span> <span class="nav-text">踩坑记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gn%E4%B8%8D%E6%94%AF%E6%8C%81-no-build-embedder-examples%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.1.</span> <span class="nav-text">gn不支持--no-build-embedder-examples参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E7%BC%96%E8%AF%91Dart-SDK"><span class="nav-number">3.3.2.</span> <span class="nav-text">无法编译Dart SDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%8C%85%E7%BC%96%E8%AF%91%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3"><span class="nav-number">3.3.3.</span> <span class="nav-text">整包编译空间不足</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10%E6%9C%8812%E6%97%A5%E8%A1%A5%E5%85%85%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">10月12日补充问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pseudo-Abort"><span class="nav-number">4.1.</span> <span class="nav-text">Pseudo Abort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#liberror%E5%BA%93%E7%BC%96%E8%AF%91%E5%A4%B1%E8%B4%A5"><span class="nav-number">4.2.</span> <span class="nav-text">liberror库编译失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#libcxx-not-found"><span class="nav-number">4.3.</span> <span class="nav-text">libcxx not found</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linter%E6%89%BE%E4%B8%8D%E5%88%B0%E8%BF%9C%E7%A8%8B%E5%BC%95%E7%94%A8"><span class="nav-number">4.4.</span> <span class="nav-text">linter找不到远程引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0linter%E5%BA%93"><span class="nav-number">4.5.</span> <span class="nav-text">找不到linter库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-Linux-ARM%E5%BA%94%E7%94%A8%E7%BC%96%E8%AF%91"><span class="nav-number">5.</span> <span class="nav-text">Flutter Linux ARM应用编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">6.</span> <span class="nav-text">Flutter应用启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">7.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -635,7 +706,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -735,13 +806,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">578k</span>
+    <span title="站点总字数">586k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:46</span>
+    <span title="站点阅读时长">8:53</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

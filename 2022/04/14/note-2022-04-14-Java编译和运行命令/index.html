@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Java编译和运行命令，exe打包和逆向爆破">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编译和运行命令">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="Java编译和运行命令，exe打包和逆向爆破">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/演示示例.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/sym文件解压.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-1.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-2.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-5.png">
+<meta property="article:published_time" content="2022-04-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-11T03:21:26.534Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/演示示例.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java编译和运行命令 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java编译和运行命令
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-11 11:21:26" itemprop="dateModified" datetime="2022-10-11T11:21:26+08:00">2022-10-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/" class="post-meta-item leancloud_visitors" data-flag-title="Java编译和运行命令" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+            <div class="post-description">Java编译和运行命令，exe打包和逆向爆破</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Java程序编译和运行主要分为以下过程</p>
+<ol>
+<li>使用<code>javac</code>编译，将java文件编译成class字节码文件</li>
+<li>使用<code>jar</code>打包</li>
+<li>使用<code>java</code>启动虚拟机执行，Windows下可以打包成exe运行</li>
+</ol>
+<p>本文用到的演示示例如下：<a target="_blank" rel="noopener" href="https://github.com/Afauria/TestJavac">GitHub地址</a></p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/演示示例.png" style="zoom:50%;">
+
+<h1 id="javac编译"><a href="#javac编译" class="headerlink" title="javac编译"></a>javac编译</h1><p>常用选项：</p>
+<ul>
+<li><code>-encoding UTF8</code>：指定UTF8编码，有中文字符时需要用到</li>
+<li><code>-d build</code>：指定class输出路径，默认和源文件同一路径。不同IDE输出路径不同，例如eclipse输出到bin目录</li>
+<li><code>-verbose</code>：输出详细的编译信息</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 编译少量文件，使用空格分割</span></span><br><span class="line">javac -d build First.java Second.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译多个文件，将java文件列在一个文件，使用@引用该文件</span></span><br><span class="line">javac -d build @sourcelist.txt</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译同一目录下的java文件，使用通配符</span></span><br><span class="line">javac -d build src/*.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译多级子目录下的java文件，使用路径通配符</span></span><br><span class="line">javac -d build src/**/*.java</span><br></pre></td></tr></table></figure>
+
+<p>其他选项：</p>
+<ul>
+<li><code>-source &lt;JDK版本&gt;</code>：指定编译版本，如果使用了高版本的特性，会编译失败</li>
+<li><code>-target &lt;VM版本&gt;</code>：指定运行的目标版本，实际运行的JVM版本需要高于该版本</li>
+<li><code>-processor &lt;class&gt;</code>：指定注解处理器的class文件</li>
+</ul>
+<h2 id="编译时搜索路径"><a href="#编译时搜索路径" class="headerlink" title="编译时搜索路径"></a>编译时搜索路径</h2><p>java编译源文件时，<strong>会按照下面的顺序搜索类文件</strong>：</p>
+<ol>
+<li>Bootstrap classes：JDK自带的类，主要是<code>jre/lib</code>下的jar文件，可以通过<code>-bootclasspath</code>设置</li>
+<li>Extension classes：扩展类，主要是<code>jre/lib/ext</code>下的jar文件，可以通过<code>-extdirs</code>设置</li>
+<li>User classes：用户类，可以通过<code>-cp</code>或者<code>-classpath</code>设置。搜索顺序为当前目录、CLASSPATH环境变量、<code>-classpath</code>下的类文件，</li>
+<li>Source：源文件，通过<code>-sourcepath</code>设置</li>
+</ol>
+<blockquote>
+<p>如果有多个路径，Linux上使用<code>:</code>分割，Windows使用<code>;</code>分隔（类似于环境变量）</p>
+<p><code>-bootclasspath</code>和<code>-extdirs</code>几乎不会用到</p>
+</blockquote>
+<p><code>-sourcepath</code>和<code>-classpath</code>注意事项</p>
+<ul>
+<li><code>-sourcepath</code>：只会搜索源码（.java文件）</li>
+<li><code>-classpath</code>：可以是java文件、class文件、jar包等<ul>
+<li>如果不指定sourcepath，classpath会搜索java文件和class文件</li>
+<li>如果指定了sourcepath，则classpath只搜索class文件</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>javac既认识java文件也认识class文件，java（虚拟机）只认识class文件。</p>
+</blockquote>
+<h1 id="jar打包"><a href="#jar打包" class="headerlink" title="jar打包"></a>jar打包</h1><p>常用选项：</p>
+<ul>
+<li><code>-c</code>：创建新档案文件。</li>
+<li><code>-f</code>：指定档案文件名</li>
+<li><code>-m</code>：指定清单文件。</li>
+<li><code>-e</code>：指定主类，程序入口。</li>
+</ul>
+<blockquote>
+<p>档案文件名、清单文件、主类的顺序，与f、m、e选项顺序相同</p>
+</blockquote>
+<p><strong>需要进入class输出目录，否则打包的时候会把<code>build</code>文件夹也打包进去，导致主类路径不正确</strong></p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 编译src目录下的java文件</span></span><br><span class="line">javac -d build src/**/*.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入build目录</span></span><br><span class="line">cd build</span><br><span class="line"><span class="meta">#</span><span class="bash"> 自动生成`MANIFEST.MF`清单文件，但是不会指定主类。使用`java -jar`执行的时候会提示“没有主清单属性”</span></span><br><span class="line">jar cvf out.jar **/*.class</span><br><span class="line"><span class="meta">#</span><span class="bash"> 自动生成`MANIFEST.MF`清单文件，并指定主类。</span></span><br><span class="line">jar cvfe out.jar com.afauria.Main **/*.class</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用指定的清单文件。</span></span><br><span class="line">jar cvfm out.jar ../src/META-INF/MANIFEST.MF **/*.class</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果代码中使用了资源文件，也要打包到jar包中。</strong></p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> TestImage中引用了`images/icon.png`资源</span></span><br><span class="line">javac TestImage.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 打包资源到jar包中</span></span><br><span class="line">jar cvfe testImage.jar TestImage TestImage*.class images/icon.png</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行jar包</span></span><br><span class="line">java -jar testImage.jar</span><br></pre></td></tr></table></figure>
+
+<h1 id="java运行"><a href="#java运行" class="headerlink" title="java运行"></a>java运行</h1><p>使用java命令启动虚拟机，执行class文件，分为两种方式：</p>
+<ol>
+<li>执行class文件：<code>java class</code>，class为主类名称</li>
+<li>执行jar文件：<code>java -jar jarfile</code>，jar是归档文件，将多个class打包到一起，本质还是运行class。</li>
+</ol>
+<blockquote>
+<p>主类不一定为Main，但是一定有main方法：<code>public static void main(String[] args)</code></p>
+</blockquote>
+<p><strong>如果定义了包名，需要输出到对应的路径下，否则执行class会找不到主类。</strong></p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义包名</span></span><br><span class="line"><span class="keyword">package</span> com.afauria;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPackage</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 编译Java文件，输出class文件到当前目录</span></span><br><span class="line">javac TestPackage.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行提示<span class="string">&quot;找不到或无法加载主类&quot;</span></span></span><br><span class="line">java TestPackage</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 自动生成包名路径：com/afauria/TestPackage.class</span></span><br><span class="line">javac -d ./ TestPackage.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行正常</span></span><br><span class="line">java com.afauria.TestPackage</span><br><span class="line">java com/afauria/TestPackage</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果Java类依赖了其他class文件或者jar包，运行的时候需要指定<code>-classpath</code>或者<code>-cp</code>，否则会提示找不到类。</strong></p>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> TestClassPath引用了out.jar中的类</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译TestClassPath文件，指定classpath搜索路径</span></span><br><span class="line">javac -cp build/out.jar TestClassPath.java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行TestClassPath类</span></span><br><span class="line">java -cp .:build/out.jar TestClassPath</span><br></pre></td></tr></table></figure>
+
+<h1 id="找不到sun包"><a href="#找不到sun包" class="headerlink" title="找不到sun包"></a>找不到sun包</h1><p>如果代码中使用了<code>sun.*</code>或者<code>com.sun.*</code>的包，使用javac编译时会提示找不到类（JDK7及以上），并且IDE编译不报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sun.net.sdp.SdpSupport;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSun</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用-verbose查看编译过程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> javac -verbose TestSun.java</span></span><br><span class="line">[解析开始时间 RegularFileObject[TestSun.java]]</span><br><span class="line">[解析已完成, 用时 13 毫秒]</span><br><span class="line">[源文件的搜索路径: .]</span><br><span class="line">[类文件的搜索路径: $JAVA_HOME/jre/lib/resources.jar,$JAVA_HOME/jre/lib/rt.jar,$JAVA_HOME/jre/lib/sunrsasign.jar,$JAVA_HOME/jre/lib/jsse.jar,$JAVA_HOME/jre/lib/jce.jar,$JAVA_HOME/jre/lib/charsets.jar,$JAVA_HOME/jre/lib/jfr.jar,$JAVA_HOME/jre/classes,$JAVA_HOME/jre/lib/ext/sunec.jar,$JAVA_HOME/jre/lib/ext/nashorn.jar,$JAVA_HOME/jre/lib/ext/cldrdata.jar,$JAVA_HOME/jre/lib/ext/dnsns.jar,$JAVA_HOME/jre/lib/ext/localedata.jar,$JAVA_HOME/jre/lib/ext/sunjce_provider.jar,$JAVA_HOME/jre/lib/ext/sunpkcs11.jar,$JAVA_HOME/jre/lib/ext/jaccess.jar,$JAVA_HOME/jre/lib/ext/zipfs.jar,.]</span><br><span class="line">TestSun.java:1: 错误: 程序包sun.net.sdp不存在</span><br><span class="line">import sun.net.sdp.SdpSupport;</span><br><span class="line">                  ^</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/lib/ct.sym(META-INF/sym/rt.jar/java/lang/Object.class)]]</span><br><span class="line">[正在检查TestSun]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/lib/ct.sym(META-INF/sym/rt.jar/java/io/Serializable.class)]]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/lib/ct.sym(META-INF/sym/rt.jar/java/lang/AutoCloseable.class)]]</span><br><span class="line">[共 203 毫秒]</span><br><span class="line">1 个错误</span><br></pre></td></tr></table></figure>
+
+<p>原因：在Java6之后，JDK新增了一个链接文件<code>ct.sym</code>，使用javac命令进行编译代码时，默认使用该文件进行编译时class类的检查和链接，而不是使用rt.jar。</p>
+<p>该文件约束了JDK的建议使用的类信息，包含了<code>rt.jar</code>中<strong>一部分类</strong>，其余的类是JDK内部私有的类，可能在之后的版本变动，因此没有开放出来。</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/sym文件解压.png" style="zoom:50%;">
+
+<p>解决方式：</p>
+<ol>
+<li>指定<code>-bootclasspath $JAVA_HOME/jre/lib/rt.jar</code></li>
+<li>添加参数<code>-XDignore.symbol.file</code>忽略<code>ct.sym</code>文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> javac -verbose -bootclasspath <span class="string">&quot;<span class="variable">$JAVA_HOME</span>/jre/lib/rt.jar&quot;</span> TestSun.java</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> javac -verbose -XDignore.symbol.file TestSun.java</span></span><br><span class="line">[解析开始时间 RegularFileObject[TestSun.java]]</span><br><span class="line">[解析已完成, 用时 14 毫秒]</span><br><span class="line">[源文件的搜索路径: .]</span><br><span class="line">[类文件的搜索路径: $JAVA_HOME/jre/lib/resources.jar,$JAVA_HOME/jre/lib/rt.jar,$JAVA_HOME/jre/lib/sunrsasign.jar,$JAVA_HOME/jre/lib/jsse.jar,$JAVA_HOME/jre/lib/jce.jar,$JAVA_HOME/jre/lib/charsets.jar,$JAVA_HOME/jre/lib/jfr.jar,$JAVA_HOME/jre/classes,$JAVA_HOME/jre/lib/ext/sunec.jar,$JAVA_HOME/jre/lib/ext/nashorn.jar,$JAVA_HOME/jre/lib/ext/cldrdata.jar,$JAVA_HOME/jre/lib/ext/dnsns.jar,$JAVA_HOME/jre/lib/ext/localedata.jar,$JAVA_HOME/jre/lib/ext/sunjce_provider.jar,$JAVA_HOME/jre/lib/ext/sunpkcs11.jar,$JAVA_HOME/jre/lib/ext/jaccess.jar,$JAVA_HOME/jre/lib/ext/zipfs.jar,.]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/jre/lib/rt.jar(sun/net/sdp/SdpSupport.class)]]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/jre/lib/rt.jar(java/lang/Object.class)]]</span><br><span class="line">[正在检查TestSun]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/jre/lib/rt.jar(java/io/Serializable.class)]]</span><br><span class="line">[正在加载ZipFileIndexFileObject[$JAVA_HOME/jre/lib/rt.jar(java/lang/AutoCloseable.class)]]</span><br><span class="line">[已写入RegularFileObject[TestSun.class]]</span><br><span class="line">[共 228 毫秒]</span><br></pre></td></tr></table></figure>
+
+<h1 id="exe打包"><a href="#exe打包" class="headerlink" title="exe打包"></a>exe打包</h1><p><a target="_blank" rel="noopener" href="https://www.ej-technologies.com/download/exe4j/files">exe4j</a>：将jar打包成exe可执行程序</p>
+<p>简单介绍几个关键步骤，其余步骤按照提示配置即可。</p>
+<p>首先输入License，否则执行exe文件会提示警告</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-1.png" style="zoom:70%;">
+
+<p>选择jar模式</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-2.png" style="zoom:70%;">
+
+<p>添加jar文件</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-5.png" style="zoom:70%;">
+
+<h1 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h1><ul>
+<li>javap：类文件解析器，<code>javap -c -v Test</code><ul>
+<li><code>-c</code>：对代码进行反汇编，查看汇编格式的代码</li>
+<li><code>-v</code>：可以查看附加信息，例如常量池等</li>
+<li><code>-s</code>：输出方法内部类型签名</li>
+</ul>
+</li>
+<li>javadoc：Java API文档生成器</li>
+<li><a target="_blank" rel="noopener" href="http://java-decompiler.github.io/">jd-gui</a>：反编译jar包或class文件查看源码</li>
+<li><a target="_blank" rel="noopener" href="http://set.ee/jbe/">jbe</a>：字节码编辑器，用于查看和修改class字节码文件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/skylot/jadx">jadx</a>：反编译jar、dex、aar、aab、apk、资源等，可视化操作界面。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/04/flutter-2022-03-04-Yocto%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%B9%B3%E5%8F%B0%E8%BF%90%E8%A1%8CFlutter%E5%BA%94%E7%94%A8/" rel="prev" title="Yocto嵌入式平台运行Flutter应用">
+      <i class="fa fa-chevron-left"></i> Yocto嵌入式平台运行Flutter应用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/18/google-2022-08-18-Google%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/" rel="next" title="Google开发者平台介绍">
+      Google开发者平台介绍 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#javac%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">javac编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-number">2.1.</span> <span class="nav-text">编译时搜索路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jar%E6%89%93%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">jar打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E8%BF%90%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">java运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0sun%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">找不到sun包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exe%E6%89%93%E5%8C%85"><span class="nav-number">6.</span> <span class="nav-text">exe打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="nav-number">7.</span> <span class="nav-text">其他工具</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">586k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:53</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
