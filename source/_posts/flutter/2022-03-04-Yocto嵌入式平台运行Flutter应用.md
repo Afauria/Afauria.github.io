@@ -194,7 +194,7 @@ SRC_URI="git://github.com/flutter/flutter.git;protocol=https;nobranch=1"
 1. `do_fetch`：根据`meta-flutter`中的配方文件下载Flutter引擎源代码
 2. `do_unpack`：将源码解包到工作目录
 3. `do_patch`：打补丁，修改Flutter引擎源代码，主要是修改引擎编译配置，`meta-flutter/recipes-graphics/flutter-engine/files`
-4. `do_prepare_recipe_sysroo`t：在workdir目录下创建两个sysroot(recipe-sysroot和recipe-sysroot-native)
+4. `do_prepare_recipe_sysroot`：在workdir目录下创建两个sysroot(recipe-sysroot和recipe-sysroot-native)
 5. `do_configure`：执行gn命令生成构建配置
 6. `do_compile`：执行ninja编译
 7. `do_install`：将Flutter引擎产物拷贝到等候区，一般位于`${WORKDIR}/image`目录下，使用`${D}`表示
@@ -269,8 +269,8 @@ $ bitbake lib32-amlogic-yocto
 
 1. 下载`meta-flutter`到源码根目录：`git clone https://github.com/meta-flutter/meta-flutter.git`
 1. 下载`meta-clang`到源码根目录：`git clone https://github.com/kraj/meta-clang.git`
-3. `meta-clang`切换分支：`git checkout -b dunfell origin/dunfell`
-2. `bblayers.conf`中配置Layer路径，或者执行`bitbake-layers add-layer /home/code/meta-flutter`
+3. `meta-clang`和`meta-flutter`切换到dunfell分支：`git checkout -b dunfell origin/dunfell`
+2. `bblayers.conf`中配置Layer路径，或者执行`bitbake-layers add-layer /home/code/meta-clang`、`bitbake-layers add-layer /home/code/meta-flutter`
 3. 设置Flutter SDK版本：`local.conf`中添加变量`FLUTTER_SDK_TAG = "2.8.1"`
 
 ### 整包编译
@@ -421,6 +421,80 @@ meta/conf/bitbake.conf:789:INITRAMFS_MAXSIZE ??= "131072"
 >
 > homescreen依赖flutter-engine，因此引擎也会被打包进去。升级软件之后可以直接运行homescreen
 
+# 10月12日补充问题
+
+上面配置的flutter引擎版本是2.8.1，时隔几个月之后，Google关掉了部分三方库的服务，迁移了地址，导致其他人用2.8.1版本，出现很多新问题，例如gclient同步依赖库失败。
+
+**建议：更新Flutter引擎版本，重新调试环境**。下面介绍下使用2.8.1版本遇到的问题
+
+## Pseudo Abort
+
+编译过程中遇到Pseudo Abort问题。参考Wiki说明，是由于“路径不匹配”。
+
+解决方法：`bitbake lib32-glib-2.0 -c clean`，清除然后重新构建对应的库
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/pseudoabort问题.png" style="zoom:100%;" />
+
+## liberror库编译失败
+
+原因未知，`bitbake lliberrror-perl -c clean`之后再次编译即可
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/liberror.png" style="zoom:100%;" />
+
+## libcxx not found
+
+编译flutter引擎`bitbake lib32-flutter-engine-release`出错，执行do_patch脚本的时候提示`libcxx not found`
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/libcxxnotfound.png" style="zoom:100%;" />
+
+分析：查看DEPS文件，libcxx在`https://fuchisa.googlesource.com`中，访问该地址，发现libcxx已经被移除
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/libcxx旧地址.png" style="zoom:100%;" />
+
+查看新版本引擎代码，已经迁移到了llvm项目地址中
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/libcxx新地址.png" style="zoom:100%;" />
+
+临时解决：直接将之前构建好的libcxx拷贝给其他人使用，在`src/thirdtparty`目录
+
+## linter找不到远程引用
+
+修复libcxx之后，do_patch脚本又出现linter找不到远程HEAD问题。原因未知，仓库地址还是可以访问的。
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/linterpatch失败.png" style="zoom:100%;" />
+
+分析do_patch脚本，找到出问题的命令：`gclient sync --shallow --no-history -R -D --revision "890a5fca2e34db413be624fc83aeea8e61d42ce6" -j 48`
+
+> 890a5fca2e34db413be624fc83aeea8e61d42ce6即我们指定的2.8.1的版本
+
+解决：
+
+1. 先注释掉DEPS中linter的依赖库，版本是1.14.0，跳过下载
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/跳过linter依赖.png" style="zoom:100%;" />
+
+2. 再手动执行`gclient sync`，下载其他的依赖库。注意不要指定`--revision`，否则会还原掉DEPS的修改。
+3. 这个时候patch的动作已经差不多被我们手动执行完了，所以可以跳过`do_patch`的过程
+4. 修改`meta-flutter/recipes-graphics/flutter-engine/flutter-engine.inc`配置文件，如下
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/跳过do_patch脚本.png" style="zoom:100%;" />
+
+5. 顺便注释掉git apply，否则会出现打补丁失败
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/patchapply失败.png" style="zoom:100%;" />
+
+## 找不到linter库
+
+再次编译flutter引擎`bitbake lib32-flutter-engine-release`，提示找不到linter库
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/linternotfound.png" style="zoom:100%;" />
+
+分析：由于上面我们注释掉了linter的依赖库和patch脚本，所以找不到。依赖的linter库的tag是1.14.0
+
+解决：手动克隆linter库，切到对应tag1.14.0对应的commit id
+
+<img src="2022-03-04-Yocto嵌入式平台运行Flutter应用/手动克隆linter.png" style="zoom:100%;" />
+
 # Flutter Linux ARM应用编译
 
 ```shell
@@ -491,3 +565,13 @@ $ wpeframework.sh &
 # 通过curl请求端口，传入参数启动Launcher应用
 $ launcher.sh &
 ```
+
+# 结语
+
+编译环境搭建会遇到很多问题，需要缩小范围，不断调试。例如
+
+1. bitbake整编软件出问题，分析log找到报错的模块，局部编译
+2. 局部编译模块出问题，分析log找到对应的task脚本，手动执行单个脚本
+3. 单个脚本执行失败，分析log找到对应的命令，手动执行单条命令
+4. 分析命令执行原理和过程，尝试修改命令和脚本再运行。
+5. 由于temp目录的脚本是临时的，每次bitbake都会覆盖掉修改的脚本，所以需要想办法修改bb配置文件
