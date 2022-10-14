@@ -22,20 +22,24 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Java编译和运行命令，exe打包">
+  <meta name="description" content="Java编译和运行命令，exe打包，字节码修改等">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java编译和运行命令">
 <meta property="og:url" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="Java编译和运行命令，exe打包">
+<meta property="og:description" content="Java编译和运行命令，exe打包，字节码修改等">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/演示示例.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/sym文件解压.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-1.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-2.png">
 <meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-5.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/GUI示例程序.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/运行GUI程序.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/修改字节码.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/javap查看字节码.png">
 <meta property="article:published_time" content="2022-04-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-10-13T11:28:49.091Z">
+<meta property="article:modified_time" content="2022-10-14T07:36:14.242Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
@@ -244,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-13 19:28:49" itemprop="dateModified" datetime="2022-10-13T19:28:49+08:00">2022-10-13</time>
+                <time title="修改时间：2022-10-14 15:36:14" itemprop="dateModified" datetime="2022-10-14T15:36:14+08:00">2022-10-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,16 +287,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.4k</span>
+              <span>6.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
-            <div class="post-description">Java编译和运行命令，exe打包</div>
+            <div class="post-description">Java编译和运行命令，exe打包，字节码修改等</div>
 
         </div>
       </header>
@@ -414,11 +418,33 @@
 <p>添加jar文件</p>
 <img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/exe4j-5.png" style="zoom:70%;">
 
+<h1 id="修改字节码"><a href="#修改字节码" class="headerlink" title="修改字节码"></a>修改字节码</h1><p>上述示例中，src目录中是一个简单的Java Swing程序。</p>
+<p>编译src目录<code>javac -d build src/**/*.java</code></p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/GUI示例程序.png" style="zoom:90%;">
+
+<p>运行<code>java com.afauria.Main</code>，效果如下</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/运行GUI程序.png" style="zoom:70%;">
+
+<p>现在我们需要想办法点击登录，让程序验证成功。首先分析代码，找到切入点，可以看到checkLogin中校验输入为123。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFrame</span> <span class="keyword">extends</span> <span class="title">JFrame</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MainFrame</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setBounds(<span class="number">100</span>, <span class="number">100</span>, <span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span><br><span class="line">        JButton loginBtn = <span class="keyword">new</span> JButton(<span class="string">&quot;登录&quot;</span>);</span><br><span class="line">        JTextField codeField = <span class="keyword">new</span> JTextField();</span><br><span class="line">        codeField.setBounds(<span class="number">20</span>, <span class="number">20</span>, <span class="number">160</span>, <span class="number">40</span>);</span><br><span class="line">        loginBtn.setBounds(<span class="number">20</span>, <span class="number">60</span>, <span class="number">160</span>, <span class="number">40</span>);</span><br><span class="line">        JPanel pane = <span class="keyword">new</span> JPanel();</span><br><span class="line">        setContentPane(pane);</span><br><span class="line">        pane.setLayout(<span class="keyword">null</span>);</span><br><span class="line">        pane.add(codeField);</span><br><span class="line">        pane.add(loginBtn);</span><br><span class="line">        loginBtn.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent event)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (checkLogin(codeField.getText())) &#123;</span><br><span class="line">                    JOptionPane.showMessageDialog(MainFrame.<span class="keyword">this</span>, <span class="string">&quot;登录成功！&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    JOptionPane.showMessageDialog(MainFrame.<span class="keyword">this</span>, <span class="string">&quot;登录失败！&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkLogin</span><span class="params">(String code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;123&quot;</span>.equals(code);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用jbe工具，打开class文件，如下图，将字节码修改为<code>iconst_1</code>并保存方法。意思是加载常量1到操作数栈。</p>
+<blockquote>
+<p>boolean类型在单独使用时会转为int，占4个字节，在数组中占1个字节。</p>
+</blockquote>
+<p>重新运行之后不管输入什么都会提示“登录成功”。</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/修改字节码.png" style="zoom:70%;">
+
+<p>字节码指令集可以参考：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/List_of_Java_bytecode_instructions">字节码指令集：Wiki百科</a></p>
+<p><strong>也可以自行编写Java源代码，编译成class文件之后，再使用javap工具查看字节码指令</strong>。</p>
+<img src="/2022/04/14/note-2022-04-14-Java%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4/javap查看字节码.png" style="zoom:70%;">
+
 <h1 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h1><ul>
 <li>javap：类文件解析器，<code>javap -c -v Test</code><ul>
 <li><code>-c</code>：对代码进行反汇编，查看汇编格式的代码</li>
 <li><code>-v</code>：可以查看附加信息，例如常量池等</li>
 <li><code>-s</code>：输出方法内部类型签名</li>
+<li><code>-p</code>或<code>-private</code>：查看私有方法</li>
 </ul>
 </li>
 <li>javadoc：Java API文档生成器</li>
@@ -531,7 +557,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#javac%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">javac编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-number">2.1.</span> <span class="nav-text">编译时搜索路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jar%E6%89%93%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">jar打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E8%BF%90%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">java运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0sun%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">找不到sun包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exe%E6%89%93%E5%8C%85"><span class="nav-number">6.</span> <span class="nav-text">exe打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="nav-number">7.</span> <span class="nav-text">其他工具</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#javac%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">javac编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-number">2.1.</span> <span class="nav-text">编译时搜索路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jar%E6%89%93%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">jar打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E8%BF%90%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">java运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0sun%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">找不到sun包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exe%E6%89%93%E5%8C%85"><span class="nav-number">6.</span> <span class="nav-text">exe打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-number">7.</span> <span class="nav-text">修改字节码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="nav-number">8.</span> <span class="nav-text">其他工具</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -647,13 +673,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">586k</span>
+    <span title="站点总字数">587k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:53</span>
+    <span title="站点阅读时长">8:54</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
