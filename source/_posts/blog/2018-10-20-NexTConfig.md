@@ -1,28 +1,134 @@
 ---
 layout: post
-title: NexT主题配置
+title: NexT主题配置手册
 date: 2018-10-20
-categories: 工具
+categories: 博客
 tags:
-- 工具
 - Hexo
 - 博客
-description: NexT高级配置
+description: NexT主题配置手册，进阶玩法
 ---
 
-# 博客效果
+# 前言
+
+博客效果如图：
 
 ![博客效果](2018-10-20-NexTConfig/博客效果.png)
 
+# Hexo主题配置文件说明
+
+## 目录说明
+
+* `_config.yml`：主题的配置文件。修改时会自动更新，无需重启服务器。
+* `languages`：语言文件夹，不同语言文件
+* `layout`：布局文件夹。用于存放主题的模板文件，决定了网站内容的呈现方式。
+* `script`：脚本文件夹。在启动时，Hexo 会载入此文件夹内的 JavaScript 文件
+* `source`：资源文件夹，存放 CSS、JavaScript、images 文件等资源。
+
+## 自定义样式
+
+如果懂css的话，可以修改theme中layout和source中的布局和css样式，定制主题。
+
+前面介绍主题有两种下载方式：
+
+1. 下载到`themes`文件夹中：`git clone https://github.com/next-theme/hexo-theme-next themes/next`
+2. npm安装，下载到`node_modules`中：`npm install hexo-theme-next`
+
+> `node_modules`是临时文件夹，不建议在其中修改
+
+主题本质也是Git工程，**本地修改样式之后，换个电脑之后记录会丢失，或者pull原作者新提交的代码的时候会出现冲突。**
+
+解决方法：fork原主题仓库，从自己的仓库clone，本地修改之后提交，定期从原主题仓库同步merge。
+
 # NexT配置
 
-## 添加Readme.md文件
+## 添加README.md文件
 
 在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件`_config.yml`，将skip_render参数的值设置为`skip_render: README.md`，跳过渲染该文件
 
+## 更换Schema
+
+NexT内置了四套主题，这里叫Scheme（用一送四很划算），修改主题配置文件的scheme字段：Muse、Mist、Pisces、Gemini
+
+```yaml
+# Schemes
+#scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+#scheme: Gemini
+```
+
+## 设置头像
+
+修改avatar字段，设置头像链接地址，如：
+
+1. 使用完整的互联网URI：`avatar: http://example.com/avatar.png`
+2. 使用相对路径，放置到 `source/images/`路径下：`avatar: /images/avatar.png`
+
+## 设置菜单项
+
+修改主题配置文件的menu字段
+
+格式为`菜单项名称（会匹配翻译）: 链接 || Font Awesome图标`
+
+**注：旧版本`路径 ||`中间有空格，升级Hexo之后跳转404，url链接多了个`%20`，表示空格，需要删除**
+
+示例配置
+
+```yml
+menu:
+  home: /|| home
+  about: /about/|| user
+  tags: /tags/|| tags
+  categories: /categories/|| th
+  archives: /archives/|| archive
+  schedule: /schedule/|| calendar
+  sitemap: /sitemap.xml|| sitemap
+  #commonweal: /404/|| heartbeat
+```
+
+菜单项的名称并不直接用于界面上的展示。Hexo 在生成的时候将使用这个名称查找对应的语言翻译，并提取显示文本。这些翻译文本放置在 NexT 主题目录下的 `languages/{language}.yml` 。
+
+例如修改简体中文配置文件：`languages/zh-Hans.yml`，或者添加自定义的字段other：
+
+```yaml
+menu:
+  home: 首页
+  archives: 归档
+  categories: 分类
+  tags: 标签
+  about: 关于
+  search: 搜索
+  commonweal: 公益404
+  other: 其他
+```
+
+## 生成分类、标签和关于页面
+
+首先修改主题配置文件的menu菜单项，将tags和categories的注释去掉
+
+### 标签
+
+`hexo new page tags`：在`站点/source/`目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容
+
+```yaml
+title: tags
+date: 2018-04-04
+type: "tags"
+comments: false
+```
+
+### 分类
+
+同理，将tags换成categories即可
+
+### 关于
+
+同理，自行编辑文章内容，不需要加type
+
 ## 添加动态背景
 
-修改主题配置文件 themes/next/_config.yml，不同动态背景，值为true应用：
+修改主题配置文件 `themes/next/_config.yml`，不同动态背景，值为true应用：
 ```yml
 canvas_nest: false
 three_waves: false
@@ -37,9 +143,11 @@ canvas_ribbon:
   zIndex: -1
 ```
 
-## 修改文章底部的带#号的标签
+## 修改文章底部标签图标
 
-修改模板`/themes/next/layout/_macro/post.swig`，搜索 rel=”tag”>#，将 # 换成`<i class="fa fa-tag"></i>`
+默认文章底部的标签带#号，改为图标
+
+修改模板`/themes/next/layout/_macro/post.swig`，搜索 `rel=”tag”>#`，将 `#` 换成`<i class="fa fa-tag"></i>`
 
 ## 设置网站的图标Favicon
 
@@ -51,13 +159,13 @@ favicon:
 	medion: /images/favicon.ico
 	#apple_touch_icon: /images/apple-touch-icon-next.png
 	#safari_pinned_tab: /images/logo.svg
-  	#android_manifest: /images/manifest.json
-  	#ms_browserconfig: /images/browserconfig.xml
+  #android_manifest: /images/manifest.json
+  #ms_browserconfig: /images/browserconfig.xml
 ```
 
 ## 添加搜索功能
 
-NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia,Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search,原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。
+NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search，原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。
 
 安装插件
 
@@ -91,32 +199,6 @@ npm install hexo-generator-searchdb --save
 NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件
 
 ![去掉文章目录序号](2018-10-20-NexTConfig/配置去掉目录序号.png)
-
-## 生成分类、标签和关于页面
-
-### 标签
-
-`hexo new page tags`：在`站点/source/`目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容
-
-```
-title: tags
-date: 2018-04-04
-type: "tags"
-comments: false
-```
-### 分类
-
-同理，将tags换成categories即可
-
-### 关于
-
-同理，自行编辑文章内容，不需要加type
-
-注：主题配置文件的menu需要将tags和categories的注释去掉
-
-## 修改样式
-
-可以修改next主题下的layout和source中的布局和css样式，定制主题
 
 ## 添加站点地图sitemap
 
@@ -215,7 +297,7 @@ busuanzi_count:
 
 7. 修改主题配置文件，如下
 
-```yml
+```yaml
 valine:
   enable: true
   appid: "第3步中的appId" # Your leancloud application appid
@@ -228,8 +310,6 @@ valine:
   visitor: true # 文章阅读统计
   comment_count: true # 文章评论
 ```
-
-
 
 ## 配置Live2d卡通人物
 
@@ -264,7 +344,7 @@ live2d:
 
 ## 添加每日一言/今日诗词
 
-1. 在**layout或者md文档**中添加下面代码。我是将今日诗词添加到了**关于页面**，将每日一言添加到了`/themes/next/layout/_partials/sidebar/site_overview.swig`中
+1. 在**layout或者md文档**中添加下面代码。我是将今日诗词添加到了**关于页面**，将每日一言添加到了侧边栏：`/themes/next/layout/_partials/sidebar/site_overview.swig`中
 
 ```html
 <!--今日诗词-->
@@ -298,7 +378,7 @@ live2d:
       }
     })
     .catch(console.error) 
-</script>
+	</script>
 </div>
 ```
 
@@ -438,12 +518,37 @@ archive_generator:
   order_by: -date
 ```
 
-# 参考文章
+# 问题记录
 
+## NexT升级
+
+Hexo升级之后使用NexT会出现一些错误，原来NexT版本为5.1.4，需要升级为V7+。
+
+本文配置基于V5，升级之后部分配置需要相应修改。
+
+[参考升级说明](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md)
+
+## toArray报错
+
+`hexo g`生成报错
+
+```shell
+ ERROR Template render error: (e:\GitPageBlog\AkiyamaBlog\themes\next\layout\post.swig)
+ Error: Unable to call `post["categories"]["toArray"]`, which is undefined or falsey
+```
+
+> 修改`themes/next/layout/_macro/post.swig`文件，去掉`post.categories.toArray()`和`post.tags.toArray()`中的`toArray()`
+
+**注：回来补充，不能去掉toArray()，否则文章的分类和标签无法显示……估计和node版本有关系**
+
+# 结语
+
+参考资料：
+
+1. [Hexo官方文档](https://hexo.io/zh-cn/docs/)和[NexT官方文档](https://theme-next.js.org/docs/getting-started/)
 1. [Hexo博客Next主题个性设置集锦](http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6)
 2. [Hexo+NexT 主题配置备忘](http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html)
 3. [hexo博客添加搜索功能](https://blog.csdn.net/qq_40265501/article/details/80030627)
 4. [hexo(next)——每日一言、今日诗词](https://blog.csdn.net/qq_44036990/article/details/105088198)
 4. [Hexo博客+Next主题深度优化与定制](https://blog.csdn.net/qq_42889280/article/details/103087433)
 6. [hexo博客站点sitemap的使用](https://eericzeng.github.io/2019/07/14/hexo%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9sitemap%E7%9A%84%E4%BD%BF%E7%94%A8/)
-
