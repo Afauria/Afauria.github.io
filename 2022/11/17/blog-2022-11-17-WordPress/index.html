@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="WordPress简介和建站方式。WordPress本身的功能较多，本篇不做介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress建站教程">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="WordPress简介和建站方式。WordPress本身的功能较多，本篇不做介绍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress%E4%BB%B7%E6%A0%BC%E8%A1%A8.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/LNMP%E5%92%8CLAMP.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac启动Apache服务.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac%20Apache配置PHP模块.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress首页.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress数据库配置.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress控制台.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/phpStudy.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/phpStudy%E7%BD%91%E7%AB%99%E6%A0%B9%E7%9B%AE%E5%BD%95.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/MySQL用户列表.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac证书助理.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书机构.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac信任证书.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/Mac选择证书签发者.png">
+<meta property="article:published_time" content="2022-11-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-16T16:40:01.719Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/WordPress%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C.png">
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WordPress建站教程 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Afauria's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-knowledge">
+
+    <a href="/KnowledgeTree/" rel="section"><i class="graduation-cap fa fa-graduation-cap fa-fw"></i>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-collection">
+
+    <a href="/collection/" rel="section"><i class="suitcase fa fa-suitcase fa-fw"></i>收藏</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WordPress建站教程
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-11-17 00:00:00 / 修改时间：00:40:01" itemprop="dateCreated datePublished" datetime="2022-11-17T00:00:00+08:00">2022-11-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/11/17/blog-2022-11-17-WordPress/" class="post-meta-item leancloud_visitors" data-flag-title="WordPress建站教程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/11/17/blog-2022-11-17-WordPress/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/11/17/blog-2022-11-17-WordPress/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">WordPress简介和建站方式。WordPress本身的功能较多，本篇不做介绍。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h1><p>全球使用最广泛、最成熟的建站平台之一</p>
+<p>特点（列举部分）：</p>
+<ul>
+<li>控制台管理：统计和看板、修改主题、设置等功能。</li>
+<li>拥有众多特殊功能的插件，除了博客之外，还可以做电商、官网、社区等。</li>
+<li>功能丰富，定制个性化页面：可以添加评论、视频、表单、付款等控件（区块）</li>
+<li>网页在线编辑，所见即所得</li>
+<li>基于PHP+MySQL，导出导入不是很方便，需要安装插件从其他博客迁移导入</li>
+</ul>
+<p>常说的WordPress主要指两个产品</p>
+<ul>
+<li><strong><a target="_blank" rel="noopener" href="https://wordpress.org/">WordPress.org</a>、<a target="_blank" rel="noopener" href="https://cn.wordpress.org/">WordPress.org中文网</a><strong>：</strong>是一个开源软件</strong>，自带几千个免费主题，需要自行购买主机、搭建PHP环境部署。</li>
+<li><strong><a target="_blank" rel="noopener" href="https://wordpress.com/">WordPress.com</a><strong>：</strong>是一个WordPress主机服务</strong>（有免费版，功能受限），类似的还有Bluehost、DreamHost、SiteGround等（收费服务）。本质就是上面提到的第三方博客平台，只不过功能更丰富，可以安装主题、插件、绑定域名等。</li>
+</ul>
+<h1 id="WordPress-com"><a href="#WordPress-com" class="headerlink" title="WordPress.com"></a>WordPress.com</h1><ol>
+<li>选择免费版，注册账号登录（后续有需要可以升级）</li>
+<li>选择wordpress子域名，例如<code>afauria.wordpress.com</code></li>
+<li>进入网页端控制台（也可以下载控制台的客户端），直接编辑文章、发布即可。访问站点效果如下</li>
+</ol>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C.png"></p>
+<p>优点：不需要部署环境，直接登入账号即可</p>
+<p>缺点：由于是国外的主机，国内访问可能受限，免费版只有几十个主题，1GB存储空间、还会带广告或者横幅。</p>
+<p>价格如下：</p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress%E4%BB%B7%E6%A0%BC%E8%A1%A8.png"></p>
+<h1 id="WordPress-org"><a href="#WordPress-org" class="headerlink" title="WordPress.org"></a>WordPress.org</h1><p>WordPress环境介绍：</p>
+<ul>
+<li><p>主机：</p>
+<ul>
+<li>云主机：需购买云服务或者VPS</li>
+<li>本地的主机：自己的电脑、或者使用树莓派作为服务器，需要公网ip或者使用内网穿透供外部访问</li>
+</ul>
+</li>
+<li><p>PHP（<strong>H</strong>ypertext <strong>P</strong>reprocessor，超文本预处理器）：WordPress使用PHP进行开发</p>
+</li>
+<li><p>MySQL：WordPress所有信息都存储在数据库中，例如文章、站点配置等。</p>
+</li>
+<li><p>Apache或者Nginx：Web服务器，用于部署PHP页面。</p>
+</li>
+<li><p>phpMyAdmin（非必需）：PHP编写的数据库管理工具</p>
+</li>
+<li><p>WordPress.org：php应用，下载之后解压即可，需要部署到Web容器中</p>
+</li>
+</ul>
+<blockquote>
+<p>PHP是一种服务器端脚本语言，可以嵌入HTML、CSS、JS。PHP是一种解释性语言，不需要编译打包。</p>
+<p>个人理解WordPress是一种前后端不分离的开发模式，PHP操作数据库，并且通过内嵌HTML显示动态网页，前后端一起部署到Apache上。</p>
+<p>类似JSP应用，但是原理不同，JSP会被编译成Servlet执行，而PHP是解释执行。最终都需要部署到Web容器中运行。</p>
+</blockquote>
+<h2 id="云主机环境搭建"><a href="#云主机环境搭建" class="headerlink" title="云主机环境搭建"></a>云主机环境搭建</h2><p>针对VPS或者云服务，最简单的就是使用<strong>宝塔面板</strong>（服务器管理软件）安装环境，可以一键安装LNMP或者LAMP环境</p>
+<blockquote>
+<ul>
+<li>LNMP：Linux+Nginx+MySQL+PHP</li>
+<li>LAMP：Linux+Apache+MySQL+PHP</li>
+</ul>
+</blockquote>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/LNMP%E5%92%8CLAMP.png"></p>
+<p>参考网上的教程即可：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/37896471">WordPress搭建教程：手把手教你搭建WordPress博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/534537871">WordPress建站步骤详细图文教程</a></li>
+</ul>
+<h2 id="本地主机环境搭建"><a href="#本地主机环境搭建" class="headerlink" title="本地主机环境搭建"></a>本地主机环境搭建</h2><p>自行搭建环境。通常本地仅用于调试，真正部署还是要用专门的主机。</p>
+<p>基本步骤相同，只不过每个环节都有多种方式实现。</p>
+<ol>
+<li>安装PHP+Apache+MySQL环境，phpMyAdmin选择性安装。</li>
+<li>下载<a target="_blank" rel="noopener" href="https://cn.wordpress.org/download/#download-install">WordPress.org</a>应用程序。</li>
+<li>将WordPress应用部署到服务器：Apache或者Nginx。</li>
+<li>访问<code>localhost</code>网址，打开WordPress首页，默认是80端口。如果新建了子目录，则访问对应的路径，例如<code>localhost/wordpress</code>。</li>
+<li>创建数据库，WordPress配置数据库连接信息。如果数据库和WordPress不在同一台主机，需要修改配置并授权其他host访问（下面会介绍）</li>
+<li>数据库连接成功后进入登录页面，注册账号后即可登录到控制台</li>
+<li>至此，WordPress本地已经部署成功，和<code>WordPress.com</code>一样在控制台编辑和发布文章，所有数据都保存在MySQL中。</li>
+</ol>
+<p><strong>不同OS前面几个环节有些差异，进入WordPress首页之后的流程都是相同的</strong></p>
+<p>推荐使用Docker部署，具有跨平台和隔离的特性。</p>
+<h1 id="MacOS环境搭建"><a href="#MacOS环境搭建" class="headerlink" title="MacOS环境搭建"></a>MacOS环境搭建</h1><h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p>安装Apache环境：Mac自带Apache，使用<code>sudo apachectl start</code>开启服务，访问<code>localhost</code>，如图表示Apache服务启动成功。</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac启动Apache服务.png" style="zoom: 50%;">
+
+<p>安装MySQL：<code>brew install mysql</code>。</p>
+<p>安装PHP：<code>brew install php</code>，MacOS 12之前自带PHP，新版本移除了PHP。</p>
+<p>根据提示修改apache配置文件<code>sudo vim /etc/apache2/httpd.conf</code>，支持php模块</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac Apache配置PHP模块.png" style="zoom: 50%;">
+
+<p>修改完之后使用<code>apachectl -t</code>验证配置文件是否正确</p>
+<h2 id="下载WordPress应用并部署"><a href="#下载WordPress应用并部署" class="headerlink" title="下载WordPress应用并部署"></a>下载WordPress应用并部署</h2><p>下载<a target="_blank" rel="noopener" href="https://cn.wordpress.org/download/#download-install">WordPress.org</a>应用程序并解压（中文版）</p>
+<p>将wordpress文件夹拷贝到到Apache的网站根目录：</p>
+<ul>
+<li>MacOS上的网站根目录<code>/Library/WebServer/Documents/</code></li>
+<li>Windows上的网站根目录一般是<code>&lt;phpStudy路径&gt;/WWW</code></li>
+<li>Linux上Apache的网站根目录为<code>/var/www/html/</code></li>
+</ul>
+<p>Apache网站根目录一般在<code>httpd.conf</code>中配置，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> MacOS上/etc/apache2/httpd.conf</span></span><br><span class="line">DocumentRoot &quot;/Library/WebServer/Documents&quot;</span><br></pre></td></tr></table></figure>
+
+<p>访问<code>localhost/wordpress</code>打开WordPress首页</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress首页.png" style="zoom: 33%;">
+
+<h2 id="WordPress配置"><a href="#WordPress配置" class="headerlink" title="WordPress配置"></a>WordPress配置</h2><p>先创建数据库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 登录数据库</span></span><br><span class="line">mysql -uroot -p</span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建数据库</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> create database db_word_press;</span></span><br></pre></td></tr></table></figure>
+
+<p>根据提示填写数据库连接信息，如图：</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress数据库配置.png" style="zoom: 33%;">
+
+<p>配置完成后会生成<code>wp-config.php</code>文件，也可以手动修改<code>wp-config-sample.php</code>，并另存为<code>wp-config.php</code></p>
+<p>接着注册账号并登录到控制台</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress控制台.png" style="zoom: 33%;">
+
+<h1 id="Docker搭建"><a href="#Docker搭建" class="headerlink" title="Docker搭建"></a>Docker搭建</h1><p>可以使用单纯的Linux镜像，自行安装PHP、Apache、MySQL、WordPress。这里直接使用wordpress镜像</p>
+<ol>
+<li>下载wordpress镜像，内置了PHP+Apache+WordPress：<code>docker pull wordpress</code></li>
+<li>运行wordpress容器：<code>docker run --name my-wordpress -p 8080:80 -d wordpress</code></li>
+<li>WordPress已经下载并部署在了<code>/var/www/html/</code></li>
+<li>访问网址<code>localhost:8080</code>，选择语言之后进入WordPress首页。</li>
+</ol>
+<h2 id="Docker运行phpMyAdmin"><a href="#Docker运行phpMyAdmin" class="headerlink" title="Docker运行phpMyAdmin"></a>Docker运行phpMyAdmin</h2><p>phpMyAdmin用于数据库管理，可以根据需求安装。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://docs.phpmyadmin.net/zh_CN/latest/setup.html#installing-using-docker">phpMyAdmin官方文档</a></p>
+<ol>
+<li>下载phpmyadmin镜像：<code>docker pull phpmyadmin</code></li>
+<li>运行phpmyadmin容器：<code>docker run --name phpmyadmin -d -e PMA_HOST=&lt;本机IP地址&gt; -p 8081:80 phpmyadmin</code>。</li>
+<li>进入容器环境：<code>docker exec -it phpmyadmin /bin/bash</code></li>
+</ol>
+<blockquote>
+<p><code>-e PMA_HOST</code>是配置环境变量，表示phpMyAdmin要连接的数据库Host。</p>
+</blockquote>
+<h1 id="Windows搭建"><a href="#Windows搭建" class="headerlink" title="Windows搭建"></a>Windows搭建</h1><p>推荐使用<strong>phpStudy集成环境</strong>，自带PHP+MySQL+Apache+phpMyAdmin。其他流程和MacOS类似</p>
+<p>下载phpStudy并点击启动，如图</p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/phpStudy.png"></p>
+<p>将WordPress文件夹拷贝到网站根目录，默认为<code>&lt;phpStudy&gt;/WWW</code></p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/phpStudy%E7%BD%91%E7%AB%99%E6%A0%B9%E7%9B%AE%E5%BD%95.png"></p>
+<p>访问<code>localhost/wordpress</code>，打开WordPress首页。</p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="无法连接MySQL"><a href="#无法连接MySQL" class="headerlink" title="无法连接MySQL"></a>无法连接MySQL</h2><p>使用Docker搭建环境，由于WordPress镜像不包含MySQL，因此需要连接宿主机或者其他容器的MySQL。</p>
+<p>默认情况下，数据库只能在本地访问，远程或容器内无法访问，因此需要开启远程访问权限。</p>
+<p>查看当前用户信息如下</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/MySQL用户列表.png" style="zoom: 50%;">
+
+<p>修改<code>/usr/local/etc/my.cnf</code>配置，注释掉绑定配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bind-address = 127.0.0.1</span></span><br></pre></td></tr></table></figure>
+
+<p>授予用户权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建新用户：CREATE USER &#x27;username&#x27;@&#x27;host&#x27; IDENTIFIED BY &#x27;password&#x27;;</span></span><br><span class="line">CREATE USER <span class="string">&#x27;afauria&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="string">&#x27;password&#x27;</span>;</span><br><span class="line"><span class="comment"># 更新host字段为%，如果已经是%则不需要</span></span><br><span class="line">update user <span class="built_in">set</span> host = <span class="string">&#x27;%&#x27;</span> <span class="built_in">where</span> user =<span class="string">&#x27;afauria&#x27;</span>;</span><br><span class="line"><span class="comment"># 授予权限：GRANT privileges ON databasename.tablename TO &#x27;username&#x27;@&#x27;host&#x27;;</span></span><br><span class="line">GRANT ALL ON *.* TO <span class="string">&#x27;afauria&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="comment"># 重启mysql服务</span></span><br><span class="line">brew services restart mysql</span><br></pre></td></tr></table></figure>
+
+<p>WordPress数据库主机需要填宿主机的IP地址。</p>
+<h2 id="PHP模块签名问题"><a href="#PHP模块签名问题" class="headerlink" title="PHP模块签名问题"></a>PHP模块签名问题</h2><p>MacOS部署PHP到Apache，<code>apachectl -t</code>出现异常：<code>No code signing authority for module at xxx</code></p>
+<p>原因：macOS Monterey开始，强制要求应用程序签名，使用brew安装的PHP模块没有签名</p>
+<p>解决方法：参考<a target="_blank" rel="noopener" href="https://www.simplified.guide/macos/apache-php-homebrew-codesign">How to sign homebrew PHP module in macOS</a></p>
+<ol>
+<li>打开【钥匙串访问-证书助理】，先创建证书颁发机构<code>Afauria&#39;s CA</code>，再创建证书<code>Afauria</code></li>
+</ol>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac证书助理.png" style="zoom: 40%;">
+
+<ol start="2">
+<li><p>创建证书颁发机构<code>Afauria&#39;s CA</code>，类型为<strong>自签名根CA</strong></p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书机构.png" style="zoom: 40%;"></li>
+<li><p>信任证书机构</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac信任证书.png" style="zoom: 40%;"></li>
+<li><p>创建证书Afauria，类型为<strong>叶证书</strong></p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书.png" style="zoom: 40%;"></li>
+<li><p>证书签发者选择刚才创建的根证书机构</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac选择证书签发者.png" style="zoom: 40%;"></li>
+<li><p>对PHP模块签名：<code>codesign --sign &quot;Afauria&quot; --force --keychain ~/Library/Keychains/login.keychain-db /usr/local/opt/php/lib/httpd/modules/libphp.so</code></p>
+</li>
+<li><p>修改<code>httpd.conf</code>配置，添加证书名称：<code>LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so &quot;Afauria&quot;</code></p>
+</li>
+<li><p>再次<code>apachectl -t</code>验证成功</p>
+</li>
+</ol>
+<h2 id="PHP架构问题"><a href="#PHP架构问题" class="headerlink" title="PHP架构问题"></a>PHP架构问题</h2><p>Mac部署PHP到apache，<code>apachectl -t</code>出现异常：<code>&#39;xxx libphp.so&#39; (mach-o file, but is an incompatible architecture (have (x86_64), need (arm64e))</code></p>
+<p>原因：下载的php是x86_64的，使用的Mac是M1芯片（arm64架构），无法兼容。</p>
+<blockquote>
+<p>M1芯片暂时无法通过brew下载php，<code>brew search php</code>找不到对应的软件</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"><i class="fa fa-tag"></i> 博客</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="浅谈个人博客">
+      <i class="fa fa-chevron-left"></i> 浅谈个人博客
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="header-overlay"></div>
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WordPress"><span class="nav-number">1.</span> <span class="nav-text">WordPress</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WordPress-com"><span class="nav-number">2.</span> <span class="nav-text">WordPress.com</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WordPress-org"><span class="nav-number">3.</span> <span class="nav-text">WordPress.org</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">云主机环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">本地主机环境搭建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MacOS%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">MacOS环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-number">4.1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDWordPress%E5%BA%94%E7%94%A8%E5%B9%B6%E9%83%A8%E7%BD%B2"><span class="nav-number">4.2.</span> <span class="nav-text">下载WordPress应用并部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WordPress%E9%85%8D%E7%BD%AE"><span class="nav-number">4.3.</span> <span class="nav-text">WordPress配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E6%90%AD%E5%BB%BA"><span class="nav-number">5.</span> <span class="nav-text">Docker搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E8%BF%90%E8%A1%8CphpMyAdmin"><span class="nav-number">5.1.</span> <span class="nav-text">Docker运行phpMyAdmin</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E6%90%AD%E5%BB%BA"><span class="nav-number">6.</span> <span class="nav-text">Windows搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="nav-number">7.</span> <span class="nav-text">问题记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5MySQL"><span class="nav-number">7.1.</span> <span class="nav-text">无法连接MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP%E6%A8%A1%E5%9D%97%E7%AD%BE%E5%90%8D%E9%97%AE%E9%A2%98"><span class="nav-number">7.2.</span> <span class="nav-text">PHP模块签名问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP%E6%9E%B6%E6%9E%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.3.</span> <span class="nav-text">PHP架构问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://afauria.github.io/KnowledgeTree/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;KnowledgeTree&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+        </li>
+    </ul>
+  </div>
+
+<div class="poem-side">
+  <div id="hitokoto">loading...</div>
+  <div id="hitokotofrom"></div>
+  <script defer>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+       	hitokoto.innerHTML = data.hitokoto
+    	if(data.from_who != null) {
+      	  hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+      	} else {
+	  hitokotofrom.innerHTML ='——《' + data.from + '》' 
+      }
+    })
+    .catch(console.error) 
+</script>
+</div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Afauria</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">597k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">9:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '8Qjq2Vf2w7KNW5bzIqHqU6pN-9Nh9j0Va',
+      appKey     : 'WenmbfoBFKOabxRfCbgv7KgE',
+      placeholder: "欢迎留言、互链",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <a target="_blank" rel="noopener" href="https://github.com/Afauria" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

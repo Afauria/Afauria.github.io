@@ -13,6 +13,478 @@
 ]]></content>
   </entry>
   <entry>
+    <title>WordPress建站教程</title>
+    <url>/2022/11/17/blog-2022-11-17-WordPress/</url>
+    <content><![CDATA[<h1 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h1><p>全球使用最广泛、最成熟的建站平台之一</p>
+<p>特点（列举部分）：</p>
+<ul>
+<li>控制台管理：统计和看板、修改主题、设置等功能。</li>
+<li>拥有众多特殊功能的插件，除了博客之外，还可以做电商、官网、社区等。</li>
+<li>功能丰富，定制个性化页面：可以添加评论、视频、表单、付款等控件（区块）</li>
+<li>网页在线编辑，所见即所得</li>
+<li>基于PHP+MySQL，导出导入不是很方便，需要安装插件从其他博客迁移导入</li>
+</ul>
+<p>常说的WordPress主要指两个产品</p>
+<ul>
+<li><strong><a href="https://wordpress.org/">WordPress.org</a>、<a href="https://cn.wordpress.org/">WordPress.org中文网</a><strong>：</strong>是一个开源软件</strong>，自带几千个免费主题，需要自行购买主机、搭建PHP环境部署。</li>
+<li><strong><a href="https://wordpress.com/">WordPress.com</a><strong>：</strong>是一个WordPress主机服务</strong>（有免费版，功能受限），类似的还有Bluehost、DreamHost、SiteGround等（收费服务）。本质就是上面提到的第三方博客平台，只不过功能更丰富，可以安装主题、插件、绑定域名等。</li>
+</ul>
+<h1 id="WordPress-com"><a href="#WordPress-com" class="headerlink" title="WordPress.com"></a>WordPress.com</h1><ol>
+<li>选择免费版，注册账号登录（后续有需要可以升级）</li>
+<li>选择wordpress子域名，例如<code>afauria.wordpress.com</code></li>
+<li>进入网页端控制台（也可以下载控制台的客户端），直接编辑文章、发布即可。访问站点效果如下</li>
+</ol>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress%E8%BF%90%E8%A1%8C%E6%95%88%E6%9E%9C.png"></p>
+<p>优点：不需要部署环境，直接登入账号即可</p>
+<p>缺点：由于是国外的主机，国内访问可能受限，免费版只有几十个主题，1GB存储空间、还会带广告或者横幅。</p>
+<p>价格如下：</p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress%E4%BB%B7%E6%A0%BC%E8%A1%A8.png"></p>
+<h1 id="WordPress-org"><a href="#WordPress-org" class="headerlink" title="WordPress.org"></a>WordPress.org</h1><p>WordPress环境介绍：</p>
+<ul>
+<li><p>主机：</p>
+<ul>
+<li>云主机：需购买云服务或者VPS</li>
+<li>本地的主机：自己的电脑、或者使用树莓派作为服务器，需要公网ip或者使用内网穿透供外部访问</li>
+</ul>
+</li>
+<li><p>PHP（<strong>H</strong>ypertext <strong>P</strong>reprocessor，超文本预处理器）：WordPress使用PHP进行开发</p>
+</li>
+<li><p>MySQL：WordPress所有信息都存储在数据库中，例如文章、站点配置等。</p>
+</li>
+<li><p>Apache或者Nginx：Web服务器，用于部署PHP页面。</p>
+</li>
+<li><p>phpMyAdmin（非必需）：PHP编写的数据库管理工具</p>
+</li>
+<li><p>WordPress.org：php应用，下载之后解压即可，需要部署到Web容器中</p>
+</li>
+</ul>
+<blockquote>
+<p>PHP是一种服务器端脚本语言，可以嵌入HTML、CSS、JS。PHP是一种解释性语言，不需要编译打包。</p>
+<p>个人理解WordPress是一种前后端不分离的开发模式，PHP操作数据库，并且通过内嵌HTML显示动态网页，前后端一起部署到Apache上。</p>
+<p>类似JSP应用，但是原理不同，JSP会被编译成Servlet执行，而PHP是解释执行。最终都需要部署到Web容器中运行。</p>
+</blockquote>
+<h2 id="云主机环境搭建"><a href="#云主机环境搭建" class="headerlink" title="云主机环境搭建"></a>云主机环境搭建</h2><p>针对VPS或者云服务，最简单的就是使用<strong>宝塔面板</strong>（服务器管理软件）安装环境，可以一键安装LNMP或者LAMP环境</p>
+<blockquote>
+<ul>
+<li>LNMP：Linux+Nginx+MySQL+PHP</li>
+<li>LAMP：Linux+Apache+MySQL+PHP</li>
+</ul>
+</blockquote>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/LNMP%E5%92%8CLAMP.png"></p>
+<p>参考网上的教程即可：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/37896471">WordPress搭建教程：手把手教你搭建WordPress博客</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/534537871">WordPress建站步骤详细图文教程</a></li>
+</ul>
+<h2 id="本地主机环境搭建"><a href="#本地主机环境搭建" class="headerlink" title="本地主机环境搭建"></a>本地主机环境搭建</h2><p>自行搭建环境。通常本地仅用于调试，真正部署还是要用专门的主机。</p>
+<p>基本步骤相同，只不过每个环节都有多种方式实现。</p>
+<ol>
+<li>安装PHP+Apache+MySQL环境，phpMyAdmin选择性安装。</li>
+<li>下载<a href="https://cn.wordpress.org/download/#download-install">WordPress.org</a>应用程序。</li>
+<li>将WordPress应用部署到服务器：Apache或者Nginx。</li>
+<li>访问<code>localhost</code>网址，打开WordPress首页，默认是80端口。如果新建了子目录，则访问对应的路径，例如<code>localhost/wordpress</code>。</li>
+<li>创建数据库，WordPress配置数据库连接信息。如果数据库和WordPress不在同一台主机，需要修改配置并授权其他host访问（下面会介绍）</li>
+<li>数据库连接成功后进入登录页面，注册账号后即可登录到控制台</li>
+<li>至此，WordPress本地已经部署成功，和<code>WordPress.com</code>一样在控制台编辑和发布文章，所有数据都保存在MySQL中。</li>
+</ol>
+<p><strong>不同OS前面几个环节有些差异，进入WordPress首页之后的流程都是相同的</strong></p>
+<p>推荐使用Docker部署，具有跨平台和隔离的特性。</p>
+<h1 id="MacOS环境搭建"><a href="#MacOS环境搭建" class="headerlink" title="MacOS环境搭建"></a>MacOS环境搭建</h1><h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p>安装Apache环境：Mac自带Apache，使用<code>sudo apachectl start</code>开启服务，访问<code>localhost</code>，如图表示Apache服务启动成功。</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac启动Apache服务.png" style="zoom: 50%;">
+
+<p>安装MySQL：<code>brew install mysql</code>。</p>
+<p>安装PHP：<code>brew install php</code>，MacOS 12之前自带PHP，新版本移除了PHP。</p>
+<p>根据提示修改apache配置文件<code>sudo vim /etc/apache2/httpd.conf</code>，支持php模块</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac Apache配置PHP模块.png" style="zoom: 50%;">
+
+<p>修改完之后使用<code>apachectl -t</code>验证配置文件是否正确</p>
+<h2 id="下载WordPress应用并部署"><a href="#下载WordPress应用并部署" class="headerlink" title="下载WordPress应用并部署"></a>下载WordPress应用并部署</h2><p>下载<a href="https://cn.wordpress.org/download/#download-install">WordPress.org</a>应用程序并解压（中文版）</p>
+<p>将wordpress文件夹拷贝到到Apache的网站根目录：</p>
+<ul>
+<li>MacOS上的网站根目录<code>/Library/WebServer/Documents/</code></li>
+<li>Windows上的网站根目录一般是<code>&lt;phpStudy路径&gt;/WWW</code></li>
+<li>Linux上Apache的网站根目录为<code>/var/www/html/</code></li>
+</ul>
+<p>Apache网站根目录一般在<code>httpd.conf</code>中配置，例如</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> MacOS上/etc/apache2/httpd.conf</span></span><br><span class="line">DocumentRoot &quot;/Library/WebServer/Documents&quot;</span><br></pre></td></tr></table></figure>
+
+<p>访问<code>localhost/wordpress</code>打开WordPress首页</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress首页.png" style="zoom: 33%;">
+
+<h2 id="WordPress配置"><a href="#WordPress配置" class="headerlink" title="WordPress配置"></a>WordPress配置</h2><p>先创建数据库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 登录数据库</span></span><br><span class="line">mysql -uroot -p</span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建数据库</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> create database db_word_press;</span></span><br></pre></td></tr></table></figure>
+
+<p>根据提示填写数据库连接信息，如图：</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress数据库配置.png" style="zoom: 33%;">
+
+<p>配置完成后会生成<code>wp-config.php</code>文件，也可以手动修改<code>wp-config-sample.php</code>，并另存为<code>wp-config.php</code></p>
+<p>接着注册账号并登录到控制台</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/WordPress控制台.png" style="zoom: 33%;">
+
+<h1 id="Docker搭建"><a href="#Docker搭建" class="headerlink" title="Docker搭建"></a>Docker搭建</h1><p>可以使用单纯的Linux镜像，自行安装PHP、Apache、MySQL、WordPress。这里直接使用wordpress镜像</p>
+<ol>
+<li>下载wordpress镜像，内置了PHP+Apache+WordPress：<code>docker pull wordpress</code></li>
+<li>运行wordpress容器：<code>docker run --name my-wordpress -p 8080:80 -d wordpress</code></li>
+<li>WordPress已经下载并部署在了<code>/var/www/html/</code></li>
+<li>访问网址<code>localhost:8080</code>，选择语言之后进入WordPress首页。</li>
+</ol>
+<h2 id="Docker运行phpMyAdmin"><a href="#Docker运行phpMyAdmin" class="headerlink" title="Docker运行phpMyAdmin"></a>Docker运行phpMyAdmin</h2><p>phpMyAdmin用于数据库管理，可以根据需求安装。</p>
+<p>参考：<a href="https://docs.phpmyadmin.net/zh_CN/latest/setup.html#installing-using-docker">phpMyAdmin官方文档</a></p>
+<ol>
+<li>下载phpmyadmin镜像：<code>docker pull phpmyadmin</code></li>
+<li>运行phpmyadmin容器：<code>docker run --name phpmyadmin -d -e PMA_HOST=&lt;本机IP地址&gt; -p 8081:80 phpmyadmin</code>。</li>
+<li>进入容器环境：<code>docker exec -it phpmyadmin /bin/bash</code></li>
+</ol>
+<blockquote>
+<p><code>-e PMA_HOST</code>是配置环境变量，表示phpMyAdmin要连接的数据库Host。</p>
+</blockquote>
+<h1 id="Windows搭建"><a href="#Windows搭建" class="headerlink" title="Windows搭建"></a>Windows搭建</h1><p>推荐使用<strong>phpStudy集成环境</strong>，自带PHP+MySQL+Apache+phpMyAdmin。其他流程和MacOS类似</p>
+<p>下载phpStudy并点击启动，如图</p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/phpStudy.png"></p>
+<p>将WordPress文件夹拷贝到网站根目录，默认为<code>&lt;phpStudy&gt;/WWW</code></p>
+<p><img src="/2022/11/17/blog-2022-11-17-WordPress/phpStudy%E7%BD%91%E7%AB%99%E6%A0%B9%E7%9B%AE%E5%BD%95.png"></p>
+<p>访问<code>localhost/wordpress</code>，打开WordPress首页。</p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="无法连接MySQL"><a href="#无法连接MySQL" class="headerlink" title="无法连接MySQL"></a>无法连接MySQL</h2><p>使用Docker搭建环境，由于WordPress镜像不包含MySQL，因此需要连接宿主机或者其他容器的MySQL。</p>
+<p>默认情况下，数据库只能在本地访问，远程或容器内无法访问，因此需要开启远程访问权限。</p>
+<p>查看当前用户信息如下</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/MySQL用户列表.png" style="zoom: 50%;">
+
+<p>修改<code>/usr/local/etc/my.cnf</code>配置，注释掉绑定配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bind-address = 127.0.0.1</span></span><br></pre></td></tr></table></figure>
+
+<p>授予用户权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建新用户：CREATE USER &#x27;username&#x27;@&#x27;host&#x27; IDENTIFIED BY &#x27;password&#x27;;</span></span><br><span class="line">CREATE USER <span class="string">&#x27;afauria&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="string">&#x27;password&#x27;</span>;</span><br><span class="line"><span class="comment"># 更新host字段为%，如果已经是%则不需要</span></span><br><span class="line">update user <span class="built_in">set</span> host = <span class="string">&#x27;%&#x27;</span> <span class="built_in">where</span> user =<span class="string">&#x27;afauria&#x27;</span>;</span><br><span class="line"><span class="comment"># 授予权限：GRANT privileges ON databasename.tablename TO &#x27;username&#x27;@&#x27;host&#x27;;</span></span><br><span class="line">GRANT ALL ON *.* TO <span class="string">&#x27;afauria&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="comment"># 重启mysql服务</span></span><br><span class="line">brew services restart mysql</span><br></pre></td></tr></table></figure>
+
+<p>WordPress数据库主机需要填宿主机的IP地址。</p>
+<h2 id="PHP模块签名问题"><a href="#PHP模块签名问题" class="headerlink" title="PHP模块签名问题"></a>PHP模块签名问题</h2><p>MacOS部署PHP到Apache，<code>apachectl -t</code>出现异常：<code>No code signing authority for module at xxx</code></p>
+<p>原因：macOS Monterey开始，强制要求应用程序签名，使用brew安装的PHP模块没有签名</p>
+<p>解决方法：参考<a href="https://www.simplified.guide/macos/apache-php-homebrew-codesign">How to sign homebrew PHP module in macOS</a></p>
+<ol>
+<li>打开【钥匙串访问-证书助理】，先创建证书颁发机构<code>Afauria&#39;s CA</code>，再创建证书<code>Afauria</code></li>
+</ol>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac证书助理.png" style="zoom: 40%;">
+
+<ol start="2">
+<li><p>创建证书颁发机构<code>Afauria&#39;s CA</code>，类型为<strong>自签名根CA</strong></p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书机构.png" style="zoom: 40%;"></li>
+<li><p>信任证书机构</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac信任证书.png" style="zoom: 40%;"></li>
+<li><p>创建证书Afauria，类型为<strong>叶证书</strong></p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac创建证书.png" style="zoom: 40%;"></li>
+<li><p>证书签发者选择刚才创建的根证书机构</p>
+<img src="/2022/11/17/blog-2022-11-17-WordPress/Mac选择证书签发者.png" style="zoom: 40%;"></li>
+<li><p>对PHP模块签名：<code>codesign --sign &quot;Afauria&quot; --force --keychain ~/Library/Keychains/login.keychain-db /usr/local/opt/php/lib/httpd/modules/libphp.so</code></p>
+</li>
+<li><p>修改<code>httpd.conf</code>配置，添加证书名称：<code>LoadModule php_module /usr/local/opt/php/lib/httpd/modules/libphp.so &quot;Afauria&quot;</code></p>
+</li>
+<li><p>再次<code>apachectl -t</code>验证成功</p>
+</li>
+</ol>
+<h2 id="PHP架构问题"><a href="#PHP架构问题" class="headerlink" title="PHP架构问题"></a>PHP架构问题</h2><p>Mac部署PHP到apache，<code>apachectl -t</code>出现异常：<code>&#39;xxx libphp.so&#39; (mach-o file, but is an incompatible architecture (have (x86_64), need (arm64e))</code></p>
+<p>原因：下载的php是x86_64的，使用的Mac是M1芯片（arm64架构），无法兼容。</p>
+<blockquote>
+<p>M1芯片暂时无法通过brew下载php，<code>brew search php</code>找不到对应的软件</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅谈个人博客</title>
+    <url>/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最早是大二在CSDN上写过两篇文章，因为每次修改都要联网登录比较麻烦就放弃了，晾了这么多年再去看，没想到浏览量还蛮多的。</p>
+<p>大三实习期间用Jekyll搭建了个人博客，用了几个月转战Hexo了，一直持续到现在。</p>
+<p>回过头看，收获还是蛮多的，有水文，也有熬夜写的技术文章。内容总的来说更擅长记录总结，不擅长发表感悟，也不喜欢在文章中掺杂太多废话和闲聊，希望每一句都是干货，知识点尽可能简洁、清晰。</p>
+<p>写作过程中最令人头疼的就是文章结构如何组织，一旦写的不好就会出现“上文xxx”，“下文xxx”。好的文章还是要不断打磨修改。</p>
+<p>因为最近打算搞团队能力建设，所以梳理了下博客相关的内容，也补充一些没用过的博客框架的搭建教程，带领大家入门折腾。</p>
+<h1 id="为什么你需要一个博客？"><a href="#为什么你需要一个博客？" class="headerlink" title="为什么你需要一个博客？"></a>为什么你需要一个博客？</h1><p>如果此前有写些东西，那么博客可以帮你发布到互联网，让更多人能够看到。并且养成良好的写作习惯，提高效率。</p>
+<p>如果此前未写过东西，可以思考下写作能带来的益处，每一篇文章都是自己积累的财富，也是一路成长的脚印。</p>
+<ol>
+<li>知识积累：作为程序员有太多要学习的东西了，光靠记忆效率是很低的，需要一个专门的平台来归档、管理。</li>
+<li>偶发感悟，或者有开心的事、人生大事，苦于没有平台记录和分享。</li>
+<li>能力提升：专业知识、写作表达、逻辑条理。</li>
+<li>倒逼自己输出：例如有用户提问或者评论，会推动自己去更新内容。</li>
+<li>紧跟互联网时代：就像当年大家都玩QQ空间，你不玩就OUT了。</li>
+<li>从知识获取者转变为知识创作者、贡献者。</li>
+<li>打造个人品牌，行业影响力，副业创收…</li>
+<li>元宇宙时代每个人都应该建设自己的一亩三分地，和装修一样，有满满的成就感。</li>
+<li>组织角度：可以作为团队培训资料，减少重复工作和踩坑。</li>
+<li>…</li>
+</ol>
+<p>坏处嘛，除了需要投入时间精力外，也想不到其他的了。</p>
+<blockquote>
+<ul>
+<li>Web1.0：用户只能查看内容</li>
+<li>Web2.0：用户可以贡献内容，平台所有、平台控制、平台支配，平台化</li>
+<li>Web3.0（元宇宙）：用户贡献内容，用户所有、用户支配，去中心化</li>
+</ul>
+</blockquote>
+<p>推荐阅读：<a href="https://sspai.com/post/73934">2022 年了，聊聊我为什么还在写博客</a></p>
+<h1 id="可以写些什么？"><a href="#可以写些什么？" class="headerlink" title="可以写些什么？"></a>可以写些什么？</h1><p>博客内容可以是专业技术、美好记忆、心得感悟、晒娃撒狗粮、读书观影旅游分享等等。</p>
+<p>根据自己的想法划分了几个境界：</p>
+<ul>
+<li>初出茅庐：阅读+收藏网址，参与评论和提问、长期关注他人、付费阅读、付费下载</li>
+<li>小试牛刀（入门）：注册博客平台账户，或者搭建了个人网站，在上面发布过文章</li>
+<li>持之以恒（活跃度）：个人博客有较多输出，长期维护</li>
+<li>小有名气（知名度）：有较多的点赞和关注，评论或者加好友互动，有人愿意为你的知识买单打赏</li>
+<li>传道授业（专业度）：发布过系列知识、专题、开课</li>
+<li>声名远扬：出书，业内大佬</li>
+</ul>
+<h1 id="博客搭建的方式"><a href="#博客搭建的方式" class="headerlink" title="博客搭建的方式"></a>博客搭建的方式</h1><p>博客主要分为三种方式：</p>
+<ol>
+<li>使用第三方博客平台（中心化、平台化）：在三方平台创作和发布。</li>
+<li>使用静态框架搭建博客，生成静态页面发布：本地编写Markdown，通过工具转换成html，发布到静态网页托管服务。</li>
+<li>使用动态框架搭建博客，部署动态页面，运行时请求数据库：自行部署平台服务，在平台上创作和发布。使用和第三方博客平台类似，但是自由度更高。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>第三方博客平台</th>
+<th>静态框架</th>
+<th>动态框架</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>搜索引擎优化</td>
+<td>便于SEO，例如百度搜索结果前排基本都是CSDN</td>
+<td>需要自行优化、推广</td>
+<td>需要自行优化、推广</td>
+</tr>
+<tr>
+<td>技术门槛</td>
+<td>无</td>
+<td>有一定门槛，视框架和功能而定</td>
+<td>有一定门槛，视框架和功能而定</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>无</td>
+<td>GitHub Pages、Gitee Pages免费。自建空间需要云服务或者主机+域名费用</td>
+<td>云服务或者主机+域名费用</td>
+</tr>
+<tr>
+<td>编辑器</td>
+<td>在线编辑</td>
+<td>Markdown，可以嵌入HTML。不同框架解析可能会出现异常。</td>
+<td>在线编辑，可以插入不同控件，所见即所得</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>和账号绑定，不需要自己存档。但有数据丢失、隐私泄漏的风险</td>
+<td>自行维护原文档，可以使用Git管理</td>
+<td>数据库存储，不便于导出导入和迁移</td>
+</tr>
+<tr>
+<td>可移植性</td>
+<td>弱，大部分不支持导入导出</td>
+<td>强，直接部署静态页面即可</td>
+<td>弱，难以迁移数据到其他框架</td>
+</tr>
+<tr>
+<td>主题样式</td>
+<td>大多数无法选择</td>
+<td>主题丰富，可以定制布局和样式。</td>
+<td>主题丰富，可以定制布局和样式。</td>
+</tr>
+<tr>
+<td>环境配置</td>
+<td>和账号绑定，网页在线编辑</td>
+<td>新电脑需要重新配置环境</td>
+<td>自建服务，部署在服务器</td>
+</tr>
+<tr>
+<td>部署发布</td>
+<td>在线发布，平台托管</td>
+<td>GitHub Pages、Gitee Pages，或者自行购买云服务或者主机</td>
+<td>自行购买云服务或者主机</td>
+</tr>
+<tr>
+<td>自由度</td>
+<td>低，开发者只能上传内容，平台审核</td>
+<td>高</td>
+<td>高，除了博客之外，还可以做论坛、电商等站点</td>
+</tr>
+<tr>
+<td>域名</td>
+<td>使用平台子域名</td>
+<td>绑定自己的域名，便于记忆和宣传</td>
+<td>绑定自己的域名，便于记忆和宣传</td>
+</tr>
+<tr>
+<td>代表产品</td>
+<td>CSDN、简书、掘金等</td>
+<td>Hexo、Hugo、Jekyll、VuePress、Docsify、mkdocs、Sphinx等</td>
+<td>WordPress、Typecho、Halo、Solo等</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>无门槛、0成本、利于SEO</td>
+<td>低成本、主题丰富</td>
+<td>功能丰富、扩展性、交互能力强</td>
+</tr>
+</tbody></table>
+<h2 id="从写作方式上划分"><a href="#从写作方式上划分" class="headerlink" title="从写作方式上划分"></a>从写作方式上划分</h2><ol>
+<li>本地编写Markdown。</li>
+<li>客户端或者网页在线编辑器，富文本编辑器。</li>
+</ol>
+<h2 id="从发布方式上划分"><a href="#从发布方式上划分" class="headerlink" title="从发布方式上划分"></a>从发布方式上划分</h2><ol>
+<li>三方提供主机服务（平台）：国内平台大部分免费，国外平台大部分需要付费，免费的功能受限。一般是子域名，部分提供域名绑定功能。</li>
+<li>购买云服务器，自行搭建环境、配置域名、管理数据，同时可以开放给其他人使用。</li>
+<li>购买本地主机，自行搭建环境、配置域名、管理数据，同时可以开放给其他人使用。</li>
+<li>纯静态网页托管服务：GitHub Pages、Gitee Pages，一般是子域名，也提供域名绑定功能。</li>
+</ol>
+<h1 id="选择合适的框架"><a href="#选择合适的框架" class="headerlink" title="选择合适的框架"></a>选择合适的框架</h1><p><strong>没有最好的框架，只有最合适的框架。</strong></p>
+<p>可以从以下几个纬度对比：</p>
+<ol>
+<li>成本：第三方博客&lt;静态框架&lt;动态框架</li>
+<li>功能和可扩展性：第三方博客&lt;静态框架&lt;动态框架</li>
+<li>上手难度：第三方博客&lt;自建博客</li>
+<li>主题和样式：第三方博客&lt;自建博客，看个人喜好，静态和动态框架都有大量主题，够用就行</li>
+<li>写作方式、发布方式。</li>
+</ol>
+<h2 id="为什么不选择第三方平台？"><a href="#为什么不选择第三方平台？" class="headerlink" title="为什么不选择第三方平台？"></a>为什么不选择第三方平台？</h2><p>第三方博客相比自建博客，存在很多痛点：</p>
+<ol>
+<li>自由度低：样式固定，无法设置个性化主题</li>
+<li>需要联网在线编辑</li>
+<li>频繁提示登录</li>
+<li>大量的广告插入</li>
+<li>内容受平台管控和审核，评论限制，例如不允许转发到其他平台</li>
+<li>关服整改：例如博客园整改</li>
+<li>存在数据丢失、泄漏的风险</li>
+<li>链接跳转会有安全提示，例如即将离开CSDN、掘金页面…</li>
+<li>浏览门槛：例如CSDN很多精华文章和专栏都需要购买或者关注</li>
+<li>文章质量参差不齐，浪里淘金：吐槽CSDN垃圾堆。一部分是由于面向大众，非程序员社区，一部分是爬虫、转载导致很多格式错乱。</li>
+</ol>
+<h2 id="静态网站的优势"><a href="#静态网站的优势" class="headerlink" title="静态网站的优势"></a>静态网站的优势</h2><p>静态网站相比动态网站有几点优势：</p>
+<ol>
+<li>利于SEO</li>
+<li>运行高效：纯静态网站可以通过CDN加速，动态网站还受限于服务端处理能力</li>
+<li>更加安全：难以被攻击</li>
+<li>部署简单，成本低廉：使用GitHub Pages、Gitee Pages免费托管</li>
+<li>本地生成，实时预览</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>对样式没有太大要求、图省事的、不确定是否能持续产出，推荐用第三方博客平台。</strong></p>
+<p><strong>有一定追求和想法的，想进一步打造个人品牌，推荐自建博客。希望低成本的选择静态框架，希望拥有更多功能和玩法的选择动态框架</strong></p>
+<p><strong>话说回来，博客内容才是关键，样式那些花里胡哨的可有可无，当然设计精美的博客总是能更吸引人眼球。</strong></p>
+<p>有精力的话可以运营多平台，扩大影响力，通过一键同步脚本简化操作。</p>
+<h1 id="第三方博客平台"><a href="#第三方博客平台" class="headerlink" title="第三方博客平台"></a>第三方博客平台</h1><p>使用较简单，注册账号，在网页上编辑文章即可，这里不多做介绍。</p>
+<p>国内主流博客平台：</p>
+<ol>
+<li><a href="https://juejin.cn/">稀土掘金</a>：如其名，文章质量较高</li>
+<li><a href="https://www.csdn.net/">CSDN</a>：用来搜Bug和解决方案比较多，好的学习文章浪里淘金，同时充斥大量广告，资本化严重</li>
+<li><a href="https://www.jianshu.com/">简书</a>：和CSDN类似，内容相对优质一些，广告稍微少点</li>
+<li><a href="https://www.cnblogs.com/">博客园</a>：国内较早的博客平台</li>
+<li><a href="https://www.51cto.com/">51CTO</a>：IT技术社区</li>
+<li><a href="https://www.oschina.net/">开源中国</a>：国内最大的开源社区</li>
+<li><a href="https://segmentfault.com/">思否Segmentfault</a>：技术问答为主</li>
+<li>…</li>
+</ol>
+<p>小众社区：</p>
+<ol>
+<li><a href="https://cloud.tencent.com/developer">腾讯云社区</a>：云开发为主，大咖较多</li>
+<li><a href="https://gitbook.cn/">GitChat</a>：技术博客社区</li>
+<li><a href="https://ld246.com/">链滴</a></li>
+<li><a href="https://sspai.com/">少数派</a></li>
+<li>当然QQ空间、公司的KB也算一个社区</li>
+<li>…</li>
+</ol>
+<h1 id="自建博客"><a href="#自建博客" class="headerlink" title="自建博客"></a>自建博客</h1><p>大致流程如下，后面会挑几个单独介绍：</p>
+<ol>
+<li>确定博客框架，下载并安装对应的环境</li>
+<li>配置主题，有需要的话可以安装插件，修改配置和样式。</li>
+<li>写作：<ol>
+<li>动态框架：在客户端或者网页端写作，保存在数据库中</li>
+<li>静态框架：使用Markdown写作，保存为md文件</li>
+</ol>
+</li>
+<li>管理文章中引用到图片<ol>
+<li>可以通过相对路径引用，静态打包一起部署</li>
+<li>可以创建图床，通过url链接引用</li>
+</ol>
+</li>
+<li>部署：<ol>
+<li>免费的<strong>静态网页托管</strong>服务：GitHub Pages、Gitee Pages。</li>
+<li>购买云服务器，自行部署：阿里云、腾讯云，使用服务器公网IP</li>
+<li>本地主机：可以使用树莓派作为小型服务器。外网访问需要申请公网IP。如果没有公网IP，可以使用内网穿透服务。</li>
+</ol>
+</li>
+<li>绑定域名：<ol>
+<li>使用子域名：部署到GitHub Pages、Gitee Pages、WordPress.com等服务，可以直接使用它们的子域名。</li>
+<li>自行购买：阿里云、腾讯云都可以购买域名，根据不同框架说明绑定域名即可。</li>
+</ol>
+</li>
+<li>如果部署在国内的主机，需要备案</li>
+</ol>
+<blockquote>
+<p>域名本身不需要备案，但需要实名认证。</p>
+<p>域名指向国内的服务器需要备案，指向国外的服务器不需要备案。</p>
+<p>GitHub Pages是国外主机，因此不需要备案。</p>
+</blockquote>
+<h1 id="电子书"><a href="#电子书" class="headerlink" title="电子书"></a>电子书</h1><p>除了上面提到的几种方式之外，还有专门的电子书、笔记等框架。不同于博客的随意性，电子书更适合创作专题内容和系列文章。</p>
+<p>常用的如</p>
+<ul>
+<li><a href="https://www.gitbook.com/">GitBook</a>：<ul>
+<li>gitbook-cli：一个基于Node的命令行工具，用于生成静态网页，可以托管到GitPages，支持本地运行预览。<strong>相比gitbook.com更加轻量，可惜已经不再维护</strong></li>
+<li>gitbook.com：一个写作平台，发布到gitbook子域名，例如<code>https://afauria.gitbook.io/</code>，优点是可以GitHub仓库同步。缺点是国内访问慢</li>
+</ul>
+</li>
+<li><a href="https://www.kancloud.cn/">看云</a>：电子书阅读和创作平台，可以设置付费，已迁移到顶想云知识管理。</li>
+<li><a href="https://www.yuque.com/dashboard">语雀</a>：文档与知识库工具，写作体验好，功能丰富，包括文档、表格、笔记、待办、团队协作、项目管理等。类似印象笔记、有道云笔记、Notion等笔记工具</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitBook</th>
+<th>看云</th>
+<th>语雀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用</td>
+<td>本地Markdown写作，Git版本管理，生成静态网页发布</td>
+<td>使用Markdown编辑器、Git版本管理</td>
+<td>客户端或者网页在线编辑</td>
+</tr>
+<tr>
+<td>价格</td>
+<td>命令行工具免费，平台专业版收费</td>
+<td>价格免费版功能受限，私有文档需要会员</td>
+<td>免费版功能受限，公开笔记需要会员</td>
+</tr>
+<tr>
+<td>可移植性</td>
+<td>Markdown文档</td>
+<td>可移植性支持导出电子书</td>
+<td>支持导入导出Markdown、电子书等格式，可能存在兼容性问题</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注：hexo需要新版本node，gitbook-cli只能通过旧版本node运行，因此无法共存。</p>
+<p>使用n管理node版本：使用hexo时切换到<code>n node/14.17.6</code>，使用gitbook-cli时切换到<code>n node/10.24.0</code></p>
+</blockquote>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>本文介绍了几种博客搭建的方式，可以明显看到个人倾向是静态框架。</p>
+<p>我个人用的是Hexo+GitHub Pages，平常用Markdown写作，使用Git管理源文件，写完一键发布。</p>
+<p>电子书使用的是GitBook，主要用来构建知识体系。</p>
+<p>基本没有做推广和运营，导致曝光率不高，后续可能会同步到其他平台，提高曝光率，当然创作水平也有待提升。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://staticsitegenerators.net/">静态博客生成器列表</a>：（SSG，Static Site Generator）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RetroPie复古游戏机</title>
     <url>/2022/09/19/geek-2022-09-19-RetroPie%E5%A4%8D%E5%8F%A4%E6%B8%B8%E6%88%8F%E6%9C%BA/</url>
     <content><![CDATA[<h1 id="RetroPie使用"><a href="#RetroPie使用" class="headerlink" title="RetroPie使用"></a>RetroPie使用</h1><p>RetroPie是一个复古的游戏机操作系统，包含各种街机、家用游戏机、掌机的模拟器。</p>
@@ -676,7 +1148,7 @@
 <p>解决：修改<code>db.properties</code>，在url末尾添加<code>zeroDateTimeBehavior=convertToNull </code>，将0转化为null，如下</p>
 <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">url</span> = <span class="string">jdbc:mysql://127.0.0.1:3306/maple_067?autoReconnect=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="资源汇总存档"><a href="#资源汇总存档" class="headerlink" title="资源汇总存档"></a>资源汇总存档</h1><p><strong>这些资源都下载备份了，找不到资源的可以私信我：评论、提issue、加联系方式均可</strong></p>
+<h1 id="资源汇总存档"><a href="#资源汇总存档" class="headerlink" title="资源汇总存档"></a>资源汇总存档</h1><p><strong>这些资源都下载备份了，可以先在原地址中查找，找不到资源或者过期了可以私信我：评论、提issue、加联系方式均可</strong></p>
 <blockquote>
 <p>KMS（Korea Maple Story）：韩服</p>
 <p>CMS：国服</p>
@@ -7530,19 +8002,17 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
       </tags>
   </entry>
   <entry>
-    <title>GitPage博客绑定域名</title>
+    <title>GitHub Pages博客绑定自定义域名</title>
     <url>/2021/10/01/blog-2021-10-01-GitPage%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D/</url>
-    <content><![CDATA[<h1 id="GitPage如何绑定自定义域名"><a href="#GitPage如何绑定自定义域名" class="headerlink" title="GitPage如何绑定自定义域名"></a>GitPage如何绑定自定义域名</h1><h2 id="域名注册"><a href="#域名注册" class="headerlink" title="域名注册"></a>域名注册</h2><p>万网、阿里云、腾讯云都可以申请</p>
+    <content><![CDATA[<h1 id="GitHub-Pages绑定自定义域名"><a href="#GitHub-Pages绑定自定义域名" class="headerlink" title="GitHub Pages绑定自定义域名"></a>GitHub Pages绑定自定义域名</h1><h2 id="域名注册"><a href="#域名注册" class="headerlink" title="域名注册"></a>域名注册</h2><p>万网、阿里云、腾讯云都可以申请</p>
 <h2 id="配置DNS解析"><a href="#配置DNS解析" class="headerlink" title="配置DNS解析"></a>配置DNS解析</h2><p>以阿里云为例</p>
 <p><img src="/2021/10/01/blog-2021-10-01-GitPage%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D/%E5%9F%9F%E5%90%8D%E6%B7%BB%E5%8A%A0DNS%E8%AE%B0%E5%BD%95.png" alt="域名添加DNS记录"></p>
 <h2 id="添加CNAME文件"><a href="#添加CNAME文件" class="headerlink" title="添加CNAME文件"></a>添加CNAME文件</h2><p><strong>注：方式二会在远程仓库生成CNAME文件和新的提交，会产生分支冲突，导致本地发布博客失败，建议使用方式一</strong></p>
 <blockquote>
 <p>产生冲突的时候可以执行<code>hexo clean</code>再发布</p>
 </blockquote>
-<ol>
-<li>方式一：博客站点<code>source</code>目录下添加<code>CNAME</code>文件，文件中填写域名地址。<code>hexo clean &amp; hexo g -d</code>重新发布</li>
-<li>方式二：GitPage中配置自定义域名，会生成CNAME文件并发布</li>
-</ol>
+<p>方式一：博客站点<code>source</code>目录下添加<code>CNAME</code>文件，文件中填写域名地址。<code>hexo clean &amp; hexo g -d</code>重新发布</p>
+<p>方式二：GitPage中配置自定义域名，会生成CNAME文件并发布</p>
 <p><img src="/2021/10/01/blog-2021-10-01-GitPage%E5%8D%9A%E5%AE%A2%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D/GitPage%E9%85%8D%E7%BD%AECNAME.png" alt="GitPage配置CNAME"></p>
 <h1 id="DNS记录类型"><a href="#DNS记录类型" class="headerlink" title="DNS记录类型"></a>DNS记录类型</h1><p>域名解析就是域名到IP地址的转换过程。域名的解析工作由DNS服务器完成。</p>
 <p>DNS服务器会存储记录，记录类型有多种类型，起到不同的作用，这里简单介绍下A记录、CNAME记录和NS记录</p>
@@ -7570,10 +8040,10 @@ dex文件--dex2jar-->jar文件--解压-->classs[class文件]-->jbe修改字节�
 <p>当用户在浏览器中输入一个需要登录的网址域名时，系统会首先自动从hosts文件中寻找对应的IP地址，一旦找到，系统会立即打开对应网页，如果没有找到，则系统会将网址提交DNS服务器进行IP地址的解析，再进行访问。</p>
 </blockquote>
 <p>可以使用<code>ipconfig /flushdns</code>命令清除DNS缓存</p>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://blog.csdn.net/DD_orz/article/details/100034049">简单的解释下什么是CNAME？</a></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：<a href="https://blog.csdn.net/DD_orz/article/details/100034049">简单的解释下什么是CNAME？</a></p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>博客</category>
       </categories>
       <tags>
         <tag>博客</tag>
@@ -9275,111 +9745,6 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>前端网站部署</title>
-    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
-<ol>
-<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
-<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
-</ol>
-<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
-<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
-
-<ol>
-<li>使用python内置服务器开启端口访问文件<ol>
-<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
-<li>Python3：<code>python -m http.server 8081</code></li>
-</ol>
-</li>
-<li>使用node的http server<ol>
-<li>安装http server：<code>npm install http-server -g</code></li>
-<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
-<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
-<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
-<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
-<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
-<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
-<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
-<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
-<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
-<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
-<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
-</ol>
-<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
-<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
-<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
-<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
-</ol>
-<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
-<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
-<ol>
-<li>使用<code>chmod -R 777</code>修改读写权限</li>
-<li>Nginx用户配置</li>
-<li>Nginx文件路径和网页入口配置</li>
-<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
-<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
-</ol>
-</li>
-</ol>
-<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
-<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
-<li>编写Dockerfile</li>
-</ol>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打包Docker镜像</li>
-<li>启动容器</li>
-<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
-</ol>
-<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
-<blockquote>
-<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
-</blockquote>
-<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
-<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
-<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
-</ol>
-<p>可以使用docker compose+yml配置文件创建和启动容器</p>
-<ol>
-<li>安装docker compose工具</li>
-<li>编写yml配置文件</li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
-<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
-<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
-</ol>
-</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
-<li>内部网站使用vite或者node等开发工具部署。</li>
-<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
-<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
-</ol>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何把A网站的数据爬到B网站显示</title>
     <url>/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="爬虫介绍"><a href="#爬虫介绍" class="headerlink" title="爬虫介绍"></a>爬虫介绍</h1><p>主要有两种方式</p>
@@ -9541,6 +9906,111 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>前端网站部署</title>
+    <url>/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="虚拟主机、VPS、云服务器"><a href="#虚拟主机、VPS、云服务器" class="headerlink" title="虚拟主机、VPS、云服务器"></a>虚拟主机、VPS、云服务器</h1><p>不用分的很清楚，简单记几个区别：</p>
+<ol>
+<li>VPS（Virtual Private Server）和虚拟主机没有root权限，云服务器有root权限</li>
+<li>VPS是对单台服务器通过虚拟化成多个虚拟服务器，受限于单台服务器性能和资源，主机宕机之后VPS也宕机。云服务器是对多台服务器资源进行虚拟化，具有更好的容灾能力和伸缩性。</li>
+</ol>
+<h1 id="http-server部署"><a href="#http-server部署" class="headerlink" title="http server部署"></a>http server部署</h1><p><code>npm run build</code>打包出dist之后通过http服务部署，浏览器限制无法直接访问本地html文件</p>
+<img src="/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/dist部署.png">
+
+<ol>
+<li>使用python内置服务器开启端口访问文件<ol>
+<li>Python2：<code>python -m SimpleHTTPServer 8081 </code>，指定端口8081，默认端口8080</li>
+<li>Python3：<code>python -m http.server 8081</code></li>
+</ol>
+</li>
+<li>使用node的http server<ol>
+<li>安装http server：<code>npm install http-server -g</code></li>
+<li>进入dist目录，启动服务端口：<code>http-server -p 3000</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="开发脚手架部署"><a href="#开发脚手架部署" class="headerlink" title="开发脚手架部署"></a>开发脚手架部署</h1><p>vite、next等脚手架框架本质也是起了个服务端口。内部使用nodejs实现。</p>
+<p>可以把代码拷到云服务器上，直接<code>npm run dev</code>或者<code>npm run build &amp; npm run serve</code>在远程运行，通过ip或者域名+端口访问。</p>
+<p>vite和nginx都可以作为Web服务器运行前端页面，也支持配置代理服务。</p>
+<p>在我看来，他们的区别只在于<strong>nginx是专业的服务器，性能更好。而vite是一个开发工具</strong>。（PS：如负载均衡、并发强、支持反向代理等，这一块没接触过不懂）</p>
+<p>一般情况下vite只在开发时使用，正式环境需要编译打包代码，部署到nginx之类的专业服务器，这个时候vite的配置就不生效了，因此需要使用nginx做反向代理。</p>
+<h1 id="Nginx部署"><a href="#Nginx部署" class="headerlink" title="Nginx部署"></a>Nginx部署</h1><p><code>npm run build</code>打包出dist之后部署到Nginx服务器上，Nginx服务器支持反向代理，域名，内网穿透等。（Nginx配置不是很熟悉）</p>
+<h1 id="结合Docker部署"><a href="#结合Docker部署" class="headerlink" title="结合Docker部署"></a>结合Docker部署</h1><ol>
+<li>Docker下载Nginx镜像或者Node镜像：<code>docker pull 镜像名称[:版本号]</code></li>
+<li>将代码或者静态资源打包拷贝或者挂载到Docker容器中：<code>docker run</code>的时候加<code>-v  主机路径:容器路径</code></li>
+<li>主机端口映射到容器端口：<code>docker run</code>的时候加<code>-p 主机端口:容器端口</code></li>
+<li>在容器中启动相应的服务：<code>docker exec</code>进入容器，按照前面提到的几种方式启动服务</li>
+</ol>
+<h2 id="Dockerfile打包Docker镜像"><a href="#Dockerfile打包Docker镜像" class="headerlink" title="Dockerfile打包Docker镜像"></a>Dockerfile打包Docker镜像</h2><h3 id="使用Nginx镜像"><a href="#使用Nginx镜像" class="headerlink" title="使用Nginx镜像"></a>使用Nginx镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据nginx镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="comment"># 将dist文件拷贝到容器中</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> dist/ /usr/share/nginx/html/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像<code>docker build -t 镜像名称[:镜像版本] .</code>，<code>.</code>表示当前路径</li>
+<li>启动容器：<code>docker run -itd --name 容器名称 -p 主机端口:容器端口 镜像名称</code></li>
+<li>进入容器：<code>docker exec -it 容器名称 /bin/bash</code></li>
+<li>启动nginx服务：<code>/usr/sbin/nginx</code>命令开启nginx服务</li>
+</ol>
+<p>如果有其他配置，可以进入容器下载vi工具编辑。也可以将宿主机上的配置文件挂载到容器中。</p>
+<p>可能会出现<code>403 forbidden</code>或者<code>open() failed (13 permission denied)</code>：</p>
+<ol>
+<li>使用<code>chmod -R 777</code>修改读写权限</li>
+<li>Nginx用户配置</li>
+<li>Nginx文件路径和网页入口配置</li>
+<li>关闭SELinux：修改<code>/etc/selinux/config</code>文件，将SELINUX的值设置为disabled。重启生效。<ol>
+<li>临时关闭：<code>setenforce 0</code>，重启失效</li>
+</ol>
+</li>
+</ol>
+<p>参考文章：<a href="https://blog.csdn.net/onlysunnyboy/article/details/75270533">解决Nginx出现403 forbidden (13: Permission denied)报错的四种方法</a></p>
+<h3 id="使用Node镜像"><a href="#使用Node镜像" class="headerlink" title="使用Node镜像"></a>使用Node镜像</h3><ol>
+<li>编写Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据node镜像创建新的镜像(可以加上:tag)</span></span><br><span class="line"><span class="keyword">FROM</span> node</span><br><span class="line"><span class="comment"># 创建容器目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /home/myservice</span></span><br><span class="line"><span class="comment"># 容器工作区，进入容器的时候默认进入该目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /home/myservice</span></span><br><span class="line"><span class="comment"># 将文件拷贝到工作区中</span></span><br><span class="line"><span class="comment"># 为了避免node_modules里面的文件也copy，可以配置.dockerignore</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /home/myservice</span></span><br><span class="line"><span class="comment"># npm安装依赖，RUN指令会在构建image的时候执行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"><span class="comment"># 启动npm服务，CMD指令会在容器启动的时候执行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> npm run serve</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包Docker镜像</li>
+<li>启动容器</li>
+<li>由于配置了CMD指令，启动的时候就会执行<code>npm run serve</code></li>
+</ol>
+<p>除了拷贝文件到容器中，还可以使用挂载，将文件挂载到容器工作区中。</p>
+<blockquote>
+<p>挂载不能在Dockerfile中编写，需要启动容器的时候指定，因为镜像可以下载到不同宿主机，导致路径不正确</p>
+</blockquote>
+<h2 id="Docker-Compose运行容器"><a href="#Docker-Compose运行容器" class="headerlink" title="Docker Compose运行容器"></a>Docker Compose运行容器</h2><ol>
+<li>每次创建容器都需要指定挂载路径、端口映射等较麻烦。</li>
+<li>多个容器启动需要一个一个执行<code>docker run</code>不方便。</li>
+</ol>
+<p>可以使用docker compose+yml配置文件创建和启动容器</p>
+<ol>
+<li>安装docker compose工具</li>
+<li>编写yml配置文件</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.7&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">recruit-front:</span>  <span class="comment"># 指定服务名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">recruit-front</span> <span class="comment"># 镜像名称</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">recruit-front</span> <span class="comment"># 容器名称</span></span><br><span class="line">    <span class="attr">ports:</span>    <span class="comment"># 指定端口映射</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8082:5000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span> <span class="comment"># 指定挂载路径</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/cloud/recruit:/home/recruit</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动服务：<code>docker-compose up</code>，-d表示后台执行<ol>
+<li>启动指定服务：<code>docker-compose up SERVICE_NAME</code>，如该服务依赖了其他服务，会自动启动依赖项。</li>
+<li>停止服务：<code>docker-compose stop [SERVICE_NAME]</code></li>
+</ol>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
+<li>内部网站使用vite或者node等开发工具部署。</li>
+<li>公共网站打包部署到nginx或者其他专业服务器上。</li>
+<li>结合Docker部署，可以使用现成的环境，并且打包镜像可以移植到不同平台，保证环境一致</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>远程服务器操作</title>
     <url>/2021/05/16/webdev-2021-05-16-%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h1 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h1><h2 id="ssh登录远程主机"><a href="#ssh登录远程主机" class="headerlink" title="ssh登录远程主机"></a>ssh登录远程主机</h2><p>登录远程主机：<code>ssh -p 端口号 远程主机用户名@远程主机域名或ip</code>，输入远程主机密码</p>
@@ -9592,43 +10062,6 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>NPM笔记</title>
-    <url>/2021/04/12/note-2021-04-12-NPM/</url>
-    <content><![CDATA[<h2 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h2><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
-<ol>
-<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
-<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
-</ul>
-</li>
-<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
-<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
-<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
-</ul>
-</li>
-<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
-<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
-<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
-<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
-<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
-</ul>
-</li>
-<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
-<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
-<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
-<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Github笔记</title>
     <url>/2021/04/12/note-2021-04-12-Github/</url>
     <content><![CDATA[<h1 id="GitHub笔记"><a href="#GitHub笔记" class="headerlink" title="GitHub笔记"></a>GitHub笔记</h1><ol>
@@ -9636,8 +10069,6 @@ end</pre>
 <li>发现GitHub新功能：仓库中按下<code>.</code>，可以打开VSCode网页编辑器模式，或者直接跳转url：<code>github.dev</code></li>
 </ol>
 <img src="/2021/04/12/note-2021-04-12-Github/GitHub编辑器模式.png" alt="GitHub网页编辑器" style="zoom: 67%;">
-
-
 
 <h1 id="GitHub访问不稳定"><a href="#GitHub访问不稳定" class="headerlink" title="GitHub访问不稳定"></a>GitHub访问不稳定</h1><h2 id="访问慢的原因"><a href="#访问慢的原因" class="headerlink" title="访问慢的原因"></a>访问慢的原因</h2><p>DNS解析耗时。</p>
 <ul>
@@ -9674,6 +10105,64 @@ end</pre>
 <h2 id="GitPage博客无法访问"><a href="#GitPage博客无法访问" class="headerlink" title="GitPage博客无法访问"></a>GitPage博客无法访问</h2><p>同理，只需要查询博客地址对应的IP，配置hosts就可以解决了。</p>
 <p>困扰已久的问题，一直以为是需要翻墙vpn，原来是DNS服务器限制。</p>
 <p>当然有时候也确实和网络有关。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NPM笔记</title>
+    <url>/2021/04/12/note-2021-04-12-NPM/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>NPM（Node Package Manager）：NodeJS的包管理工具和服务，已被GitHub收购。</p>
+<p>使用方法参考<a href="https://www.npmjs.com.cn/">NPM中文文档</a>或者<code>npm help</code></p>
+<ul>
+<li>-g：表示全局安装，默认只安装到当前目录的node_modules中</li>
+<li>–save：安装组件，并添加到<code>package.json</code>中的<code>dependencies</code>，即运行中需要用到的包，默认开启</li>
+<li>–save-dev：安装组件，并添加到<code>package.json</code>中的<code>devDependencies</code>，即开发和编译时需要用到的包</li>
+<li>–no-save：只安装组件，不保存</li>
+</ul>
+<h1 id="配置镜像加速"><a href="#配置镜像加速" class="headerlink" title="配置镜像加速"></a>配置镜像加速</h1><p>如果npm下载较慢，可以设置<a href="https://npm.taobao.org/">淘宝国内镜像</a>，有几种方式</p>
+<ol>
+<li>永久使用：<code>npm config set registry https://registry.npm.taobao.org</code></li>
+<li>临时使用：<code>npm --registry https://registry.npm.taobao.org</code></li>
+<li>可保存配置： 编辑.npmrc文件，加入<code>registry = https://registry.npm.taobao.org</code></li>
+<li>使用cnpm替代npm命令：<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code>、<code>cnpm install -g hexo-cli</code></li>
+</ol>
+<p>配置成功后可通过<code>npm config get registry</code>命令验证是否成功</p>
+<h1 id="使用n管理node版本"><a href="#使用n管理node版本" class="headerlink" title="使用n管理node版本"></a>使用<strong>n</strong>管理node版本</h1><p>在使用hexo和gitbook-cli的时候，由于gitbook-cli不再维护，只能使用旧版本node，而hexo需要新版本node，无法共存，因此使用n管理node版本。</p>
+<p>使用hexo时切换到<code>n node/14.17.6</code>，使用gitbook-cli时切换到<code>n node/10.24.0</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装node管理工具</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install n -g</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装新版本node</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> n stable</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> n latest</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查安装了哪些版本node</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> n list</span></span><br><span class="line">node/10.24.0</span><br><span class="line">node/12.22.1</span><br><span class="line">node/14.17.6</span><br><span class="line"><span class="meta">#</span><span class="bash"> 切换版本</span></span><br><span class="line">n &lt;版本号&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> n rm &lt;版本号&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="npm包版本规则"><a href="#npm包版本规则" class="headerlink" title="npm包版本规则"></a>npm包版本规则</h1><p>范围语法：版本号表示<code>[major, minor, patch]</code>即<code>[大版本, 小版本, 补丁版本]</code></p>
+<ol>
+<li><code>-</code>：匹配两个版本之间的范围。<code>X.Y.Z - A.B.C</code>表示版本号<code>X.Y.Z &lt;= version &lt;= A.B.C</code><ul>
+<li>省略的版本位只需要满足开头部分：如<code>1.2 - 2.3</code>表示<code>1.2.0 &lt;= version &lt; 2.4.0</code>。即匹配<code>1.2</code>和<code>2.3</code>开头的版本</li>
+</ul>
+</li>
+<li><code>*</code>或者<code>X</code>、<code>x</code>：通配符，表示该位可以是任意版本。也可以省略不写<ul>
+<li><code>*</code>：表示<code>&gt;=0.0.0</code>，即任意版本。<code>&quot;*&quot; == &quot;&quot;</code></li>
+<li><code>1.x</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>，即只匹配major位，minor和patch位可以是任意版本。<code>&quot;1.x&quot; == &quot;1&quot;</code></li>
+</ul>
+</li>
+<li><code>~</code>：如果指定了次要版本，则允许更新补丁版本，次要版本号不变。如果没有指定次要版本，则允许次要版本更改<ul>
+<li><code>~1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~1.2</code>：表示<code>1.2.0 &lt;= version &lt; 1.3.0</code></li>
+<li><code>~0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code></li>
+<li><code>~0</code>：表示<code>0.0.0 &lt;= version &lt; 1.0.0</code>。（允许次要版本更改）</li>
+<li><code>~1</code>：表示<code>1.0.0 &lt;= version &lt; 2.0.0</code>。（允许次要版本更改）</li>
+</ul>
+</li>
+<li><code>^</code>：不会修改最左侧的第一个非0数字。第一个非0位后边才可修改。<ul>
+<li><code>^1.2.3</code>：表示<code>1.2.3 &lt;= version &lt; 2.0.0</code>。第一个非0位是大版本，大版本不变，允许更新小版本和次要版本</li>
+<li><code>^0.2.3</code>：表示<code>0.2.3 &lt;= version &lt; 0.3.0</code>。第一个非0位是小版本，小版本不变，允许更新补丁版本</li>
+<li><code>^0.0.3</code>：表示<code>0.0.3 &lt;= version &lt; 0.0.4</code>。第一个非0位是补丁版本，补丁版本不变，可能有beta版本，如<code>0.0.3-beta</code></li>
+</ul>
+</li>
+</ol>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：<a href="../note/2021-4-12-NPM.md">npm依赖包版本说明</a></p>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -12676,12 +13165,21 @@ dispatchMessage-->判断是否是通知消息
 </li>
 </ol>
 </blockquote>
-<h2 id="迁移数据到新电脑"><a href="#迁移数据到新电脑" class="headerlink" title="迁移数据到新电脑"></a>迁移数据到新电脑</h2><p>使用vim提示如下异常</p>
+<h2 id="迁移数据到新电脑"><a href="#迁移数据到新电脑" class="headerlink" title="迁移数据到新电脑"></a>迁移数据到新电脑</h2><h3 id="vim异常"><a href="#vim异常" class="headerlink" title="vim异常"></a>vim异常</h3><p>使用vim提示如下异常</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Error detected while processing /Users/Afauria/.vim/bundle/tlib_vim/plugin/02tlib.vim:</span><br><span class="line">line   77: E1208: -complete used without allowing argumentsPress ENTER or type command to continue</span><br><span class="line"><span class="meta">#</span><span class="bash"> 原因：旧版本vim问题，在高版本系统上出错</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解决方法：更新vim插件</span></span><br><span class="line">cd /Users/Afauria/.vim/bundle/tlib_vim/plugin/</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
 
-<p>使用cd命令进入路径提示</p>
+<h3 id="python脚本异常"><a href="#python脚本异常" class="headerlink" title="python脚本异常"></a>python脚本异常</h3><p>使用cd命令进入路径提示</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">env: python: No such file or directory</span><br><span class="line"><span class="meta">#</span><span class="bash"> 原因：新版本系统上内置python3，去掉了python2</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解决方法：将python链接到python3的路径</span></span><br><span class="line">ln -s /usr/local/bin/python3 /usr/local/bin/python</span><br></pre></td></tr></table></figure>
 
+<h3 id="存储空间显示异常"><a href="#存储空间显示异常" class="headerlink" title="存储空间显示异常"></a>存储空间显示异常</h3><p>迁移数据后【关于本机-&gt;储存空间管理】中【文稿】和【应用程序】不显示内容，但是空间占用是正常的。</p>
+<blockquote>
+<p>更新了一下系统版本之后自动修复了</p>
+</blockquote>
+<h3 id="mysql数据库异常"><a href="#mysql数据库异常" class="headerlink" title="mysql数据库异常"></a>mysql数据库异常</h3><p>连接数据库提示<code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/tmp/mysql.sock&#39;</code></p>
+<p>解决：重启mysql服务<code>brew services restart mysql</code></p>
+<h3 id="brew架构不正确"><a href="#brew架构不正确" class="headerlink" title="brew架构不正确"></a>brew架构不正确</h3><p>数据从Intel架构迁移到M1架构，使用brew提示：<code>Error: Cannot install in Homebrew on ARM processor in Intel default prefix (/usr/local)!</code></p>
+<p>原因：Intel芯片brew位于<code>/usr/local/bin/brew</code>，M1芯片brew位于<code>/opt/homebrew</code></p>
+<p>解决方法：执行<code>echo &#39;eval $(/opt/homebrew/bin/brew shellenv)&#39; &gt;&gt; /Users/Afauria/.zprofile</code>，重新配置环境变量</p>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -14583,18 +15081,62 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>NexT主题配置</title>
+    <title>NexT主题配置手册</title>
     <url>/2018/10/20/blog-2018-10-20-NexTConfig/</url>
-    <content><![CDATA[<h1 id="博客效果"><a href="#博客效果" class="headerlink" title="博客效果"></a>博客效果</h1><p><img src="/2018/10/20/blog-2018-10-20-NexTConfig/%E5%8D%9A%E5%AE%A2%E6%95%88%E6%9E%9C.png" alt="博客效果"></p>
-<h1 id="NexT配置"><a href="#NexT配置" class="headerlink" title="NexT配置"></a>NexT配置</h1><h2 id="添加Readme-md文件"><a href="#添加Readme-md文件" class="headerlink" title="添加Readme.md文件"></a>添加Readme.md文件</h2><p>在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件<code>_config.yml</code>，将skip_render参数的值设置为<code>skip_render: README.md</code>，跳过渲染该文件</p>
-<h2 id="添加动态背景"><a href="#添加动态背景" class="headerlink" title="添加动态背景"></a>添加动态背景</h2><p>修改主题配置文件 themes/next/_config.yml，不同动态背景，值为true应用：</p>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>博客效果如图：</p>
+<p><img src="/2018/10/20/blog-2018-10-20-NexTConfig/%E5%8D%9A%E5%AE%A2%E6%95%88%E6%9E%9C.png" alt="博客效果"></p>
+<h1 id="Hexo主题配置文件说明"><a href="#Hexo主题配置文件说明" class="headerlink" title="Hexo主题配置文件说明"></a>Hexo主题配置文件说明</h1><h2 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h2><ul>
+<li><code>_config.yml</code>：主题的配置文件。修改时会自动更新，无需重启服务器。</li>
+<li><code>languages</code>：语言文件夹，不同语言文件</li>
+<li><code>layout</code>：布局文件夹。用于存放主题的模板文件，决定了网站内容的呈现方式。</li>
+<li><code>script</code>：脚本文件夹。在启动时，Hexo 会载入此文件夹内的 JavaScript 文件</li>
+<li><code>source</code>：资源文件夹，存放 CSS、JavaScript、images 文件等资源。</li>
+</ul>
+<h2 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h2><p>如果懂css的话，可以修改theme中layout和source中的布局和css样式，定制主题。</p>
+<p>前面介绍主题有两种下载方式：</p>
+<ol>
+<li>下载到<code>themes</code>文件夹中：<code>git clone https://github.com/next-theme/hexo-theme-next themes/next</code></li>
+<li>npm安装，下载到<code>node_modules</code>中：<code>npm install hexo-theme-next</code></li>
+</ol>
+<blockquote>
+<p><code>node_modules</code>是临时文件夹，不建议在其中修改</p>
+</blockquote>
+<p>主题本质也是Git工程，<strong>本地修改样式之后，换个电脑之后记录会丢失，或者pull原作者新提交的代码的时候会出现冲突。</strong></p>
+<p>解决方法：fork原主题仓库，从自己的仓库clone，本地修改之后提交，定期从原主题仓库同步merge。</p>
+<h1 id="NexT配置"><a href="#NexT配置" class="headerlink" title="NexT配置"></a>NexT配置</h1><h2 id="添加README-md文件"><a href="#添加README-md文件" class="headerlink" title="添加README.md文件"></a>添加README.md文件</h2><p>在Hexo目录下的source根目录下添加一个README.md文件，修改站点配置文件<code>_config.yml</code>，将skip_render参数的值设置为<code>skip_render: README.md</code>，跳过渲染该文件</p>
+<h2 id="更换Schema"><a href="#更换Schema" class="headerlink" title="更换Schema"></a>更换Schema</h2><p>NexT内置了四套主题，这里叫Scheme（用一送四很划算），修改主题配置文件的scheme字段：Muse、Mist、Pisces、Gemini</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Schemes</span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line"><span class="comment">#scheme: Gemini</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h2><p>修改avatar字段，设置头像链接地址，如：</p>
+<ol>
+<li>使用完整的互联网URI：<code>avatar: http://example.com/avatar.png</code></li>
+<li>使用相对路径，放置到 <code>source/images/</code>路径下：<code>avatar: /images/avatar.png</code></li>
+</ol>
+<h2 id="设置菜单项"><a href="#设置菜单项" class="headerlink" title="设置菜单项"></a>设置菜单项</h2><p>修改主题配置文件的menu字段</p>
+<p>格式为<code>菜单项名称（会匹配翻译）: 链接 || Font Awesome图标</code></p>
+<p><strong>注：旧版本<code>路径 ||</code>中间有空格，升级Hexo之后跳转404，url链接多了个<code>%20</code>，表示空格，需要删除</strong></p>
+<p>示例配置</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/||</span> <span class="string">archive</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">/schedule/||</span> <span class="string">calendar</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">/sitemap.xml||</span> <span class="string">sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/|| heartbeat</span></span><br></pre></td></tr></table></figure>
+
+<p>菜单项的名称并不直接用于界面上的展示。Hexo 在生成的时候将使用这个名称查找对应的语言翻译，并提取显示文本。这些翻译文本放置在 NexT 主题目录下的 <code>languages/&#123;language&#125;.yml</code> 。</p>
+<p>例如修改简体中文配置文件：<code>languages/zh-Hans.yml</code>，或者添加自定义的字段other：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">首页</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">归档</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">分类</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">标签</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">关于</span></span><br><span class="line">  <span class="attr">search:</span> <span class="string">搜索</span></span><br><span class="line">  <span class="attr">commonweal:</span> <span class="string">公益404</span></span><br><span class="line">  <span class="attr">other:</span> <span class="string">其他</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="生成分类、标签和关于页面"><a href="#生成分类、标签和关于页面" class="headerlink" title="生成分类、标签和关于页面"></a>生成分类、标签和关于页面</h2><p>首先修改主题配置文件的menu菜单项，将tags和categories的注释去掉</p>
+<h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p><code>hexo new page tags</code>：在<code>站点/source/</code>目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2018-04-04</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">&quot;tags&quot;</span></span><br><span class="line"><span class="attr">comments:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>同理，将tags换成categories即可</p>
+<h3 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h3><p>同理，自行编辑文章内容，不需要加type</p>
+<h2 id="添加动态背景"><a href="#添加动态背景" class="headerlink" title="添加动态背景"></a>添加动态背景</h2><p>修改主题配置文件 <code>themes/next/_config.yml</code>，不同动态背景，值为true应用：</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">canvas_nest:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">three_waves:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_lines:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">canvas_sphere:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Only fit scheme Pisces</span></span><br><span class="line"><span class="attr">canvas_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">size:</span> <span class="number">300</span></span><br><span class="line">  <span class="attr">alpha:</span> <span class="number">0.6</span></span><br><span class="line">  <span class="attr">zIndex:</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="修改文章底部的带-号的标签"><a href="#修改文章底部的带-号的标签" class="headerlink" title="修改文章底部的带#号的标签"></a>修改文章底部的带#号的标签</h2><p>修改模板<code>/themes/next/layout/_macro/post.swig</code>，搜索 rel=”tag”&gt;#，将 # 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h2 id="修改文章底部标签图标"><a href="#修改文章底部标签图标" class="headerlink" title="修改文章底部标签图标"></a>修改文章底部标签图标</h2><p>默认文章底部的标签带#号，改为图标</p>
+<p>修改模板<code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=”tag”&gt;#</code>，将 <code>#</code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
 <h2 id="设置网站的图标Favicon"><a href="#设置网站的图标Favicon" class="headerlink" title="设置网站的图标Favicon"></a>设置网站的图标Favicon</h2><p>在<a href="http://www.easyicon.net/">EasyIcon</a>中找一张（32*32）的ico图标,或者去别的网站下载或者制作，并将图标名称改为favicon.ico，然后把图标放在/themes/next/source/images里，并且修改主题配置文件：</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span> </span><br><span class="line">	<span class="attr">small:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="attr">medion:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="comment">#apple_touch_icon: /images/apple-touch-icon-next.png</span></span><br><span class="line">	<span class="comment">#safari_pinned_tab: /images/logo.svg</span></span><br><span class="line">  	<span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  	<span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span> </span><br><span class="line">	<span class="attr">small:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="attr">medion:</span> <span class="string">/images/favicon.ico</span></span><br><span class="line">	<span class="comment">#apple_touch_icon: /images/apple-touch-icon-next.png</span></span><br><span class="line">	<span class="comment">#safari_pinned_tab: /images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><p>NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia,Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search,原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。</p>
+<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><p>NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search，原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。</p>
 <p>安装插件</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd hexo</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
 
@@ -14613,12 +15155,6 @@ dispatchMessage-->判断是否是通知消息
 </blockquote>
 <h2 id="去掉NexT自带的文章目录序号"><a href="#去掉NexT自带的文章目录序号" class="headerlink" title="去掉NexT自带的文章目录序号"></a>去掉NexT自带的文章目录序号</h2><p>NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件</p>
 <p><img src="/2018/10/20/blog-2018-10-20-NexTConfig/%E9%85%8D%E7%BD%AE%E5%8E%BB%E6%8E%89%E7%9B%AE%E5%BD%95%E5%BA%8F%E5%8F%B7.png" alt="去掉文章目录序号"></p>
-<h2 id="生成分类、标签和关于页面"><a href="#生成分类、标签和关于页面" class="headerlink" title="生成分类、标签和关于页面"></a>生成分类、标签和关于页面</h2><h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p><code>hexo new page tags</code>：在<code>站点/source/</code>目录下会生成新的文件夹tags，在该文件夹下会有一个index.md文件，头信息修改如下，不需要加正文内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: 2018-04-04</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>同理，将tags换成categories即可</p>
-<h3 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h3><p>同理，自行编辑文章内容，不需要加type</p>
-<p>注：主题配置文件的menu需要将tags和categories的注释去掉</p>
-<h2 id="修改样式"><a href="#修改样式" class="headerlink" title="修改样式"></a>修改样式</h2><p>可以修改next主题下的layout和source中的布局和css样式，定制主题</p>
 <h2 id="添加站点地图sitemap"><a href="#添加站点地图sitemap" class="headerlink" title="添加站点地图sitemap"></a>添加站点地图sitemap</h2><p>为了让博文被google或百度检索，需要使用hexo的sitemap功能。</p>
 <ol>
 <li>安装插件，自动生成站点地图：<code>sitemap.xml、baidusitemap.xml</code></li>
@@ -14686,9 +15222,7 @@ dispatchMessage-->判断是否是通知消息
 <ol start="7">
 <li>修改主题配置文件，如下</li>
 </ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">appid:</span> <span class="string">&quot;第3步中的appId&quot;</span> <span class="comment"># Your leancloud application appid</span></span><br><span class="line">  <span class="attr">appkey:</span> <span class="string">&quot;第3步中的appKey&quot;</span> <span class="comment"># Your leancloud application appkey</span></span><br><span class="line">  <span class="attr">placeholder:</span> <span class="string">&quot;欢迎交流讨论&quot;</span> <span class="comment"># Comment box placeholder</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">mm</span> <span class="comment"># Gravatar style</span></span><br><span class="line">  <span class="attr">guest_info:</span> <span class="string">nick,mail,link</span> <span class="comment"># Custom comment header</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span> <span class="comment"># Pagination size</span></span><br><span class="line">  <span class="attr">language:</span> <span class="comment"># Language, available values: en, zh-cn</span></span><br><span class="line">  <span class="attr">visitor:</span> <span class="literal">true</span> <span class="comment"># 文章阅读统计</span></span><br><span class="line">  <span class="attr">comment_count:</span> <span class="literal">true</span> <span class="comment"># 文章评论</span></span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">appid:</span> <span class="string">&quot;第3步中的appId&quot;</span> <span class="comment"># Your leancloud application appid</span></span><br><span class="line">  <span class="attr">appkey:</span> <span class="string">&quot;第3步中的appKey&quot;</span> <span class="comment"># Your leancloud application appkey</span></span><br><span class="line">  <span class="attr">placeholder:</span> <span class="string">&quot;欢迎交流讨论&quot;</span> <span class="comment"># Comment box placeholder</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">mm</span> <span class="comment"># Gravatar style</span></span><br><span class="line">  <span class="attr">guest_info:</span> <span class="string">nick,mail,link</span> <span class="comment"># Custom comment header</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span> <span class="comment"># Pagination size</span></span><br><span class="line">  <span class="attr">language:</span> <span class="comment"># Language, available values: en, zh-cn</span></span><br><span class="line">  <span class="attr">visitor:</span> <span class="literal">true</span> <span class="comment"># 文章阅读统计</span></span><br><span class="line">  <span class="attr">comment_count:</span> <span class="literal">true</span> <span class="comment"># 文章评论</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="配置Live2d卡通人物"><a href="#配置Live2d卡通人物" class="headerlink" title="配置Live2d卡通人物"></a>配置Live2d卡通人物</h2><ol>
 <li>安装<code>npm install --save hexo-helper-live2d</code>，具体配置见官网说明<a href="https://github.com/EYHN/hexo-helper-live2d">hexo-helper-live2d</a></li>
@@ -14703,9 +15237,9 @@ dispatchMessage-->判断是否是通知消息
 <li>修改<code>href</code>链接为想要跳转的地址，如GitHub主页</li>
 </ol>
 <h2 id="添加每日一言-今日诗词"><a href="#添加每日一言-今日诗词" class="headerlink" title="添加每日一言/今日诗词"></a>添加每日一言/今日诗词</h2><ol>
-<li>在<strong>layout或者md文档</strong>中添加下面代码。我是将今日诗词添加到了<strong>关于页面</strong>，将每日一言添加到了<code>/themes/next/layout/_partials/sidebar/site_overview.swig</code>中</li>
+<li>在<strong>layout或者md文档</strong>中添加下面代码。我是将今日诗词添加到了<strong>关于页面</strong>，将每日一言添加到了侧边栏：<code>/themes/next/layout/_partials/sidebar/site_overview.swig</code>中</li>
 </ol>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--今日诗词--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-wrap&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-left&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-title&quot;</span>&gt;</span>念两句诗<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;poem&quot;</span>&gt;</span>挑选中...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;info&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://sdk.jinrishici.com/v2/browser/jinrishici.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">    jinrishici.load(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span></span><br><span class="line">      poem.innerHTML = result.data.content</span><br><span class="line"><span class="javascript">      info.innerHTML = <span class="string">&#x27;【&#x27;</span> + result.data.origin.dynasty + <span class="string">&#x27;】&#x27;</span> + result.data.origin.author + <span class="string">&#x27;《&#x27;</span> + result.data.origin.title + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--每日一言--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-side&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokoto&quot;</span>&gt;</span>loading...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokotofrom&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">  fetch(<span class="string">&#x27;https://v1.hitokoto.cn&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">response</span> =&gt;</span> response.json())</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span></span><br><span class="line">       	hitokoto.innerHTML = data.hitokoto</span><br><span class="line"><span class="javascript">    	<span class="keyword">if</span>(data.from_who != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">      	  hitokotofrom.innerHTML =<span class="string">&#x27;——&#x27;</span> + data.from_who + <span class="string">&#x27; 《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line"><span class="javascript">      	&#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="javascript">	  hitokotofrom.innerHTML =<span class="string">&#x27;——《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span> </span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="javascript">    .catch(<span class="built_in">console</span>.error) </span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--今日诗词--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-wrap&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-left&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-border poem-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-title&quot;</span>&gt;</span>念两句诗<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;poem&quot;</span>&gt;</span>挑选中...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;info&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://sdk.jinrishici.com/v2/browser/jinrishici.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">    jinrishici.load(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span></span><br><span class="line">      poem.innerHTML = result.data.content</span><br><span class="line"><span class="javascript">      info.innerHTML = <span class="string">&#x27;【&#x27;</span> + result.data.origin.dynasty + <span class="string">&#x27;】&#x27;</span> + result.data.origin.author + <span class="string">&#x27;《&#x27;</span> + result.data.origin.title + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--每日一言--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;poem-side&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokoto&quot;</span>&gt;</span>loading...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hitokotofrom&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span>&gt;</span></span><br><span class="line"><span class="javascript">  fetch(<span class="string">&#x27;https://v1.hitokoto.cn&#x27;</span>)</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">response</span> =&gt;</span> response.json())</span></span><br><span class="line"><span class="javascript">    .then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span></span><br><span class="line">       	hitokoto.innerHTML = data.hitokoto</span><br><span class="line"><span class="javascript">    	<span class="keyword">if</span>(data.from_who != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">      	  hitokotofrom.innerHTML =<span class="string">&#x27;——&#x27;</span> + data.from_who + <span class="string">&#x27; 《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span></span></span><br><span class="line"><span class="javascript">      	&#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="javascript">	  hitokotofrom.innerHTML =<span class="string">&#x27;——《&#x27;</span> + data.from + <span class="string">&#x27;》&#x27;</span> </span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="javascript">    .catch(<span class="built_in">console</span>.error) </span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ol start="2">
 <li>在<code>/themes/next/source/css</code>中添加下面的css样式，也可自行修改样式</li>
@@ -14730,7 +15264,19 @@ dispatchMessage-->判断是否是通知消息
 </blockquote>
 <h2 id="修改归档页面文章数量"><a href="#修改归档页面文章数量" class="headerlink" title="修改归档页面文章数量"></a>修改归档页面文章数量</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-generator-index</span><br><span class="line">npm install --save hexo-generator-archive</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改站点配置文件</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 首页配置</span></span><br><span class="line">index_generator:</span><br><span class="line">  path: &#x27;&#x27;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by: -date</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 归档页面配置</span></span><br><span class="line">archive_generator:</span><br><span class="line">  per_page: 30</span><br><span class="line">  order_by: -date</span><br></pre></td></tr></table></figure>
 
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ol>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="NexT升级"><a href="#NexT升级" class="headerlink" title="NexT升级"></a>NexT升级</h2><p>Hexo升级之后使用NexT会出现一些错误，原来NexT版本为5.1.4，需要升级为V7+。</p>
+<p>本文配置基于V5，升级之后部分配置需要相应修改。</p>
+<p><a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md">参考升级说明</a></p>
+<h2 id="toArray报错"><a href="#toArray报错" class="headerlink" title="toArray报错"></a>toArray报错</h2><p><code>hexo g</code>生成报错</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ERROR Template render error: (e:\GitPageBlog\AkiyamaBlog\themes\next\layout\post.swig)</span><br><span class="line">Error: Unable to call `post[&quot;categories&quot;][&quot;toArray&quot;]`, which is undefined or falsey</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>修改<code>themes/next/layout/_macro/post.swig</code>文件，去掉<code>post.categories.toArray()</code>和<code>post.tags.toArray()</code>中的<code>toArray()</code></p>
+</blockquote>
+<p><strong>注：回来补充，不能去掉toArray()，否则文章的分类和标签无法显示……估计和node版本有关系</strong></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料：</p>
+<ol>
+<li><a href="https://hexo.io/zh-cn/docs/">Hexo官方文档</a>和<a href="https://theme-next.js.org/docs/getting-started/">NexT官方文档</a></li>
 <li><a href="http://www.mdslq.cn/archives/40609c5b.html#%E6%B7%BB%E5%8A%A0READMEmd%E6%96%87%E4%BB%B6">Hexo博客Next主题个性设置集锦</a></li>
 <li><a href="http://blog.ynxiu.com/2016/hexo-next-theme-optimize.html">Hexo+NexT 主题配置备忘</a></li>
 <li><a href="https://blog.csdn.net/qq_40265501/article/details/80030627">hexo博客添加搜索功能</a></li>
@@ -14740,83 +15286,18 @@ dispatchMessage-->判断是否是通知消息
 </ol>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>博客</category>
       </categories>
       <tags>
-        <tag>工具</tag>
         <tag>Hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
   <entry>
-    <title>Hexo更换主题：NexT</title>
-    <url>/2018/10/19/blog-2018-10-19-HexoTheme-NexT/</url>
-    <content><![CDATA[<p>前面讲了如何使用<a href>Hexo和GitPage搭建博客</a>，开始本篇之前确保上篇的配置都已完成。如安装nodejs、Git环境、Hexo插件等。<br>再次说明一下：在 Hexo 中有两份主要的配置文件，其名称都是 <code>_config.yml</code>。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。<br>将前者称为<strong>站点配置文件</strong>， 后者称为<strong>主题配置文件</strong>。</p>
-<h2 id="Hexo主题"><a href="#Hexo主题" class="headerlink" title="Hexo主题"></a>Hexo主题</h2><p>创建 Hexo 主题非常容易，您只要在 <code>themes</code> 文件夹内，新增一个任意名称的文件夹，并修改 <code>_config.yml</code>内的 <code>theme</code> 设定，即可切换主题。</p>
-<p>Hexo提供了很多种<a href="https://hexo.io/themes/">主题</a>，可挑选自己喜欢的。</p>
-<p>主题文件说明：<br>（1）<code>_config.yml</code>：主题的配置文件。修改时会自动更新，无需重启服务器。<br>（2）languages：语言文件夹，不同语言文件<br>（3）layout：布局文件夹。用于存放主题的模板文件，决定了网站内容的呈现方式。<br>（3）script：脚本文件夹。在启动时，Hexo 会载入此文件夹内的 JavaScript 文件<br>（4）source：资源文件夹，存放 CSS、JavaScript、images 文件等资源。</p>
-<h2 id="NexT主题使用"><a href="#NexT主题使用" class="headerlink" title="NexT主题使用"></a>NexT主题使用</h2><p><a href="http://theme-next.iissnan.com/getting-started.html">官方文档</a></p>
-<h3 id="下载NexT主题"><a href="#下载NexT主题" class="headerlink" title="下载NexT主题"></a>下载NexT主题</h3><p>cmd打开终端，进入站点根目录（配置了Git环境变量）。或者直接右键点击<code>Git Bash Here</code>打开Git终端。<br>输入以下命令克隆主题到根目录下的<code>themes/next</code>文件夹中。<br><code>git clone https://github.com/iissnan/hexo-theme-next themes/next</code></p>
-<h3 id="启用NexT主题"><a href="#启用NexT主题" class="headerlink" title="启用NexT主题"></a>启用NexT主题</h3><p>打开站点配置文件， 找到 theme 字段，并将其值更改为 next。</p>
-<h3 id="运行验证"><a href="#运行验证" class="headerlink" title="运行验证"></a>运行验证</h3><p>输入<code>hexo s</code>启动服务，浏览器访问 <a href="http://localhost:4000/">http://localhost:4000</a> ，可以看到主题已经变更。<br>可以输入<code>hexo g -d</code>生成静态文件部署到仓库中。</p>
-<p>生成静态文件之前可使用<code>hexo clean</code>命令清除缓存</p>
-<h2 id="NexT主题配置文件说明"><a href="#NexT主题配置文件说明" class="headerlink" title="NexT主题配置文件说明"></a>NexT主题配置文件说明</h2><p>主题配置文件：<code>站点根目录/themes/next/_config.yml</code>中已经有具体的说明了，下面讲下常用的配置以及示例</p>
-<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>NexT内置了三套主题，这里叫Scheme（用一送三很划算）：<br>修改主题配置文件的scheme字段：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Muse: 默认 Scheme，这是 NexT 最初的版本，黑白主调，大量留白</span><br><span class="line">Mist: Muse 的紧凑版本，整洁有序的单栏外观</span><br><span class="line">Pisces: 双栏 Scheme，小家碧玉似的清新</span><br></pre></td></tr></table></figure>
-
-<h3 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h3><p>修改主题配置文件的menu字段</p>
-<p>格式为<code>菜单项名称（会匹配翻译）: 链接 || Font Awesome图标</code></p>
-<p><strong>注：旧版本<code>链接 ||</code>中间有空格，升级Hexo之后跳转404，链接多了个<code>%20</code>，表示空格，需要删除</strong></p>
-<p>示例配置</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/||</span> <span class="string">archive</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">/schedule/||</span> <span class="string">calendar</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">/sitemap.xml||</span> <span class="string">sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/|| heartbeat</span></span><br></pre></td></tr></table></figure>
-<p>菜单项的名称并不直接用于界面上的展示。Hexo 在生成的时候将使用 这个名称查找对应的语言翻译，并提取显示文本。这些翻译文本放置在 NexT 主题目录下的 languages/{language}.yml （{language} 为你所使用的语言）。如简体中文配置文件：languages/zh-Hans.yml</p>
-<p>修改翻译或者添加自定义的字段other：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: 首页</span><br><span class="line">  archives: 归档</span><br><span class="line">  categories: 分类</span><br><span class="line">  tags: 标签</span><br><span class="line">  about: 关于</span><br><span class="line">  search: 搜索</span><br><span class="line">  commonweal: 公益404</span><br><span class="line">  other: 其他</span><br></pre></td></tr></table></figure>
-
-<h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><p>修改avatar字段，设置头像链接地址，如：</p>
-<table>
-<thead>
-<tr>
-<th>完整的互联网URI</th>
-<th>放置到 <code>source/images/</code>路径下</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>avatar: http://example.com/avatar.png</code></td>
-<td><code>avatar: /images/avatar.png</code></td>
-</tr>
-<tr>
-<td>文章中引用图片也是如此</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="Next升级"><a href="#Next升级" class="headerlink" title="Next升级"></a>Next升级</h2><p>hexo升级之后Next会出现一些错误，原来Next版本为5.1.4，需要升级为V7+。</p>
-<p>本文配置基于V5，升级之后部分配置需要相应修改。</p>
-<p><a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/UPDATE-FROM-5.1.X.md">参考升级说明</a></p>
-<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>hexo g生成报错</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ERROR Template render error: (e:\GitPageBlog\AkiyamaBlog\themes\next\layout\post.swig)</span><br><span class="line">Error: Unable to call `post[&quot;categories&quot;][&quot;toArray&quot;]`, which is undefined or falsey</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>修改<code>themes/next/layout/_macro/post.swig</code>文件，去掉<code>post.categories.toArray()</code>和<code>post.tags.toArray()</code>中的<code>toArray()</code></p>
-</blockquote>
-<p><strong>注：回来补充，不能去掉toArray()，否则文章的分类和标签无法显示……估计和个人的版本有关系</strong></p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考<a href="https://hexo.io/zh-cn/docs/">Hexo官方文档</a>和<a href="http://theme-next.iissnan.com/getting-started.html">NexT官方文档</a>。下篇介绍NexT的一些进阶配置。</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Hexo</tag>
-        <tag>博客</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo介绍</title>
-    <url>/2018/10/18/blog-2018-10-18-HexoIntro/</url>
-    <content><![CDATA[<h1 id="Hexo目录"><a href="#Hexo目录" class="headerlink" title="Hexo目录"></a>Hexo目录</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml 	&#x2F;&#x2F;站点配置文件</span><br><span class="line">├── package.json	&#x2F;&#x2F;npm配置</span><br><span class="line">├── scaffolds		&#x2F;&#x2F;模版 文件夹。当您新建文章时，Hexo 会根据 scaffold 来建立文件。</span><br><span class="line">├── source			&#x2F;&#x2F;子文件夹相当于一个个页面(page)，每个页面对应一个布局文件，可以修改主题里的配置文件改变样式</span><br><span class="line">|   ├── _drafts		&#x2F;&#x2F;草稿页面：存放所有草稿</span><br><span class="line">|   ├── _posts		&#x2F;&#x2F;文章页面：存放所有文章，所有文章都是同一个布局</span><br><span class="line">|   ├── about		&#x2F;&#x2F;关于页面</span><br><span class="line">|   ├── categories	&#x2F;&#x2F;分类页面</span><br><span class="line">|   ├── tags		&#x2F;&#x2F;标签页面</span><br><span class="line">|   └──………………</span><br><span class="line">└── themes			&#x2F;&#x2F;主题</span><br></pre></td></tr></table></figure>
-
-
+    <title>Hexo手册</title>
+    <url>/2018/10/18/blog-2018-10-18-Hexo%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>参考<a href="https://hexo.io/zh-cn/docs/">Hexo官方文档</a>。新手时期写的水文，熟悉之后就觉得没什么用了，有问题可以翻官方最新的文档，自己写的可能已经过时。当然自己抄一遍之后记忆会更加深刻。</p>
+<h1 id="Hexo目录"><a href="#Hexo目录" class="headerlink" title="Hexo目录"></a>Hexo目录</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml 	# 站点配置文件</span><br><span class="line">├── package.json	# npm配置</span><br><span class="line">├── scaffolds		# 模版 文件夹。当您新建文章时，Hexo 会根据 scaffold 来建立文件。</span><br><span class="line">├── source			# 子文件夹相当于一个个页面(page)，每个页面对应一个布局文件，可以修改主题里的配置文件改变样式</span><br><span class="line">|   ├── _drafts		# 草稿页面：存放所有草稿</span><br><span class="line">|   ├── _posts		# 文章页面：存放所有文章，所有文章都是同一个布局</span><br><span class="line">|   ├── about		# 关于页面</span><br><span class="line">|   ├── categories	# 分类页面</span><br><span class="line">|   ├── tags		# 标签页面</span><br><span class="line">|   └──………………</span><br><span class="line">└── themes			# 主题</span><br></pre></td></tr></table></figure>
 
 <h1 id="Hexo一些基本概念"><a href="#Hexo一些基本概念" class="headerlink" title="Hexo一些基本概念"></a>Hexo一些基本概念</h1><h2 id="Front-matter"><a href="#Front-matter" class="headerlink" title="Front-matter"></a>Front-matter</h2><p>前页（扉页、版权页、目次等），位于文章最上方<code>---</code>分隔的区域，做一些变量声明和配置。也可以用json格式，使用<code>;;;</code>分隔</p>
 <table>
@@ -15360,9 +15841,29 @@ dispatchMessage-->判断是否是通知消息
 <td>永久链接</td>
 </tr>
 </tbody></table>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy: </span><br><span class="line">    type: 部署方式，如git</span><br><span class="line">    repo: 仓库地址</span><br><span class="line">    branch: 分支名</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span> </span><br><span class="line">    <span class="attr">type:</span> <span class="string">部署方式，如git</span></span><br><span class="line">    <span class="attr">repo:</span> <span class="string">仓库地址</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">分支名</span></span><br></pre></td></tr></table></figure>
 
-<p>permalink配置示例：<br>使用<code>hexo new post &quot;文章&quot;</code>生成文章时会自动命名，并且生成静态文件时会生成相应的文件夹路径。<br>| 参数                            | 结果                        |<br>| ——————————- | ————————— |<br>| <code>:year/:month/:day/:title/</code>     | 2013/07/14/hello-world      |<br>| <code>:year-:month-:day-:title.html</code> | 2013-07-14-hello-world.html |<br>| <code>:category/:title</code>              | foo/bar/hello-world         |</p>
+<p>permalink配置示例：<br>使用<code>hexo new post &quot;文章&quot;</code>生成文章时会自动命名，并且生成静态文件时会生成相应的文件夹路径。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>:year/:month/:day/:title/</code></td>
+<td>2013/07/14/hello-world</td>
+</tr>
+<tr>
+<td><code>:year-:month-:day-:title.html</code></td>
+<td>2013-07-14-hello-world.html</td>
+</tr>
+<tr>
+<td><code>:category/:title</code></td>
+<td>foo/bar/hello-world</td>
+</tr>
+</tbody></table>
 <p>permalink变量<br>| 变量          | 描述                                                       |<br>| ————- | ———————————————————- |<br>| <code>:year</code>       | 文章的发表年份（4 位数）                                   |<br>| <code>:month</code>      | 文章的发表月份（2 位数）                                   |<br>| <code>:i_month</code>    | 文章的发表月份（去掉开头的零）                             |<br>| <code>:day</code>        | 文章的发表日期 (2 位数)                                    |<br>| <code>:i_day</code>      | 文章的发表日期（去掉开头的零）                             |<br>| <code>:title</code>      | 文件名称                                                   |<br>| <code>:post_title</code> | 文章标题                                                   |<br>| <code>:id</code>         | 文章 ID                                                    |<br>| <code>:category</code>   | 分类。如果文章没有分类，则是 <code>default_category</code> 配置信息。 |</p>
 <h1 id="Hexo图片路径配置"><a href="#Hexo图片路径配置" class="headerlink" title="Hexo图片路径配置"></a>Hexo图片路径配置</h1><p>Hexo Markdown文章中使用图片需要将图片放到<code>source/images</code>文件夹下，通过<code>![](/images/图片名称)</code>引用。</p>
 <p>这种方式在<strong>Typora中无法预览图片</strong></p>
@@ -15382,14 +15883,11 @@ dispatchMessage-->判断是否是通知消息
 <li>新版本直接在<strong>主题配置文件</strong>中启用mermaid即可</li>
 </ol>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># theme/next/_config.yml</span></span><br><span class="line"><span class="comment"># Mermaid tag</span></span><br><span class="line"><span class="attr">mermaid:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Available themes: default | dark | forest | neutral</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">forest</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>参考<a href="https://hexo.io/zh-cn/docs/">Hexo官方文档</a>，下篇介绍Hexo更换主题：以NexT为例，并进行简单的配置。</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>博客</category>
       </categories>
       <tags>
-        <tag>工具</tag>
         <tag>Hexo</tag>
         <tag>博客</tag>
       </tags>
@@ -15397,78 +15895,57 @@ dispatchMessage-->判断是否是通知消息
   <entry>
     <title>Hexo+GitPage搭建博客</title>
     <url>/2018/10/17/blog-2018-10-17-Hexo-GitPage/</url>
-    <content><![CDATA[<h1 id="Hexo简介"><a href="#Hexo简介" class="headerlink" title="Hexo简介"></a>Hexo简介</h1><p>静态网页生成工具，可用于搭建博客。使用 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，有多种主题供选择。<br><a href="https://hexo.io/zh-cn/docs/">中文官方文档</a></p>
-<h2 id="与Jekyll的区别？"><a href="#与Jekyll的区别？" class="headerlink" title="与Jekyll的区别？"></a>与Jekyll的区别？</h2><p>在 Github Page 里用 Jekyll 其实是上传一个工程文件 ，Github 自动生成静态文件，而 Hexo 是先生成好文件再部署的。<br>此外，jekyll基于Ruby，Hexo基于Node</p>
-<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。<br>将前者称为 站点配置文件， 后者称为 主题配置文件。</p>
-<h1 id="Hexo使用"><a href="#Hexo使用" class="headerlink" title="Hexo使用"></a>Hexo使用</h1><h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p><a href="https://nodejs.org/en/">Node.js安装</a><br>安装后打开cmd，输入<code>node -v</code>、<code>npm -v</code>检查是否安装成功（环境变量自动配置好了）<br>等于<code>node --version</code>、<code>npm --version</code><br><a href="https://git-scm.com/">Git安装</a><br>在电脑上右键出现Git Bash Here、Git GUI Here即表示安装成功。<br>若配置了环境变量，可输入<code>git --version</code>检查是否安装成功</p>
-<p>注意：一般出于安全考虑，只有在Git Bash Here中才能进行Git的相关操作。如果需要在cmd命令行里调用Git，那么就要配置电脑的环境变量Path，或者在安装的时候选择use Git from the Windows Command Prompt。</p>
-<h2 id="安装hexo命令行工具"><a href="#安装hexo命令行工具" class="headerlink" title="安装hexo命令行工具"></a>安装hexo命令行工具</h2><p>使用<a href="https://www.npmjs.com.cn/">npm</a>进行安装：终端输入<code>npm install -g hexo-cli</code><br>安装完成后可使用<code>hexo -v</code>或者<code>hexo --version</code>检查是否安装成功<br>注释：-g表示全局安装，不加则将模块下载到当前目录的node_modules中</p>
-<p>如果下载较慢，可以设置<a href="https://npm.taobao.org/">淘宝国内镜像</a>，又如下几种方式<br>（1）永久使用：</p>
-<blockquote>
-<p>npm config set registry <a href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
-</blockquote>
-<p>（2）临时使用：</p>
-<blockquote>
-<p>npm –registry <a href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
-</blockquote>
-<p>（3）可保存配置： </p>
-<blockquote>
-<p>编辑.npmrc文件，加入registry = <a href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a></p>
-</blockquote>
-<p>（4）使用cnpm替代npm命令：</p>
-<blockquote>
-<p>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org</a><br>  cnpm install -g hexo-cli</p>
-</blockquote>
-<p>配置成功后可通过<code>npm config get registry</code>命令验证是否成功</p>
-<h2 id="使用hexo"><a href="#使用hexo" class="headerlink" title="使用hexo"></a>使用hexo</h2><ol>
-<li>终端进入一个空目录，输入<code>hexo init</code>，在该文件夹下初始化hexo工程，称为站点根目录</li>
-<li>输入<code>npm install</code>安装所需组件，即package.json中配置的库</li>
-<li>输入<code>hexo s</code>或<code>hexo server</code>启动服务</li>
-<li>默认端口为4000，访问 <a href="http://localhost:4000/">http://localhost:4000/</a> 即可，也可通过<code>hexo server -p 端口号</code>指定端口号<br>出现下图就成功了，里面已经有一篇文章hello world了<br><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/hexo01.png" alt="hexo成功图"></li>
+    <content><![CDATA[<h1 id="Hexo简介"><a href="#Hexo简介" class="headerlink" title="Hexo简介"></a>Hexo简介</h1><p>静态网页生成工具，可用于搭建博客。使用 Markdown（或其他渲染引擎）解析文章，有多种主题供选择。</p>
+<p><a href="https://hexo.io/zh-cn/docs/">中文官方文档</a></p>
+<h2 id="与Jekyll的区别？"><a href="#与Jekyll的区别？" class="headerlink" title="与Jekyll的区别？"></a>与Jekyll的区别？</h2><p>在 Github Page 里用 Jekyll 其实是上传一个工程文件 ，Github 自动生成静态文件，而 Hexo 是先生成好文件再部署的。</p>
+<p>此外，Jekyll基于Ruby，Hexo基于Node</p>
+<p>在 Hexo 中有两个重要的配置文件：</p>
+<ol>
+<li><strong>站点配置文件</strong>：<code>站点根目录/_config.yml</code>。主要包含 Hexo 本身的配置。</li>
+<li><strong>主题配置文件</strong>：<code>站点根目录/themes/主题名称/_config.yml</code> ，主要用于配置主题相关的选项。</li>
 </ol>
-<h1 id="GitPage搭建"><a href="#GitPage搭建" class="headerlink" title="GitPage搭建"></a>GitPage搭建</h1><h2 id="Git账号注册"><a href="#Git账号注册" class="headerlink" title="Git账号注册"></a>Git账号注册</h2><p>跳过，就和我们平常注册账号一样</p>
-<h2 id="GitPage创建"><a href="#GitPage创建" class="headerlink" title="GitPage创建"></a>GitPage创建</h2><p>创建一个新的仓库，仓库名称使用：用户名.github.io，如图<br><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/GitPage01.png" alt="git仓库创建"><br>创建完之后就可以通过 <code>https://moon-lights.github.io/</code> 来访问博客地址了</p>
-<h1 id="将GitPage和Hexo联系起来"><a href="#将GitPage和Hexo联系起来" class="headerlink" title="将GitPage和Hexo联系起来"></a>将GitPage和Hexo联系起来</h1><h2 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h2><p>跳过，在<a href>另一篇文章</a>里介绍</p>
-<h2 id="修改站点配置文件"><a href="#修改站点配置文件" class="headerlink" title="修改站点配置文件"></a>修改站点配置文件</h2><p>打开根目录的 <code>_config.yml</code> 文件，找到deploy，修改如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy: </span><br><span class="line">​    type: git</span><br><span class="line">​    repo: git@github.com:moon-lights&#x2F;moon-lights.github.io.git</span><br><span class="line">​    branch: master</span><br></pre></td></tr></table></figure>
-<p>repo地址如下图获取<br><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/GitPage02.png" alt="ssh地址拷贝"></p>
-<h2 id="安装上传到GitHub的插件"><a href="#安装上传到GitHub的插件" class="headerlink" title="安装上传到GitHub的插件"></a>安装上传到GitHub的插件</h2><p>cmd打开终端，进入站点根目录，输入<code>npm install --save hexo-deployer-git</code></p>
-<p>注释：</p>
-<table>
-<thead>
-<tr>
-<th>npm install X</th>
-<th>npm install X –save</th>
-<th>npm install X –save-dev</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>把X包安装到node_modules目录中</td>
-<td>把X包安装到node_modules目录中</td>
-<td>把X包安装到node_modules目录中</td>
-</tr>
-<tr>
-<td>不会修改package.json</td>
-<td>会在package.json的dependencies属性下添加X</td>
-<td>会在package.json的devDependencies属性下添加X</td>
-</tr>
-<tr>
-<td>运行npm install命令时，不会自动安装X</td>
-<td>运行npm install命令时，会自动安装X</td>
-<td>运行npm install命令时，会自动安装X</td>
-</tr>
-<tr>
-<td></td>
-<td>之后运行npm install –production或者注明NODE_ENV变量值为production时，会自动安装X到node_modules目录中</td>
-<td>之后运行npm install –production或者注明NODE_ENV变量值为production时，不会自动安装X到node_modules目录中</td>
-</tr>
-</tbody></table>
-<p>运行时需要用到的包使–save，否则使用–save-dev。</p>
-<h2 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h2><p>使用<code>hexo generate</code>命令生成静态文件，简写为<code>hexo g</code><br>此命令会在站点根目录生成public文件夹，即最终推到GitHub的文件。（与jekyll不同，jekyll是将工程推到Github，由GitPage生成静态文件，而这里是先生成静态文件再推到GitHub）</p>
+<h1 id="Hexo使用"><a href="#Hexo使用" class="headerlink" title="Hexo使用"></a>Hexo使用</h1><h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p><a href="https://nodejs.org/en/">Node.js安装</a></p>
+<p>安装后打开cmd，输入<code>node -v</code>、<code>npm -v</code>检查是否安装成功（环境变量自动配置好了）</p>
+<blockquote>
+<p>等于<code>node --version</code>、<code>npm --version</code></p>
+</blockquote>
+<p><a href="https://git-scm.com/">Git安装</a></p>
+<p>在电脑上右键出现Git Bash Here、Git GUI Here即表示安装成功。</p>
+<p>若配置了环境变量，可输入<code>git --version</code>检查是否安装成功</p>
+<p>注意：一般情况在Git Bash中才能进行Git的相关操作。如果需要在cmd命令行里调用Git，那么就要配置电脑的环境变量Path，或者在安装的时候选择【use Git from the Windows Command Prompt】。</p>
+<p>安装和配置SSH</p>
+<h2 id="安装和运行"><a href="#安装和运行" class="headerlink" title="安装和运行"></a>安装和运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装hexo命令行工具</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-cli -g</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查是否安装成功：hexo -v或者hexo --version</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo -v</span> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化hexo，或者创建空目录，执行hexo init</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> blog为站点根目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo init blog</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> blog</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装依赖包，即`package.json`中配置的库</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 本地运行hexo：hexo s或者hexo server，默认端口为4000，也可通过`hexo server -p 端口号`指定端口号</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo server</span></span><br></pre></td></tr></table></figure>
+
+<p>访问 <a href="http://localhost:4000/">http://localhost:4000/</a> ，效果如下</p>
+<p><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/Hexo%E9%A6%96%E9%A1%B5.png" alt="hexo成功图"></p>
+<h1 id="Hexo主题切换"><a href="#Hexo主题切换" class="headerlink" title="Hexo主题切换"></a>Hexo主题切换</h1><p>Hexo提供了很多种<a href="https://hexo.io/themes/">主题</a>，挑选自己喜欢、功能稳定的。以<a href="https://theme-next.js.org/docs/getting-started/">NexT</a>为例：</p>
+<ol>
+<li>下载NexT主题，主题本质也是一个个Git工程，有两种安装方式。<ol>
+<li>下载到<code>themes</code>文件夹中：<code>git clone https://github.com/next-theme/hexo-theme-next themes/next</code></li>
+<li>npm安装，下载到<code>node_modules</code>中：<code>npm install hexo-theme-next</code></li>
+</ol>
+</li>
+<li>启用NexT主题：打开<strong>站点配置文件</strong>，修改 theme 字段为 next。</li>
+<li>运行验证：输入<code>hexo s</code>启动服务，浏览器访问 <a href="http://localhost:4000/">http://localhost:4000</a> ，可以看到主题已经变更。</li>
+</ol>
+<p><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/Next%E4%B8%BB%E9%A2%98.png" alt="hexo成功图"></p>
+<h1 id="部署到Github-Pages"><a href="#部署到Github-Pages" class="headerlink" title="部署到Github Pages"></a>部署到Github Pages</h1><p>GitHub Pages是免费的静态网页托管服务，使用Hexo可以生成静态站点文件，并上传到GitHub Pages上。默认使用<code>github.io</code>子域名。</p>
+<h2 id="GitPage创建"><a href="#GitPage创建" class="headerlink" title="GitPage创建"></a>GitPage创建</h2><p>登录GitHub，创建一个新的仓库，仓库名称要和用户名一样，例如：<strong>Afauria.github.io</strong></p>
+<p>创建完之后就可以通过 <code>https://afauria.github.io/</code> 来访问博客地址了</p>
+<h2 id="安装deploy插件"><a href="#安装deploy插件" class="headerlink" title="安装deploy插件"></a>安装deploy插件</h2><p>安装上传GitHub的插件，输入<code>npm install hexo-deployer-git</code></p>
+<p>配置GitHub仓库：打开根目录的 <code>_config.yml</code> 文件，找到deploy，修改如下</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span> </span><br><span class="line">    <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">    <span class="attr">repo:</span> <span class="string">git@github.com:Afauria/Afauria.github.io.git</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<h2 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h2><p>使用<code>hexo generate</code>命令生成静态站点文件，简写为<code>hexo g</code></p>
+<p>此命令会在站点根目录生成public文件夹，即最终推到GitHub的文件。</p>
+<blockquote>
+<p>与Jekyll不同，Jekyll是将工程推到Github，由GitPage生成静态文件，而这里是先生成静态文件再推到GitHub</p>
+</blockquote>
 <h2 id="将静态文件推到GitHub上"><a href="#将静态文件推到GitHub上" class="headerlink" title="将静态文件推到GitHub上"></a>将静态文件推到GitHub上</h2><p>使用<code>hexo deploy</code>命令推到GitHub上，简写为<code>hexo d</code></p>
-<p>上面两个命令可以合并为<code>hexo generate --deploy</code>或<code>hexo deploy --generate</code><br>当然也可以简写为<code>hexo g -d</code>或<code>hexo d -g</code></p>
-<h2 id="访问博客地址"><a href="#访问博客地址" class="headerlink" title="访问博客地址"></a>访问博客地址</h2><p>访问刚才的博客地址，可以看到博客页面已经换成了Hexo的默认主题了，满满的成就感~~。</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="两年后-，更新nodejs，hexo-g-d发布失败。错误如下"><a href="#两年后-，更新nodejs，hexo-g-d发布失败。错误如下" class="headerlink" title="两年后~，更新nodejs，hexo g -d发布失败。错误如下"></a>两年后~，更新nodejs，hexo g -d发布失败。错误如下</h2><p><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/HexoDeployFailed.png" alt="Hexo发布失败"></p>
+<p>上面两个命令可以合并为<code>hexo generate --deploy</code>或<code>hexo deploy --generate</code></p>
+<p>当然也可以简写为<code>hexo g -d</code>或<code>hexo d -g</code></p>
+<h2 id="访问博客地址"><a href="#访问博客地址" class="headerlink" title="访问博客地址"></a>访问博客地址</h2><p>访问刚才的博客地址，可以看到博客页面已经换成了Hexo页面。</p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="两年后-，更新nodejs，hexo-g-d发布失败"><a href="#两年后-，更新nodejs，hexo-g-d发布失败" class="headerlink" title="两年后~，更新nodejs，hexo g -d发布失败"></a>两年后~，更新nodejs，hexo g -d发布失败</h2><p>错误如下</p>
+<p><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/HexoDeployFailed.png" alt="Hexo发布失败"></p>
 <p>解决方案：</p>
 <ol>
 <li><p>更新hexo命令行工具：<code>npm install -g hexo-cli</code></p>
@@ -15486,7 +15963,9 @@ dispatchMessage-->判断是否是通知消息
 </li>
 </ol>
 <p><img src="/2018/10/17/blog-2018-10-17-Hexo-GitPage/HexoDependenciesVersion.png" alt="Hexo依赖版本图"></p>
-<h3 id="补充知识点"><a href="#补充知识点" class="headerlink" title="补充知识点"></a>补充知识点</h3><p><strong><a href="../note/2021-4-12-NPM.md">npm依赖包版本说明</a></strong></p>
+<p>注：更新后的hexo需要新版本node，否则会提示<code>TypeError: Object.fromEntries is not a function</code>。</p>
+<p>由于我还在使用了gitbook-cli，该工具已经不再维护，只能通过旧版本node运行，无法共存。</p>
+<p>解决方案：使用n管理node版本，使用hexo时切换到<code>n node/14.17.6</code>，使用gitbook-cli时切换到<code>n node/10.24.0</code></p>
 <h2 id="升级之后菜单跳转404，url带-20"><a href="#升级之后菜单跳转404，url带-20" class="headerlink" title="升级之后菜单跳转404，url带%20"></a>升级之后菜单跳转404，url带%20</h2><p>next menu配置：旧版本<code>链接 ||</code>中间有空格，升级Hexo之后需要删除空格</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/||</span> <span class="string">archive</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">/schedule/||</span> <span class="string">calendar</span></span><br><span class="line">  <span class="attr">sitemap:</span> <span class="string">/sitemap.xml||</span> <span class="string">sitemap</span></span><br></pre></td></tr></table></figure>
 
@@ -15514,14 +15993,12 @@ dispatchMessage-->判断是否是通知消息
 <p>本地构建运行<code>hexo serve</code>正常，使用jekyll编译也正常，说明文章格式没有错误。就是GitPage构建的时候失败了。</p>
 <p>最后实在没办法，于是暂时放着，静下来整理博客，反正本地运行也可以看。</p>
 <p>结果到晚上随手发布了一下，居然成功了、成功了……</p>
-<p>只能说GitHub太坑，估计下午哪里瓦特了</p>
-<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>下篇介绍下Hexo的一些基本概念、配置和常用命令</p>
+<p>只能说GitHub太坑，估计下午哪里瓦特了。</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>博客</category>
       </categories>
       <tags>
-        <tag>工具</tag>
         <tag>Hexo</tag>
         <tag>博客</tag>
       </tags>
@@ -15758,66 +16235,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>Git笔记</title>
-    <url>/2018/10/04/tool-2018-10-04-Git/</url>
-    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
-<p>暂存区</p>
-<p>版本库</p>
-<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
-<li><code>git diff --cached </code>：比较暂存区和版本库</li>
-<li><code>git diff</code>：比较工作区和版本库</li>
-<li><code>git patch/git am</code>：生成补丁、打补丁</li>
-<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
-<li>-3：查看最近三个提交</li>
-<li>–stat：查看修改了哪些文件，不看文件细节</li>
-</ul>
-</li>
-<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
-<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
-<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
-<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
-<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
-<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
-<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
-<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
-<li><code>git commit --amend</code>:修改最后一次提交信息</li>
-<li>合并最后两个提交：<ul>
-<li><code>git rebase -i 倒数第三个commit</code></li>
-<li>pick第一个，squash第二个</li>
-</ul>
-</li>
-<li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
-<li>将相应commit的pick改为edit</li>
-<li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
-</ul>
-</li>
-<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
-<li><code>git count-objects -vH</code>：查看仓库大小</li>
-<li><code>git gc</code>：Git垃圾回收</li>
-</ul>
-<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
-<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
-<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命令行笔记</title>
     <url>/2018/10/04/note-2018-10-04-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别</p>
@@ -15937,6 +16354,66 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git笔记</title>
+    <url>/2018/10/04/tool-2018-10-04-Git/</url>
+    <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
+<p>暂存区</p>
+<p>版本库</p>
+<h1 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h1><p>//todo</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li><code>git diff --cached </code>：比较暂存区和版本库</li>
+<li><code>git diff</code>：比较工作区和版本库</li>
+<li><code>git patch/git am</code>：生成补丁、打补丁</li>
+<li><code>git log 文件名</code>：查看某个文件的修改历史<ul>
+<li>-3：查看最近三个提交</li>
+<li>–stat：查看修改了哪些文件，不看文件细节</li>
+</ul>
+</li>
+<li><code>git reset head</code>：取消暂存，使用别名<code>git unstage</code></li>
+<li><code>git reset</code>：默认不修改文件，只修改Git记录。–hard同时修改文件，</li>
+<li><code>git checkout &lt;file&gt;</code>:取消修改，回退到版本库</li>
+<li><code>git revert &lt;commit-id&gt;</code>：撤销中间的某个版本，生成一个新的提交</li>
+<li><code>git merge &lt;side2：合并到当前分支&gt;</code></li>
+<li><code>git cherry-pick &lt;commit-id&gt;</code>：copy一个版本到当前分支，不出现交叉，不影响被copy的分支</li>
+<li><code>git rebase side1 [side2:结构上side2在side1后面，side2省略的话，会将当前分支加到side1后面]</code>。第一个参数是基，第二个参数是要生成的补丁。side1省略的话相当于git rebase origin/head head。</li>
+<li><code>git remote prune origin</code>。远程分支已删除，本地未同步。通过git remote show origin查看，根据提示使用git remote prune origin同步已删除的分支</li>
+<li><code>git commit --amend</code>:修改最后一次提交信息</li>
+<li>合并最后两个提交：<ul>
+<li><code>git rebase -i 倒数第三个commit</code></li>
+<li>pick第一个，squash第二个</li>
+</ul>
+</li>
+<li>修改倒数第二次提交信息：<ul>
+<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li>将相应commit的pick改为edit</li>
+<li>退出编辑</li>
+<li>git commit –amend 修改提交信息。</li>
+<li>git rebase –continue：恢复提交</li>
+</ul>
+</li>
+<li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
+<li><code>git count-objects -vH</code>：查看仓库大小</li>
+<li><code>git gc</code>：Git垃圾回收</li>
+</ul>
+<h1 id="Git-Flow工作流"><a href="#Git-Flow工作流" class="headerlink" title="Git-Flow工作流"></a>Git-Flow工作流</h1><p>//todo</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>一直在用Git，但是缺少总结，这里占个坑，有时间再补。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a>：Git可视化学习</li>
+<li><a href="https://juejin.cn/post/6895246702614806542">Git各指令的本质，真是通俗易懂啊</a></li>
+<li><a href="https://blog.islinjw.cn/2020/08/21/Git%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84/">Git是怎么工作的</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git书籍</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/896043488029600">Git教程-廖雪峰</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -16152,6 +16629,66 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>博客框架介绍：Jekyll</title>
+    <url>/2018/07/15/blog-2018-07-15-Jekyll/</url>
+    <content><![CDATA[<h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><ul>
+<li><code>_config.yml</code>：这个文件是为了保存配置的。也可用命令行配置</li>
+<li><code>_includes</code>：这里面的就是可以重复利用的文件。这个文件可以被其他的文件包含，重复利用。相当于网页的include，如header，footer等</li>
+<li><code>_layout</code>：存放网页的模板文件</li>
+<li><code>_posts</code>：存放具体的博客文章。文件必须为<code>year-month-date-title.markup</code>的格式。文件格式可以是md，html等、</li>
+<li><code>_site</code>：这个文件夹存放的是最终生成的文件。 编译器生成，建议放到.gitignore里</li>
+</ul>
+<p>Jekyll运行会遍历所有的文件，进行解析生成文件。</p>
+<h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><p>将工程上传到GitHub上即可访问，但是每次写好博客都需要上传访问，太麻烦，可以先在本地调试。</p>
+<p>本地调试需要安装环境：Ruby+Devkit+Jekyll</p>
+<p>下载安装包不用配置环境变量。官方提供了ruby和devkit合成的安装包：<a href="https://rubyinstaller.org/downloads/">下载地址</a></p>
+<p><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll01.png" alt="jekyll01"></p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ol>
+<li>指定安装路径，勾选use UTF-8<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll02.png" alt="jekyll02"></li>
+<li>勾选MSYS2<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll03.png" alt="jekyll03"></li>
+<li>点击finish<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll04.png" alt="jekyll04"></li>
+<li>自动弹出命令行，输入1，等待安装成功<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll05.png" alt="jekyll05"></li>
+<li>安装jekyll：打开dos，输入gem install jekyll，等待安装完成</li>
+<li>安装完成后输入jekyll -v，出现版本号说明安装成功</li>
+<li>安装bundle：在dos中输入gem install bundle，等待安装完成</li>
+<li>dos中切换到工程目录，执行jekyll serve或者jekyll build即可运行</li>
+<li>浏览器中输入localhost:4000访问</li>
+</ol>
+<h1 id="运行过程中出错记录"><a href="#运行过程中出错记录" class="headerlink" title="运行过程中出错记录"></a>运行过程中出错记录</h1><ul>
+<li><p>提示将_config.yml文件的gem:改成plugins:</p>
+</li>
+<li><p>提示缺少依赖，需要安装，根据具体情况安装，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gem install jekyll-sitemap</span><br><span class="line">gem install jekyll-seo-tag</span><br><span class="line">gem install jekyll-feed</span><br></pre></td></tr></table></figure></li>
+<li><p>不允许出现中文名，可能出现下面的情况：</p>
+<ol>
+<li>运行起来之后访问不到文章：文章文件带中文名</li>
+</ol>
+<p><code>[2018-07-15 16:42:37] ERROR &#39;/2018/07/15/ELK数据分析.html&#39; not found.</code></p>
+<ol start="2">
+<li>也可能在编译时就出错无法运行：检查是否有文件包含中文名</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Liquid Exception: Liquid error (line 13): invalid byte sequence in UTF-8 in sitemap.xml</span><br><span class="line">             Error: Liquid error (line 13): invalid byte sequence in UTF-8</span><br><span class="line">             Error: Run jekyll build --trace for more information.</span><br></pre></td></tr></table></figure></li>
+<li><p>如果博客文章中出现jekyll的语法，也会被解析，可能会导致报错：例如在文章中使用了这一句，jekyll进行了解析</p>
+<p><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll07.png" alt="jekyll07"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Liquid Exception: Could not locate the included file &#x27;file.ext&#x27; in any of</span><br><span class="line">[&quot;E:/GitPageBlog/moon-lights.github.io/includes&quot;]. Ensure it exists in one of those directories </span><br><span class="line">and, if it is a symlink, does not point outside your site source. in E:/GitPageBlog/moon-</span><br><span class="line">lights.github.io/posts/tool/2018-7-15-Jekyll.md</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料</p>
+<ul>
+<li><a href="https://www.cnblogs.com/zjjDaily/p/8695978.html">使用Github pages+jekyll搭建自己的博客（windows版）</a></li>
+<li><a href="https://www.jianshu.com/p/ffbbed22f984">Jekyll使用篇 1 - 发布文章、加入评论功能、加入Google Analytics</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/jekyll/">Jekyll教程_Jekyll开发中文手册[PDF]下载-极客学院Wiki</a></li>
+<li><a href="http://ju.outofmemory.cn/entry/98471">Jekyll 语法简单笔记</a></li>
+<li><a href="https://www.jekyll.com.cn/docs/home/">Jekyll官网</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ElasticSearch+Logstash+Kibana</title>
     <url>/2018/07/15/tool-2018-07-15-ELK/</url>
     <content><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ol>
@@ -16191,68 +16728,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>Jekyll-博客工具</title>
-    <url>/2018/07/15/blog-2018-07-15-Jekyll/</url>
-    <content><![CDATA[<h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><ul>
-<li><code>_config.yml</code>：这个文件是为了保存配置的。也可用命令行配置</li>
-<li><code>_includes</code>：这里面的就是可以重复利用的文件。这个文件可以被其他的文件包含，重复利用。相当于网页的include，如header，footer等</li>
-<li><code>_layout</code>：存放网页的模板文件</li>
-<li><code>_posts</code>：存放具体的博客文章。文件必须为<code>year-month-date-title.markup</code>的格式。文件格式可以是md，html等、</li>
-<li><code>_site</code>：这个文件夹存放的是最终生成的文件。 编译器生成，建议放到.gitignore里</li>
-</ul>
-<p>Jekyll运行会遍历所有的文件，进行解析生成文件。</p>
-<h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><p>将工程上传到GitHub上即可访问，但是每次写好博客都需要上传访问，太麻烦，可以先在本地调试。</p>
-<p>本地调试需要安装环境：Ruby+Devkit+Jekyll</p>
-<p>下载安装包不用配置环境变量。官方提供了ruby和devkit合成的安装包：<a href="https://rubyinstaller.org/downloads/">下载地址</a></p>
-<p><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll01.png" alt="jekyll01"></p>
-<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ol>
-<li>指定安装路径，勾选use UTF-8<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll02.png" alt="jekyll02"></li>
-<li>勾选MSYS2<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll03.png" alt="jekyll03"></li>
-<li>点击finish<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll04.png" alt="jekyll04"></li>
-<li>自动弹出命令行，输入1，等待安装成功<br><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll05.png" alt="jekyll05"></li>
-<li>安装jekyll：打开dos，输入gem install jekyll，等待安装完成</li>
-<li>安装完成后输入jekyll -v，出现版本号说明安装成功</li>
-<li>安装bundle：在dos中输入gem install bundle，等待安装完成</li>
-<li>dos中切换到工程目录，执行jekyll serve或者jekyll build即可运行</li>
-<li>浏览器中输入localhost:4000访问</li>
-</ol>
-<h1 id="运行过程中出错记录"><a href="#运行过程中出错记录" class="headerlink" title="运行过程中出错记录"></a>运行过程中出错记录</h1><ul>
-<li><p>提示将_config.yml文件的gem:改成plugins:</p>
-</li>
-<li><p>提示缺少依赖，需要安装，根据具体情况安装，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gem install jekyll-sitemap</span><br><span class="line">gem install jekyll-seo-tag</span><br><span class="line">gem install jekyll-feed</span><br></pre></td></tr></table></figure></li>
-<li><p>不允许出现中文名，可能出现下面的情况：</p>
-<ol>
-<li>运行起来之后访问不到文章：文章文件带中文名</li>
-</ol>
-<p><code>[2018-07-15 16:42:37] ERROR &#39;/2018/07/15/ELK数据分析.html&#39; not found.</code></p>
-<ol start="2">
-<li>也可能在编译时就出错无法运行：检查是否有文件包含中文名</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Liquid Exception: Liquid error (line 13): invalid byte sequence in UTF-8 in sitemap.xml</span><br><span class="line">             Error: Liquid error (line 13): invalid byte sequence in UTF-8</span><br><span class="line">             Error: Run jekyll build --trace for more information.</span><br></pre></td></tr></table></figure></li>
-<li><p>如果博客文章中出现jekyll的语法，也会被解析，可能会导致报错：</p>
-<p>在文章中使用了这一句，jekyll进行了解析</p>
-<p><img src="/2018/07/15/blog-2018-07-15-Jekyll/jekyll07.png" alt="jekyll07"></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Liquid Exception: Could not locate the included file &#39;file.ext&#39; in any of</span><br><span class="line">[&quot;E:&#x2F;GitPageBlog&#x2F;moon-lights.github.io&#x2F;includes&quot;]. Ensure it exists in one of those directories </span><br><span class="line">and, if it is a symlink, does not point outside your site source. in E:&#x2F;GitPageBlog&#x2F;moon-</span><br><span class="line">lights.github.io&#x2F;posts&#x2F;tool&#x2F;2018-7-15-Jekyll.md</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>参考资料</p>
-<ul>
-<li><a href="https://www.cnblogs.com/zjjDaily/p/8695978.html">使用Github pages+jekyll搭建自己的博客（windows版）</a></li>
-<li><a href="https://www.jianshu.com/p/ffbbed22f984">Jekyll使用篇 1 - 发布文章、加入评论功能、加入Google Analytics</a></li>
-<li><a href="http://wiki.jikexueyuan.com/project/jekyll/">Jekyll教程_Jekyll开发中文手册[PDF]下载-极客学院Wiki</a></li>
-<li><a href="http://ju.outofmemory.cn/entry/98471">Jekyll 语法简单笔记</a></li>
-<li><a href="https://www.jekyll.com.cn/docs/home/">Jekyll官网</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Jekyll</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>静态代码分析平台SonarQube</title>
     <url>/2018/07/14/tool-2018-07-14-SonarQube/</url>
     <content><![CDATA[<h2 id="Sonar是什么？"><a href="#Sonar是什么？" class="headerlink" title="Sonar是什么？"></a>Sonar是什么？</h2><p>SonarQube(以前叫Sonar)是持续检测代码质量的开源平台<br>静态代码分析工具、代码质量检测工具<br>支持不同编程语言</p>
@@ -16272,6 +16747,312 @@ dispatchMessage-->判断是否是通知消息
       <tags>
         <tag>工具</tag>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>作为一个诗人</title>
+    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
+    <content><![CDATA[<center>
+    <b><font size="5">越人歌</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+    今夕何夕兮搴洲中流。<br>
+    今日何日兮得与王子同舟。<br>
+    蒙羞被好兮不訾诟耻。<br>
+    心几烦而不绝兮得知王子。<br>
+    山有木兮木有枝。<br>
+    心悦君兮君不知。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
+    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
+    一尺深红胜曲尘，天生旧物不如新。<br>
+    合欢桃核终堪恨，里许元来别有人。<br>
+    井底点灯深烛伊，共郎长行莫围棋。<br>
+    玲珑骰子安红豆，入骨相思知不知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
+    <font size="2">【作者】姜夔 【朝代】宋</font><br>
+       肥水东流无尽期。当初不合种相思。<br>
+    梦中未比丹青见，暗里忽惊山鸟啼。<br>
+    春未绿，鬓先丝。人间别久不成悲。<br>
+    谁教岁岁红莲夜，两处沉吟各自知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       十三与君初相识，王侯宅里弄丝竹。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    再见君时妾十五，且为君作霓裳舞。<br>
+    可叹年华如朝露，何时衔泥巢君屋？<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       君似明月我似雾，雾随月隐空留露。<br>
+    君善抚琴我善舞，曲终人离心若堵。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    魂随君去终不悔, 绵绵相思为君苦。<br>
+    相思苦，凭谁诉？遥遥不知君何处。<br>
+    扶门切思君之嘱，登高望断天涯路。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">绸缪</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
+    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
+    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
+</center>
+
+
+<center>
+    <b><font size="5">我亦好歌亦好酒</font></b><br>
+    <font size="2">【作者】殊同 【朝代】现代</font><br>
+       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
+    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
+    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
+    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
+    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
+    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
+    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
+    <font size="2">【作者】刘过 【朝代】宋</font><br>
+       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
+    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
+    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
+       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
+    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
+    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
+    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
+    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
+       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
+    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+       花非花，雾非雾。<br>
+    夜半来，天明去。<br>
+    来如春梦不多时，去似朝云无觅处。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花 ·花曲</font></b><br>
+    <font size="2"></font><br>
+       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
+    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
+    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
+    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">将进酒</font></b><br>
+    <font size="2">【作者】李白 【朝代】唐</font><br>
+       君不见，黄河之水天上来，奔流到海不复回。<br>
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
+    人生得意须尽欢，莫使金樽空对月。<br>
+    天生我材必有用，千金散尽还复来。<br>
+    烹羊宰牛且为乐，会须一饮三百杯。<br>
+    岑夫子，丹丘生，将进酒，杯莫停。<br>
+    与君歌一曲，请君为我倾耳听。<br>
+    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
+    古来圣贤皆寂寞，惟有饮者留其名。<br>
+    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
+    主人何为言少钱，径须沽取对君酌。<br>
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">长恨歌</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
+    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
+    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
+    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
+    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
+    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
+    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
+    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
+    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
+    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
+    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
+    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
+    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
+    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
+    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
+    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
+    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
+    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
+    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
+    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
+    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
+    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
+    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
+    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
+    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
+    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
+    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
+    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
+    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
+    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
+</center>
+
+
+<center>
+    <b><font size="5">贺新郎</font></b><br>
+    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
+   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
+</center>
+​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
+​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
+
+<center>
+    <b><font size="5">宽心谣</font></b><br>
+    <font size="2">【作者】赵朴初</font><br>
+    日出东海落西山，愁也一天，喜也一天。<br>
+    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
+    每月领取养老钱，多也喜欢，少也喜欢。<br>
+    少荤多素日三餐，粗也香甜，细也香甜。<br>
+    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
+    常与知己聊聊天，古也谈谈，今也谈谈。<br>
+    内孙外孙同样看，儿也心欢，女也心欢。<br>
+    全家老少互慰勉，贫也相安，富也相安。<br>
+    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
+    心宽体健养天年，不是神仙，胜似神仙。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">观猎</font></b><br>
+    <font size="2">【作者】王维</font><br>
+    风劲角弓鸣，将军猎渭城。<br>
+    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
+    忽过新丰市，还归细柳营。<br>
+    回看射雕处，千里暮云平。<br>
+</center>
+
+
+<center>
+    <b><font size="5">国风·秦风·小戎</font></b><br>
+    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
+    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
+    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
+    <font size="2">【作者】韦庄</font><br>
+    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
+    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
+</center>
+
+
+<center>
+    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
+    <font size="2">【作者】欧阳修</font><br>
+    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
+    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
+</center>
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
       </tags>
   </entry>
   <entry>
@@ -16416,6 +17197,52 @@ dispatchMessage-->判断是否是通知消息
 <li><p>对于科学衡量：最近很多问题，解决起来很简单，但是为了识别风险或者为了验证是否存在那样的风险，做了很多尝试和验证，想得太多，所以很耗时间，但是最终问题难度也只能算D，外人是从结果出发想这个问题，自然会简单了许多，但是RD解问题的时候考虑的远远不是解完该问题就好了</p>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>星座学说</title>
+    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
+    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
+<p>【白羊座怪癖】</p>
+<ul>
+<li>双重人；</li>
+<li>热爱暗恋；</li>
+<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
+<li>失眠或者嗜睡；</li>
+<li>笑起来是个孩子，冷起来是个谜；</li>
+<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
+<li>性格和脾气极端；</li>
+<li>跟自己较劲，瞎琢磨；</li>
+<li>好心肠，易被感动；</li>
+<li>爱讲道理整理癖爱纠结。</li>
+</ul>
+<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
+<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博君一笑图</title>
+    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
+    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
+
+<p>神评：防窥膜，看不见</p>
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
 ]]></content>
       <categories>
         <category>其他</category>
@@ -18224,358 +19051,6 @@ dispatchMessage-->判断是否是通知消息
 <li>身不在高，米五就行。胸不在大，有型则灵。斯是萝莉，为吾是侵，洋装猫耳朵，小嘴大眼睛，短发很俏丽，长发也飘逸，可以给糖果，玩亲亲。无八卦之乱耳，无血拼之劳行。学校游泳室，公园小凉亭。孔子云：三年起步，最高死刑。</li>
 <li>之前打排位，一个安其拉突然说：我男朋友想要，我先挂机。她还开着麦，最后我们四个硬生生守了两个小时</li>
 </ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>作为一个诗人</title>
-    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
-    <content><![CDATA[<center>
-    <b><font size="5">越人歌</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-    今夕何夕兮搴洲中流。<br>
-    今日何日兮得与王子同舟。<br>
-    蒙羞被好兮不訾诟耻。<br>
-    心几烦而不绝兮得知王子。<br>
-    山有木兮木有枝。<br>
-    心悦君兮君不知。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
-    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
-    一尺深红胜曲尘，天生旧物不如新。<br>
-    合欢桃核终堪恨，里许元来别有人。<br>
-    井底点灯深烛伊，共郎长行莫围棋。<br>
-    玲珑骰子安红豆，入骨相思知不知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
-    <font size="2">【作者】姜夔 【朝代】宋</font><br>
-       肥水东流无尽期。当初不合种相思。<br>
-    梦中未比丹青见，暗里忽惊山鸟啼。<br>
-    春未绿，鬓先丝。人间别久不成悲。<br>
-    谁教岁岁红莲夜，两处沉吟各自知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       十三与君初相识，王侯宅里弄丝竹。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    再见君时妾十五，且为君作霓裳舞。<br>
-    可叹年华如朝露，何时衔泥巢君屋？<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       君似明月我似雾，雾随月隐空留露。<br>
-    君善抚琴我善舞，曲终人离心若堵。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    魂随君去终不悔, 绵绵相思为君苦。<br>
-    相思苦，凭谁诉？遥遥不知君何处。<br>
-    扶门切思君之嘱，登高望断天涯路。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">绸缪</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
-    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
-    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
-</center>
-
-
-<center>
-    <b><font size="5">我亦好歌亦好酒</font></b><br>
-    <font size="2">【作者】殊同 【朝代】现代</font><br>
-       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
-    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
-    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
-    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
-    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
-    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
-    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
-    <font size="2">【作者】刘过 【朝代】宋</font><br>
-       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
-    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
-    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
-       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
-    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
-    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
-    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
-    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
-       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
-    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-       花非花，雾非雾。<br>
-    夜半来，天明去。<br>
-    来如春梦不多时，去似朝云无觅处。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花 ·花曲</font></b><br>
-    <font size="2"></font><br>
-       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
-    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
-    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
-    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">将进酒</font></b><br>
-    <font size="2">【作者】李白 【朝代】唐</font><br>
-       君不见，黄河之水天上来，奔流到海不复回。<br>
-    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
-    人生得意须尽欢，莫使金樽空对月。<br>
-    天生我材必有用，千金散尽还复来。<br>
-    烹羊宰牛且为乐，会须一饮三百杯。<br>
-    岑夫子，丹丘生，将进酒，杯莫停。<br>
-    与君歌一曲，请君为我倾耳听。<br>
-    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
-    古来圣贤皆寂寞，惟有饮者留其名。<br>
-    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
-    主人何为言少钱，径须沽取对君酌。<br>
-    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">长恨歌</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
-    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
-    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
-    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
-    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
-    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
-    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
-    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
-    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
-    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
-    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
-    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
-    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
-    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
-    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
-    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
-    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
-    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
-    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
-    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
-    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
-    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
-    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
-    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
-    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
-    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
-    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
-    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
-    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
-    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
-</center>
-
-
-<center>
-    <b><font size="5">贺新郎</font></b><br>
-    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
-   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
-</center>
-​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
-​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
-
-<center>
-    <b><font size="5">宽心谣</font></b><br>
-    <font size="2">【作者】赵朴初</font><br>
-    日出东海落西山，愁也一天，喜也一天。<br>
-    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
-    每月领取养老钱，多也喜欢，少也喜欢。<br>
-    少荤多素日三餐，粗也香甜，细也香甜。<br>
-    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
-    常与知己聊聊天，古也谈谈，今也谈谈。<br>
-    内孙外孙同样看，儿也心欢，女也心欢。<br>
-    全家老少互慰勉，贫也相安，富也相安。<br>
-    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
-    心宽体健养天年，不是神仙，胜似神仙。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">观猎</font></b><br>
-    <font size="2">【作者】王维</font><br>
-    风劲角弓鸣，将军猎渭城。<br>
-    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
-    忽过新丰市，还归细柳营。<br>
-    回看射雕处，千里暮云平。<br>
-</center>
-
-
-<center>
-    <b><font size="5">国风·秦风·小戎</font></b><br>
-    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
-    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
-    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
-    <font size="2">【作者】韦庄</font><br>
-    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
-    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
-</center>
-
-
-<center>
-    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
-    <font size="2">【作者】欧阳修</font><br>
-    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
-    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
-</center>
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
-</ul>
-</li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>星座学说</title>
-    <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
-    <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
-<p>【白羊座怪癖】</p>
-<ul>
-<li>双重人；</li>
-<li>热爱暗恋；</li>
-<li>有时自卑不喜欢跟人打交道，有点闷骚没事喜欢放空；</li>
-<li>失眠或者嗜睡；</li>
-<li>笑起来是个孩子，冷起来是个谜；</li>
-<li>偏执、悲观、轻微强迫症、洁癖、言出必行、悲观、不自信、自恋、自以为是、多疑；</li>
-<li>性格和脾气极端；</li>
-<li>跟自己较劲，瞎琢磨；</li>
-<li>好心肠，易被感动；</li>
-<li>爱讲道理整理癖爱纠结。</li>
-</ul>
-<p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
-<p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博君一笑图</title>
-    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
-    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
-
-<p>神评：防窥膜，看不见</p>
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
 ]]></content>
       <categories>
         <category>其他</category>
