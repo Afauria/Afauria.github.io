@@ -15,32 +15,9 @@ description: NexT主题配置手册，进阶玩法
 
 ![博客效果](2018-10-20-NexTConfig/博客效果.png)
 
-# Hexo主题配置文件说明
+# 基础配置
 
-## 目录说明
-
-* `_config.yml`：主题的配置文件。修改时会自动更新，无需重启服务器。
-* `languages`：语言文件夹，不同语言文件
-* `layout`：布局文件夹。用于存放主题的模板文件，决定了网站内容的呈现方式。
-* `script`：脚本文件夹。在启动时，Hexo 会载入此文件夹内的 JavaScript 文件
-* `source`：资源文件夹，存放 CSS、JavaScript、images 文件等资源。
-
-## 自定义样式
-
-如果懂css的话，可以修改theme中layout和source中的布局和css样式，定制主题。
-
-前面介绍主题有两种下载方式：
-
-1. 下载到`themes`文件夹中：`git clone https://github.com/next-theme/hexo-theme-next themes/next`
-2. npm安装，下载到`node_modules`中：`npm install hexo-theme-next`
-
-> `node_modules`是临时文件夹，不建议在其中修改
-
-主题本质也是Git工程，**本地修改样式之后，换个电脑之后记录会丢失，或者pull原作者新提交的代码的时候会出现冲突。**
-
-解决方法：fork原主题仓库，从自己的仓库clone，本地修改之后提交，定期从原主题仓库同步merge。
-
-# NexT配置
+列举部分功能，没有介绍到的可以参考主题配置文件中的注释。
 
 ## 添加README.md文件
 
@@ -163,6 +140,14 @@ favicon:
   #ms_browserconfig: /images/browserconfig.xml
 ```
 
+## 去掉NexT自带的文章目录序号
+
+NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件
+
+![去掉文章目录序号](2018-10-20-NexTConfig/配置去掉目录序号.png)
+
+# 进阶配置
+
 ## 添加搜索功能
 
 NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。Swiftype和Algolia都只有一段时间的试用期，可以采用Hexo提供的Local Search，原理是通过hexo-generator-search插件在本地生成一个search.xml文件，搜索的时候从这个文件中根据关键字检索出相应的链接。
@@ -193,12 +178,6 @@ npm install hexo-generator-searchdb --save
 > 打开浏览器开发者工具，找到html元素，查看本地和GitPage页面差异，发现两者`main.css`样式不同，GitPage上搜素框css样式丢失
 >
 > 解决：`hexo clean`清除之前的编译结果，`hexo g -d`重新部署
-
-## 去掉NexT自带的文章目录序号
-
-NexT会为文章自动加上目录序号，如果自己的文章里面已经加了序号，不需要自动加的话，则修改主题配置文件
-
-![去掉文章目录序号](2018-10-20-NexTConfig/配置去掉目录序号.png)
 
 ## 添加站点地图sitemap
 
@@ -279,6 +258,8 @@ busuanzi_count:
 
 ## 添加评论系统
 
+**注：Next新版本不再内置Valine**
+
 使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、Gitalk、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）
 
 > 看别人用Gitalk也挺不错的，还可以将评论发到issue，及时收到通知。缺点是需要登录GitHub账号，可能会劝退一拨人
@@ -338,9 +319,19 @@ live2d:
 
 ## 右上角配置Fork me on GitHub入口
 
+方法1：
+
 1. 到[GitHub Corners](http://tholman.com/github-corners/)或者[GitHub Ribbons](https://github.blog/2008-12-19-github-ribbons/)选择喜欢的图标，copy相应的代码
 2. 将代码粘贴到`themes/next/layout/_layout.swig`文件中(放在`body`的内即可)
 3. 修改`href`链接为想要跳转的地址，如GitHub主页
+
+方法2：修改主题配置文件
+
+```yaml
+github_banner:
+	enable: true
+  permalink: https://github.com/Afauria
+```
 
 ## 添加每日一言/今日诗词
 
@@ -479,6 +470,8 @@ npm install hexo-generator-index-pin-top --save
 2. 在需要置顶的文章头部中添加`top: true`
 3. 配置置顶图标：修改`next/layout/_macro/post.swig`文件，在`<div class="post-meta">`中添加下面代码
 
+> 新版本改到了`next/layout/_partials/post/post-meta.njk`中
+
 ```html
 <div class="post-meta">
 {% if post.top %}
@@ -530,7 +523,7 @@ Hexo升级之后使用NexT会出现一些错误，原来NexT版本为5.1.4，需
 
 ## toArray报错
 
-`hexo g`生成报错
+`hexo g`生成报错，不影响使用
 
 ```shell
  ERROR Template render error: (e:\GitPageBlog\AkiyamaBlog\themes\next\layout\post.swig)
@@ -539,7 +532,7 @@ Hexo升级之后使用NexT会出现一些错误，原来NexT版本为5.1.4，需
 
 > 修改`themes/next/layout/_macro/post.swig`文件，去掉`post.categories.toArray()`和`post.tags.toArray()`中的`toArray()`
 
-**注：回来补充，不能去掉toArray()，否则文章的分类和标签无法显示……估计和node版本有关系**
+**注：回来补充，不能去掉toArray()，否则文章开头的分类和标签无法显示……估计和node版本有关系**
 
 # 结语
 
