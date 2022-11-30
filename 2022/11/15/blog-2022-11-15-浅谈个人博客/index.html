@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"blog.afauria.xyz","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="为什么需要个人博客，几种博客搭建方式。具体搭建教程本篇不做介绍。">
+  <meta name="description" content="介绍各种博客工具，个人站点搭建方式和流程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈个人博客">
 <meta property="og:url" content="https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/index.html">
 <meta property="og:site_name" content="Afauria&#39;s Blog">
-<meta property="og:description" content="为什么需要个人博客，几种博客搭建方式。具体搭建教程本篇不做介绍。">
+<meta property="og:description" content="介绍各种博客工具，个人站点搭建方式和流程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-11-24T02:06:49.103Z">
+<meta property="article:modified_time" content="2022-11-30T17:20:28.954Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-24 10:06:49" itemprop="dateModified" datetime="2022-11-24T10:06:49+08:00">2022-11-24</time>
+                <time title="修改时间：2022-12-01 01:20:28" itemprop="dateModified" datetime="2022-12-01T01:20:28+08:00">2022-12-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,16 +277,16 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5k</span>
+              <span>6.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
-            <div class="post-description">为什么需要个人博客，几种博客搭建方式。具体搭建教程本篇不做介绍。</div>
+            <div class="post-description">介绍各种博客工具，个人站点搭建方式和流程。</div>
 
         </div>
       </header>
@@ -297,15 +297,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最早是大二在CSDN上写过两篇文章，因为每次修改都要联网登录比较麻烦就放弃了，晾了这么多年再去看，没想到浏览量还蛮多的。</p>
-<p>大三实习期间用Jekyll搭建了个人博客，用了几个月转战Hexo了，一直持续到现在。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>80、90后最早接触的个人博客应该是QQ空间了，也是当年非主流重要的基地，可以自行装扮布置，主要用来做个人相册。</p>
+<p>大二的时候在CSDN上写过两篇技术文章，也用过云笔记，最终都放弃了，主要是因为要绑定账号，并且每次查看都要打开客户端或者浏览器等。</p>
+<p>大三用Jekyll搭建了个人博客，用了两个月就转战Hexo了，一直持续到现在。</p>
 <p>回过头看，收获还是蛮多的，有水文，也有熬夜写的技术文章。内容总的来说更擅长记录总结，不擅长发表感悟，也不喜欢在文章中掺杂太多废话和闲聊，希望每一句都是干货，知识点尽可能简洁、清晰。</p>
-<p>写作过程中最令人头疼的就是文章结构如何组织，一旦写的不好就会出现“上文xxx”，“下文xxx”。好的文章还是要不断打磨修改。</p>
-<p>因为最近打算搞团队能力建设，所以梳理了下博客相关的内容，也补充一些没用过的博客框架的搭建教程，带领大家入门折腾。</p>
-<h1 id="为什么你需要一个博客？"><a href="#为什么你需要一个博客？" class="headerlink" title="为什么你需要一个博客？"></a>为什么你需要一个博客？</h1><p>如果此前有写些东西，那么博客可以帮你发布到互联网，让更多人能够看到。并且养成良好的写作习惯，提高效率。</p>
+<p>写作过程中最令人头疼的就是文章结构如何组织，一旦写的不好就会出现“上文xxx”，“下文xxx”。好的文章还是要不断打磨修改，还要定期更新避免过时。</p>
+<p>因为最近打算搞团队能力建设，所以梳理了下博客相关的内容，也补充了解一些没用过的博客框架，带领大家入门折腾。</p>
+<h1 id="为什么你需要一个Blog？"><a href="#为什么你需要一个Blog？" class="headerlink" title="为什么你需要一个Blog？"></a>为什么你需要一个Blog？</h1><p>如果此前有写些东西，那么博客可以帮你发布到互联网，让更多人能够看到。并且养成良好的写作习惯，提高效率。</p>
 <p>如果此前未写过东西，可以思考下写作能带来的益处，每一篇文章都是自己积累的财富，也是一路成长的脚印。</p>
 <ol>
-<li>知识积累：作为程序员有太多要学习的东西了，光靠记忆效率是很低的，需要一个专门的平台来归档、管理。</li>
+<li>知识积累沉淀：作为程序员有太多要学习的东西了，光靠记忆效率是很低的，需要一个专门的平台来归档、管理。便于复习和回顾。</li>
 <li>偶发感悟，或者有开心的事、人生大事，苦于没有平台记录和分享。</li>
 <li>能力提升：专业知识、写作表达、逻辑条理。</li>
 <li>倒逼自己输出：例如有用户提问或者评论，会推动自己去更新内容。</li>
@@ -325,7 +326,19 @@
 </ul>
 </blockquote>
 <p>推荐阅读：<a target="_blank" rel="noopener" href="https://sspai.com/post/73934">2022 年了，聊聊我为什么还在写博客</a></p>
-<h1 id="可以写些什么？"><a href="#可以写些什么？" class="headerlink" title="可以写些什么？"></a>可以写些什么？</h1><p>博客内容可以是专业技术、美好记忆、心得感悟、晒娃撒狗粮、读书观影旅游分享等等。</p>
+<h1 id="可以写些什么？"><a href="#可以写些什么？" class="headerlink" title="可以写些什么？"></a>可以写些什么？</h1><p>博客内容可以是专业技术、美好记忆、心得感悟、晒娃撒狗粮、读书观影旅游分享、个人相册、个人音乐播放器等等。</p>
+<blockquote>
+<p>关于技术文章，推荐发布行业通用知识，有参考价值，可供复习回顾。尽量避免记录性内容，比如环境搭建、解决问题等，很容易过时，难以复制。</p>
+</blockquote>
+<p><strong>注意个人隐私安全和公司保密协议，有些内容可以记录但是不要公开发布</strong>，例如</p>
+<ol>
+<li>使用网名，不带真实个人信息。</li>
+<li>不发布公司内部技术，例如公司特定的设计规范、配置项、命令行等。一方面不通用，另一方面可能涉及保密协议。</li>
+<li>内容不带公司字样，可能会被公司爬虫检测到。</li>
+</ol>
+<blockquote>
+<p>可以尝试给自己的博客做一层加密校验，给需要加密的文章做个标记或者分类</p>
+</blockquote>
 <p>根据自己的想法划分了几个境界：</p>
 <ul>
 <li>初出茅庐：阅读+收藏网址，参与评论和提问、长期关注他人、付费阅读、付费下载</li>
@@ -335,11 +348,11 @@
 <li>传道授业（专业度）：发布过系列知识、专题、开课</li>
 <li>声名远扬：出书，业内大佬</li>
 </ul>
-<h1 id="博客搭建的方式"><a href="#博客搭建的方式" class="headerlink" title="博客搭建的方式"></a>博客搭建的方式</h1><p>博客主要分为三种方式：</p>
+<h1 id="个人站点搭建方式"><a href="#个人站点搭建方式" class="headerlink" title="个人站点搭建方式"></a>个人站点搭建方式</h1><p>博客主要分为三种方式：</p>
 <ol>
 <li>使用第三方博客平台（中心化、平台化）：在三方平台创作和发布。</li>
-<li>使用静态框架搭建博客，生成静态页面发布：本地编写Markdown，通过工具转换成html，发布到静态网页托管服务。</li>
-<li>使用动态框架搭建博客，部署动态页面，运行时请求数据库：自行部署平台服务，在平台上创作和发布。使用和第三方博客平台类似，但是自由度更高。</li>
+<li>使用静态框架搭建，生成静态页面发布：本地编写Markdown，通过工具转换成静态html，发布到静态网页托管服务。</li>
+<li>使用动态框架搭建，自行部署平台服务和动态页面，运行时请求数据库：在平台上创作和发布。使用和第三方博客平台类似，但是自由度更高。</li>
 </ol>
 <table>
 <thead>
@@ -376,9 +389,9 @@
 </tr>
 <tr>
 <td>数据存储</td>
-<td>和账号绑定，不需要自己存档。但有数据丢失、隐私泄漏的风险</td>
-<td>自行维护原文档，可以使用Git管理</td>
-<td>数据库存储，不便于导出导入和迁移</td>
+<td>数据库系统，和账号绑定，有数据丢失、隐私泄漏的风险</td>
+<td>文件系统，可以使用Git管理</td>
+<td>数据库系统，不便于导出导入和迁移</td>
 </tr>
 <tr>
 <td>可移植性</td>
@@ -419,7 +432,7 @@
 <tr>
 <td>代表产品</td>
 <td>CSDN、简书、掘金等</td>
-<td>Hexo、Hugo、Jekyll、VuePress、Docsify、mkdocs、Sphinx等</td>
+<td>Hugo、Hexo、Jekyll、Nuxt等</td>
 <td>WordPress、Typecho、Halo、Solo等</td>
 </tr>
 <tr>
@@ -430,53 +443,23 @@
 </tr>
 </tbody></table>
 <h2 id="从写作方式上划分"><a href="#从写作方式上划分" class="headerlink" title="从写作方式上划分"></a>从写作方式上划分</h2><ol>
-<li>本地编写Markdown。</li>
-<li>客户端或者网页在线编辑器，富文本编辑器。</li>
+<li>本地编写Markdown。采用<strong>文件系统</strong>进行管理</li>
+<li>客户端或者网页在线编辑器，富文本编辑器。采用<strong>数据库系统</strong>进行管理</li>
 </ol>
+<blockquote>
+<p>老实说自从学过Markdown之后，基本就不怎么用富文本编辑器了。</p>
+<p>富文本编辑器需要特定的软件，特定的文件格式，写作过程中还要去修改样式、排版。使用Makrdown则可以顺畅的写完，专注于内容，不拘泥于编辑器，甚至可以使用vim、txt这些普通的文本编辑器。</p>
+</blockquote>
 <h2 id="从发布方式上划分"><a href="#从发布方式上划分" class="headerlink" title="从发布方式上划分"></a>从发布方式上划分</h2><ol>
-<li>三方提供主机服务（平台）：国内平台大部分免费，国外平台大部分需要付费，免费的功能受限。一般是子域名，部分提供域名绑定功能。</li>
+<li>三方提供主机服务（平台）：国内平台大部分免费，国外平台大部分需要付费，免费的功能受限。一般是使用子域名，也可以绑定自定义域名。</li>
 <li>购买云服务器，自行搭建环境、配置域名、管理数据，同时可以开放给其他人使用。</li>
 <li>购买本地主机，自行搭建环境、配置域名、管理数据，同时可以开放给其他人使用。</li>
-<li>纯静态网页托管服务：GitHub Pages、Gitee Pages，一般是子域名，也提供域名绑定功能。</li>
+<li>纯静态网页托管服务：GitHub Pages、Gitee Pages，一般是子域名，也可以绑定自定义域名。</li>
 </ol>
-<h1 id="选择合适的框架"><a href="#选择合适的框架" class="headerlink" title="选择合适的框架"></a>选择合适的框架</h1><p><strong>没有最好的框架，只有最合适的框架。</strong></p>
-<p>可以从以下几个纬度对比：</p>
-<ol>
-<li>成本：第三方博客&lt;静态框架&lt;动态框架</li>
-<li>功能和可扩展性：第三方博客&lt;静态框架&lt;动态框架</li>
-<li>上手难度：第三方博客&lt;自建博客</li>
-<li>主题和样式：第三方博客&lt;自建博客，看个人喜好，静态和动态框架都有大量主题，够用就行</li>
-<li>写作方式、发布方式。</li>
-</ol>
-<h2 id="为什么不选择第三方平台？"><a href="#为什么不选择第三方平台？" class="headerlink" title="为什么不选择第三方平台？"></a>为什么不选择第三方平台？</h2><p>第三方博客相比自建博客，存在很多痛点：</p>
-<ol>
-<li>自由度低：样式固定，无法设置个性化主题</li>
-<li>需要联网在线编辑</li>
-<li>频繁提示登录</li>
-<li>大量的广告插入</li>
-<li>内容受平台管控和审核，评论限制，例如不允许转发到其他平台</li>
-<li>关服整改：例如博客园整改</li>
-<li>存在数据丢失、泄漏的风险</li>
-<li>链接跳转会有安全提示，例如即将离开CSDN、掘金页面…</li>
-<li>浏览门槛：例如CSDN很多精华文章和专栏都需要购买或者关注</li>
-<li>文章质量参差不齐，浪里淘金：吐槽CSDN垃圾堆。一部分是由于面向大众，非程序员社区，一部分是爬虫、转载导致很多格式错乱。</li>
-</ol>
-<h2 id="静态网站的优势"><a href="#静态网站的优势" class="headerlink" title="静态网站的优势"></a>静态网站的优势</h2><p>静态网站相比动态网站有几点优势：</p>
-<ol>
-<li>利于SEO</li>
-<li>运行高效：纯静态网站可以通过CDN加速，动态网站还受限于服务端处理能力</li>
-<li>更加安全：难以被攻击</li>
-<li>部署简单，成本低廉：使用GitHub Pages、Gitee Pages免费托管</li>
-<li>本地生成，实时预览</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>对样式没有太大要求、图省事的、不确定是否能持续产出，推荐用第三方博客平台。</strong></p>
-<p><strong>有一定追求和想法的，想进一步打造个人品牌，推荐自建博客。希望低成本的选择静态框架，希望拥有更多功能和玩法的选择动态框架</strong></p>
-<p><strong>话说回来，博客内容才是关键，样式那些花里胡哨的可有可无，当然设计精美的博客总是能更吸引人眼球。</strong></p>
-<p>有精力的话可以运营多平台，扩大影响力，通过一键同步脚本简化操作。</p>
-<h1 id="第三方博客平台"><a href="#第三方博客平台" class="headerlink" title="第三方博客平台"></a>第三方博客平台</h1><p>使用较简单，注册账号，在网页上编辑文章即可，这里不多做介绍。</p>
+<h1 id="平台和工具汇总"><a href="#平台和工具汇总" class="headerlink" title="平台和工具汇总"></a>平台和工具汇总</h1><h2 id="第三方博客平台"><a href="#第三方博客平台" class="headerlink" title="第三方博客平台"></a>第三方博客平台</h2><p>使用较简单，注册账号，在网页上编辑文章即可，这里不多做介绍。</p>
 <p>国内主流博客平台：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://juejin.cn/">稀土掘金</a>：如其名，文章质量较高</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/">稀土掘金</a>：如其名，文章质量较高，前端技术较多</li>
 <li><a target="_blank" rel="noopener" href="https://www.csdn.net/">CSDN</a>：用来搜Bug和解决方案比较多，好的学习文章浪里淘金，同时充斥大量广告，资本化严重</li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/">简书</a>：和CSDN类似，内容相对优质一些，广告稍微少点</li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/">博客园</a>：国内较早的博客平台</li>
@@ -494,7 +477,108 @@
 <li>当然QQ空间、公司的KB也算一个社区</li>
 <li>…</li>
 </ol>
-<h1 id="自建博客"><a href="#自建博客" class="headerlink" title="自建博客"></a>自建博客</h1><p>大致流程如下，后面会挑几个单独介绍：</p>
+<p>国外也有很多平台，不过可能用着不太习惯，并且访问速度受限，需要付费等，这里不做介绍</p>
+<h2 id="动态博客框架"><a href="#动态博客框架" class="headerlink" title="动态博客框架"></a>动态博客框架</h2><p>自行部署平台服务和动态页面，运行时请求数据库：在平台上创作和发布。使用和第三方博客平台类似，但是自由度更高。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wordpress.org/">WordPress.org</a>、<a target="_blank" rel="noopener" href="https://cn.wordpress.org/">WordPress.org中文网</a>：基于PHP，全球使用最广的博客系统，不仅用于博客，也用于在线业务</li>
+<li><a target="_blank" rel="noopener" href="https://halo.run/">Halo</a>：基于Java的开源建站和内容管理系统（CMS），默认使用H2 Database，运行后数据会保存在<code>~/.halo</code>下</li>
+<li><a target="_blank" rel="noopener" href="https://ld246.com/article/1537690756242?utm_source=ld246.com">Solo</a>：基于Java</li>
+<li><a target="_blank" rel="noopener" href="https://typecho.org/">Typecho</a>：基于PHP</li>
+<li>…</li>
+</ul>
+<h2 id="静态站点生成器（SSG）"><a href="#静态站点生成器（SSG）" class="headerlink" title="静态站点生成器（SSG）"></a>静态站点生成器（SSG）</h2><p>开源的静态站点生成器，主要用于生成博客和文档。通过本地Markdown写作，Git版本管理，生成静态网页发布。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gohugo.io/">Hugo</a>、<a target="_blank" rel="noopener" href="https://www.gohugo.org/">Hugo中文</a>：基于Go</li>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a>：基于NodeJs</li>
+<li><a target="_blank" rel="noopener" href="https://jekyllrb.com/">Jekyll</a>、<a target="_blank" rel="noopener" href="http://jekyllcn.com/">Jekyll中文</a>：基于Ruby，GitHub内置支持</li>
+<li>…</li>
+</ul>
+<p><strong>SSG除了用作个人博客框架外，还可以做专门的文档管理工具。不同于博客的随意性，文档管理工具更适合创作专题内容和系列文章。</strong></p>
+<ul>
+<li>更专注于内容创作</li>
+<li>支持导出电子书</li>
+<li>主题模版较少，不像博客有很多个性化的需求</li>
+</ul>
+<p>本质是一样的，只是主题风格偏向文档结构：</p>
+<ul>
+<li>Hexo、Jekyll、Hugo等也有文档风格的主题</li>
+<li><a target="_blank" rel="noopener" href="https://www.gitbook.com/">GitBook</a><ul>
+<li>gitbook-cli：一个基于Node的命令行工具，用于生成静态网页，可以托管到GitPages，支持本地运行预览。<strong>相比gitbook.com更加轻量，可惜已经不再维护，重心从开源工具转向商业化产品</strong>。</li>
+<li>gitbook.com：一个写作平台，发布到gitbook子域名，例如<code>https://afauria.gitbook.io/</code>，优点是可以GitHub仓库同步。缺点是国内访问慢。</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://docusaurus.io/zh-CN/docs">Docusaurus</a>：Facebook出品，基于React，有中文文档<ul>
+<li><a target="_blank" rel="noopener" href="https://docusaurus.io/zh-CN/showcase">案例展示</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://v2.vuepress.vuejs.org/zh/guide/">VuePress</a>：基于Vue，有中文文档<ul>
+<li>默认只有一套主题，更多见<a target="_blank" rel="noopener" href="https://www.npmjs.com/search?q=keywords:vuepress-theme">社区主题</a>、<a target="_blank" rel="noopener" href="https://github.com/vuepress/awesome-vuepress">awesome-vuepress</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://docsify.js.org/#/zh-cn/">Docsify</a>：不会静态生成html，而是运行时解析markdown渲染，只需要一个单页应用，对搜索引擎不太友好，有中文文档。<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/docsifyjs/awesome-docsify#showcase">主题和案例展示</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.mkdocs.org/">MkDocs</a>：基于Python<ul>
+<li><a target="_blank" rel="noopener" href="https://www.mkdocs.org/user-guide/choosing-your-theme/#choosing-your-theme">主题</a>：默认有两套，还有一些三方的主题</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.sphinx-doc.org/en/master/#">Sphinx</a>：基于Python，官网是真的丑<ul>
+<li><a target="_blank" rel="noopener" href="https://sphinx-themes.org/">主题画廊</a>：包含几十套主题</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>玩Python的感觉审美都比较传统，没有前端的玩的花</p>
+</blockquote>
+<h2 id="三方文档管理工具"><a href="#三方文档管理工具" class="headerlink" title="三方文档管理工具"></a>三方文档管理工具</h2><p>常用的知识库管理工具还有云笔记、云文档等。一般是客户端或者网页端在线写作，部分支持导出电子书。</p>
+<p>这类软件大多数还添加了团队协作相关的功能、使得这些工具不那么纯粹。并且免费版功能受限，专业版都要收费。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/">看云</a>：电子书阅读和创作平台，可以设置付费，支持导出电子书。已迁移到<a target="_blank" rel="noopener" href="https://www.topthink.com/product/knowledge">顶想云知识管理</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/dashboard">语雀</a>：文档与知识库工具，写作体验好，功能丰富，包括文档、表格、笔记、待办、团队协作、项目管理等。支持导出电子书。</li>
+<li>各种云笔记工具：印象笔记、有道云笔记、Notion等。</li>
+<li>KB、Tower、WPS、Read the Docs等在线文档、协作、知识库工具</li>
+</ul>
+<h1 id="选择合适的工具"><a href="#选择合适的工具" class="headerlink" title="选择合适的工具"></a>选择合适的工具</h1><p><strong>没有最好的，只有最合适的。</strong></p>
+<p>可以从以下几个纬度对比：</p>
+<ol>
+<li>成本：第三方博客&lt;静态框架&lt;动态框架。主机和云服务成本较高，建议使用免费托管服务，除非网站访问量大，需要增加带宽</li>
+<li>功能和可扩展性：第三方博客&lt;静态框架&lt;动态框架</li>
+<li>上手难度：第三方博客&lt;自建博客</li>
+<li>主题和样式：第三方博客&lt;自建博客，看个人喜好，静态和动态框架都有大量主题，够用就行</li>
+<li>维护方式：文件系统 or 数据库系统</li>
+<li>写作方式、发布方式。</li>
+</ol>
+<blockquote>
+<p>尽可能用熟悉的或者现成的环境，例如Node、Python、PHP等</p>
+</blockquote>
+<h2 id="为什么不选择第三方平台？"><a href="#为什么不选择第三方平台？" class="headerlink" title="为什么不选择第三方平台？"></a>为什么不选择第三方平台？</h2><p>第三方博客相比自建博客，存在很多痛点：</p>
+<ol>
+<li>自由度低：样式固定，无法设置个性化主题</li>
+<li>需要打开客户端或者网页端写作</li>
+<li>账号登录，绑定手机号</li>
+<li>大量的广告插入，消息推送</li>
+<li>内容受平台管控和审核，评论限制，例如不允许转发到其他平台</li>
+<li>关服整改：例如博客园整改</li>
+<li>存在数据丢失、泄漏的风险</li>
+<li>链接跳转会有安全提示，例如即将离开CSDN、掘金页面…</li>
+<li>浏览门槛：例如CSDN很多精华文章和专栏都需要购买或者关注</li>
+<li>文章质量参差不齐，浪里淘金：吐槽CSDN垃圾堆。一部分是由于面向大众，非程序员社区，一部分是爬虫、转载导致很多格式错乱。</li>
+</ol>
+<h2 id="静态网站的优势"><a href="#静态网站的优势" class="headerlink" title="静态网站的优势"></a>静态网站的优势</h2><p>静态网站相比动态网站有几点优势：</p>
+<ol>
+<li>利于SEO</li>
+<li>运行高效：纯静态网站可以通过CDN加速，动态网站还受限于服务端处理能力</li>
+<li>更加安全：难以被攻击</li>
+<li>部署简单，成本低廉：使用GitHub Pages、Gitee Pages免费托管</li>
+<li>本地生成，实时预览</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>对样式没有太大要求、图省事的、不确定是否能持续产出，推荐用第三方博客平台。</strong></p>
+<p><strong>有一定追求和想法，想进一步打造个人品牌，推荐自建博客。希望便捷低成本的选择静态框架，希望拥有更多功能和玩法的选择动态框架</strong></p>
+<p><strong>专注文档知识积累的选择文档和知识库管理工具</strong></p>
+<p><strong>话说回来，博客内容才是关键，样式那些花里胡哨的可有可无，当然设计精美的博客总是能更吸引人眼球。</strong></p>
+<p>有精力的话可以运营多平台，扩大影响力，通过一键同步脚本简化操作。</p>
+<h1 id="个人站点搭建流程"><a href="#个人站点搭建流程" class="headerlink" title="个人站点搭建流程"></a>个人站点搭建流程</h1><p>不同框架只是内部引擎不太一样，流程基本相同：</p>
 <ol>
 <li>确定博客框架，下载并安装对应的环境</li>
 <li>配置主题模版，有需要的话可以安装插件，修改配置和样式。</li>
@@ -508,10 +592,10 @@
 <li>可以创建图床，通过url链接引用。（可以直接放在GitHub中，如果嫌图片访问慢，可以使用云服务）</li>
 </ol>
 </li>
-<li>部署：<ol>
-<li>免费的<strong>静态网页托管</strong>服务：GitHub Pages、Gitee Pages。</li>
+<li>部署发布：如果没有发布需求，只想本地看看到上一步就可以了<ol>
+<li>免费的<strong>静态网页托管</strong>服务：GitHub Pages、Gitee Pages。只适用于SSG</li>
 <li>购买云服务器，自行部署：阿里云、腾讯云，使用服务器公网IP</li>
-<li>本地主机：可以使用树莓派作为小型服务器。外网访问需要申请公网IP。如果没有公网IP，可以使用内网穿透服务。</li>
+<li>本地主机服务：可以使用树莓派作为小型服务器。外网访问需要自行申请公网IP。如果没有公网IP，可以使用内网穿透服务。</li>
 </ol>
 </li>
 <li>绑定域名：<ol>
@@ -526,67 +610,51 @@
 <p>域名指向国内的服务器需要备案，指向国外的服务器不需要备案。</p>
 <p>GitHub Pages是国外主机，因此不需要备案。</p>
 </blockquote>
-<h1 id="电子书"><a href="#电子书" class="headerlink" title="电子书"></a>电子书</h1><p>除了上面提到的几种方式之外，还有专门的电子书、笔记等框架。不同于博客的随意性，电子书更适合创作专题内容和系列文章。</p>
-<p>常用的如</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.gitbook.com/">GitBook</a>：<ul>
-<li>gitbook-cli：一个基于Node的命令行工具，用于生成静态网页，可以托管到GitPages，支持本地运行预览。<strong>相比gitbook.com更加轻量，可惜已经不再维护</strong></li>
-<li>gitbook.com：一个写作平台，发布到gitbook子域名，例如<code>https://afauria.gitbook.io/</code>，优点是可以GitHub仓库同步。缺点是国内访问慢</li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/">看云</a>：电子书阅读和创作平台，可以设置付费，已迁移到顶想云知识管理。</li>
-<li><a target="_blank" rel="noopener" href="https://www.yuque.com/dashboard">语雀</a>：文档与知识库工具，写作体验好，功能丰富，包括文档、表格、笔记、待办、团队协作、项目管理等。类似印象笔记、有道云笔记、Notion等笔记工具</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>GitBook</th>
-<th>看云</th>
-<th>语雀</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>使用</td>
-<td>本地Markdown写作，Git版本管理，生成静态网页发布</td>
-<td>使用Markdown编辑器、Git版本管理</td>
-<td>客户端或者网页在线编辑</td>
-</tr>
-<tr>
-<td>价格</td>
-<td>命令行工具免费，平台专业版收费</td>
-<td>价格免费版功能受限，私有文档需要会员</td>
-<td>免费版功能受限，公开笔记需要会员</td>
-</tr>
-<tr>
-<td>可移植性</td>
-<td>Markdown文档</td>
-<td>可移植性支持导出电子书</td>
-<td>支持导入导出Markdown、电子书等格式，可能存在兼容性问题</td>
-</tr>
-</tbody></table>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>本文介绍了几种博客搭建的方式，可以明显看到个人倾向是静态框架。没有介绍具体的搭建步骤，官方文档写的更好。</p>
+<p>我个人用的是Hexo+GitHub Pages+自定义域名，平常用Markdown写作，使用Git管理源文件，写完一键发布。</p>
+<p>电子书使用的是GitBook，主要用来构建知识体系。</p>
 <blockquote>
 <p>注：hexo需要新版本node，gitbook-cli只能通过旧版本node运行，因此无法共存。</p>
 <p>使用n管理node版本：使用hexo时切换到<code>n node/14.17.6</code>，使用gitbook-cli时切换到<code>n node/10.24.0</code></p>
 </blockquote>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>本文介绍了几种博客搭建的方式，可以明显看到个人倾向是静态框架。</p>
-<p>我个人用的是Hexo+GitHub Pages，平常用Markdown写作，使用Git管理源文件，写完一键发布。</p>
-<p>电子书使用的是GitBook，主要用来构建知识体系。</p>
 <p>基本没有做推广和运营，导致曝光率不高，后续可能会同步到其他平台，提高曝光率，当然创作水平也有待提升。</p>
+<p>TODO：</p>
+<ul>
+<li>由于GitBook已经不再维护，计划迁移到其他知识库工具。</li>
+<li>一键发布多平台脚本，参考<a target="_blank" rel="noopener" href="https://github.com/onblog/BlogHelper">写作助手</a></li>
+<li>文章加密访问，权限校验</li>
+</ul>
 <p>参考资料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://staticsitegenerators.net/">静态站点生成器列表</a>：（SSG，Static Site Generator）</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/twg666/article/details/124748337">静态/动态博客Blog框架简介</a>：<ul>
+<li>静态框架：Hexo、Hugo、VuePress、Jekyll</li>
+<li>动态框架：WordPress、Typecho、Halo、Solo</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Java_stud/article/details/120046606">https://blog.csdn.net/Java_stud/article/details/120046606</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.helloworld.net/p/9060295773">https://www.helloworld.net/p/9060295773</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.yingxiaoo.com/161181.html">https://www.yingxiaoo.com/161181.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.wbolt.com/best-blogging-platform.html">https://www.wbolt.com/best-blogging-platform.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.websiteplanet.com/zh-hans/blog/%E5%A4%A7%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0%E5%BB%BA%E7%AB%99%E5%B7%A5%E5%85%B7/">https://www.websiteplanet.com/zh-hans/blog/%E5%A4%A7%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0%E5%BB%BA%E7%AB%99%E5%B7%A5%E5%85%B7/</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.lsbin.com/9294.html">https://www.lsbin.com/9294.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.51cto.com/lovebetterworld/4796485">https://blog.51cto.com/lovebetterworld/4796485</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7125083795023691812">https://juejin.cn/post/7125083795023691812</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/twg666/article/details/124748337">https://blog.csdn.net/twg666/article/details/124748337</a></p>
-<p>Wix、SquareSpace、Joomla、Medium.com、Ghost、Weebly、Blogger、Tumblr</p>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.helloworld.net/p/9060295773">11个最流行的静态(博客)网站生成工具</a>：Jekyll、Octopress、Hexo、Hugo、Pelican、Middleman、Metalsmith、DocPad、Wintersmith、Cactus、HubPress</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7125083795023691812">静态博客搭建工具汇总</a>：Jekyll、Hugo、Hexo、Sphinx、MkDocs、Docsify、Nuxt、VuePress、GitBook、WordPress、Read the Docs</li>
+<li><a target="_blank" rel="noopener" href="https://blog.51cto.com/lovebetterworld/4796485">整理最全的博客建站工具，各种博客、创作平台、写作、博客工具合集</a>：Halo、Hexo、Solo、PerfreeBlog、OneBlog、Tale、My Blog、My Site、Bolo、WordPress、Typecho、B3log、Hugo、DoraCMS、VuePress、VitePress、Docsify、Jekyll、Docusaurus</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Java_stud/article/details/120046606">爆肝1个多月，严选10大热门静态博客框架</a>：Solo、Pelican、Hexo、Jekyll、Octopress、Hugo、VuePress、GitBook、Docsify、WordPress.org</li>
+<li><a target="_blank" rel="noopener" href="https://www.yingxiaoo.com/161181.html">写博客的网站有哪些，10个最佳博客网站介绍？</a>：WordPress.org、Wix.com、Joomla.com、WordPress.com、Medium.com、Ghost.com、Squarespace.com、Weebly.com、Blogger.com、Tumblr.com</li>
+<li><a target="_blank" rel="noopener" href="https://www.wbolt.com/best-blogging-platform.html">15个最佳自主搭建及托管博客平台</a>：自托管博客平台WordPress.org、Drupal、Ghost、Joomla，三方托管博客平台WordPress.com、Blogger、Medium、HubSpot CMS、Wix、Squarespace、Weebly、Typepad、LiveJournal、Tumblr、Instagram</li>
+<li><a target="_blank" rel="noopener" href="https://www.websiteplanet.com/zh-hans/blog/%E5%A4%A7%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0%E5%BB%BA%E7%AB%99%E5%B7%A5%E5%85%B7/">2022年5大免费博客平台建站工具</a>：Wix、WordPress.com、SquareSpace、SITE123、Webnode</li>
+<li><a target="_blank" rel="noopener" href="https://www.lsbin.com/9294.html">最新热门的12个最佳博客平台合集</a>：<ul>
+<li>CMS Hub 提供丰富的功能</li>
+<li>WordPress丰富的主题和强大的插件</li>
+<li>Squarespace设计、视觉精美</li>
+<li>快速设置的 Wix</li>
+<li>Weebly 易于使用</li>
+<li>用于定制的工艺 CMS</li>
+<li>Contently 用于企业内容营销</li>
+<li>Joomla 社区建设</li>
+<li>Drupal 的灵活性</li>
+<li>Write.as隐私</li>
+<li>简单Blogger</li>
+<li>多媒体 Tumblr</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -692,7 +760,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E9%9C%80%E8%A6%81%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么你需要一个博客？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%86%99%E4%BA%9B%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">可以写些什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">博客搭建的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%86%99%E4%BD%9C%E6%96%B9%E5%BC%8F%E4%B8%8A%E5%88%92%E5%88%86"><span class="nav-number">4.1.</span> <span class="nav-text">从写作方式上划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%8F%91%E5%B8%83%E6%96%B9%E5%BC%8F%E4%B8%8A%E5%88%92%E5%88%86"><span class="nav-number">4.2.</span> <span class="nav-text">从发布方式上划分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">选择合适的框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%80%89%E6%8B%A9%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B9%B3%E5%8F%B0%EF%BC%9F"><span class="nav-number">5.1.</span> <span class="nav-text">为什么不选择第三方平台？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">5.2.</span> <span class="nav-text">静态网站的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="nav-number">6.</span> <span class="nav-text">第三方博客平台</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">7.</span> <span class="nav-text">自建博客</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E4%B9%A6"><span class="nav-number">8.</span> <span class="nav-text">电子书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">9.</span> <span class="nav-text">结语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E9%9C%80%E8%A6%81%E4%B8%80%E4%B8%AABlog%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么你需要一个Blog？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%86%99%E4%BA%9B%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">可以写些什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%90%AD%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">个人站点搭建方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%86%99%E4%BD%9C%E6%96%B9%E5%BC%8F%E4%B8%8A%E5%88%92%E5%88%86"><span class="nav-number">4.1.</span> <span class="nav-text">从写作方式上划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%8F%91%E5%B8%83%E6%96%B9%E5%BC%8F%E4%B8%8A%E5%88%92%E5%88%86"><span class="nav-number">4.2.</span> <span class="nav-text">从发布方式上划分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E5%92%8C%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB"><span class="nav-number">5.</span> <span class="nav-text">平台和工具汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="nav-number">5.1.</span> <span class="nav-text">第三方博客平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%8D%9A%E5%AE%A2%E6%A1%86%E6%9E%B6"><span class="nav-number">5.2.</span> <span class="nav-text">动态博客框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%AB%99%E7%82%B9%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88SSG%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">静态站点生成器（SSG）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%96%B9%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">5.4.</span> <span class="nav-text">三方文档管理工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">6.</span> <span class="nav-text">选择合适的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%80%89%E6%8B%A9%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B9%B3%E5%8F%B0%EF%BC%9F"><span class="nav-number">6.1.</span> <span class="nav-text">为什么不选择第三方平台？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">6.2.</span> <span class="nav-text">静态网站的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E7%AB%99%E7%82%B9%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">7.</span> <span class="nav-text">个人站点搭建流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -808,13 +876,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">601k</span>
+    <span title="站点总字数">603k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">9:07</span>
+    <span title="站点阅读时长">9:09</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2022-11-30</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2018/07/15/blog-2018-07-15-Jekyll/</loc>
     <lastmod>2022-11-24</lastmod>
   </url>
@@ -10,10 +14,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2021/10/01/blog-2021-10-01-GitPages/</loc>
-    <lastmod>2022-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2022-11-24</lastmod>
   </url>
   <url>
