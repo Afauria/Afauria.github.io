@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/</loc>
+    <lastmod>2022-12-01</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2022-11-30</lastmod>
+    <lastmod>2022-12-01</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2022-12-01</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2022-12-01</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</loc>
+    <lastmod>2022-12-01</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/07/15/blog-2018-07-15-Jekyll/</loc>
@@ -15,10 +31,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2021/10/01/blog-2021-10-01-GitPages/</loc>
     <lastmod>2022-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2018/11/18/note-2018-11-18-MacBook%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-11-21</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/10/20/blog-2018-10-20-NexTConfig/</loc>
@@ -39,10 +51,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/10/18/blog-2018-10-18-Hexo%E6%89%8B%E5%86%8C/</loc>
     <lastmod>2022-11-18</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/</loc>
-    <lastmod>2022-11-16</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/09/01/geek-2022-09-01-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/</loc>
@@ -313,10 +321,6 @@
     <lastmod>2021-12-20</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2021-12-16</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2018/07/15/tool-2018-07-15-ELK/</loc>
     <lastmod>2021-12-16</lastmod>
   </url>
@@ -347,10 +351,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2021/09/14/tech-2021-09-14-%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/</loc>
     <lastmod>2021-12-03</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</loc>
-    <lastmod>2021-11-18</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2021/07/31/architecture-2021-07-31-Android%E4%B8%AD%E7%9A%84MVC%E3%80%81MVP%E3%80%81MVVM/</loc>
