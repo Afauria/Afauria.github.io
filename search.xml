@@ -10261,9 +10261,11 @@ end</pre>
       </tags>
   </entry>
   <entry>
-    <title>NPM笔记</title>
+    <title>Node和NPM笔记</title>
     <url>/2021/04/12/note-2021-04-12-NPM/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>NPM（Node Package Manager）：NodeJS的包管理工具和服务，已被GitHub收购。</p>
+    <content><![CDATA[<h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><p>NodeJS是开源的JavaScript运行环境。</p>
+<p>安装方式：<a href="https://nodejs.org/en/download/">NodeJS官网</a>下载压缩包，解压，配置环境变量即可</p>
+<h1 id="NPM"><a href="#NPM" class="headerlink" title="NPM"></a>NPM</h1><p>NPM（Node Package Manager）：NodeJS的包管理工具和服务，已被GitHub收购。</p>
 <p>使用方法参考<a href="https://www.npmjs.com.cn/">NPM中文文档</a>或者<code>npm help</code></p>
 <ul>
 <li>-g：表示全局安装，默认只安装到当前目录的node_modules中</li>
