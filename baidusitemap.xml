@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
-    <lastmod>2022-12-04</lastmod>
+    <loc>https://blog.afauria.xyz/2021/05/14/webdev-2021-05-14-%E5%89%8D%E7%AB%AF%E7%AE%80%E4%BB%8B/</loc>
+    <lastmod>2022-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2022-12-09</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2022-12-01</lastmod>
+    <lastmod>2022-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2022-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/10/01/blog-2021-10-01-GitPages/</loc>
+    <lastmod>2022-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/12/06/architecture-2021-12-06-SPI/</loc>
+    <lastmod>2022-12-05</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
+    <lastmod>2022-12-04</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2019/02/27/android-2019-02-27-AndroidError/</loc>
@@ -21,10 +41,6 @@
     <lastmod>2022-12-01</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/07/29/architecture-2021-07-29-%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2022-12-01</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2021/05/16/tech-2021-05-16-%E5%A6%82%E4%BD%95%E6%8A%8AA%E7%BD%91%E7%AB%99%E6%95%B0%E6%8D%AE%E7%88%AC%E5%88%B0B%E7%BD%91%E7%AB%99%E6%98%BE%E7%A4%BA/</loc>
     <lastmod>2022-12-01</lastmod>
   </url>
@@ -34,10 +50,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/10/17/blog-2018-10-17-Hexo/</loc>
-    <lastmod>2022-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/10/01/blog-2021-10-01-GitPages/</loc>
     <lastmod>2022-11-24</lastmod>
   </url>
   <url>
@@ -293,10 +305,6 @@
     <lastmod>2022-02-22</lastmod>
   </url>
   <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2022-02-22</lastmod>
-  </url>
-  <url>
     <loc>https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/</loc>
     <lastmod>2022-01-10</lastmod>
   </url>
@@ -331,10 +339,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2018/04/14/personal-2018-04-14-AsPoetry/</loc>
     <lastmod>2021-12-15</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/12/06/architecture-2021-12-06-SPI/</loc>
-    <lastmod>2021-12-12</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2018/12/14/tool-2018-12-14-Cmder/</loc>
