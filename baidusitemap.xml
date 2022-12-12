@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.afauria.xyz/2021/04/04/%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/</loc>
+    <lastmod>2022-12-12</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2019/02/27/android-2019-02-27-AndroidError/</loc>
+    <lastmod>2022-12-12</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2022-12-09</lastmod>
+  </url>
+  <url>
     <loc>https://blog.afauria.xyz/2021/05/14/webdev-2021-05-14-%E5%89%8D%E7%AB%AF%E7%AE%80%E4%BB%8B/</loc>
     <lastmod>2022-12-09</lastmod>
   </url>
@@ -10,10 +22,6 @@
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/11/15/blog-2022-11-15-%E6%B5%85%E8%B0%88%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2022-12-09</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/05/16/webdev-2021-05-16-%E5%89%8D%E7%AB%AF%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2022-12-09</lastmod>
   </url>
   <url>
@@ -27,10 +35,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2021/04/12/note-2021-04-12-NPM/</loc>
     <lastmod>2022-12-04</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2019/02/27/android-2019-02-27-AndroidError/</loc>
-    <lastmod>2022-12-01</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2022/11/17/blog-2022-11-17-WordPress/</loc>
@@ -195,10 +199,6 @@
   <url>
     <loc>https://blog.afauria.xyz/2019-06-28-Travel.html</loc>
     <lastmod>2022-03-22</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.afauria.xyz/2021/04/04/%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/</loc>
-    <lastmod>2022-03-21</lastmod>
   </url>
   <url>
     <loc>https://blog.afauria.xyz/2019-11-11-ISee.html</loc>

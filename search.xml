@@ -8,7 +8,7 @@
 <li>关联的知识和文章越来越多，由于不是同时写的，放在博客中很散乱，难以关联阅读。</li>
 <li>另外就是文章日期的维护和管理太麻烦了。</li>
 </ol>
-<center><a href="https://blog.afauria.xyz/KnowledgeTree/" style="font-size:30px">点此进入</a></center>
+<center><a href="https://blog.afauria.xyz/LearningBase" style="font-size:30px">点此进入</a></center>
 
 ]]></content>
   </entry>
@@ -10155,7 +10155,8 @@ end</pre>
 </ol>
 </li>
 </ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这里只提供一些思路，具体使用遇到问题可以针对性的去查。</p>
+<ol>
 <li>简单的网站使用http server部署即可。如果需要配置代理服务等使用下面的方式</li>
 <li>内部网站或者开发过程中可以使用Vite或者Node等开发工具部署。</li>
 <li>公共网站打包部署到Nginx或者其他专业服务器上。</li>
@@ -12090,8 +12091,7 @@ dispatchMessage-->判断是否是通知消息
   <entry>
     <title>Android常见异常及解决方案</title>
     <url>/2019/02/27/android-2019-02-27-AndroidError/</url>
-    <content><![CDATA[<p>关于Java异常，可以参考<a href="/KnowledgeTree/">知识体系</a></p>
-<h1 id="常见编译错误"><a href="#常见编译错误" class="headerlink" title="常见编译错误"></a>常见编译错误</h1><h2 id="内存不足，无法启动虚拟机"><a href="#内存不足，无法启动虚拟机" class="headerlink" title="内存不足，无法启动虚拟机"></a>内存不足，无法启动虚拟机</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">Could not reserve enough space <span class="keyword">for</span> 1572864KB object heap</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h1 id="常见编译错误"><a href="#常见编译错误" class="headerlink" title="常见编译错误"></a>常见编译错误</h1><h2 id="内存不足，无法启动虚拟机"><a href="#内存不足，无法启动虚拟机" class="headerlink" title="内存不足，无法启动虚拟机"></a>内存不足，无法启动虚拟机</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">Could not reserve enough space <span class="keyword">for</span> 1572864KB object heap</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2019/02/27/android-2019-02-27-AndroidError/error01.png" alt="内存不足"></p>
 <p>解决方案：</p>
