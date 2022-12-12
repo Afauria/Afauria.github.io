@@ -53,6 +53,6 @@ QQ：410013112
 
 # 知识体系
 
-Todo1：计划将一些基础知识和体系逐步整理到GitBook中，不发布在博客里面（整理中，暂未开放）：[KnowledgeTree](/KnowledgeTree/)
+Todo1：计划将一些基础知识和体系逐步整理到GitBook中，不发布在博客里面（整理中，暂未开放）：[LearningBase](/LearningBase/)
 
 Todo2：早期的文章比较稚嫩，质量比较低，有点充数，markdown用的也不好，格式比较杂乱，找个时间要给他重新整下

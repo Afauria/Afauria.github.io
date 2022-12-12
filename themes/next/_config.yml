@@ -118,7 +118,7 @@ darkmode: false
 menu:
   home: /|| home fa fa-home
   about: /about/|| user fa fa-user
-  knowledge: /KnowledgeTree/ || graduation-cap fa fa-graduation-cap
+  knowledge: /LearningBase/ || graduation-cap fa fa-graduation-cap
   collection: /collection/|| suitcase fa fa-suitcase
   tags: /tags/|| tags fa fa-tags
   categories: /categories/|| th fa fa-th
@@ -205,7 +205,7 @@ links_settings:
   layout: block
 
 links:
-  基础知识和知识体系整理: https://Afauria.github.io/KnowledgeTree/
+  基础知识和知识体系整理: https://Afauria.github.io/LearningBase/
   牛客笔记: https://blog.nowcoder.net/afauria
   站点和在线工具收藏: /collection/
   软件和工具收藏: /software/
@@ -632,7 +632,7 @@ valine:
   language: # Language, available values: en, zh-cn
   visitor: true # Article reading statistic
   comment_count: true # If false, comment count will only be displayed in post page, not in home page
-  recordIP: false # Whether to record the commenter IP
+  recordIP: true # Whether to record the commenter IP
   serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
   #post_meta_order: 0
 

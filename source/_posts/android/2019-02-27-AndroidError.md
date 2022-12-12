@@ -10,8 +10,6 @@ tags:
 keywords: [android, java]
 ---
 
-关于Java异常，可以参考[知识体系](/KnowledgeTree/)
-
 # 常见编译错误
 
 ## 内存不足，无法启动虚拟机
