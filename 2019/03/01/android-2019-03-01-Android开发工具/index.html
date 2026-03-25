@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.afauria.xyz/2019/03/01/android-2019-03-01-Android%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Win10%E5%BC%80%E5%90%AF%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF.png">
 <meta property="article:published_time" content="2019-02-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-22T01:00:03.922Z">
+<meta property="article:modified_time" content="2023-09-21T14:37:25.526Z">
 <meta property="article:author" content="Afauria">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="工具">
@@ -241,7 +241,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-22 09:00:03" itemprop="dateModified" datetime="2022-08-22T09:00:03+08:00">2022-08-22</time>
+                <time title="修改时间：2023-09-21 22:37:25" itemprop="dateModified" datetime="2023-09-21T22:37:25+08:00">2023-09-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,14 +280,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.3k</span>
+              <span>6.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>6 分钟</span>
             </span>
             <div class="post-description">Android开发工具说明、常用命令手册和问题解决，ADB、模拟器。</div>
 
@@ -309,26 +309,6 @@
 <ol start="2">
 <li>执行<code>source .bash_profile</code>生效，如果使用了<code>zsh</code>，在<code>~/.zshrc</code>文件末尾添加<code>source ~/.bash_profile</code></li>
 </ol>
-<h2 id="常用adb命令"><a href="#常用adb命令" class="headerlink" title="常用adb命令"></a>常用adb命令</h2><ul>
-<li><code>adb connect &lt;手机ip[:端口号]&gt;</code>：连接adb，默认端口号为5555</li>
-<li><code>adb disconnect</code>：断开连接</li>
-<li><code>adb devices</code>：查看连接的设备</li>
-<li><code>adb [command] --help</code>：查看某个命令的帮助</li>
-<li><code>adb install 电脑路径/xxx.apk</code>：安装apk到手机。-r覆盖安装，-t安装测试包，-d忽略版本大小</li>
-<li><code>adb pull 手机存储路径 电脑路径</code>：从手机拷贝到电脑</li>
-<li><code>adb push 电脑路径 手机存储路径</code>：从电脑拷贝到手机</li>
-<li><code>adb shell</code>：进入Android终端。<code>-s</code>：如果连接了多个设备，使用-s指定设备</li>
-<li><code>adb root</code>：开启root，大部分系统无法直接root</li>
-<li><code>adb remount</code>：挂载目录，设置为可读写（需先root），或者进入终端输入<code>mount -o remount,rw [路径]</code></li>
-<li>开启无线adb（需先root）：连接串口或USB，进入终端输入<ul>
-<li><code>stop adbd</code></li>
-<li><code>setprop service.adb.tcp.port 5555</code></li>
-<li><code>start adbd</code></li>
-</ul>
-</li>
-<li><code>adb kill-server</code>：杀死adb服务</li>
-<li><code>adb start-server</code>：启动adb服务</li>
-</ul>
 <h2 id="无线连接ADB"><a href="#无线连接ADB" class="headerlink" title="无线连接ADB"></a>无线连接ADB</h2><p>参考<a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/adb">官方文档</a></p>
 <p>Android11及更高版本：开发者选项中打开无线调试</p>
 <p>Android10及以下：</p>
@@ -345,7 +325,7 @@
 <li><code>dmesg</code>：查看linux kernel开机日志</li>
 </ul>
 <p>adb logcat [选项] [过滤项]</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">选项</span><br><span class="line">&quot;-s&quot;: 设置输出日志的标签, 只显示该标签的日志;</span><br><span class="line">&quot;-f&quot;: 将日志输出到文件, 默认输出到标准输出流中, -f 参数执行不成功;</span><br><span class="line">&quot;-r&quot;: 按照每千字节输出日志, 需要 -f 参数, 不过这个命令没有执行成功;</span><br><span class="line">&quot;-n&quot;: 设置日志输出的最大数目, 需要 -r 参数, 这个执行 感觉 跟 adb logcat 效果一样;</span><br><span class="line">&quot;-v&quot;: 设置日志的输出格式, 注意只能设置一项;</span><br><span class="line">&quot;-c&quot;: 清空所有的日志缓存信息;</span><br><span class="line">&quot;-d&quot;: 将缓存的日志输出到屏幕上, 并且不会阻塞;</span><br><span class="line">&quot;-t&quot;: 输出最近的几行日志, 输出完退出, 不阻塞;</span><br><span class="line">&quot;-g&quot;: 查看日志缓冲区信息;</span><br><span class="line">&quot;-b&quot;: 加载一个日志缓冲区, 默认是 main, 下面详解;</span><br><span class="line">&quot;-B&quot;: 以二进制形式输出日志;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">选项</span><br><span class="line">&quot;-s&quot;: 设置输出日志的标签, 只显示该标签的日志;</span><br><span class="line">&quot;-f&quot;: 将日志输出到文件, 默认输出到标准输出流中;</span><br><span class="line">&quot;-r&quot;: 按照每千字节输出日志, 需要 -f 参数;</span><br><span class="line">&quot;-n&quot;: 设置日志输出的最大数目, 需要 -r 参数;</span><br><span class="line">&quot;-v&quot;: 设置日志的输出格式, 注意只能设置一项;</span><br><span class="line">&quot;-c&quot;: 清空所有的日志缓存信息;</span><br><span class="line">&quot;-d&quot;: 将缓存的日志输出到屏幕上, 并且不会阻塞;</span><br><span class="line">&quot;-t&quot;: 输出最近的几行日志, 输出完退出, 不阻塞;</span><br><span class="line">&quot;-g&quot;: 查看日志缓冲区信息;</span><br><span class="line">&quot;-b&quot;: 加载一个日志缓冲区, 默认是 main;</span><br><span class="line">&quot;-B&quot;: 以二进制形式输出日志;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">过滤项格式 : &lt;tag&gt;[:priority] , 标签：日志等级, 默认的日志过滤项是&quot;*:I&quot;;如&quot;*:E&quot;表示过滤Error以上。</span><br><span class="line">-- V : Verbose (明细);</span><br><span class="line">-- D : Debug (调试);</span><br><span class="line">-- I : Info (信息);</span><br><span class="line">-- W : Warn (警告);</span><br><span class="line">-- E : Error (错误);</span><br><span class="line">-- F: Fatal (严重错误);</span><br><span class="line">-- S : Silent(Super all output) (最高的优先级, 可能不会记载东西);</span><br></pre></td></tr></table></figure>
 
@@ -368,8 +348,7 @@
 <li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
 </ul>
 <h2 id="pm"><a href="#pm" class="headerlink" title="pm"></a>pm</h2><ul>
-<li><p><code>pm list package -f </code>：输出所有已安装apk</p>
-<ul>
+<li><code>pm list package -f </code>：输出所有已安装apk<ul>
 <li>-f：输出安装路径</li>
 <li>-3：过滤出第三方应用</li>
 <li>-s：过滤出系统应用</li>
@@ -379,28 +358,19 @@
 <li>–user USER_ID：过滤指定userid应用</li>
 </ul>
 </li>
-<li><p><code>pm install/uninstall &lt;apk文件&gt;</code>：安装应用，-r覆盖安装，-t安装测试包，-d忽略版本大小</p>
-</li>
-<li><p><code>pm path [package_name]</code>：查看应用安装路径</p>
-</li>
-<li><p><code>pm dump &lt;packagename&gt;</code>：查看应用信息</p>
-</li>
-<li><p><code>pm clear</code>：清除应用缓存数据</p>
-</li>
-<li><p><code>pm enable/disable &lt;包名/组件名&gt;</code>：启用/禁用组件，设置为disable之后组件无法运行。如开机向导应用，运行完毕之后禁用，下次开机就会直接进入桌面</p>
-</li>
-<li><p><code>pm list permissions [group]</code>：输出已知权限</p>
-<ul>
+<li><code>pm install/uninstall &lt;apk文件&gt;</code>：安装应用，-r覆盖安装，-t安装测试包，-d忽略版本大小</li>
+<li><code>pm path [package_name]</code>：查看应用安装路径</li>
+<li><code>pm dump &lt;packagename&gt;</code>：查看应用信息</li>
+<li><code>pm clear</code>：清除应用缓存数据</li>
+<li><code>pm enable/disable &lt;包名/组件名&gt;</code>：启用/禁用组件，设置为disable之后组件无法运行。如开机向导应用，运行完毕之后禁用，下次开机就会直接进入桌面</li>
+<li><code>pm list permissions [group]</code>：输出已知权限<ul>
 <li><code>-d</code>：仅列出危险权限</li>
 <li><code>-g</code>：按组进行整理</li>
 </ul>
 </li>
-<li><p><code>pm list features</code>：输出系统支持的功能</p>
-</li>
-<li><p><code>pm list libraries</code>：输出系统支持的所有库</p>
-</li>
-<li><p><code>pm list users</code>：输出系统中的所有用户</p>
-</li>
+<li><code>pm list features</code>：输出系统支持的功能</li>
+<li><code>pm list libraries</code>：输出系统支持的所有库</li>
+<li><code>pm list users</code>：输出系统中的所有用户</li>
 </ul>
 <h2 id="am"><a href="#am" class="headerlink" title="am"></a>am</h2><ul>
 <li><code>am start</code>、<code>am startservice</code>、<code>am broadcast</code>：启动组件<ul>
@@ -455,7 +425,6 @@
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
 <li><code>kill -9 $(pidof com.afauria.sample)</code>：kill某个应用进程，避免每次ps查看进程号</li>
 <li><code>uiautomator dump [file]</code>：输出layout结构层级</li>
-<li><code>logcat -d -f &lt;文件名&gt;</code>：输出日志，-d表示将缓存日志全部输出</li>
 <li><code>dmesg</code>：查看内核日志</li>
 <li><code>cat /sys/class/net/wlan0/address</code>：查看mac地址</li>
 <li><code>svc wifi enable/disable</code>：开启/关闭wifi</li>
@@ -479,6 +448,7 @@
 <li><code>ping</code>：尝试连接ip或域名</li>
 <li><code>chmod [权限数字] [路径]</code>：修改文件权限，777表示任何用户可读可写</li>
 <li><code>md5 [文件]</code>：获取文件md5值</li>
+<li><code>appops set 包名 &lt;SYSTEM_ALERT_WINDOW/READ_EXTERNAL_STORAGE&gt; &lt;allow/deny/ignore&gt;</code>：权限设置</li>
 </ul>
 <h1 id="终端登录工具"><a href="#终端登录工具" class="headerlink" title="终端登录工具"></a>终端登录工具</h1><ol>
 <li>adb shell</li>
@@ -647,7 +617,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB%EF%BC%88Android-Debug-Bridge%EF%BC%89%E5%AE%89%E5%8D%93%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">ADB（Android Debug Bridge）安卓调试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">Mac配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8adb%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">常用adb命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E8%BF%9E%E6%8E%A5ADB"><span class="nav-number">1.3.</span> <span class="nav-text">无线连接ADB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%97%A5%E5%BF%97"><span class="nav-number">1.4.</span> <span class="nav-text">输出设备日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8android%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C"><span class="nav-number">2.</span> <span class="nav-text">常用android调试命令手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-number">2.1.</span> <span class="nav-text">dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pm"><span class="nav-number">2.2.</span> <span class="nav-text">pm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am"><span class="nav-number">2.3.</span> <span class="nav-text">am</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input"><span class="nav-number">2.4.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E7%9B%B8%E5%85%B3"><span class="nav-number">2.5.</span> <span class="nav-text">性能相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E7%99%BB%E5%BD%95%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">终端登录工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prop%E5%B1%9E%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">Prop属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">设置方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.3.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E8%BF%90%E8%A1%8CAndroid%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Windows运行Android模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intel-CPU"><span class="nav-number">5.1.1.</span> <span class="nav-text">Intel CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMD-CPU"><span class="nav-number">5.1.2.</span> <span class="nav-text">AMD CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%BC%80Hyper-V%E6%8A%80%E6%9C%AF"><span class="nav-number">5.1.3.</span> <span class="nav-text">打开Hyper-V技术</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ADB%EF%BC%88Android-Debug-Bridge%EF%BC%89%E5%AE%89%E5%8D%93%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">ADB（Android Debug Bridge）安卓调试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">Mac配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E8%BF%9E%E6%8E%A5ADB"><span class="nav-number">1.2.</span> <span class="nav-text">无线连接ADB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%97%A5%E5%BF%97"><span class="nav-number">1.3.</span> <span class="nav-text">输出设备日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8android%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C"><span class="nav-number">2.</span> <span class="nav-text">常用android调试命令手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumpsys"><span class="nav-number">2.1.</span> <span class="nav-text">dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pm"><span class="nav-number">2.2.</span> <span class="nav-text">pm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#am"><span class="nav-number">2.3.</span> <span class="nav-text">am</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input"><span class="nav-number">2.4.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E7%9B%B8%E5%85%B3"><span class="nav-number">2.5.</span> <span class="nav-text">性能相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E7%99%BB%E5%BD%95%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">终端登录工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prop%E5%B1%9E%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">Prop属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">设置方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.3.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E8%BF%90%E8%A1%8CAndroid%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Windows运行Android模拟器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intel-CPU"><span class="nav-number">5.1.1.</span> <span class="nav-text">Intel CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMD-CPU"><span class="nav-number">5.1.2.</span> <span class="nav-text">AMD CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%BC%80Hyper-V%E6%8A%80%E6%9C%AF"><span class="nav-number">5.1.3.</span> <span class="nav-text">打开Hyper-V技术</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -663,7 +633,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -753,7 +723,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -763,13 +733,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">606k</span>
+    <span title="站点总字数">593k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">9:11</span>
+    <span title="站点阅读时长">8:59</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -864,7 +834,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       visitor    : true,
       lang       : '' || 'zh-cn',
       path       : location.pathname,
-      recordIP   : false,
+      recordIP   : true,
       serverURLs : ''
     });
   }, window.Valine);

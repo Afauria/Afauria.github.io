@@ -13,6 +13,71 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Docker构建</title>
+    <url>/2024/02/13/tool-2024-2-13-Docker%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="Docker构建"><a href="#Docker构建" class="headerlink" title="Docker构建"></a>Docker构建</h1><h2 id="Dockerfile配置"><a href="#Dockerfile配置" class="headerlink" title="Dockerfile配置"></a>Dockerfile配置</h2><p><a href="https://docs.docker.com/reference/dockerfile/">Dockerfile文档</a></p>
+<p>举例python后端配置</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用Python 3.9的slim版本作为基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.9</span>-slim</span><br><span class="line"></span><br><span class="line"><span class="comment"># RUN在build镜像时运行</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; apt-get install -y \</span></span><br><span class="line"><span class="bash">    build-essential \</span></span><br><span class="line"><span class="bash">    default-libmysqlclient-dev \</span></span><br><span class="line"><span class="bash">    pkg-config \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录为/app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制requirements.txt文件到工作目录</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> requirements.txt requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将RUN根据调用频次分成两步，可以加快构建速度</span></span><br><span class="line"><span class="comment"># 安装Python依赖</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install --upgrade pip \</span></span><br><span class="line"><span class="bash">    &amp;&amp; pip install -r requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制所有文件到工作目录</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置镜像环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> MYSQL_HOST=$&#123;MYSQL_HOST&#125;</span><br><span class="line"><span class="keyword">ENV</span> MYSQL_USER=$&#123;MYSQL_USER&#125;</span><br><span class="line"><span class="keyword">ENV</span> MYSQL_PASSWORD=$&#123;MYSQL_PASSWORD&#125;</span><br><span class="line"><span class="keyword">ENV</span> MYSQL_DB=$&#123;MYSQL_DATABASE&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># CMD在启动容器时运行</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">&quot;gunicorn&quot;</span>, <span class="string">&quot;-b&quot;</span>, <span class="string">&quot;0.0.0.0:8000&quot;</span>, <span class="string">&quot;app:app&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>前端配置：先打包程序，再部署到nginx</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: 使用Node.js镜像来打包程序</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">20</span>-alpine as build-stage</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装项目依赖和复制文件</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> package*.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制剩余的项目文件</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成构建文件</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm run build</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 多阶段构建，最终发布只用nginx镜像+静态资源文件</span></span><br><span class="line"><span class="comment"># Step 2: 使用Nginx镜像来部署构建好的文件</span></span><br><span class="line"><span class="keyword">FROM</span> nginx:stable-alpine as production-stage</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝构建的文件到Nginx默认发布目录</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=build-stage /app/dist /usr/share/nginx/html</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果有自定义的Nginx配置，拷贝配置文件（可选）</span></span><br><span class="line"><span class="comment"># COPY nginx.conf /etc/nginx/nginx.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露Nginx端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动Nginx</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Docker网络配置"><a href="#Docker网络配置" class="headerlink" title="Docker网络配置"></a>Docker网络配置</h1><p><code>docker network ls</code>：查看Docker网络配置</p>
+<p><code>docker network inspect &lt;NetworkID&gt;</code>：查看网络配置详情</p>
+<h2 id="默认桥接模式-bridge"><a href="#默认桥接模式-bridge" class="headerlink" title="默认桥接模式(bridge)"></a>默认桥接模式(bridge)</h2><p>这是Docker的默认网络模式。Docker会为每个容器分配一个IP地址，并创建一个本地的网络桥接接口，连接所有在该主机上运行的容器。</p>
+<p>通过桥接接口，容器可以相互通信，也可以与主机上的其他服务通信。</p>
+<p>Bridge模式提供了良好的隔离性，但可能会有一定的性能开销。适用于需要容器间通信且与外部网络隔离的场景。</p>
+<pre class="mermaid">graph TB
+subgraph Docker0
+172.17.01
+end
+subgraph Docker1
+172.17.0.2
+end
+subgraph Docker2
+172.17.0.3
+end
+Docker1-->Docker0
+Docker2-->Docker0
+subgraph Host
+192.168.1.2
+end
+Docker0--IP转发-->Host</pre>
+
+<h2 id="主机模式-host"><a href="#主机模式-host" class="headerlink" title="主机模式(host)"></a>主机模式(host)</h2><p>容器共享宿主机的网络栈，使用宿主机的IP地址和端口。</p>
+<p>这种模式下，容器可以直接访问宿主机的网络资源，性能较高，但隔离性较差，可能带来安全风险。</p>
+<p>适用于需要高性能网络连接的应用。</p>
+<p>注：主机模式不允许端口映射和自定义路由规则，与主机保持一致。-p、-icc参数无效</p>
+<pre class="mermaid">graph TB
+subgraph Host
+192.168.1.2
+subgraph Docker1
+192.168.1.2:XXXX
+end
+subgraph Docker2
+192.168.1.2:YYYY
+end
+end</pre>
+
+<h2 id="容器模式-container"><a href="#容器模式-container" class="headerlink" title="容器模式(container)"></a>容器模式(container)</h2><p>多个容器共享同一个网络命名空间。</p>
+<p>一个容器可以共享另一个容器的网络栈。新创建的容器不会创建自己的网卡，配置自己的 IP</p>
+<p>适用于需要紧密协作的容器，如服务发现或负载均衡场景。</p>
+<p><code>docker run -it --net container:&lt;容器id&gt; &lt;镜像id&gt;</code></p>
+<h2 id="无网络模式-none"><a href="#无网络模式-none" class="headerlink" title="无网络模式(none)"></a>无网络模式(none)</h2><p>容器没有分配任何网络资源。无网络模式适用于不需要网络连接的容器，例如用于批处理作业或与外部网络完全隔离的容器。</p>
+<ul>
+<li>自定义网络模式(user-defined)：允许用户创建和管理自己的网络。自定义网络模式提供了更灵活的网络配置选项，例如指定子网、定义网络驱动程序和连接多个容器到同一个网络等。</li>
+</ul>
+<h2 id="自定义网络模式"><a href="#自定义网络模式" class="headerlink" title="自定义网络模式"></a>自定义网络模式</h2><p><code>docker network create custom_network</code>，默认为driver模式，会创建一个新的虚拟网桥。可以让多个容器使用该自定义网络</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>WordPress建站教程</title>
     <url>/2022/11/17/blog-2022-11-17-WordPress/</url>
     <content><![CDATA[<h1 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h1><p>全球使用最广泛、最成熟的建站平台之一</p>
@@ -2290,10 +2355,12 @@
 <li><a href="https://workspace.google.com/">Google Workspace</a>：为企业提供的工作台，用于协同办公，包含企业邮箱、企业文档、会议等工具</li>
 <li><a href="https://developers.google.com/google-ads">Google Ads</a>：广告服务</li>
 <li><a href="https://cloud.google.com/">Google Cloud</a>：提供基础服务、基础设施等。除了Android、Flutter等非云产品，所有云服务都依赖Google Cloud Platform，准确来说Android和Flutter源码、依赖库等或多或少也会用到GCP。</li>
+<li><a href="https://developers.google.com/android/guides/overview?hl=zh-cn">Google Play Service</a>：GMS（Google Mobile Service）服务介绍</li>
 </ul>
 <p>重要地址：</p>
 <ul>
 <li><a href="https://developers.google.com/products/develop">Google开发产品</a>：集合所有Google开发产品和资料，可以在这里搜索。</li>
+<li><a href="https://cloud.google.com/architecture/framework/printable?hl=zh-cn">Google Cloud架构设计</a></li>
 </ul>
 <h1 id="Google-Cloud-Platform（GCP）"><a href="#Google-Cloud-Platform（GCP）" class="headerlink" title="Google Cloud Platform（GCP）"></a>Google Cloud Platform（GCP）</h1><p><a href="https://cloud.google.com/">Google Cloud Platform</a>：提供计算、管理、数据分析、存储、运维、人工智能等一系列能力、基础服务和基础设施。</p>
 <p><a href="https://console.cloud.google.com/">Google Cloud控制台</a>：管理Cloud项目，例如费用结算、配额和请求管理、生成凭据等。一个项目会用到各种各样的资源，例如API密钥、OAuth客户端、虚拟机、云存储等。</p>
@@ -7784,7 +7851,7 @@ end</pre>
 <li>如果使用 <code>jarsigner</code>，只能在为 APK 文件签名<strong>之后</strong>执行 zipalign。</li>
 </ul>
 </blockquote>
-<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>详情见<a href="/2021/11/05/android-2021-11-05-Android%E7%AD%BE%E5%90%8D%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB/">Android签名知识汇总</a></p>
+<h2 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h2><p>详情见<a href="/2021/11/05/android-2021-11-05-Android%E7%AD%BE%E5%90%8D/">Android签名</a></p>
 <ol>
 <li><p>生成keystore文件：<code>keytool -genkey -alias &lt;别名&gt; -keyalg &lt;加密算法，如RSA&gt; -validity &lt;有效天数&gt; -keystore &lt;输出文件&gt;</code></p>
 </li>
@@ -7801,17 +7868,20 @@ end</pre>
 </ol>
 <h1 id="混淆、压缩、优化"><a href="#混淆、压缩、优化" class="headerlink" title="混淆、压缩、优化"></a>混淆、压缩、优化</h1><p>参考<a href="/2018/11/24/android-2018-11-24-Android%E6%B7%B7%E6%B7%86/">另一篇文章</a></p>
 <h1 id="Android反编译和破解"><a href="#Android反编译和破解" class="headerlink" title="Android反编译和破解"></a>Android反编译和破解</h1><h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
-<li><a href="https://ibotpeaches.github.io/Apktool/"><code>apktool</code></a>：编译和反编译apk，从apk中提取图片和布局资源<ul>
+<li><p><a href="https://ibotpeaches.github.io/Apktool/"><code>apktool</code></a>：编译和反编译apk，从apk中提取图片和布局资源</p>
+<ul>
 <li>反编译：<code>apktool d -o &lt;output_dir&gt; test.apk</code>，得到资源文件和smali文件、或者dex文件</li>
 <li>编译：<code>apktool b -o &lt;output.apk&gt; &lt;input_dir&gt;</code></li>
 </ul>
 </li>
-<li><a href="https://github.com/pxb1988/dex2jar"><code>dex2jar</code></a>：将可运行文件classes.dex反编译为jar源码文件<ul>
+<li><p><a href="https://github.com/pxb1988/dex2jar"><code>dex2jar</code></a>、<a href="https://github.com/pxb1988/dex2jar/releases">dex-tools</a>：将可运行文件classes.dex反编译为jar源码文件</p>
+<ul>
 <li><code>d2j-dex2jar.sh &lt;input.dex&gt; -o &lt;output-jarfile&gt;</code>将dex转为jar文件</li>
 <li><code>d2j-jar2dex.sh &lt;input.jar&gt; -o &lt;output-dexfile&gt;</code>将jar转为dex文件</li>
 </ul>
 </li>
-<li><a href="http://java-decompiler.github.io/"><code>jd-gui</code></a>：反编译jar包或class文件查看源码</li>
+<li><p><a href="http://java-decompiler.github.io/"><code>jd-gui</code></a>：反编译jar包或class文件查看源码</p>
+</li>
 </ul>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><pre class="mermaid">graph LR
 apk--解压-->dex文件--dex2jar-->jar文件-->使用jd-gui查看java源代码
@@ -10275,6 +10345,33 @@ end</pre>
       </tags>
   </entry>
   <entry>
+    <title>Markdown生成目录结构树</title>
+    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
+    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
+<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
+<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
+<blockquote>
+<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
+<p>npm帮我们创建了两个cmd文件</p>
+</blockquote>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Github笔记</title>
     <url>/2021/04/12/note-2021-04-12-Github/</url>
     <content><![CDATA[<h1 id="GitHub笔记"><a href="#GitHub笔记" class="headerlink" title="GitHub笔记"></a>GitHub笔记</h1><ol>
@@ -10383,33 +10480,6 @@ end</pre>
         <category>笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown生成目录结构树</title>
-    <url>/2021/04/12/tool-2021-4-12-FileTree/</url>
-    <content><![CDATA[<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>全局安装tree：<code>npm install tree-node-cli -g</code></li>
-<li>查看帮助：<code>tree --help</code>，-L 确定目录层级，-I排除某个文件夹</li>
-<li>进入文件夹：示例输入<code>tree -L 4 -I node_modules</code>，效果如下</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sample-shopping</span><br><span class="line">├── index.html</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   └── favicon.ico</span><br><span class="line">├── README.md</span><br><span class="line">├── src</span><br><span class="line">│   ├── App.vue</span><br><span class="line">│   ├── assets</span><br><span class="line">│   │   └── logo.png</span><br><span class="line">│   ├── components</span><br><span class="line">│   │   └── HelloWorld.vue</span><br><span class="line">│   ├── main.ts</span><br><span class="line">│   └── shims-vue.d.ts</span><br><span class="line">├── tsconfig.json</span><br><span class="line">└── vite.config.ts</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>Windows下系统自带了一个tree命令，直接输入tree会调用系统的命令</p>
-<blockquote>
-<p>可以使用treee命令，如上示例改为<code>treee -L 4 -I node_modules</code></p>
-<p>npm帮我们创建了两个cmd文件</p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -11847,26 +11917,6 @@ dispatchMessage-->判断是否是通知消息
 <ol start="2">
 <li>执行<code>source .bash_profile</code>生效，如果使用了<code>zsh</code>，在<code>~/.zshrc</code>文件末尾添加<code>source ~/.bash_profile</code></li>
 </ol>
-<h2 id="常用adb命令"><a href="#常用adb命令" class="headerlink" title="常用adb命令"></a>常用adb命令</h2><ul>
-<li><code>adb connect &lt;手机ip[:端口号]&gt;</code>：连接adb，默认端口号为5555</li>
-<li><code>adb disconnect</code>：断开连接</li>
-<li><code>adb devices</code>：查看连接的设备</li>
-<li><code>adb [command] --help</code>：查看某个命令的帮助</li>
-<li><code>adb install 电脑路径/xxx.apk</code>：安装apk到手机。-r覆盖安装，-t安装测试包，-d忽略版本大小</li>
-<li><code>adb pull 手机存储路径 电脑路径</code>：从手机拷贝到电脑</li>
-<li><code>adb push 电脑路径 手机存储路径</code>：从电脑拷贝到手机</li>
-<li><code>adb shell</code>：进入Android终端。<code>-s</code>：如果连接了多个设备，使用-s指定设备</li>
-<li><code>adb root</code>：开启root，大部分系统无法直接root</li>
-<li><code>adb remount</code>：挂载目录，设置为可读写（需先root），或者进入终端输入<code>mount -o remount,rw [路径]</code></li>
-<li>开启无线adb（需先root）：连接串口或USB，进入终端输入<ul>
-<li><code>stop adbd</code></li>
-<li><code>setprop service.adb.tcp.port 5555</code></li>
-<li><code>start adbd</code></li>
-</ul>
-</li>
-<li><code>adb kill-server</code>：杀死adb服务</li>
-<li><code>adb start-server</code>：启动adb服务</li>
-</ul>
 <h2 id="无线连接ADB"><a href="#无线连接ADB" class="headerlink" title="无线连接ADB"></a>无线连接ADB</h2><p>参考<a href="https://developer.android.com/studio/command-line/adb">官方文档</a></p>
 <p>Android11及更高版本：开发者选项中打开无线调试</p>
 <p>Android10及以下：</p>
@@ -11883,7 +11933,7 @@ dispatchMessage-->判断是否是通知消息
 <li><code>dmesg</code>：查看linux kernel开机日志</li>
 </ul>
 <p>adb logcat [选项] [过滤项]</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">选项</span><br><span class="line">&quot;-s&quot;: 设置输出日志的标签, 只显示该标签的日志;</span><br><span class="line">&quot;-f&quot;: 将日志输出到文件, 默认输出到标准输出流中, -f 参数执行不成功;</span><br><span class="line">&quot;-r&quot;: 按照每千字节输出日志, 需要 -f 参数, 不过这个命令没有执行成功;</span><br><span class="line">&quot;-n&quot;: 设置日志输出的最大数目, 需要 -r 参数, 这个执行 感觉 跟 adb logcat 效果一样;</span><br><span class="line">&quot;-v&quot;: 设置日志的输出格式, 注意只能设置一项;</span><br><span class="line">&quot;-c&quot;: 清空所有的日志缓存信息;</span><br><span class="line">&quot;-d&quot;: 将缓存的日志输出到屏幕上, 并且不会阻塞;</span><br><span class="line">&quot;-t&quot;: 输出最近的几行日志, 输出完退出, 不阻塞;</span><br><span class="line">&quot;-g&quot;: 查看日志缓冲区信息;</span><br><span class="line">&quot;-b&quot;: 加载一个日志缓冲区, 默认是 main, 下面详解;</span><br><span class="line">&quot;-B&quot;: 以二进制形式输出日志;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">选项</span><br><span class="line">&quot;-s&quot;: 设置输出日志的标签, 只显示该标签的日志;</span><br><span class="line">&quot;-f&quot;: 将日志输出到文件, 默认输出到标准输出流中;</span><br><span class="line">&quot;-r&quot;: 按照每千字节输出日志, 需要 -f 参数;</span><br><span class="line">&quot;-n&quot;: 设置日志输出的最大数目, 需要 -r 参数;</span><br><span class="line">&quot;-v&quot;: 设置日志的输出格式, 注意只能设置一项;</span><br><span class="line">&quot;-c&quot;: 清空所有的日志缓存信息;</span><br><span class="line">&quot;-d&quot;: 将缓存的日志输出到屏幕上, 并且不会阻塞;</span><br><span class="line">&quot;-t&quot;: 输出最近的几行日志, 输出完退出, 不阻塞;</span><br><span class="line">&quot;-g&quot;: 查看日志缓冲区信息;</span><br><span class="line">&quot;-b&quot;: 加载一个日志缓冲区, 默认是 main;</span><br><span class="line">&quot;-B&quot;: 以二进制形式输出日志;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">过滤项格式 : &lt;tag&gt;[:priority] , 标签：日志等级, 默认的日志过滤项是&quot;*:I&quot;;如&quot;*:E&quot;表示过滤Error以上。</span><br><span class="line">-- V : Verbose (明细);</span><br><span class="line">-- D : Debug (调试);</span><br><span class="line">-- I : Info (信息);</span><br><span class="line">-- W : Warn (警告);</span><br><span class="line">-- E : Error (错误);</span><br><span class="line">-- F: Fatal (严重错误);</span><br><span class="line">-- S : Silent(Super all output) (最高的优先级, 可能不会记载东西);</span><br></pre></td></tr></table></figure>
 
@@ -11906,8 +11956,7 @@ dispatchMessage-->判断是否是通知消息
 <li><code>dumpsys cpuinfo</code>：查看cpu信息</li>
 </ul>
 <h2 id="pm"><a href="#pm" class="headerlink" title="pm"></a>pm</h2><ul>
-<li><p><code>pm list package -f </code>：输出所有已安装apk</p>
-<ul>
+<li><code>pm list package -f </code>：输出所有已安装apk<ul>
 <li>-f：输出安装路径</li>
 <li>-3：过滤出第三方应用</li>
 <li>-s：过滤出系统应用</li>
@@ -11917,28 +11966,19 @@ dispatchMessage-->判断是否是通知消息
 <li>–user USER_ID：过滤指定userid应用</li>
 </ul>
 </li>
-<li><p><code>pm install/uninstall &lt;apk文件&gt;</code>：安装应用，-r覆盖安装，-t安装测试包，-d忽略版本大小</p>
-</li>
-<li><p><code>pm path [package_name]</code>：查看应用安装路径</p>
-</li>
-<li><p><code>pm dump &lt;packagename&gt;</code>：查看应用信息</p>
-</li>
-<li><p><code>pm clear</code>：清除应用缓存数据</p>
-</li>
-<li><p><code>pm enable/disable &lt;包名/组件名&gt;</code>：启用/禁用组件，设置为disable之后组件无法运行。如开机向导应用，运行完毕之后禁用，下次开机就会直接进入桌面</p>
-</li>
-<li><p><code>pm list permissions [group]</code>：输出已知权限</p>
-<ul>
+<li><code>pm install/uninstall &lt;apk文件&gt;</code>：安装应用，-r覆盖安装，-t安装测试包，-d忽略版本大小</li>
+<li><code>pm path [package_name]</code>：查看应用安装路径</li>
+<li><code>pm dump &lt;packagename&gt;</code>：查看应用信息</li>
+<li><code>pm clear</code>：清除应用缓存数据</li>
+<li><code>pm enable/disable &lt;包名/组件名&gt;</code>：启用/禁用组件，设置为disable之后组件无法运行。如开机向导应用，运行完毕之后禁用，下次开机就会直接进入桌面</li>
+<li><code>pm list permissions [group]</code>：输出已知权限<ul>
 <li><code>-d</code>：仅列出危险权限</li>
 <li><code>-g</code>：按组进行整理</li>
 </ul>
 </li>
-<li><p><code>pm list features</code>：输出系统支持的功能</p>
-</li>
-<li><p><code>pm list libraries</code>：输出系统支持的所有库</p>
-</li>
-<li><p><code>pm list users</code>：输出系统中的所有用户</p>
-</li>
+<li><code>pm list features</code>：输出系统支持的功能</li>
+<li><code>pm list libraries</code>：输出系统支持的所有库</li>
+<li><code>pm list users</code>：输出系统中的所有用户</li>
 </ul>
 <h2 id="am"><a href="#am" class="headerlink" title="am"></a>am</h2><ul>
 <li><code>am start</code>、<code>am startservice</code>、<code>am broadcast</code>：启动组件<ul>
@@ -11993,7 +12033,6 @@ dispatchMessage-->判断是否是通知消息
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
 <li><code>kill -9 $(pidof com.afauria.sample)</code>：kill某个应用进程，避免每次ps查看进程号</li>
 <li><code>uiautomator dump [file]</code>：输出layout结构层级</li>
-<li><code>logcat -d -f &lt;文件名&gt;</code>：输出日志，-d表示将缓存日志全部输出</li>
 <li><code>dmesg</code>：查看内核日志</li>
 <li><code>cat /sys/class/net/wlan0/address</code>：查看mac地址</li>
 <li><code>svc wifi enable/disable</code>：开启/关闭wifi</li>
@@ -12017,6 +12056,7 @@ dispatchMessage-->判断是否是通知消息
 <li><code>ping</code>：尝试连接ip或域名</li>
 <li><code>chmod [权限数字] [路径]</code>：修改文件权限，777表示任何用户可读可写</li>
 <li><code>md5 [文件]</code>：获取文件md5值</li>
+<li><code>appops set 包名 &lt;SYSTEM_ALERT_WINDOW/READ_EXTERNAL_STORAGE&gt; &lt;allow/deny/ignore&gt;</code>：权限设置</li>
 </ul>
 <h1 id="终端登录工具"><a href="#终端登录工具" class="headerlink" title="终端登录工具"></a>终端登录工具</h1><ol>
 <li>adb shell</li>
@@ -13562,6 +13602,8 @@ dispatchMessage-->判断是否是通知消息
 <p>OPTIONS说明：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-f :强制删除；</span><br><span class="line">--no-prune :不移除该镜像的过程镜像，默认移除；</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p><code>docker logs &lt;容器id&gt;</code>：查看容器日志</p>
+<p><code>docker attach &lt;容器ID或容器名称&gt;</code>：实时日志查看</p>
 <h1 id="把镜像上传到Docker-Hub"><a href="#把镜像上传到Docker-Hub" class="headerlink" title="把镜像上传到Docker Hub"></a>把镜像上传到Docker Hub</h1><h2 id="注册docker账号"><a href="#注册docker账号" class="headerlink" title="注册docker账号"></a>注册docker账号</h2><p><a href="(https://hub.docker.com/)">DockerHub</a></p>
 <ul>
 <li>输入DockerId（即用户名，英文小写和数字），邮箱，密码</li>
@@ -13630,1686 +13672,6 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>阅读</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>名词和缩写解释笔记</title>
-    <url>/2018/10/24/note-2018-10-24-%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</url>
-    <content><![CDATA[<p>网络用语可使用在线工具查询：<a href="https://lab.magiconch.com/nbnhhsh/?from=home">能不能好好说话</a></p>
-<h1 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>cli</td>
-<td>command-line interface</td>
-<td>命令行界面</td>
-<td>相对应的是GUI（图形界面接口）</td>
-</tr>
-<tr>
-<td>CR</td>
-<td>Carriage Return</td>
-<td>回车</td>
-<td>对应ASCII中转义字符\r</td>
-</tr>
-<tr>
-<td>LF</td>
-<td>Linefeed</td>
-<td>换行</td>
-<td>对应ASCII中转义字符\n</td>
-</tr>
-<tr>
-<td>apt</td>
-<td>Advanced Packaging Tool</td>
-<td></td>
-<td>Linux下的一款安装包管理工具</td>
-</tr>
-</tbody></table>
-<h2 id="存储单位"><a href="#存储单位" class="headerlink" title="存储单位"></a>存储单位</h2><p>位（bit）是计算机存储的最小单位，字节是计算机处理数据的最小单位，1字节=8位</p>
-<table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>bit</td>
-<td></td>
-<td>位</td>
-<td>存放一位二进制数，即 0 或 1，最小的存储单位</td>
-</tr>
-<tr>
-<td>B</td>
-<td>byte</td>
-<td>字节</td>
-<td>1B=8bit</td>
-</tr>
-<tr>
-<td>KB</td>
-<td>Kilobyte</td>
-<td>千字节</td>
-<td>1KB=1024B</td>
-</tr>
-<tr>
-<td>MB</td>
-<td>Megabyte</td>
-<td>兆字节</td>
-<td>1MB=1024KB</td>
-</tr>
-<tr>
-<td>GB</td>
-<td>Gigabyte</td>
-<td>吉字节</td>
-<td>1GB=1024MB</td>
-</tr>
-<tr>
-<td>TB</td>
-<td>Trillionbyte</td>
-<td>太字节</td>
-<td>1TB=1024GB</td>
-</tr>
-<tr>
-<td>PB</td>
-<td>Petabyte</td>
-<td>拍字节</td>
-<td>1PB=1024GB</td>
-</tr>
-<tr>
-<td>EB</td>
-<td>Exabyte</td>
-<td>艾字节</td>
-<td>1EB=1024PB</td>
-</tr>
-<tr>
-<td>ZB</td>
-<td>Zettabyte</td>
-<td>泽字节</td>
-<td>1ZB=1024EB</td>
-</tr>
-<tr>
-<td>YB</td>
-<td>Yottabyte</td>
-<td>尧字节</td>
-<td>1YB=1024ZB</td>
-</tr>
-<tr>
-<td>BB</td>
-<td>Brontobyte</td>
-<td>珀字节</td>
-<td>1BB=1024YB</td>
-</tr>
-<tr>
-<td>NB</td>
-<td>NonaByte</td>
-<td>诺字节</td>
-<td>1NB=1024BB</td>
-</tr>
-<tr>
-<td>DB</td>
-<td>DoggaByte</td>
-<td>刀字节</td>
-<td>1DB=1024NB,计算机中最大的储存单位</td>
-</tr>
-</tbody></table>
-<h2 id="吉利数字"><a href="#吉利数字" class="headerlink" title="吉利数字"></a>吉利数字</h2><table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>65536</td>
-<td>2的16次方</td>
-</tr>
-<tr>
-<td>65535</td>
-<td>2的16次方-1:理论上计算机能达到的最大进程数</td>
-</tr>
-</tbody></table>
-<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TLS</td>
-<td>Transport Layer Security</td>
-<td>传输层安全</td>
-<td></td>
-</tr>
-<tr>
-<td>SSL</td>
-<td>Secure Sockets Layer</td>
-<td>安全套接层</td>
-<td>tls的前身，最初由netscape开发，被IETF标准化并改名为tls</td>
-</tr>
-<tr>
-<td>CA</td>
-<td>Certificate Authority</td>
-<td></td>
-<td>证书颁发机构</td>
-</tr>
-<tr>
-<td>CSR</td>
-<td>Cerificate Signing Request</td>
-<td></td>
-<td>证书请求文件</td>
-</tr>
-<tr>
-<td>crt</td>
-<td>Certificate</td>
-<td>证书文件</td>
-<td>客户端认证的证书</td>
-</tr>
-<tr>
-<td>ssid</td>
-<td>Service Set Identifier</td>
-<td>服务集标识</td>
-<td>用来区分不同的网络。SSID就是一个局域网的名称,无线网络中SSID，是路由器发送的无线信号的名字SSID技术可以将一个无线局域网分为几个需要不同身份验证的子网络，每一个子网络都需要独立的身份验证，只有通过身份验证的用户才可以进入相应的子网络，防止未被授权的用户进入本网络。</td>
-</tr>
-<tr>
-<td>DNS</td>
-<td>Domain Name System</td>
-<td>域名系统</td>
-<td>特网上作为域名和<a href="https://baike.so.com/doc/4252723-4455111.html">IP地址</a>相互映射的一个<a href="https://baike.so.com/doc/6591740-6805519.html">分布式数据库</a>，能够使用户更方便的访问<a href="https://baike.so.com/doc/2011565-2128705.html">互联网</a>，而不用去记住能够被机器直接读取的IP数串。通过<a href="https://baike.so.com/doc/5331327-5566564.html">主机</a>名，最终得到该主机名对应的IP地址的过程叫做域名解析(或主机名解析)。DNS协议运行在<a href="https://baike.so.com/doc/5418284-5656447.html">UDP</a>协议之上，使用端口号53。通常 Internet 主机域名的一般结构为:主机名.三级域名.二级域名.顶级域名。</td>
-</tr>
-</tbody></table>
-<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>VNC</td>
-<td>Virtual Network Console</td>
-<td>虚拟网络控制台</td>
-<td></td>
-</tr>
-<tr>
-<td>ELK</td>
-<td>Elasticsearch+Logstash+Kibana</td>
-<td>三个软件的缩写</td>
-<td>Elasticsearch是个开源分布式搜索引擎，提供搜集、分析、存储数据三大功能。它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。Logstash 主要是用来日志的搜集、分析、过滤日志的工具，支持大量的数据获取方式。一般工作方式为c/s架构，client端安装在需要收集日志的主机上，server端负责将收到的各节点日志进行过滤、修改等操作在一并发往elasticsearch上去。Kibana 也是一个开源和免费的工具，Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助汇总、分析和搜索重要数据日志。</td>
-</tr>
-</tbody></table>
-<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>TCP</td>
-<td>Transmission Control Protocol</td>
-<td>传输控制协议</td>
-<td>传输层协议，有连接，可靠，三次握手建立连接，四次挥手断开连接</td>
-</tr>
-<tr>
-<td>UDP</td>
-<td>User Datagram Protocol</td>
-<td>用户数据报协议</td>
-<td>传输层协议，无连接，不可靠</td>
-</tr>
-<tr>
-<td>http</td>
-<td>Hyper Text Transport Protocol</td>
-<td>超文本传输协议</td>
-<td></td>
-</tr>
-<tr>
-<td>https</td>
-<td></td>
-<td>http+ssl</td>
-<td></td>
-</tr>
-<tr>
-<td>POP3</td>
-<td>Post Office Protocol 3</td>
-<td>邮局协议的第3个版本</td>
-<td>规定怎样将个人计算机连接到Internet的邮件服务器和下载电子邮件的电子协议。它是因特网电子邮件的第一个离线协议标准,POP3允许用户从服务器上把邮件存储到本地主机（即自己的计算机）上,同时删除保存在邮件服务器上的邮件，而POP3服务器则是遵循POP3协议的接收邮件服务器，用来接收电子邮件的。</td>
-</tr>
-<tr>
-<td>SMTP</td>
-<td>Simple Mail Transfer Protocol</td>
-<td>简单邮件传输协议</td>
-<td>控制邮件的中转方式，属于TCP/IP协议</td>
-</tr>
-<tr>
-<td>IMAP</td>
-<td>Internet Mail Access Protocol</td>
-<td>交互式邮件存取协议</td>
-<td>邮件访问标准协议之一，与POP的不同：开启了IMAP后，您在电子邮件客户端收取的邮件仍然保留在服务器上，同时在客户端上的操作都会反馈到服务器上，如：删除邮件，标记已读等，服务器上的邮件也会做相应的动作。所以无论从浏览器登录邮箱或者客户端软件登录邮箱，看到的邮件以及状态都是一致的。</td>
-</tr>
-<tr>
-<td>RTP</td>
-<td>Real-time Transport Protocol</td>
-<td>实时传输协议</td>
-<td>RTP数据协议</td>
-</tr>
-<tr>
-<td>RTCP</td>
-<td>Real-time Transport Control Protocol</td>
-<td>实时传输控制协议</td>
-<td>RTP控制协议，控制RTP传输</td>
-</tr>
-<tr>
-<td>RTSP</td>
-<td>Real Time Streaming Protocol，</td>
-<td>实时流协议</td>
-<td>可以发送暂停，播放，停止等请求</td>
-</tr>
-</tbody></table>
-<h2 id="OJ术语"><a href="#OJ术语" class="headerlink" title="OJ术语"></a>OJ术语</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>OJ</td>
-<td>Online Judge</td>
-<td>在线判题系统</td>
-</tr>
-<tr>
-<td>AC</td>
-<td>Accepted</td>
-<td>通过</td>
-</tr>
-<tr>
-<td>WA</td>
-<td>Wrong Answer</td>
-<td>答案错误</td>
-</tr>
-<tr>
-<td>TLE</td>
-<td>Time Limit Exceed</td>
-<td>超时</td>
-</tr>
-<tr>
-<td>OLE</td>
-<td>Output Limit Exceed</td>
-<td>超过输出限制</td>
-</tr>
-<tr>
-<td>MLE</td>
-<td>Memory Limit Exceed</td>
-<td>超内存</td>
-</tr>
-<tr>
-<td>RE</td>
-<td>Runtime Error</td>
-<td>运行时错误</td>
-</tr>
-<tr>
-<td>PE</td>
-<td>Presentation Error</td>
-<td>格式错误</td>
-</tr>
-<tr>
-<td>CE</td>
-<td>Compile Error</td>
-<td>无法编译</td>
-</tr>
-</tbody></table>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>IETF：国际互联网工程任务组（The Internet Engineering Task Force，简称 IETF）是一个公开性质的大型民间国际团体，汇集了与互联网架构和互联网顺利运作相关的网络设计者、运营者、投资人和研究人员，并欢迎所有对此行业感兴趣的人士参与。</p>
-<table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ECS</td>
-<td>Elastic Compute Service</td>
-<td>云服务器</td>
-<td></td>
-</tr>
-<tr>
-<td>MUA</td>
-<td></td>
-<td>邮件用户代理</td>
-<td>它是一种应用程序，或者电子邮件客户端程序。通过 MUA 程序，我们可以发送邮件，也可以把接收到的邮件保存在客户端的邮箱中。这两种操作属于不同的两个进程。MUA通过POP（邮局协议）和STMP（简单邮件传输协议）从电子邮件服务器发送或接收消息。</td>
-</tr>
-<tr>
-<td>MTA</td>
-<td></td>
-<td>邮件传送代理</td>
-<td>是电子邮件服务器的两个独立进程，MUA向电子邮件服务器发送一个电子邮件，MTA会判断这个邮件的地址是否在本服务器上。如果是则通过MDA发送到目的邮箱MUA.如果不是MTA就把这个邮件传送到包含目的邮箱列表的电子邮件服务器。</td>
-</tr>
-<tr>
-<td>MDA</td>
-<td></td>
-<td>邮件分发代理</td>
-<td></td>
-</tr>
-<tr>
-<td>dsl</td>
-<td>Domain Specified Language</td>
-<td>领域特定语言</td>
-<td></td>
-</tr>
-<tr>
-<td>Stub</td>
-<td></td>
-<td>桩</td>
-<td>在某个地方插入一个Stub，用于占位，Stub中一般没有实际内容，运行时会替换成真正的对象。如ViewStub</td>
-</tr>
-<tr>
-<td>Hook</td>
-<td></td>
-<td>钩子</td>
-<td>对某个方法、流程进行拦截、处理。如Git Hook、生命周期Hook等</td>
-</tr>
-<tr>
-<td>Fake</td>
-<td></td>
-<td>伪造</td>
-<td>开发或测试的时候模拟数据源、模拟行为</td>
-</tr>
-<tr>
-<td>Mock</td>
-<td></td>
-<td>模拟</td>
-<td>单元测试模拟数据，如方法返回值、变量等</td>
-</tr>
-<tr>
-<td>Foo</td>
-<td></td>
-<td></td>
-<td>无实际意义，不知道给函数或变量起什么名字的时候可以叫foo。也被解释做Fuck Oriented Object、Fu的变体（fuck-up）</td>
-</tr>
-<tr>
-<td>DRY</td>
-<td>Don’t Repeat Yourself</td>
-<td>干原则</td>
-<td>指在程序设计以及计算中避免重复代码，将公共部分提取、抽象。</td>
-</tr>
-<tr>
-<td>PayLoad</td>
-<td></td>
-<td>有效载荷、负载</td>
-<td>对接收者有用的数据，接口返回的有用字段，信头和元数据等称为开销数据。<br>例如委托卡车运东西，货物的重量，车子重量，司机重量都属于载重，对于客户来说，只关心货物重量，因此货物重量是有效载重。</td>
-</tr>
-</tbody></table>
-<h1 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h1><h2 id="岗位"><a href="#岗位" class="headerlink" title="岗位"></a>岗位</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>OP</td>
-<td>Operator</td>
-<td>运维、管理员</td>
-<td>维护公司的服务器能够正常提供服务，细分的话包括系统部分，网络部分，应用程序部分，数据库部分等。现在市面上主要的OP有三种：网络游戏运维，网站运维，大型项目测试和生产环境运维。</td>
-</tr>
-<tr>
-<td>PM</td>
-<td>Product Manager</td>
-<td>产品经理</td>
-<td>负责市场调查并根据用户的需求，确定开发何种产品，选择何种技术、商业模式等，举凡产品从创意到上市，所有相关的研发、调研、生产、编预算、广告、促销活动等等，都由产品经理掌控</td>
-</tr>
-<tr>
-<td>PJM</td>
-<td>Project Manager</td>
-<td>项目经理</td>
-<td>对项目实行质量、安全、进度、成本管理的责任保证体系和全面提高项目管理水平设立的重要管理岗位。项目经理是为项目的成功策划和执行负总责的人。</td>
-</tr>
-<tr>
-<td>RD</td>
-<td>Research and Development Engineer</td>
-<td>研发工程师</td>
-<td></td>
-</tr>
-<tr>
-<td>FE</td>
-<td>Front-End Engineer、Front-End Development</td>
-<td>前端工程师，前端开发</td>
-<td></td>
-</tr>
-<tr>
-<td>QA</td>
-<td>Quality Assurance</td>
-<td>质量保证</td>
-<td>细分包括PQA（产品）、SQA（供应商 or 软件）、DQA（开发 or 设计）、TQA（全面 or 测试）。有时也指测试</td>
-</tr>
-<tr>
-<td>QC</td>
-<td>Quality Control</td>
-<td>质量控制</td>
-<td></td>
-</tr>
-<tr>
-<td>QE</td>
-<td>Quality Engineer</td>
-<td>质量工程师</td>
-<td></td>
-</tr>
-<tr>
-<td>UED</td>
-<td>User Experience Design</td>
-<td>用户体验设计</td>
-<td></td>
-</tr>
-<tr>
-<td>UI设计</td>
-<td>User Interface Design</td>
-<td>用户界面设计</td>
-<td>对软件的人机交互、操作逻辑、界面美观的整体设计</td>
-</tr>
-<tr>
-<td>KA</td>
-<td>Key Account</td>
-<td>重要客户</td>
-<td></td>
-</tr>
-<tr>
-<td>OEM</td>
-<td>Original Equipment Manufacturer</td>
-<td>原始设备制造商</td>
-<td>OEM生产：定点生产（代工），即委托他人生产</td>
-</tr>
-<tr>
-<td>ODM</td>
-<td>Original Design Manufacturer</td>
-<td>原始设计商</td>
-<td></td>
-</tr>
-<tr>
-<td>BSP</td>
-<td>Board Support Package</td>
-<td>板级支持包</td>
-<td>boot和驱动程序，指驱动开发人员</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>KBI</td>
-<td>Key Behavior Index</td>
-<td>关键行为指标</td>
-<td>考察各部门及各级员工在一定时间、一定空间和一定职责范围内关键工作行为履行状况的量化指标，是对各部门和各级员工工作行为管理的集中体现。</td>
-</tr>
-<tr>
-<td>KPI</td>
-<td>Key Performance Indicators</td>
-<td>关键绩效指标</td>
-<td>又称主要绩效指标、重要绩效指标、绩效评核指标等，是指衡量一个管理工作成效最重要的指标，是一项数据化管理的工具，必须是客观、可衡量的绩效指标。这个名词往往用于财政、一般行政事务的衡量。是将公司、员工、事务在某时期表现量化与质化的一种指标。可协助将优化组织表现，并规划愿景。</td>
-</tr>
-<tr>
-<td>OKR</td>
-<td>Objectives and Key Result</td>
-<td>目标与关键成果法</td>
-<td>跟踪目标和完成情况的管理工具和方法</td>
-</tr>
-<tr>
-<td>OAR</td>
-<td>Objectives Action Review</td>
-<td>目标行为回顾</td>
-<td></td>
-</tr>
-<tr>
-<td>gdpr</td>
-<td>General Data Protection Regulation</td>
-<td>通用数据保护条例</td>
-<td></td>
-</tr>
-<tr>
-<td>QCC</td>
-<td>Quality Control Circle</td>
-<td>品控圈</td>
-<td></td>
-</tr>
-<tr>
-<td>PDCA</td>
-<td>Plan、Do、Check、Action</td>
-<td></td>
-<td>一种质量管理方法：选定课题-把握现状-制定目标-分析原因-制定对策-按对策实施-检查效果-巩固措施-总结改进</td>
-</tr>
-<tr>
-<td>SOP</td>
-<td>Standard Operation Procedure</td>
-<td>标准作业程序</td>
-<td></td>
-</tr>
-<tr>
-<td>NRE</td>
-<td>Non-Recurring Engineering</td>
-<td>非循环工程</td>
-<td>NRE费用即一次性工程费用</td>
-</tr>
-<tr>
-<td>MP</td>
-<td>Mass Product</td>
-<td>量产阶段</td>
-<td></td>
-</tr>
-<tr>
-<td>WS</td>
-<td>Working Sample</td>
-<td>试验样品</td>
-<td></td>
-</tr>
-<tr>
-<td>ES</td>
-<td>Engineering Sample</td>
-<td>工程样品</td>
-<td></td>
-</tr>
-<tr>
-<td>CS</td>
-<td>Commercial Sample</td>
-<td>商业货样</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>质量七工具</p>
-<ul>
-<li>控制图：目标-实际</li>
-<li>柏拉图：缺陷数量-比例</li>
-<li>流程图：发现流程缺陷</li>
-<li>因果图(鱼骨图)：人机料法环测</li>
-<li>检查表：</li>
-<li>直方图：</li>
-<li>散布图：用于表征两个变量之间是否有相关性</li>
-</ul>
-<h2 id="沟通"><a href="#沟通" class="headerlink" title="沟通"></a>沟通</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>LGTM</td>
-<td>Look good to me</td>
-<td>我觉得可以</td>
-<td>别人征求意见时觉得没问题，代码审核没有意见。可以回复LGTM</td>
-</tr>
-<tr>
-<td>Loop More</td>
-<td>Loop More</td>
-<td></td>
-<td>转发邮件添加更多联系人</td>
-</tr>
-<tr>
-<td>CC</td>
-<td>Carbon Copy</td>
-<td>抄送</td>
-<td></td>
-</tr>
-<tr>
-<td>FYI</td>
-<td>for your information</td>
-<td>供你参考</td>
-<td></td>
-</tr>
-<tr>
-<td>TBD</td>
-<td>to be determined</td>
-<td>待定</td>
-<td></td>
-</tr>
-<tr>
-<td>OOO</td>
-<td>out of office</td>
-<td>不在办公室</td>
-<td></td>
-</tr>
-<tr>
-<td>IAM</td>
-<td>in a meeting</td>
-<td>在开会</td>
-<td></td>
-</tr>
-<tr>
-<td>WAH</td>
-<td>work at home</td>
-<td>在家办公</td>
-<td></td>
-</tr>
-<tr>
-<td>EOD</td>
-<td>end of the day</td>
-<td>下班前</td>
-<td>催促别人下班前回复</td>
-</tr>
-<tr>
-<td>COB</td>
-<td>close of the business</td>
-<td>下班前</td>
-<td>催促别人下班前回复</td>
-</tr>
-<tr>
-<td>ETA</td>
-<td>Estimated Time of Arrival</td>
-<td>预计到达时间</td>
-<td></td>
-</tr>
-<tr>
-<td>OTOH</td>
-<td>On the Other Hand</td>
-<td>另一方面</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>Not sure if my last email：我不太确定您是否收到了我的上一封邮件，希望别人回复</p>
-<p>To put it more simply…：简单来说…</p>
-<p>Looking forward to …：期待你的回复，提前表达期待</p>
-<p>Thanks in advance.：提前表达感谢</p>
-<p>… I’d be most grateful.：提前表达感谢</p>
-<p>邮件礼仪</p>
-<ul>
-<li>感谢开头感谢别人回复自己邮件，不用太客套，废话少说：Thanks for the quick reply/updated information.Thanks for getting back to me.</li>
-<li>道歉邮件回的晚了，或者临时通知别人事情，要先道歉：Sorry for the late reply.Apologies for the late notice.</li>
-<li>附件英语是attachment。但是如果你说please find the attachment会显得很没有水平。一般直接用动词attached或enclosed：Attached/Enclosed please find the report.I attached the report and please take a look.</li>
-<li>收尾最后收尾一般都是询问别人意下如何。不要用please tell me…这种不地道的中式英语。可以这么说：Please let me know your thoughts.Looking forward to your insight.</li>
-</ul>
-<h2 id="产品"><a href="#产品" class="headerlink" title="产品"></a>产品</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MRD</td>
-<td>Market Requirements Document</td>
-<td>市场需求文档</td>
-<td>市场需求、功能需求 。如市场与竞争对手分析，通过哪些功能来实现商业目的，功能/非功能需求分哪几块，功能的优先级等等</td>
-</tr>
-<tr>
-<td>PRD</td>
-<td>Product Requirements Document</td>
-<td>产品需求文档</td>
-<td>需求分析</td>
-</tr>
-<tr>
-<td>FSD</td>
-<td>Functional Specifications Document</td>
-<td>功能详细说明</td>
-<td></td>
-</tr>
-<tr>
-<td>PDR</td>
-<td>Preliminary Design Review</td>
-<td>初步设计评审</td>
-<td></td>
-</tr>
-<tr>
-<td>ToS</td>
-<td>Terms of Service</td>
-<td>服务条款</td>
-<td></td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>IaaS</td>
-<td>Infrastructure as a Service</td>
-<td>基础设施及服务</td>
-<td>如阿里云。PaaS、SaaS、BaaS都是基于IaaS</td>
-</tr>
-<tr>
-<td>PaaS</td>
-<td>Platform as a Service</td>
-<td>平台即服务</td>
-<td>搭建平台，集成应用产品，整合起来提供服务，以SaaS模式提交给客户。属于SaaS的一种应用。简化应用部署流程</td>
-</tr>
-<tr>
-<td>SaaS</td>
-<td>Software as a Service</td>
-<td>软件即服务</td>
-<td>通过网络提供程序应用类服务</td>
-</tr>
-<tr>
-<td>Baas</td>
-<td>Backend as a Service</td>
-<td>后端即服务</td>
-<td>整合并提供特定领域的云后端服务，包括数据存储、推送、社交媒体整合等，用于快速开发移动应用，提供API或SDK。如聚合数据。简化应用开发流程、</td>
-</tr>
-</tbody></table>
-<h2 id="运营"><a href="#运营" class="headerlink" title="运营"></a>运营</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CPA</td>
-<td>Cost To Action</td>
-<td>根据用户行为付费的计费方式（如打开一次广告，注册一次账号，购买一次会员等）</td>
-<td></td>
-</tr>
-<tr>
-<td>CPS</td>
-<td>Cost To Sales</td>
-<td>以实际销售产品数量支付佣金的计费方式</td>
-<td></td>
-</tr>
-<tr>
-<td>ASO</td>
-<td>App Store Optimization</td>
-<td>应用商店优化</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>OCS</td>
-<td>Online Charge System</td>
-<td>在线计费系统（订单管理系统）</td>
-<td></td>
-</tr>
-<tr>
-<td>CRM</td>
-<td>Customer Relationship Management</td>
-<td>客户关系管理</td>
-<td></td>
-</tr>
-<tr>
-<td>SQM</td>
-<td>Sales Quota Management</td>
-<td>销售目标管理系统</td>
-<td></td>
-</tr>
-<tr>
-<td>OA</td>
-<td>Office Automation</td>
-<td>办公自动化</td>
-<td>综合系统。包括流程审批、协同工作、沟通工具、文档管理、论坛、计划管理、项目管理、任务管理、会议管理、系统集成、通讯录等应用</td>
-</tr>
-<tr>
-<td>SSO</td>
-<td></td>
-<td>单点登录</td>
-<td>在多个应用系统中，用户只需要登录一次就可以访问所有相互信任的应用系统。它包括可以将这次主要的登录映射到其他应用中用于同一个用户的登录的机制。它是目前比较流行的企业业务整合的解决方案之一。</td>
-</tr>
-<tr>
-<td>BSS</td>
-<td></td>
-<td></td>
-<td>基站子系统</td>
-</tr>
-</tbody></table>
-<h1 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>AOP</td>
-<td>Aspect Oriented Programming</td>
-<td>面向切面编程</td>
-<td>针对业务处理过程中的切面进行提取，它所面对的是处理过程中的某个步骤或阶段，以获得逻辑过程中各部分之间低耦合性的隔离效果。</td>
-</tr>
-<tr>
-<td>OOP</td>
-<td>Object Oriented Programming</td>
-<td>面向对象编程</td>
-<td>针对业务处理过程的实体及其属性和行为进行抽象封装，以获得更加清晰高效的逻辑单元划分。</td>
-</tr>
-<tr>
-<td>OOD</td>
-<td>Object-Oriented Design</td>
-<td>面向对象设计</td>
-<td></td>
-</tr>
-<tr>
-<td>IoC</td>
-<td>Inversion of Control</td>
-<td>控制反转</td>
-<td></td>
-</tr>
-<tr>
-<td>DI</td>
-<td>Dependency Injection</td>
-<td>依赖注入</td>
-<td></td>
-</tr>
-<tr>
-<td>TDD</td>
-<td>Test-Driven Development</td>
-<td>测试驱动开发</td>
-<td>先写单元测试，再实现功能</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>名词</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>编译型语言</td>
-<td>使用编译器在程序运行之前编译，一次编写，处处编译，如C，C++</td>
-</tr>
-<tr>
-<td>解释型语言</td>
-<td>使用解释器在程序运行时解释，每次运行都要解释，java是解释型语言，将源码编译成.class（字节码文件），但是不是机器码，通过jvm对.class文件进行解释再执行</td>
-</tr>
-<tr>
-<td>机器语言</td>
-<td>机器可以执行的语言。高级语言都需要翻译成机器语言才可以被机器识别</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>名词</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>一方库/包</td>
-<td>本项目或者本工程中的类和方法、接口等</td>
-</tr>
-<tr>
-<td>二方库/包</td>
-<td>公司内部的依赖库，公司内部其他项目发布的jar包，如公司项目平台的核心依赖包</td>
-</tr>
-<tr>
-<td>三方库/包</td>
-<td>外部的开源库或开源项目贡献的jar， 比如apache、google、Ali等发布的依赖</td>
-</tr>
-<tr>
-<td>A端</td>
-<td>指开发、管理方</td>
-</tr>
-<tr>
-<td>B端</td>
-<td>Business： 企业用户商家</td>
-</tr>
-<tr>
-<td>C端</td>
-<td>Consumer： 个人用户、消费者</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>名词</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>RCT</td>
-<td>React</td>
-</tr>
-<tr>
-<td>i18n</td>
-<td>（其来源是英文单词 internationalization的首末字符i和n，18为中间的字符数）是“国际化”的简称。在资讯领域，国际化(i18n)指让产品（出版物，软件，硬件等）无需做大的改变就能够适应不同的语言和地区的需要。对程序来说，在不修改内部代码的情况下，能根据不同语言及地区显示相应的界面。 在全球化的时代，国际化尤为重要，因为产品的潜在用户可能来自世界的各个角落。通常与i18n相关的还有L10n（“本地化”的简称）。</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>AOSP</td>
-<td>Android Open-Source Project</td>
-<td>Android 开放源代码项目</td>
-<td></td>
-</tr>
-<tr>
-<td>adt</td>
-<td>Android Developer Tools</td>
-<td>安卓开发者工具</td>
-<td>为Eclipse IDE开发的插件，使用了sdk工具，用来开发Andorid应用</td>
-</tr>
-<tr>
-<td>aapt</td>
-<td>Android Asset Packaging Tool</td>
-<td>安卓资源打包工具</td>
-<td>将Android资源文件（res目录下）打包成R.java类(资源索引表)，以及.arsc资源文件（压缩资源文件）</td>
-</tr>
-<tr>
-<td>apt</td>
-<td>Annotation Processing Tool</td>
-<td>注解处理器</td>
-<td>在编译时扫描和处理注解</td>
-</tr>
-<tr>
-<td>SDK</td>
-<td>Software Development Kit</td>
-<td>软件开发工具包</td>
-<td>具备一定功能的应用软件的开发工具的集合。SDK包含了API的定义，API定义了对外的接口和规范，SDK还包含功能的具体实现和一些辅助功能。</td>
-</tr>
-<tr>
-<td>API</td>
-<td>Application Programming nterface</td>
-<td>应用程序编程接口</td>
-<td>SDK开发者提供给调用方使用的接口</td>
-</tr>
-<tr>
-<td>SPI</td>
-<td>Service Provider Interface</td>
-<td>服务发现接口</td>
-<td>调用方提供给外部实现的接口，要求实现方按照调用方的规范进行实现</td>
-</tr>
-<tr>
-<td>FFI</td>
-<td>Foregin Function Interface</td>
-<td>语言交互接口，外部函数接口</td>
-<td>用于两种不同的语言之间互相通信调用。如Java中的JNI</td>
-</tr>
-<tr>
-<td>JNI</td>
-<td>Java Native Interface</td>
-<td>Java本地接口</td>
-<td>用于Java与C/C++通信的接口</td>
-</tr>
-<tr>
-<td>DLL</td>
-<td>Dynamic Link Library</td>
-<td>动态链接库</td>
-<td>.dll文件不能直接执行，他们通常由 .exe 在执行时装入，内含有一些资源以及可执行代码等。</td>
-</tr>
-<tr>
-<td>ABI</td>
-<td>Application Binary Interface</td>
-<td>应用程序二进制接口</td>
-<td>描述应用程序和操作系统之间的底层接口，约定目标文件格式、数据类型、如何进行系统调用等</td>
-</tr>
-<tr>
-<td>EABI</td>
-<td>Embedded ABI</td>
-<td>嵌入式ABI</td>
-<td></td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>两种不同语言之间互相调用一般有两种方案：</p>
-<ol>
-<li>将函数做成一个独立的服务：跨进程通信（IPC）或通过网络协议通信（RPC、RESTful）</li>
-<li>通过FFI调用，将其它语言的接口内嵌到本语言中，调用效率更高</li>
-</ol>
-</blockquote>
-<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>DBA</td>
-<td>Database Administrator</td>
-<td>数据库管理员</td>
-<td>负责管理和维护数据库服务器的人。数据库管理员负责全面管理和控制数据库系统</td>
-</tr>
-<tr>
-<td>DQL</td>
-<td>Data Query Language</td>
-<td>数据查询语言</td>
-<td>由SELECT子句，FROM子句，WHERE子句组成的查询块：SELECT &lt;字段名表&gt;FROM &lt;表或视图名&gt;WHERE&lt;查询条件&gt;</td>
-</tr>
-<tr>
-<td>DML</td>
-<td>Data Manage Language</td>
-<td>数据操纵语言</td>
-<td>插入：INSERT，更新：UPDATE，删除：DELETE</td>
-</tr>
-<tr>
-<td>DDL</td>
-<td>Data Define Language</td>
-<td>数据定义语言</td>
-<td>用来创建数据库中的各种对象—–表、视图、索引、同义词、聚簇等如：CREATE TABLE/VIEW/INDEX/SYN/CLUSTER ，DDL操作是隐性提交的！不能rollback</td>
-</tr>
-<tr>
-<td>DCL</td>
-<td>Data Control Language</td>
-<td>数据控制语言</td>
-<td>用来授予或回收访问数据库的某种特权，并控制数据库操纵事务发生的时间及效果，对数据库实行监视，授权：GRANT。回滚：ROLLBACK。提交：COMMIT</td>
-</tr>
-<tr>
-<td>CRUD</td>
-<td>Create、Retrieve、Update、Delete</td>
-<td>增删改查</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>注释：<br>(1) 显式提交<br>用COMMIT命令直接完成的提交为显式提交。其格式为：<br>SQL&gt;COMMIT；</p>
-<p>(2) 隐式提交<br>用SQL命令间接完成的提交为隐式提交。这些命令是：<br>ALTER，AUDIT，COMMENT，CONNECT，CREATE，DISCONNECT，DROP，<br>EXIT，GRANT，NOAUDIT，QUIT，REVOKE，RENAME。</p>
-<p>(3) 自动提交<br>若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，<br>系统将自动进行提交，这就是自动提交。其格式为：<br>SQL&gt;SET AUTOCOMMIT ON；</p>
-<h1 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h1><h2 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>HTML</td>
-<td>HyperText Markup Language</td>
-<td>超文本标记语言</td>
-<td></td>
-</tr>
-<tr>
-<td>CSS</td>
-<td>Cascading Style Sheets</td>
-<td>层叠样式表</td>
-<td></td>
-</tr>
-<tr>
-<td>SPA</td>
-<td>Single Page Application</td>
-<td>单页Web应用</td>
-<td></td>
-</tr>
-<tr>
-<td>SSR</td>
-<td>Server Side Render</td>
-<td>服务端渲染</td>
-<td></td>
-</tr>
-<tr>
-<td>CSRF</td>
-<td>Cross-site request forgery</td>
-<td>跨站请求伪造</td>
-<td>也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。</td>
-</tr>
-</tbody></table>
-<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>XML</td>
-<td>eXtensible Markup Language</td>
-<td>可扩展标记语言</td>
-<td></td>
-</tr>
-<tr>
-<td>XSL</td>
-<td>eXtensible Stylesheet Language</td>
-<td>可扩展样式表语言</td>
-<td>可描述如何来显示 XML 文档，包括三部分：XSLT、XPath、XSL-FO</td>
-</tr>
-<tr>
-<td>XSLT</td>
-<td>XSL Transformations</td>
-<td></td>
-<td>用于转换 XML 文档的语言，XSLT 使用 XPath 在 XML 文档中查找信息。</td>
-</tr>
-<tr>
-<td>XPath</td>
-<td></td>
-<td></td>
-<td>通过元素和属性在 XML 文档中导航的语言</td>
-</tr>
-<tr>
-<td>XSL-FO</td>
-<td></td>
-<td></td>
-<td>用于格式化 XML 文档的语言</td>
-</tr>
-</tbody></table>
-<h2 id="XML和HTML"><a href="#XML和HTML" class="headerlink" title="XML和HTML"></a>XML和HTML</h2><table>
-<thead>
-<tr>
-<th>XML</th>
-<th>HTML</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>被设计为具有自我描述性</td>
-<td></td>
-</tr>
-<tr>
-<td>旨在传输信息：被设计用于结构化、传输和存储数据，其焦点是数据的内容</td>
-<td>旨在显示信息：被设计用来显示数据，其焦点是数据的外观</td>
-</tr>
-<tr>
-<td>标签没有被预定义。需要自定义标签</td>
-<td>有预定义标签，如<code>&lt;a&gt;、&lt;div&gt;</code>等</td>
-</tr>
-</tbody></table>
-<h1 id="语音"><a href="#语音" class="headerlink" title="语音"></a>语音</h1><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ASR</td>
-<td>Automatic Speech Recognition</td>
-<td>自动语音识别技术</td>
-<td></td>
-</tr>
-<tr>
-<td>NLU</td>
-<td>Natural Language Understanding</td>
-<td>自然语言理解</td>
-<td></td>
-</tr>
-<tr>
-<td>NLP</td>
-<td>Natural Language Processing</td>
-<td>自然语言处理</td>
-<td></td>
-</tr>
-<tr>
-<td>TTS</td>
-<td>Text-To-Speech</td>
-<td>语音转文字</td>
-<td>语音合成</td>
-</tr>
-<tr>
-<td>ADC</td>
-<td>Analog-to-Digital Converter</td>
-<td>模拟数字转换器</td>
-<td></td>
-</tr>
-<tr>
-<td>ALSA</td>
-<td>Advanced Linux Sound Architecture</td>
-<td>高级Linux声音架构</td>
-<td></td>
-</tr>
-<tr>
-<td>AI</td>
-<td>Artificial Intelligence</td>
-<td>人工智能</td>
-<td>包含机器学习</td>
-</tr>
-<tr>
-<td>ML</td>
-<td>Machine Learning</td>
-<td>机器学习</td>
-<td>包含深度学习</td>
-</tr>
-<tr>
-<td>DL</td>
-<td>Deep Learning</td>
-<td>深度学习</td>
-<td>搭建人工神经网络进行学习</td>
-</tr>
-</tbody></table>
-<h1 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h1><h2 id="网络用语"><a href="#网络用语" class="headerlink" title="网络用语"></a>网络用语</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>RTFM</td>
-<td>Read The Fucking Manual</td>
-<td>滚回去看说明手册</td>
-<td></td>
-</tr>
-<tr>
-<td>STFW</td>
-<td>Search The Fucking Web</td>
-<td>滚回去百度</td>
-<td></td>
-</tr>
-<tr>
-<td>ASL</td>
-<td>Age、Sex、Location</td>
-<td></td>
-<td>相亲用</td>
-</tr>
-<tr>
-<td>SUX</td>
-<td>suck的第三人称单数</td>
-<td>滥，差劲</td>
-<td>that sux=sb</td>
-</tr>
-<tr>
-<td>LMAO</td>
-<td>laughing my ass off</td>
-<td>笑死宝宝</td>
-<td></td>
-</tr>
-<tr>
-<td>FTW</td>
-<td>for the win</td>
-<td>棒棒哒</td>
-<td></td>
-</tr>
-<tr>
-<td>LOL</td>
-<td>laughing out loud</td>
-<td>大声笑</td>
-<td></td>
-</tr>
-<tr>
-<td>YOLO</td>
-<td>you only live once</td>
-<td>人生只有一次</td>
-<td></td>
-</tr>
-<tr>
-<td>FML</td>
-<td>fuck my life</td>
-<td>悲催的人生</td>
-<td></td>
-</tr>
-<tr>
-<td>TL;DR</td>
-<td>too long; didn ’ t read</td>
-<td>太长不看</td>
-<td></td>
-</tr>
-<tr>
-<td>TGIF</td>
-<td>thank god it’s Friday</td>
-<td>天啊，星期五了</td>
-<td></td>
-</tr>
-<tr>
-<td>LB</td>
-<td>Like Back</td>
-<td>互粉啊！互粉！</td>
-<td></td>
-</tr>
-<tr>
-<td>HMU</td>
-<td>Hit Me Up</td>
-<td>妹妹约么</td>
-<td></td>
-</tr>
-<tr>
-<td>BRB</td>
-<td>Be right back</td>
-<td>我一定会回来的。</td>
-<td>同义：BBL=Be back late；BFN=bye bye for now</td>
-</tr>
-<tr>
-<td>NSFL</td>
-<td>Not Safe For Life</td>
-<td>慎入</td>
-<td>比如单生狗，慎入</td>
-</tr>
-<tr>
-<td>MTFBWY</td>
-<td>May The Force Be With You</td>
-<td>愿原力与你同在</td>
-<td>《星球大战》中的经典台词，有 Good luck 的意思。</td>
-</tr>
-<tr>
-<td>TIL</td>
-<td>Today I learnt</td>
-<td>今天我学到了</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="博客"><a href="#博客" class="headerlink" title="博客"></a>博客</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>RSS</td>
-<td><a href="https://baike.baidu.com/item/Really/16030355">Really</a> Simple Syndication</td>
-<td>简易信息聚合（聚合内容）</td>
-<td>RSS是一种用于共享新闻和其他Web内容的数据交换规范，就是将订户订阅的内容传送给他们的通讯协同格式(Protocol)。是站点用来和其他站点之间共享内容的一种简易方式（也叫聚合内容），在Blog开始盛行的时候得到广泛的应用。 RSS文件（或称做摘要、网络摘要、或频更新，提供到频道）包含了全文或是节录的文字，再加上发用者所订阅之网摘布数据和授权的元数据。网络摘要能够使发行者自动地发布他们的数据，同时也使读者能更够定期更新他们喜欢的网站或是聚合不同网站的网摘。<br>RSS摘要可以借由RSS阅读器、feed reader或是aggregator等网页或以桌面为架构的软件来阅读。标准的XML档式可允许信息在一次发布后通过不同的程序阅览。用户借由将网摘输入RSS阅读器或是用鼠标点取浏览器上指向订阅程序的RSS小图标之URI（非通常称为URL）来订阅网摘。RSS阅读器定期检阅是否有更新，然后下载给监看用户界面。<br>RSS可以是以下三个解释的其中一个：<br>Really Simple Syndication（真正简单的整合） RDF (Resource Deion Framework) Site Summary Rich Site Summary（丰富站点摘要）</td>
-</tr>
-<tr>
-<td>Feed</td>
-<td></td>
-<td></td>
-<td>Feed就是为满足以某种形式持续得到自己更新的需求而提供的格式标准的信息出口。就是信源。信息发布网站将网站全部或者部分信息整合到一个 RSS 文件中，这个文件就被称之为 feed 。信源中包含的数据都是标准的 XML 格式，不但能直接被其他站点调用，也能在其他的终端和服务中使用。<br>RSS订阅的过程中会用到的“Feed”，便是表示这是用来接收该信息来源更新的接口</td>
-</tr>
-</tbody></table>
-<h2 id="建模-游戏"><a href="#建模-游戏" class="headerlink" title="建模/游戏"></a>建模/游戏</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>PBR</td>
-<td>Physicallly-Based Rendering</td>
-<td>基于物理的渲染方式</td>
-</tr>
-<tr>
-<td>PBS</td>
-<td>Physicallly-Based Shader</td>
-<td>基于物理的着色方式</td>
-</tr>
-<tr>
-<td>FC</td>
-<td>Family Computer，Famicom</td>
-<td>第一代红白机，1983年发售，1985年超级马里奥，1986年塞尔达传说</td>
-</tr>
-<tr>
-<td>NES</td>
-<td>Nintendo Entertainment System</td>
-<td>欧美地区叫法，灰机</td>
-</tr>
-<tr>
-<td>GB</td>
-<td>Game Boy</td>
-<td>1989年，俄罗斯方块</td>
-</tr>
-<tr>
-<td>SFC</td>
-<td>Super Famicom</td>
-<td>1990年，第二代红白机</td>
-</tr>
-<tr>
-<td>N64</td>
-<td>Nintendo 64</td>
-<td>任天堂64位机，1996年发售，宝可梦系列，第三代红白机</td>
-</tr>
-<tr>
-<td>NGC</td>
-<td>Nintendo GameCube</td>
-<td>2001年，第四代红白机</td>
-</tr>
-<tr>
-<td>GBA</td>
-<td>Game Boy Advance</td>
-<td>2001年，第二代GameBoy</td>
-</tr>
-<tr>
-<td>NDS</td>
-<td>Nintendo Dual screen</td>
-<td>2004年，折叠双屏掌机</td>
-</tr>
-<tr>
-<td>GBM</td>
-<td>Game Boy MICRO</td>
-<td>2005年，Game Boy小型机</td>
-</tr>
-<tr>
-<td>Wii</td>
-<td></td>
-<td>2006年，首次引入体感</td>
-</tr>
-<tr>
-<td>3DS</td>
-<td>Nintendo 3DS</td>
-<td>2010年，折叠双屏掌机，3D裸眼技术</td>
-</tr>
-<tr>
-<td>NS</td>
-<td>Nintendo Switch</td>
-<td>2017年发售的游戏机</td>
-</tr>
-<tr>
-<td>PSP</td>
-<td>PlayStation Portable</td>
-<td>索尼掌机</td>
-</tr>
-<tr>
-<td>PS3</td>
-<td>Play Station 3</td>
-<td>索尼家用主机</td>
-</tr>
-<tr>
-<td>IP</td>
-<td>Intellectual Property</td>
-<td>知识产权</td>
-</tr>
-<tr>
-<td>Expansion Pack</td>
-<td>资料片</td>
-<td>游戏扩展版、补充内容。 在原有游戏基础上，增加一些新内容而开发出来的游戏扩展软件。 例如扩充新的故事情节、地图、角色、装备等。</td>
-</tr>
-<tr>
-<td>DLC</td>
-<td>Downloadable Content</td>
-<td>追加可下载内容包。 下载的游戏附加内容 。</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>资料片和DLC本质没有区别，都是游戏本体发售后的追加内容。</p>
-<p>有的人说DLC不能脱离本体运行，资料片可以脱离本体运行。（不过也有DLC也有能独立运行的，资料片也有非独立的。）</p>
-<p>也有人说资料片是包含本体和扩展内容的单独的光盘，DLC是通过网络下载的”现代版”的资料片</p>
-</blockquote>
-<h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>SD卡</td>
-<td>Secure Digital Memory Card</td>
-<td>安全数字卡</td>
-<td></td>
-</tr>
-<tr>
-<td>TF卡</td>
-<td>T-Flash、Trans Flash、MicroSD</td>
-<td>微型SD卡</td>
-<td>TF卡比SD卡小，TF卡插入适配器中可以转换为SD卡</td>
-</tr>
-<tr>
-<td>ROM</td>
-<td>Read-Only Memory</td>
-<td>只读存储器</td>
-<td>一般存储BIOS等不需要被修改的基本程序</td>
-</tr>
-<tr>
-<td>RAM</td>
-<td>Random Access Memory</td>
-<td>随机存取存储器</td>
-<td>也叫主存、运行内存，用于临时存储程序、数据和中间结果，断电之后丢失。如PC上的内存条</td>
-</tr>
-<tr>
-<td>Flash</td>
-<td>Flash Memory</td>
-<td>闪存</td>
-<td>非易失性，断电之后还能保存数据。并且可以直接运行程序，不需要读到RAM中。一般用于嵌入式产品，如U盘、数码相机、MP3等</td>
-</tr>
-<tr>
-<td>eMMC</td>
-<td>Embedded Multi Media Card</td>
-<td></td>
-<td>集成了一个控制器，即Flash+主控IC，主要针对手机或平板电脑等内嵌式存储器。提供标准接口管理Flash，使得手机厂商能够专注开发其他部分</td>
-</tr>
-<tr>
-<td>Cache</td>
-<td></td>
-<td>高速缓冲存储器</td>
-<td>位于CPU和内存之间，存储CPU临时数据，比RAM速度更快</td>
-</tr>
-<tr>
-<td>SSD</td>
-<td>Solid State Disk</td>
-<td>固态硬盘</td>
-<td>读写速度比SATA块，读写次数少于硬盘，价格更高</td>
-</tr>
-<tr>
-<td>SATA</td>
-<td>Serial Advanced Technology Attachment</td>
-<td>机械硬盘</td>
-<td></td>
-</tr>
-<tr>
-<td>SRAM</td>
-<td>Static RAM</td>
-<td>静态随机存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>DRAM</td>
-<td>Dynamic RAM</td>
-<td>动态随机存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>SDRAM</td>
-<td>Synchronous Dynamic RAM</td>
-<td>同步动态随机存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>SDR SDRAM</td>
-<td>Single Data Rate SDRAM</td>
-<td>单信道同步动态随机存储器</td>
-<td>数据预取宽度为1bit</td>
-</tr>
-<tr>
-<td>DDR1 SDRAM</td>
-<td>Double Data Rate SDRAM</td>
-<td>双信道同步动态随机存储器</td>
-<td>数据预取宽度为2bit，即每次存取2bit为1组的数据</td>
-</tr>
-<tr>
-<td>DDR2 SDRAM</td>
-<td>Double Data Rate Two SDRAM</td>
-<td>双信道两次同步动态随机存储器</td>
-<td>数据预取宽度为4bit</td>
-</tr>
-<tr>
-<td>DDR3 SDRAM</td>
-<td>Double Data Rate Three SDRAM</td>
-<td>双信道三次同步动态随机存储器</td>
-<td>数据预取宽度为8bit</td>
-</tr>
-<tr>
-<td>PROM</td>
-<td>Programmable ROM</td>
-<td>可编程只读存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>EPROM</td>
-<td>Erasable Programmable ROM</td>
-<td>可擦除可编程只读存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>OTPROM</td>
-<td>One Time Programmable ROM</td>
-<td>一次编程只读存储器</td>
-<td></td>
-</tr>
-<tr>
-<td>EEPROM</td>
-<td>Electrically Erasable Programmable ROM</td>
-<td>电子式可擦除可编程只读存储器</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="TV"><a href="#TV" class="headerlink" title="TV"></a>TV</h2><table>
-<thead>
-<tr>
-<th>缩写</th>
-<th>全称</th>
-<th>翻译</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CEC</td>
-<td>Consumer Electronics Control</td>
-<td>消费类电子控制</td>
-<td>系统发送CEC信号给HDMI设备（例如碟机），从而进行控制</td>
-</tr>
-<tr>
-<td>ARC</td>
-<td>Audio Return Channel</td>
-<td>音频回传通道</td>
-<td>电视将声音通过HDMI线回传给外置的音频设备（例如功放、音响）</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>传统TV只接收HDMI输入的画面信号，作为显示器使用。HDMI CEC和HDMI ARC，TV可以输出信号（回传）给外部设备，不需要多余的线材</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -16481,128 +14843,6 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>命令行笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>mac和linux系统都是基于unix内核的类unix系统，因此两者命令基本一样，有细微差别</p>
-<table>
-<thead>
-<tr>
-<th>作用</th>
-<th>Linux/Mac</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>打开文件或文件夹</td>
-<td>open [path]</td>
-</tr>
-<tr>
-<td>列出当前目录文件</td>
-<td>ls、ll -h</td>
-</tr>
-<tr>
-<td>打印当前目录路径</td>
-<td>pwd</td>
-</tr>
-<tr>
-<td>拷贝文本</td>
-<td>pbcopy（mac专有）</td>
-</tr>
-<tr>
-<td>查看系统信息</td>
-<td>sw_vers</td>
-</tr>
-<tr>
-<td>计算器</td>
-<td>bc</td>
-</tr>
-<tr>
-<td>查看ip</td>
-<td>ifconfig</td>
-</tr>
-<tr>
-<td>匹配字符串</td>
-<td>grep</td>
-</tr>
-<tr>
-<td>创建文件夹</td>
-<td>mkdir</td>
-</tr>
-<tr>
-<td>创建文件</td>
-<td>touch</td>
-</tr>
-<tr>
-<td>查看应用安装路径</td>
-<td>which</td>
-</tr>
-<tr>
-<td>查看系统磁盘使用情况</td>
-<td>df</td>
-</tr>
-<tr>
-<td>查看目录或文件大小</td>
-<td>du -sh 文件夹路径</td>
-</tr>
-</tbody></table>
-<p>常用命令：</p>
-<ul>
-<li>查看IP地址：<code>ifconfig en0 | grep inet | awk &#39;$1==&quot;inet&quot; &#123;print $2&#125;</code></li>
-<li><code>find . -name &#39;文件名&#39;</code>：在当前路径下查找文件，需要完整的文件名，或者使用通配符</li>
-<li><code>grep [options] PATTERN FILE</code>：<code>grep -inR enable_global_input *</code><ul>
-<li>-i：忽略大小写</li>
-<li>-n：输出匹配的行号</li>
-<li>-R：递归遍历文件夹</li>
-<li>-E：可以输入多个：<code>grep -E &quot;word1|word2|word3&quot; file.txt </code></li>
-</ul>
-</li>
-</ul>
-<p>Linux查看系统版本：</p>
-<ul>
-<li><code>cat /proc/version</code>和<code>uname -a</code>查看内核版本</li>
-<li><code>lsb_release -a</code>和<code>cat /etc/issue</code>：查看发行版本信息</li>
-</ul>
-<p><a href="https://blog.csdn.net/qq_36421001/article/details/123009582">Linux必学的60个命令</a></p>
-<h1 id="Windows常用命令"><a href="#Windows常用命令" class="headerlink" title="Windows常用命令"></a>Windows常用命令</h1><p>windows命令行工具推荐cmder</p>
-<p>windows和mac下命令有所区别，使用cmder的别名功能可以进行统一</p>
-<p>常用命令</p>
-<ul>
-<li>打开文件或文件夹：<code>explorer [path]</code></li>
-<li>查看系统信息：<code>winver</code></li>
-<li>计算器：<code>calc</code></li>
-<li>进入文件夹：<code>cd /d c:\Users\41001\Desktop</code>：<code>/d</code>表示直接进入该盘符</li>
-</ul>
-<h1 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h1><p><code>alias</code>命令查看别名，mac电脑好像自带了许多别名，这里做个备份，虽然大部分用不上。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">alias</span></span></span><br><span class="line">-=&#x27;cd -&#x27;</span><br><span class="line">...=../..</span><br><span class="line">....=../../..</span><br><span class="line">.....=../../../..</span><br><span class="line">......=../../../../..</span><br><span class="line">1=&#x27;cd -&#x27;</span><br><span class="line">2=&#x27;cd -2&#x27;</span><br><span class="line">3=&#x27;cd -3&#x27;</span><br><span class="line">4=&#x27;cd -4&#x27;</span><br><span class="line">5=&#x27;cd -5&#x27;</span><br><span class="line">6=&#x27;cd -6&#x27;</span><br><span class="line">7=&#x27;cd -7&#x27;</span><br><span class="line">8=&#x27;cd -8&#x27;</span><br><span class="line">9=&#x27;cd -9&#x27;</span><br><span class="line">_=sudo</span><br><span class="line">afind=&#x27;ack -il&#x27;</span><br><span class="line">d=&#x27;dirs -v | head -10&#x27;</span><br><span class="line">g=git</span><br><span class="line">ga=&#x27;git add&#x27;</span><br><span class="line">gaa=&#x27;git add --all&#x27;</span><br><span class="line">gap=&#x27;git apply&#x27;</span><br><span class="line">gapa=&#x27;git add --patch&#x27;</span><br><span class="line">gau=&#x27;git add --update&#x27;</span><br><span class="line">gav=&#x27;git add --verbose&#x27;</span><br><span class="line">gb=&#x27;git branch&#x27;</span><br><span class="line">gbD=&#x27;git branch -D&#x27;</span><br><span class="line">gba=&#x27;git branch -a&#x27;</span><br><span class="line">gbd=&#x27;git branch -d&#x27;</span><br><span class="line">gbda=&#x27;git branch --no-color --merged | command grep -vE &quot;^(\*|\s*(master|develop|dev)\s*$)&quot; | command xargs -n 1 git branch -d&#x27;</span><br><span class="line">gbl=&#x27;git blame -b -w&#x27;</span><br><span class="line">gbnm=&#x27;git branch --no-merged&#x27;</span><br><span class="line">gbr=&#x27;git branch --remote&#x27;</span><br><span class="line">gbs=&#x27;git bisect&#x27;</span><br><span class="line">gbsb=&#x27;git bisect bad&#x27;</span><br><span class="line">gbsg=&#x27;git bisect good&#x27;</span><br><span class="line">gbsr=&#x27;git bisect reset&#x27;</span><br><span class="line">gbss=&#x27;git bisect start&#x27;</span><br><span class="line">gc=&#x27;git commit -v&#x27;</span><br><span class="line">&#x27;gc!&#x27;=&#x27;git commit -v --amend&#x27;</span><br><span class="line">gca=&#x27;git commit -v -a&#x27;</span><br><span class="line">&#x27;gca!&#x27;=&#x27;git commit -v -a --amend&#x27;</span><br><span class="line">gcam=&#x27;git commit -a -m&#x27;</span><br><span class="line">&#x27;gcan!&#x27;=&#x27;git commit -v -a --no-edit --amend&#x27;</span><br><span class="line">&#x27;gcans!&#x27;=&#x27;git commit -v -a -s --no-edit --amend&#x27;</span><br><span class="line">gcb=&#x27;git checkout -b&#x27;</span><br><span class="line">gcd=&#x27;git checkout develop&#x27;</span><br><span class="line">gcf=&#x27;git config --list&#x27;</span><br><span class="line">gcl=&#x27;git clone --recurse-submodules&#x27;</span><br><span class="line">gclean=&#x27;git clean -id&#x27;</span><br><span class="line">gcm=&#x27;git checkout master&#x27;</span><br><span class="line">gcmsg=&#x27;git commit -m&#x27;</span><br><span class="line">&#x27;gcn!&#x27;=&#x27;git commit -v --no-edit --amend&#x27;</span><br><span class="line">gco=&#x27;git checkout&#x27;</span><br><span class="line">gcount=&#x27;git shortlog -sn&#x27;</span><br><span class="line">gcp=&#x27;git cherry-pick&#x27;</span><br><span class="line">gcpa=&#x27;git cherry-pick --abort&#x27;</span><br><span class="line">gcpc=&#x27;git cherry-pick --continue&#x27;</span><br><span class="line">gcs=&#x27;git commit -S&#x27;</span><br><span class="line">gcsm=&#x27;git commit -s -m&#x27;</span><br><span class="line">gd=&#x27;git diff&#x27;</span><br><span class="line">gdca=&#x27;git diff --cached&#x27;</span><br><span class="line">gdct=&#x27;git describe --tags `git rev-list --tags --max-count=1`&#x27;</span><br><span class="line">gdcw=&#x27;git diff --cached --word-diff&#x27;</span><br><span class="line">gds=&#x27;git diff --staged&#x27;</span><br><span class="line">gdt=&#x27;git diff-tree --no-commit-id --name-only -r&#x27;</span><br><span class="line">gdw=&#x27;git diff --word-diff&#x27;</span><br><span class="line">gf=&#x27;git fetch&#x27;</span><br><span class="line">gfa=&#x27;git fetch --all --prune&#x27;</span><br><span class="line">gfo=&#x27;git fetch origin&#x27;</span><br><span class="line">gg=&#x27;git gui citool&#x27;</span><br><span class="line">gga=&#x27;git gui citool --amend&#x27;</span><br><span class="line">ggpull=&#x27;git pull origin &quot;$(git_current_branch)&quot;&#x27;</span><br><span class="line">ggpur=ggu</span><br><span class="line">ggpush=&#x27;git push origin &quot;$(git_current_branch)&quot;&#x27;</span><br><span class="line">ggsup=&#x27;git branch --set-upstream-to=origin/$(git_current_branch)&#x27;</span><br><span class="line">ghh=&#x27;git help&#x27;</span><br><span class="line">gignore=&#x27;git update-index --assume-unchanged&#x27;</span><br><span class="line">gignored=&#x27;git ls-files -v | grep &quot;^[[:lower:]]&quot;&#x27;</span><br><span class="line">git-svn-dcommit-push=&#x27;git svn dcommit &amp;&amp; git push github master:svntrunk&#x27;</span><br><span class="line">gk=&#x27;\gitk --all --branches&#x27;</span><br><span class="line">gke=&#x27;\gitk --all $(git log -g --pretty=%h)&#x27;</span><br><span class="line">gl=&#x27;git pull&#x27;</span><br><span class="line">glg=&#x27;git log --stat&#x27;</span><br><span class="line">glgg=&#x27;git log --graph&#x27;</span><br><span class="line">glgga=&#x27;git log --graph --decorate --all&#x27;</span><br><span class="line">glgm=&#x27;git log --graph --max-count=10&#x27;</span><br><span class="line">glgp=&#x27;git log --stat -p&#x27;</span><br><span class="line">glo=&#x27;git log --oneline --decorate&#x27;</span><br><span class="line">globurl=&#x27;noglob urlglobber &#x27;</span><br><span class="line">glod=&#x27;git log --graph --pretty=&#x27;\&#x27;&#x27;%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)&lt;%an&gt;%Creset&#x27;\&#x27;</span><br><span class="line">glods=&#x27;git log --graph --pretty=&#x27;\&#x27;&#x27;%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)&lt;%an&gt;%Creset&#x27;\&#x27;&#x27; --date=short&#x27;</span><br><span class="line">glog=&#x27;git log --oneline --decorate --graph&#x27;</span><br><span class="line">gloga=&#x27;git log --oneline --decorate --graph --all&#x27;</span><br><span class="line">glol=&#x27;git log --graph --pretty=&#x27;\&#x27;&#x27;%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27;\&#x27;</span><br><span class="line">glola=&#x27;git log --graph --pretty=&#x27;\&#x27;&#x27;%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27;\&#x27;&#x27; --all&#x27;</span><br><span class="line">glols=&#x27;git log --graph --pretty=&#x27;\&#x27;&#x27;%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27;\&#x27;&#x27; --stat&#x27;</span><br><span class="line">glp=_git_log_prettily</span><br><span class="line">glum=&#x27;git pull upstream master&#x27;</span><br><span class="line">gm=&#x27;git merge&#x27;</span><br><span class="line">gma=&#x27;git merge --abort&#x27;</span><br><span class="line">gmom=&#x27;git merge origin/master&#x27;</span><br><span class="line">gmt=&#x27;git mergetool --no-prompt&#x27;</span><br><span class="line">gmtvim=&#x27;git mergetool --no-prompt --tool=vimdiff&#x27;</span><br><span class="line">gmum=&#x27;git merge upstream/master&#x27;</span><br><span class="line">gp=&#x27;git push&#x27;</span><br><span class="line">gpd=&#x27;git push --dry-run&#x27;</span><br><span class="line">gpf=&#x27;git push --force-with-lease&#x27;</span><br><span class="line">&#x27;gpf!&#x27;=&#x27;git push --force&#x27;</span><br><span class="line">gpoat=&#x27;git push origin --all &amp;&amp; git push origin --tags&#x27;</span><br><span class="line">gpristine=&#x27;git reset --hard &amp;&amp; git clean -dfx&#x27;</span><br><span class="line">gpsup=&#x27;git push --set-upstream origin $(git_current_branch)&#x27;</span><br><span class="line">gpu=&#x27;git push upstream&#x27;</span><br><span class="line">gpv=&#x27;git push -v&#x27;</span><br><span class="line">gr=&#x27;git remote&#x27;</span><br><span class="line">gra=&#x27;git remote add&#x27;</span><br><span class="line">grb=&#x27;git rebase&#x27;</span><br><span class="line">grba=&#x27;git rebase --abort&#x27;</span><br><span class="line">grbc=&#x27;git rebase --continue&#x27;</span><br><span class="line">grbd=&#x27;git rebase develop&#x27;</span><br><span class="line">grbi=&#x27;git rebase -i&#x27;</span><br><span class="line">grbm=&#x27;git rebase master&#x27;</span><br><span class="line">grbs=&#x27;git rebase --skip&#x27;</span><br><span class="line">grep=&#x27;grep  --color=auto --exclude-dir=&#123;.bzr,CVS,.git,.hg,.svn&#125;&#x27;</span><br><span class="line">grh=&#x27;git reset&#x27;</span><br><span class="line">grhh=&#x27;git reset --hard&#x27;</span><br><span class="line">grm=&#x27;git rm&#x27;</span><br><span class="line">grmc=&#x27;git rm --cached&#x27;</span><br><span class="line">grmv=&#x27;git remote rename&#x27;</span><br><span class="line">groh=&#x27;git reset origin/$(git_current_branch) --hard&#x27;</span><br><span class="line">grrm=&#x27;git remote remove&#x27;</span><br><span class="line">grset=&#x27;git remote set-url&#x27;</span><br><span class="line">grt=&#x27;cd &quot;$(git rev-parse --show-toplevel || echo .)&quot;&#x27;</span><br><span class="line">gru=&#x27;git reset --&#x27;</span><br><span class="line">grup=&#x27;git remote update&#x27;</span><br><span class="line">grv=&#x27;git remote -v&#x27;</span><br><span class="line">gsb=&#x27;git status -sb&#x27;</span><br><span class="line">gsd=&#x27;git svn dcommit&#x27;</span><br><span class="line">gsh=&#x27;git show&#x27;</span><br><span class="line">gsi=&#x27;git submodule init&#x27;</span><br><span class="line">gsps=&#x27;git show --pretty=short --show-signature&#x27;</span><br><span class="line">gsr=&#x27;git svn rebase&#x27;</span><br><span class="line">gss=&#x27;git status -s&#x27;</span><br><span class="line">gst=&#x27;git status&#x27;</span><br><span class="line">gsta=&#x27;git stash push&#x27;</span><br><span class="line">gstaa=&#x27;git stash apply&#x27;</span><br><span class="line">gstall=&#x27;git stash --all&#x27;</span><br><span class="line">gstc=&#x27;git stash clear&#x27;</span><br><span class="line">gstd=&#x27;git stash drop&#x27;</span><br><span class="line">gstl=&#x27;git stash list&#x27;</span><br><span class="line">gstp=&#x27;git stash pop&#x27;</span><br><span class="line">gsts=&#x27;git stash show --text&#x27;</span><br><span class="line">gsu=&#x27;git submodule update&#x27;</span><br><span class="line">gtl=&#x27;gtl()&#123; git tag --sort=-v:refname -n -l $&#123;1&#125;* &#125;; noglob gtl&#x27;</span><br><span class="line">gts=&#x27;git tag -s&#x27;</span><br><span class="line">gtv=&#x27;git tag | sort -V&#x27;</span><br><span class="line">gunignore=&#x27;git update-index --no-assume-unchanged&#x27;</span><br><span class="line">gunwip=&#x27;git log -n 1 | grep -q -c &quot;\-\-wip\-\-&quot; &amp;&amp; git reset HEAD~1&#x27;</span><br><span class="line">gup=&#x27;git pull --rebase&#x27;</span><br><span class="line">gupa=&#x27;git pull --rebase --autostash&#x27;</span><br><span class="line">gupav=&#x27;git pull --rebase --autostash -v&#x27;</span><br><span class="line">gupv=&#x27;git pull --rebase -v&#x27;</span><br><span class="line">gwch=&#x27;git whatchanged -p --abbrev-commit --pretty=medium&#x27;</span><br><span class="line">gwip=&#x27;git add -A; git rm $(git ls-files --deleted) 2&gt; /dev/null; git commit --no-verify --no-gpg-sign -m &quot;--wip-- [skip ci]&quot;&#x27;</span><br><span class="line">history=omz_history</span><br><span class="line">jadx-gui=&#x27;cd /Users/Afauria/AndroidStudioProjects/jadx/build/jadx&amp;&amp;bin/jadx-gui lib/jadx-core-*.jar&#x27;</span><br><span class="line">l=&#x27;ls -lah&#x27;</span><br><span class="line">la=&#x27;ls -lAh&#x27;</span><br><span class="line">ll=&#x27;ls -lh&#x27;</span><br><span class="line">ls=&#x27;ls -G&#x27;</span><br><span class="line">lsa=&#x27;ls -lah&#x27;</span><br><span class="line">md=&#x27;mkdir -p&#x27;</span><br><span class="line">rd=rmdir</span><br><span class="line">run-help=man</span><br><span class="line">tips=&#x27;~/tip.sh&#x27;</span><br><span class="line">which-command=whence</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>dart frontend_server.dart.snapshot –target=flutter –aot –tfa -Ddart.vm.profile=false -Ddart.vm.product=true –sdk-root /ssd2/zhangweiyue/flutter/common/flutter_patched_sdk –output-dill app.dill /ssd2/afauria/demo/lib/main.dart</p>
-<p>/disk3/afauria/code/flutter_engine/engine_sdk/sdk/clang_x64/gen_snapshot –snapshot_kind=app-aot-elf –elf=libapp.so app.dill</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快捷键笔记</title>
-    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
-<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
-<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
-<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git笔记</title>
     <url>/2018/10/04/tool-2018-10-04-Git/</url>
     <content><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>工作区</p>
@@ -16633,11 +14873,11 @@ dispatchMessage-->判断是否是通知消息
 </ul>
 </li>
 <li>修改倒数第二次提交信息：<ul>
-<li>git rebase -i head~2（倒数第三个commit）。</li>
+<li><code>git rebase -i head~2</code>（倒数第三个commit）。</li>
 <li>将相应commit的pick改为edit</li>
 <li>退出编辑</li>
-<li>git commit –amend 修改提交信息。</li>
-<li>git rebase –continue：恢复提交</li>
+<li><code>git commit --amend</code> 修改提交信息。</li>
+<li><code>git rebase --continue</code>：恢复提交</li>
 </ul>
 </li>
 <li><code>git blame &lt;file&gt;</code>显示文件每一行修改版本和作者</li>
@@ -16669,6 +14909,21 @@ dispatchMessage-->判断是否是通知消息
       </categories>
       <tags>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快捷键笔记</title>
+    <url>/2018/10/04/note-2018-10-04-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="命令行常用快捷键"><a href="#命令行常用快捷键" class="headerlink" title="命令行常用快捷键"></a>命令行常用快捷键</h1><p>光标移动：<br><code>ctrl+a</code>：移动到行首<br><code>ctrl+e</code>：移动到行尾<br><code>option+左右</code>：以单词为单位移动</p>
+<h1 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h1><p>光标移动：<br>b：前移一个单词词首<br>w：后移一个单词词首<br>e：后移一个单词词尾<br>nw、nb：n为数字，表示移动n个单词<br>0：移到行首<br>^：移到行首，不包括空格<br>$：移到行尾</p>
+<p>vi文档内搜索：/搜索内容，n键跳到下一处位置</p>
+<h1 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h1><p><code>command+f12（File Structure）</code>：打开类结构<br><code>ctrl+h（Type Hierarchy）</code>：打开类继承关系<br><code>ctrl+tab</code>：切换tab<br><code>option+左右</code>：单词移动</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -17043,255 +15298,111 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
-    <title>作为一个诗人</title>
-    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
-    <content><![CDATA[<center>
-    <b><font size="5">越人歌</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-    今夕何夕兮搴洲中流。<br>
-    今日何日兮得与王子同舟。<br>
-    蒙羞被好兮不訾诟耻。<br>
-    心几烦而不绝兮得知王子。<br>
-    山有木兮木有枝。<br>
-    心悦君兮君不知。<br>
-</center>
+    <title>著名台词</title>
+    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
+    <content><![CDATA[<ul>
+<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
+<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
+<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
+<li>“我得了抑郁症，该怎么办”<ul>
+<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
+<li>“可是医生，我就是那个小丑啊”</li>
+</ul>
+</li>
+<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
+<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
+<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
+</ul>
+</li>
+<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
+<li>我见你生得好看，闻着香甜</li>
+</ul>
+</li>
+<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
+<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
+<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
+</ul>
+</li>
+<li>结果并非所愿，那就在尘埃落定前，奋力一搏。——《夏目友人帐》</li>
+<li>我始终相信，在这个世界上，一定有另一个自己，在做着我不敢做的事，在过着我不敢过的生活。——《千与千寻》</li>
+<li>不要停止奔跑，不要回顾来路，来路无可眷恋，值得期待的只有前方。——《马男波杰克》</li>
+<li>将过去和羁绊全部丢弃，不要吝啬那些为了梦想流下的泪水。——《海贼王》</li>
+<li>伤病或许可以成为你放弃的理由，但真正能阻止你的，只有你自己。——《喜羊羊与灰太狼》</li>
+<li>一般人都不是他们想要做的那种人，而是他们不得不做的那种人，若是你的快乐感不再那么强烈，那么你的痛苦也不再那么揪心。卑鄙与伟大，恶毒与善良，仇恨与热爱，是可以互不排斥，并存在同一颗心里的，生活的意义，在于生活本身，而不在于你如何去描写。世界上最大的折磨，也莫过于在爱的同时又带着藐视了，人生的大悲剧，不是人会死亡了，而是他们不再爱了。唯有承认孤独的必然，才能享受不从众的自在。有多少孤独，就有多少真实，追逐梦想就是追逐自己的厄运。在满地都是六便士的街上，他抬起头看到了月光。——毛姆《月亮与六便士》</li>
+<li>他记得从前一个先令就能买到十三只上等的牡蛎。——毛姆《月亮与六便士》</li>
+<li>人这一生，既不像想的那么坏，也不像想的那么好——莫泊桑《一生》</li>
+<li>不管怎么样，明天又是新的一天——米切尔《飘》</li>
+<li>使我们视而不见的光亮，对于我们来说就是黑暗，当我们清醒时，曙光才会破晓，来日方长，太阳只是颗启明星——梭罗《瓦尔登湖》</li>
+<li>不久，你睡了一觉醒来时，你将成为新世界的一部分——村上春树《海边的卡夫卡》</li>
+<li>伤了你的心，那不要紧，没有表面伤痕，还是很漂亮。——《绝代商骄》</li>
+<li>富贵于我如浮云，但浮云于我如命根。——《男亲女爱》</li>
+<li>缘分这东西，你太随便就会错过，但是你太认真，就会难过。——《还是觉得你最好》</li>
+<li>不是有所成就才算活着，梦想呢，也不是什么了不起的东西，只喜欢看天、走路、吃披萨的人生，也很好。《心灵奇旅》</li>
+<li>自古逢秋悲寂寥，我言秋日胜春朝。</li>
+<li>应是天仙狂醉，乱把白云揉碎。</li>
+<li>凡是过往，皆为序章——莎士比亚</li>
+<li>念念不忘，必有回响——李叔同</li>
+<li>慧极必伤，情深不寿——金庸</li>
+<li>十年饮冰，难凉热血——梁启超</li>
+<li>浮生若梦，为欢几何——李白</li>
+<li>浮舟沧海，立马昆仑——周恩来</li>
+<li>大音希声，大象无形——老子《道德经》</li>
+<li>宁鸣而死，不默而生——欧阳修</li>
+<li>失之东隅，收之桑榆。</li>
+<li>河清海晏，时和岁丰。</li>
+<li>年轻不嗨，老年痴呆。</li>
+<li>时光清浅处，一步一安然。</li>
+<li>山野万万里，余生路漫。日暮酒杯淡饭，一半一半。</li>
+<li>时间煮雨，岁月缝花。以欢喜心，慢渡日常。</li>
+<li>日出有盼，日落有念。心有所期，忙而不茫。</li>
+<li>浮世三千，吾爱有三，日、月、与卿，日为朝，月为暮，卿为朝朝暮暮。</li>
+<li>浮世三千，不得有三，水中月，镜中花，梦中你，花月可求得，唯你求而不得。</li>
+<li>鲸落与海，星沉于洼，风隐于密林，蝉鸣漏进夏至。</li>
+<li>凄风冷雨满江城，纤云细月系弦声，阳关一曲随山尽，不知山外与谁闻。<ul>
+<li>凄风冷雨满江城，明花暗柳罩罗灯，寒潮不解春风意，春光不待梦里人。</li>
+<li>凄风冷雨满江城，清盏泥炉煮热羹。愿为白头相思燕，不羡朱门断肠魂。</li>
+</ul>
+</li>
+<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
+<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
+<li>还有一个烧烤架</li>
+</ul>
+</li>
+<li>江湖也没什么好的，也就酒还行</li>
+<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
+<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
+<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
+<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
+<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
+</ul>
+</li>
+<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
+<li>儿女情长什么的，真的很影响大哥行走江湖</li>
+<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
+<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
+<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
+<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
+<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
+<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
+<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
+<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
+<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
+<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
+<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
+<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
+<li>明月来复照，把酒贺今朝——观风月</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
 
 
 
-<center>
-    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
-    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
-    一尺深红胜曲尘，天生旧物不如新。<br>
-    合欢桃核终堪恨，里许元来别有人。<br>
-    井底点灯深烛伊，共郎长行莫围棋。<br>
-    玲珑骰子安红豆，入骨相思知不知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
-    <font size="2">【作者】姜夔 【朝代】宋</font><br>
-       肥水东流无尽期。当初不合种相思。<br>
-    梦中未比丹青见，暗里忽惊山鸟啼。<br>
-    春未绿，鬓先丝。人间别久不成悲。<br>
-    谁教岁岁红莲夜，两处沉吟各自知。<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       十三与君初相识，王侯宅里弄丝竹。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    再见君时妾十五，且为君作霓裳舞。<br>
-    可叹年华如朝露，何时衔泥巢君屋？<br>
-</center>
-
-
-<center>
-    <b><font size="5">古相思曲</font></b><br>
-    <font size="2">乐府</font><br>
-       君似明月我似雾，雾随月隐空留露。<br>
-    君善抚琴我善舞，曲终人离心若堵。<br>
-    只缘感君一回顾，使我思君朝与暮。<br>
-    魂随君去终不悔, 绵绵相思为君苦。<br>
-    相思苦，凭谁诉？遥遥不知君何处。<br>
-    扶门切思君之嘱，登高望断天涯路。<br>
-</center>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
 
 
 
-<center>
-    <b><font size="5">绸缪</font></b><br>
-    <font size="2">【作者】佚名 【朝代】先秦</font><br>
-       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
-    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
-    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
-</center>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
 
 
-<center>
-    <b><font size="5">我亦好歌亦好酒</font></b><br>
-    <font size="2">【作者】殊同 【朝代】现代</font><br>
-       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
-    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
-    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
-    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
-    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
-    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
-    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
-    <font size="2">【作者】刘过 【朝代】宋</font><br>
-       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
-    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
-    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
-       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
-    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
-    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
-    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
-    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
-       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
-    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
-    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
-    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-       花非花，雾非雾。<br>
-    夜半来，天明去。<br>
-    来如春梦不多时，去似朝云无觅处。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">花非花 ·花曲</font></b><br>
-    <font size="2"></font><br>
-       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
-    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
-    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
-    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">将进酒</font></b><br>
-    <font size="2">【作者】李白 【朝代】唐</font><br>
-       君不见，黄河之水天上来，奔流到海不复回。<br>
-    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
-    人生得意须尽欢，莫使金樽空对月。<br>
-    天生我材必有用，千金散尽还复来。<br>
-    烹羊宰牛且为乐，会须一饮三百杯。<br>
-    岑夫子，丹丘生，将进酒，杯莫停。<br>
-    与君歌一曲，请君为我倾耳听。<br>
-    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
-    古来圣贤皆寂寞，惟有饮者留其名。<br>
-    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
-    主人何为言少钱，径须沽取对君酌。<br>
-    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">长恨歌</font></b><br>
-    <font size="2">【作者】白居易 【朝代】唐</font><br>
-    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
-    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
-    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
-    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
-    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
-    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
-    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
-    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
-    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
-    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
-    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
-    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
-    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
-    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
-    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
-    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
-    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
-    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
-    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
-    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
-    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
-    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
-    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
-    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
-    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
-    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
-    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
-    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
-    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
-    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
-</center>
-
-
-<center>
-    <b><font size="5">贺新郎</font></b><br>
-    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
-   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
-</center>
-​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
-​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
-
-<center>
-    <b><font size="5">宽心谣</font></b><br>
-    <font size="2">【作者】赵朴初</font><br>
-    日出东海落西山，愁也一天，喜也一天。<br>
-    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
-    每月领取养老钱，多也喜欢，少也喜欢。<br>
-    少荤多素日三餐，粗也香甜，细也香甜。<br>
-    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
-    常与知己聊聊天，古也谈谈，今也谈谈。<br>
-    内孙外孙同样看，儿也心欢，女也心欢。<br>
-    全家老少互慰勉，贫也相安，富也相安。<br>
-    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
-    心宽体健养天年，不是神仙，胜似神仙。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">观猎</font></b><br>
-    <font size="2">【作者】王维</font><br>
-    风劲角弓鸣，将军猎渭城。<br>
-    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
-    忽过新丰市，还归细柳营。<br>
-    回看射雕处，千里暮云平。<br>
-</center>
-
-
-<center>
-    <b><font size="5">国风·秦风·小戎</font></b><br>
-    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
-    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
-    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
-</center>
-
-
-
-<center>
-    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
-    <font size="2">【作者】韦庄</font><br>
-    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
-    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
-</center>
-
-
-<center>
-    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
-    <font size="2">【作者】欧阳修</font><br>
-    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
-    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
-</center>
 
 ]]></content>
       <categories>
@@ -18740,6 +16851,54 @@ dispatchMessage-->判断是否是通知消息
     <title>独角戏</title>
     <url>/2018/04/14/personal-2018-04-14-AsSingler/</url>
     <content><![CDATA[<h1 id="情话"><a href="#情话" class="headerlink" title="情话"></a>情话</h1><ul>
+<li><p>门铃响了，我大大方方的开门了。</p>
+</li>
+<li><p>好不容易遇见得人，就不要轻易说再见，我总是词不达意，总是磕磕绊绊，但我真的爱你。</p>
+</li>
+<li><p>我不知道为什么总是想你，什么都想和你分享，和你在一起快乐是真的，吃醋是真的，想你也是真的。</p>
+</li>
+<li><p>你永远都是那个隔着屏幕就能影响我心情得人，你真的很重要。</p>
+</li>
+<li><p>我真的很笨，总找不到话题跟你聊天，怕你觉得我在敷衍你，其实我很喜欢你，也害怕失去你</p>
+</li>
+<li><p>两个人在一起，没有合不合适，只有愿不愿意，努不努力，没有天生合适的两个人，只有互相迁就的两颗心，两个人朝着相同得方向努力，那就是好的爱情。</p>
+</li>
+<li><p>如果你爱一个人，就不要去害怕结局，在你能爱她的时候用力去爱，因为不是每个人都能非常幸运的、遇到那个很爱的人，有些人，我们能够遇见，就已经非常幸运了。在经历过一次遗憾之后才明白，面对很爱的人，千万不要假装不在意，不要说反话，人生无常，要不遗余力地表达爱。</p>
+</li>
+<li><p>我不想找一个搭伙过日子地人，我想找一个一见我就笑，我一见就笑，喝了酒满眼是光，给我讲浪漫和爱的人。</p>
+</li>
+<li><p>忽有故人心上过，回首山河已是秋。</p>
+</li>
+<li><p>我不想再去认识一个新的人，再去磨合一切，不想再告诉她我的小秘密，再也不想夜里一个人偷偷的哭，不想再去重新喜欢一个人，至少现在不想，我只有一点爱了，但我还要过一生。</p>
+</li>
+<li><p>你不要太长情，也不要把感情看得那么重，否则你就会很难接受离别，而离别，才是人生的常态啊。</p>
+</li>
+<li><p>总归还是会有人用最质朴的方式喜欢你，不是套路，也不是撩你，是那种好喜欢你啊，想对你越来越好。</p>
+</li>
+<li><p>我向来擅长的自我保护方式是，一旦察觉到对方冰冷的态度就自觉退避三舍。</p>
+</li>
+<li><p>希望我们能遇见一个干净的人，没有预谋离开的心思，没有藏着掖着的行为，只把真诚给你，阳光给你，最好的给你。</p>
+</li>
+<li><p>找到一个很合适的爱人，需要满足两种心理需求，一种是安全感，一种是归属感，安全感就是你确定你的另一半不会走，归属感就是你确定你不会走。</p>
+</li>
+<li><p>大家都是成年人了，不爱了可以直接说，不要敷衍，不要冷暴力，我从没想过要纠缠你。</p>
+</li>
+<li><p>人一生会碰见很多心动的人，可能会误以为那是喜欢，其实也只不过是某一刻的好感，毕竟心动都不是答案，心定才是。</p>
+</li>
+<li><p>你问我为何沉默，有的人无话可说，有的话无人可说。</p>
+</li>
+<li><p>最难过的不是结局不够好，而是付出的真诚没有被善待。</p>
+</li>
+<li><p>拉黑删除是小孩子才做的事情，成年人只是不再讲话。</p>
+</li>
+<li><p>考59分比考零分更难过，最痛苦的不是不曾拥有，而是差一点就可以。</p>
+</li>
+<li><p>当你毫无保留地信任一个人，最终只会有两种结果，不是生命中的那个人，就是生命中的一堂课。</p>
+</li>
+<li><p>未来要和你共度一生的那个人其实在与你相同的时间里，也忍受着同样的孤独，那个人一定也满怀着期待，马不停蹄的赶来和你碰面。</p>
+</li>
+<li><p>我告诉你我喜欢你，并不是一定要和你在一起，只是希望今后的你，在遭遇人生低谷时期，不要灰心，至少曾经有人被你的魅力所吸引。曾经是，以后也会是。</p>
+</li>
 <li><p>你的女朋友有缺点吗？ ：有，像星星一样的多。 ：那你的女朋友有优点吗？ ：有，像太阳一样的少。 ：那你为什么还喜欢她？ ：因为太阳一出现，星星就不见了。</p>
 </li>
 <li><p>女孩终于鼓足勇气向男孩表白，害羞地问男孩：“你喜欢我吗？” 男孩说：“不喜欢。” 女孩伤心欲绝，转身要走。 这时男孩叫住了女孩，对她说：“傻瓜，你还没问我爱不爱你呀。” 女孩破涕为笑：“那你爱不爱我？” “不爱。”。</p>
@@ -18759,7 +16918,9 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>我一岁的时候五岁，你年龄是我的五倍。我四岁的时候你八岁，你年龄是我的两倍。我十六岁的时候你二十岁，你的年龄是我的1.25倍。虽然我知道我永远无法追上你，但是我一生都在向你靠近。</p>
 </li>
-<li><p>今天的你对我爱答不理，明天的我还来找你</p>
+<li><p>今天的你对我爱答不理，明天的我还来找你。</p>
+</li>
+<li><p>傻瓜，越刷越难过，别往下翻了。乖，看到这里就睡觉吧，我不认识你，但是我知道你有故事，愿你三冬暖，愿你春不寒，愿你天黑有灯、下雨有伞，愿你余生有两人相伴。记住，不管你现在经历着什么，你都要记住，你永远是最优秀地，最闪耀的，至少在我这里。如果可以的话，我现在就想站在你的面前抱抱你，并告诉你，你是最棒的。加油，陌生人，一切总会过去的，愿你看到，也请和我说一句加油。</p>
 </li>
 <li><p>男生思维：你不做我女朋友，我怎么对你好？女生思维：你不对我好，我怎么做你女朋友？</p>
 <ul>
@@ -18785,6 +16946,8 @@ dispatchMessage-->判断是否是通知消息
 </ul>
 </li>
 <li><p>相爱的人总喜欢说反话，却又渴望对方能读懂自己的心。有点像是两个人的一场美梦，彼此都害怕自己身边的人已经睡醒远去，自己还在原地做梦，所以不断的试探考验，但是如果两人都执着的要考验对方是否醒了，那两个人还会有一起做梦的可能吗？林佳和孟云都生怕自己是醒的晚被抛弃的那个，所以明明还爱着，两个人却都急匆匆地起身离开了。</p>
+</li>
+<li><p>月亮下有两个影子，一个是我的，另一个也是我的。</p>
 </li>
 <li><p>初见是惊鸿一瞥，南柯一梦是你。等待是山重水复，怦然心动是你。相遇是柳暗花明，如梦初醒是你。重逢是始料未及，别来无恙是你。我喜欢你，依旧是你。</p>
 </li>
@@ -18819,13 +16982,57 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>无人与我立黄昏，无人问我粥可温，无人怜我悲与伤，无人分我乐与欢</p>
 </li>
-<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你</p>
+<li><p>我与春风皆过客，你携秋水揽星河</p>
+</li>
+<li><p>此生固短，无你何欢。</p>
+</li>
+<li><p>半身风雨半身伤，半句别恨半句凉。</p>
+</li>
+<li><p>南风知我意，吹梦到西州。</p>
+</li>
+<li><p>从此音尘各悄然，春山如黛草如烟。</p>
+</li>
+<li><p>苍天不解人情暖，冷眼看尽繁花残。</p>
+</li>
+<li><p>世间无限丹青手，一片伤心画不成。</p>
+</li>
+<li><p>我自飘零我自狂，犹如野鹤游四方。</p>
+</li>
+<li><p>落花人独立，微雨燕双飞。</p>
+</li>
+<li><p>捡尽寒枝不肯栖，寂寞沙洲冷。</p>
+</li>
+<li><p>白茶清欢无别事，我在等风也等你。清酒独酌了无趣，我在梦花也梦你。</p>
+</li>
+<li><p>晓看天色暮看云，行也思君，坐也思君。</p>
 </li>
 <li><p>女：我结婚的时候你会来吗？</p>
 <ul>
 <li>男：那我劫婚，你会跟我走吗？</li>
 <li>世界上最悲哀的事莫过于此，他开心幸福难过的模样你都见过，但唯独你没见过她属于你的样子</li>
 </ul>
+</li>
+<li><p>我只觉得身后有人呼唤我，回头只有肆虐的风。</p>
+</li>
+<li><p>我是一个爱笑的人，但我不是一个开心的人。</p>
+</li>
+<li><p>我试着销声匿迹，后来发现真的无人问津。</p>
+</li>
+<li><p>我好像从来都是一个人，没和谁走过四季，也没和谁吹过海风。</p>
+</li>
+<li><p>星星应该哈哈大笑，反正宇宙是个偏僻的地方。</p>
+</li>
+<li><p>有这样一种男生，烟酒不沾，性情温和，圈子简单干净。对待感情认真专一，对于喜欢的女孩子，他们甚至可以东南西北都顺路，春夏秋冬都有空。我一直认为这样的男孩子应该很讨女生喜欢，可直到现在我才发现，在现实生活中，这样的男孩子，往往最不被人珍惜。</p>
+</li>
+<li><p>别人已经不想理你了，也都给了你明确的态度，就等你自己醒目，自己离开，你还要执迷不悟，醒少少啦，你卑微的样子真的，好失礼啊。（爱而不得的时候，再爱就不礼貌了）</p>
+</li>
+<li><p>除了生命以外，你所感受到的所有痛苦都是你的价值观所带给你的，而非真实存在，人世间最大的悲哀就是，这不是我想要的生活，但这是我自己选择的生活，我没有心事可想，我的心酸不可告人。</p>
+</li>
+<li><p>你不理我的时候，我也绝对不打扰你，你冷落了我，我也会慢慢冷落你，能习惯你的陪伴，也能习惯没有你的孤独，你珍惜我，我加倍奉还，你要是不在意，那我、就让一切顺其自然。</p>
+</li>
+<li><p>为什么有些男人独自一个人熬过低谷期的时候，他会变得突然成熟、突然冷静，因为压根就没有人知道，他一个人度过低谷期的时候，有多么无助和崩溃。那些人只会最后轻描淡写的说一句：他变了。</p>
+</li>
+<li><p>如果她不忙，她一定会联系我。如果她忙，我不想打扰她。如果她不忙又不联系我，我找她干嘛。其实男人呢，如果你用0度面对他，他就会立刻成冰；可如果你用100度去面对他，他就会立刻沸腾；如果你用50度去面对他，他就会对你不冷不热</p>
 </li>
 <li><p>自己喜欢的人在别人怀里，我能做什么，我能说什么，一个男人的悲剧在于如果他失败了，他不能将事情与人说，只能将愤怒屈辱不甘埋在心里</p>
 </li>
@@ -18904,16 +17111,13 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。</p>
 </li>
-<li><p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
-</li>
 <li><p>不为往事扰，余生只愿笑</p>
 </li>
 <li><p>因为到最后你会发现，一个人的愚蠢不是几句话就能纠正的，谁也无法阻止智障坑人，正如无法阻止死神上门</p>
 </li>
 <li><p>茕茕白兔，东走西顾，衣不如新，人不如故</p>
 </li>
-<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！</p>
-<p>你好，最熟悉的陌生人</p>
+<li><p>人最怕，深交后的陌生，认真后的痛苦，信任后的利用，温柔后的冷漠！你好，最熟悉的陌生人</p>
 </li>
 <li><p>婚姻就是吵架冲出门以后，回来顺便买了个菜。</p>
 </li>
@@ -18956,6 +17160,8 @@ dispatchMessage-->判断是否是通知消息
 <li><p>怕无归期，怕空欢喜，怕来者不是你。</p>
 </li>
 <li><p>总有人比你好，而终无人可取代你。</p>
+</li>
+<li><p>那一刻我心里有一场海啸，可我静静地站着，没有让任何人知道。想起了十号线金台夕照，地铁的速度大过于我的勇气。</p>
 </li>
 <li><p>很久以后才知道，原来和有些人最好的结局，就是互相杳无音信。</p>
 </li>
@@ -19070,84 +17276,32 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>世间不如意事七八九，能与人言一二三都无</p>
 </li>
-</ul>
-<h1 id="江湖"><a href="#江湖" class="headerlink" title="江湖"></a>江湖</h1><ul>
-<li>天下英雄出我辈，一入江湖岁月催。 鸿图霸业谈笑间，不胜人生一场醉。 提剑跨骑挥鬼雨，白骨如山鸟惊飞。 尘世如潮人如水，只叹江湖几人回。 </li>
-<li>何谓侠？仗剑、天涯、四海为家；可否具体？快意、恩仇、天纵潇洒；可否再具体？一人、一马、再无其它<ul>
-<li>还有一个烧烤架</li>
-</ul>
+<li><p>其实我不懂喜欢，但是我想走向你。</p>
 </li>
-<li>江湖也没什么好的，也就酒还行</li>
-<li>正当你背上剑决定马不停蹄一意孤行的时候，突然出现一个人，把你抱紧说：少年，我想和你分享这漫长的一生。你一激动，把剑扔了，把马烤了，一回头，人没了~</li>
-<li>仙宫人竟去,空庭花乱飞,芳心向谁尽,无谓是沾衣</li>
-<li>绿水本无忧，因风皱面；青山原不老，为雪白头。</li>
-<li>“好想变成雪啊，这样就可以落在先生的肩上了……” “若是先生撑了伞呢？” “那就落在先生的红伞上，静载一路的月光。” “若是先生将雪拂去……” “那就任他拂去，能在他的手掌上停留一刻，便足矣。” ——《仁医》<ul>
-<li>若是先生撑伞的同时快速旋转伞同时自身出了一个冰心并且以一个反方向转这样形成一股气流可以不断吹雪，加上上下横跳的走路灵巧避开所有雪呢？</li>
-</ul>
+<li><p>你应该是一场梦，我应该是一阵风。</p>
 </li>
-<li>我倾家荡产才买了一把剑，准备喝碗酒就上路 碰巧你在邻桌笑，从此心中无江湖</li>
-<li>儿女情长什么的，真的很影响大哥行走江湖</li>
-<li>在古代，他们不网聊，不短信，如果你想她，就爬两座山，走五里路，去牵她的手。</li>
-<li>此生来世都愿识尽世间好人，读尽世间好书，看尽世间好山水，天上风景再好，从不羡慕。</li>
-<li>“何为苦涩？” “君往东，卿向西，永无相遇。” “可否具体？” “卿有情，君无意，候无佳期。” “可否再具体？” “彼岸花，花与叶，终无逢时。” “仍是不解？” “我笑着祝福你。”</li>
-<li>你能渡万物轮回，能渡花草树木的枯萎，能渡恶人轮回，为什么不能渡我呢？你是世人的圣人，却唯独是我的恶人</li>
-<li>进去一个寺庙，里面有个上香的人，外面是喧闹的芙蓉街，仅仅隔了一个门口，里面却非常安静。我站在里面跟小哥哥说，不能呆在里面太久了，万一被感化了，皈依我佛了怎么办？小哥哥看了我一眼：你慧根不够，怕是不能去出家。我说那你呢？我尘缘未了，也不能出家。然后我们就走了外面买了一个烤肠，好吃。</li>
-<li>睡到二三更时凡荣华皆成幻境，想到一百年后无少长俱是古人</li>
-<li>俺曾见金陵玉殿莺啼晓，秦淮水榭花开早，谁知道容易冰消。眼看他起朱楼，眼看他宴宾客，眼看他楼塌了。这青苔碧瓦堆，俺曾睡风流觉，将五十年兴亡看饱。</li>
-<li>位卑未敢忘忧国，都道戏子无情，怎知戏子也有心</li>
-<li>戏腔一开，八方来听，一方为人，三方为鬼，四方为神。凡人不看，不代表鬼神不看</li>
-<li>我自谓半个活人，见山如荒骨，见海如静水，见花见草，也如死气升腾，天下万物也有白骨凋落的那一天，唯独见了你，荒骨附色，静水奔腾，花草接近新生，万物上了色，还了魂。</li>
-<li>贺今朝曾经羡慕闲云野鹤，想做什么做什么，想去哪就去哪。但等他真正踏过山水，行路些许后，才发现天地山河，都比不上黎复照眉间风月，也不由地想起曾经和黎复照一起喝酒，笑说敢跟他姓的场景。 人生如一场宴会，来得人多，去的人也多，但从始至终，唯独他一直在。——观风月</li>
-<li>这山河看着久了也就这模样，抵不过阿照眉目里头半分风月。——观风月</li>
-<li>明月来复照，把酒贺今朝——观风月</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>著名台词</title>
-    <url>/2018/04/14/personal-2018-04-14-Phrase/</url>
-    <content><![CDATA[<ul>
-<li>马东锡：可以走法律程序，但我要和他一个监狱——《恶人传》</li>
-<li>“你是谁？”“我是中国最后一个皇帝。”“用什么证明？”溥仪走向龙椅，从那下面拿出了蛐蛐，笑得就像个孩子。——《末代皇帝》</li>
-<li>曾经引以为傲的高音，现在已经无法驾驭了，听台下自发的大合唱，校长谭咏麟眼含热泪，70随唱不动又如何，你起头就行。</li>
-<li>“我得了抑郁症，该怎么办”<ul>
-<li>“不要紧，城里来了位著名的小丑，会说所有笑话，看了他的表演，你就不会再烦恼了”</li>
-<li>“可是医生，我就是那个小丑啊”</li>
-</ul>
+<li><p>我偷偷碰了你一下，却不料你如蒲公英散开，此后到处都是你的模样。</p>
 </li>
-<li>智力与爱人的能力无光，爱本就很纯粹，很简单。有多少自认为聪明的人确失去了爱人的能力。——《山姆先生》</li>
-<li>人生陆远，只有忘得甘敬，才能得到江莱，赢得嘉禾——《好先生》<ul>
-<li>人生陆远，就算没有忘得甘敬，江莱也在等你</li>
-</ul>
-</li>
-<li>阿娘说：想吃什么，什么便是良药——《灵魂摆渡-黄泉》<ul>
-<li>我见你生得好看，闻着香甜</li>
-</ul>
-</li>
-<li>行动处处长行动不便，情报处处长为情所困，明家人身份不明</li>
-<li>他的初恋不是他给了阿泽，是他自己弄丢的哦。<ul>
-<li>所以搞怪的不是红绿灯不是时机，而是我数不清的犹豫——《请回答1988》</li>
-</ul>
+<li><p>一张嘴就是你的名字，一闭眼就是你的样子。</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">我要是对你有感觉又不和你在一起你会不会觉得我吊着你。</span><br><span class="line">要说我对你有感觉呢有勉强和你在一起你会不会觉得我欺骗你</span><br><span class="line">你说我要是对你没感觉却和你在一起会不会觉得我玩弄你</span><br><span class="line">你要是觉得我对你没感觉又不和你在一起会不会觉得我伤害你</span><br><span class="line">	——《疯人院》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">看对面来的是谁家女子，生得春光满面，美丽非凡，</span><br><span class="line">这位姑娘，请你停下美丽的脚步，你可知自己犯下了什么样的错误……</span><br><span class="line">这位官人，明明是你的马蹄踢翻了我的竹篮，</span><br><span class="line">你看这宽阔的道路直通蓝天，你却非让这可恶的畜生溅起我满裙污点，怎么反倒怪罪起我的错误？</span><br><span class="line">你的错误，就是美若天仙，</span><br><span class="line">你婀娜的身姿让我的手不听使唤，</span><br><span class="line">你蓬松的乌发涨满了我的眼帘，看不见道路山川，只有漆黑一片</span><br><span class="line">你明艳的面颊让我胯下的这头畜生神魂颠倒，忘记了他的主人是多么威严……</span><br><span class="line">	——《大明宫词》</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">之前总以为是湘琴拯救了银河系才能和直树在一起，后来慢慢发现是直树用光了所有的运气才遇见湘琴</span><br><span class="line"></span><br><span class="line">“我知道你讨厌笨蛋  但你不能欺负我老婆 ”  </span><br><span class="line"></span><br><span class="line">-直树,你要吃蛋糕吗?-我不要。-不是我做的，是我买的。-直树: 好吧,吃一块。</span><br><span class="line"></span><br><span class="line">“江同学你好，我是F班的袁湘琴。嗯，我想你并不认识我，但是我对你却很了解喔。 从第一次在新生训练上看到你，那一天，我的眼光就不知道该怎麼离开你。 不管是致辞的你，还是和旁人聊天的你，还是落寞不说话的你，我总可以很快的在人群中知道你的位置，找到你的位置。彷佛你在哪里，光就在哪里。”</span><br><span class="line"></span><br><span class="line">“湘琴好像永远都不知道我有多爱她”</span><br><span class="line"></span><br><span class="line">湘琴:“我真的是医学系天才江直树的妻子！”</span><br><span class="line"></span><br><span class="line">湘琴：咦你怎么买了巧克力的蛋糕啊，你不是最喜欢草莓的吗？植树：没办法，今天店里只卖这种口味。湘琴：没关系，幸好我最喜欢巧克力口味了。</span><br><span class="line"></span><br><span class="line">湘琴：这是你第二次吻我诶。    </span><br><span class="line">直树：不，这是第三次</span><br><span class="line">湘琴：可是？（努力在脑海中数啊数）</span><br><span class="line">直树：好了，不要数了（一把拥入怀中。。内心想说笨蛋，不能让你知道我偷偷亲你了。）</span><br></pre></td></tr></table></figure>
-
-
-
+<h1 id="情书"><a href="#情书" class="headerlink" title="情书"></a>情书</h1><ul>
+<li>如果我有什么地方做的不对，惹你生气了，你一定要跟我说，我会向你道歉解释，任何时候都不要藏在心里，我不想错过你。未来的所有日子，我不会离开你，我会一直爱你，你可以反复向我确认。你一定要知道，在有你的选择离，我都选择你，我没有野心，只想和你有未来，有个属于我们自己的家。</li>
+<li>一个愿意哄，一个愿意低头，爱情才能继续。一个闹，一个笑，这就是幸福。一边骂着，一边爱着，这就是恩爱。一边抱怨着，一边包容着，这就是值得相守一辈子的人。爱是相互的，珍惜也是相互的。你心疼我，我更心疼你。你愿意理解我，我更愿意花心思懂你。你愿意给我真心，我拼了命也不会负你。任何关系中，懂得服软，轮流低头才不会走散，哪有什么天生般配的人，不过是一个懂得包容迁就，一个懂得适可而止。——杨绛《爱要相互服软》</li>
+<li>我认为最美好的爱情，是两个人相处不再小心翼翼，越爱越有底气。两个人在一起，别说配不配，合不合适，只有愿不愿意，努不努力，没有天生合适的两个人，只有互相迁就的两颗心，只要爱着对方，那就好好和他在一起，不要胡思乱想。我想告诉你，除了你，我谁都不想要了，并不是因为这个世界上没有比你更好的人，而是我在茫茫人海中把心都给了你，我拿什么去爱别人。</li>
+<li>我喜欢你把大事小事都告诉我，更喜欢当我不在的时候，给我发一大堆消息，让我有被在意的感觉，也会让我觉得你是想我啦。如果有人问我，思念到极致是什么感受，我说，每次手机一响，我都希望是你。</li>
+<li>我既然选择喜欢你，就没那么容易放下你，我不是图新鲜感的人，我对你的爱只会越来越深，我觉得爱的感觉就是无缘无故的想起你。和你分享的不是生活，而是我对这份感情的一种态度，想你的心情，实在没办法用一句话代替。喜欢你胜过所有的道理，原则抵不过我愿意。</li>
+<li>你困了就去睡，不困了我陪你，想我了就给我发消息，委屈难过一定要告诉我。入目无他人，四下皆是你，我愿携满天星辰赠予你，但仍觉得满天星辰不及你。你是我散落在人间的日常，三三两两。</li>
+<li>喜欢没有结果的人，是我干过最勇敢的事。用心付出过，便不再有遗憾。故事不长，相识一场，脸红相遇，眼红散场。</li>
+<li>分享欲是靠回应来延续的，热情也是。有句话说，爱是动词，生活分享给了谁，爱就给了谁。就好像有人问我：你吃饭了吗？我的回答可以是：“我点了一份炒米粉，还喝了一杯奶茶，是一家新店，包装巨好看，要不要发给你看看啊？”当然也可以是 ：刚吃完。想说的是，分享欲并不是和谁都有的，只是因为你很重要，所以才愿意把生活的点滴，热气腾腾地分享给你。</li>
+<li>谈恋爱不只是亲一下，抱一下，牵牵手，也不只是弄个情侣头像，弄个情侣网名，开个情侣空间，或者穿个情侣装，然后整天腻在一起，什么事都不去做，互相耽误。《侧耳倾听》里有这么一段话：因为你，我愿意成为个更好的人，不想成为你的包袱，因此发奋努力，只是为了证明我足以与你相配，好的爱情一定是彼此成就互相成长的。我不会以爱之名束缚你，你可以做任何你想做的事情，但我希望你做任何事之前都可以想起我，并且因为我而拒绝一些暧昧的人和事，我希望我们谈的不只是恋爱，而是信任、是陪伴、也是考验；也不止是爱情的甜蜜，还会跟你一起分享快乐和痛苦，当你坚持不下去的时候，身边都会有一个对你无条件支持的人。希望我们都将永远忠于爱情，不被辜负。</li>
+<li>我恢复了原来的样子，自由、独立、快乐、充实，不再患得患失，不再疑心猜测。我撤回了依赖，收回了温柔，放下了占有欲，不作不闹不纠缠。是你输了，输掉了一个满眼都是你的人，而我，只不过丢掉了一个不珍惜我的人罢了。我会很快恢复到我最明媚的样子，读书、画画、旅行、唱歌，认识新的朋友，走上新的征程。给我一点时间，我会比之前更快乐。给我一点时间，我会成为更好的自己。</li>
+<li>人生的本质就是一个人活着，不要对别人心存太多期待，我们总是想要找到能为自己分担痛苦和悲伤的人，可大多数时候，我们那些惊天动地的伤痛，在别人眼里不过是随手可拂过的尘埃。或许成年人的孤独就是悲喜自渡，而这也正是我们难得的自由。——马尔克斯《百年孤独》</li>
+<li>我周围人声鼎沸，他们都在讨论我不喜欢的话题，我只好微笑，目光渐远，于是孤独四面八方涌来，将我吞噬。我真的很喜欢一个人独处，寂静自在不受拘束，不用迁就，可能在别人看来我很孤独，但是只有我自己知道，我是真的很享受，这份属于我一个人的快乐。——马尔克斯《百年孤独》</li>
+<li>山海自有归期，风雨自有相逢，意难平终将和解，万事终将如意。你来联系我，我就听你说，你不联系我，我就顺气自然，实不相瞒我很想你，但问题不大，还能克制。我有本事爱你，就有本事压在心里，扛得住就扛，扛不住就死里扛，大不了就捂在被子里哭一场。喜欢就够了，还能联系上就够了，彼此心里待过就够了，在不在一起真的不重要了。给不了你幸福，就祝你平安吧。</li>
+<li>有缘不会走，无缘留不住，感受不到爱意的时候，记得全身而退，大大方方走出来，释怀是每个人的必修课，把自己还给自己，把别人还给别人。主动结束我们的关系后，我恢复了原来独立自由、快乐充实的样子，撇下依赖不再满脑子都是你，微信也变得越来越安静，相册里积压的美好瞬间越来越多，我知道这是真正的我又活过来了。虽然我依然常常想起你，偶尔也会非常伤心，毕竟心动多难得，但我运气不太好，你不是我爱情的终点，而是我继续爱这个世界的动力。感谢你断了我所有的路，你权衡利弊，我及时止损，如果你开心的话，忘了我也没关系。我大大方方的为自己的心动买单，也为自己不知深浅的喜欢道歉，不过下次我还敢，我就是要热烈真诚坦荡，所以下次让我运气好一点，可以吗？</li>
+<li>男孩的成长都是从失去开始，你很爱她，你把你有的没有的都想办法给她，只要她想要，你甚至觉得这一辈子只要她在你身边就够了。慢慢的你把她当全部，很依赖她，她不回你消息，不在你身边，你就控制不住地想她。你开始变得占有欲很强，爱吃醋，爱多想，患得患失，没安全感。你很害怕失去她，但你这样让她感到了压力，甚至很反感。终于你们吵架了，她希望你能给她一点自由，你也希望她能多在乎你，多关心你。但后来你妥协了，你变得小心翼翼，把很多话压抑在你心里，你怕她生气，你怕她离开你，但最后她还是对你说对不起，我们不合适。那一瞬间，你的心好像被扎了一下，你流着泪拼命的挽留，对她说“我错了，我能改，能不能不要离开我”。但她还是走了。你想不通，不明白，为什么说不爱就不爱了呢？你不甘心，你像疯了一样去纠缠她，去找她，想要个结果，但当你看到她那种冷漠和厌恶地眼神，你知道了你和她没有以后了。你用了半年，好像终于走出来了，你对任何人也都可以笑脸相迎，但好像任何人也都走不进你的内心，或许从她离开那一刻，你的心已经死了。</li>
+</ul>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -19160,6 +17314,11 @@ dispatchMessage-->判断是否是通知消息
     <title>道</title>
     <url>/2018/04/14/personal-2018-04-14-Think/</url>
     <content><![CDATA[<ul>
+<li><p>为天地立心，为生民立命，为往圣继绝学，为万世开太平。——横渠四句</p>
+</li>
+<li><p>吾不识，青天高，黄地厚，唯见日寒日暖，来煎人寿。</p>
+</li>
+<li></li>
 <li><p>从来没有什么孙悟空，也没有什么西游记，师徒五人，其实只有唐僧，其他四个都是唐僧的心魔。途中的磨难，都是唐僧内心的磨砺——定住心猿则悟空，拴住意马则化龙，戒贪戒色共八戒，戒杀戒嗔是悟净，身心纯净朝佛祖，心之所在即西天</p>
 </li>
 <li><p>以前怕坟，觉得那里面都是鬼，自从有了亲人躺在那里才明白，原来小时候害怕的鬼，是别人日思夜想都再也见不到的人。</p>
@@ -19171,21 +17330,37 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>有一天，我回到家无意间看见一个箱子，打开一看，里面有很多小人，它们有的拿着枪，有的背着电台，其中一个小人问我：“你看见我们司令了吗？他到哪里去了”，我愣了一下说：“你们司令不会回来了。”小人问为什么，我哽咽着说：“因为他长大了。”</p>
 </li>
+<li><p>看了韩剧就想谈恋爱，看了日剧就想结婚，看了美剧就想统一世界，看了泰剧想复仇，看了国产电视剧就想离婚。</p>
+</li>
 <li><p>小时候摔倒了，要看看周围有没有人，有就哭，没有就爬起来，长大后摔倒了，要看看周围有没有人，有就爬起来，没有就哭</p>
 </li>
 <li><p>我们就一天天长大，长出了胡须和白发，为柴米油盐而吵架，心里还是忘不了她。</p>
 </li>
 <li><p>十年前的心脏很厚，用力才能碎，里面是红袖章，发条青蛙，鸡毛毽子，信纸和崭新的回力运动鞋。十年后的心脏很薄，一吹就能破，里面是啤酒瓶，失眠夜，路灯，黑眼圈和忘关的电视机。</p>
 </li>
+<li><p>人可以回头，但不可以走回头路</p>
+</li>
 <li><p>忍一时越想越气，退一步越想越亏</p>
 <ul>
 <li>同是射手（王者荣耀）</li>
 </ul>
 </li>
+<li><p>如果你和一个人聊天觉得特别舒服，那并不意味着他是你的知己，很有可能他只是在向下兼容你，因为他的情商和智商含量，所以你抛出的梗他都能够接住，他说的每一句话都能说到你的心坎里。但很扎心的是，只是因为他很优秀，而不是因为你们很合拍。如果你遇到一个你认为和你是天作之合的人，那么千万要小心，这很有可能是个陷阱，毕竟和他聊得来的人，你可能是之一，但并不是唯一。</p>
+</li>
 <li><p>原来最开始撕开的那道口子，就已经是你能撕开的最大的口子了，可能指以为后来能找到合适的另一半，穷尽一生，才徒然发现，最开始那个才是最好的。“画屏绣步障，物物自成双。如何湖上望，只是见鸳鸯”。说的就是这个吧</p>
 <ul>
 <li>这话说得好，就像我妈常说的：一嫁不中，千嫁无用</li>
 </ul>
+</li>
+<li><p>人生最大的遗憾，是一个人无法同时拥有青春，和对青春的感受。</p>
+</li>
+<li><p>被你改变的那部分我，代替你永远与我站立在一起。</p>
+</li>
+<li><p>我知道那不是我的月亮，但有一刻，月亮确实照在了我的身上。</p>
+</li>
+<li><p>他们彼此看着对方，却又视而不见，永远不再相见——玛格丽特·杜拉斯《广岛之恋》</p>
+</li>
+<li><p>有的歌，只能藏在耳机里播放，如果放到外面，只会吵到别人。</p>
 </li>
 <li><p>好文章总是没人看，我曾听说过住在罗生门的恶鬼，因为害怕人性的凶残而逃走。</p>
 </li>
@@ -19248,6 +17423,10 @@ dispatchMessage-->判断是否是通知消息
 </li>
 <li><p>我的前前任和前任都很棒，他们一个教我做温柔的女人，一个教我做成熟的大人。但我更爱我的现任，因为他教我做回小孩。——胡杏儿</p>
 </li>
+<li><p>一只鸽子老是不断地搬家，它觉得，每次新窝住了没多久，就有一种浓烈的怪味，让它喘不上气来，不得已只好一直搬家。它觉得很困扰，就把烦恼向一只经验丰富地老鸽子诉说。老鸽子说：你搬了这么多次家根本没有用啊，因为那种让你困扰的怪味并不是从窝里面发出来地，而是你自己身上的味道啊。</p>
+</li>
+<li><p>当一把钥匙能开很多扇门时，别人会称赞它为万能钥匙，当一扇门能被很多钥匙打开时，别人只会觉得门锁坏了。</p>
+</li>
 <li><p>我养了两盆一帆风顺，总是忘了浇水，等到叶子耷拉下来才想起来喷点水，不出一个小时，又精神起来了。其实我也和这两盆花差不多吧，每当快要死的时候喷点水就又活过来了。</p>
 </li>
 <li><p>每个当下的善恶都是这个“当下”之前的教育和引导以及环境所造成的人心善恶，而顺序学说却是将每个善恶进行抽丝剥茧的分析，查过程找原因，最终评定善恶的根源和大小。但顺序学说又主要是由人性本恶的学说延伸而来，我们处世，最主要的还是评判一个人的恶的情况比较多。大部分情况下我们界定善的标准是“利己而不损人”</p>
@@ -19307,6 +17486,286 @@ dispatchMessage-->判断是否是通知消息
       </tags>
   </entry>
   <entry>
+    <title>博君一笑图</title>
+    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
+    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
+
+<p>神评：防窥膜，看不见</p>
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
+
+<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>作为一个诗人</title>
+    <url>/2018/04/14/personal-2018-04-14-AsPoetry/</url>
+    <content><![CDATA[<center>
+    <b><font size="5">越人歌</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+    今夕何夕兮搴洲中流。<br>
+    今日何日兮得与王子同舟。<br>
+    蒙羞被好兮不訾诟耻。<br>
+    心几烦而不绝兮得知王子。<br>
+    山有木兮木有枝。<br>
+    心悦君兮君不知。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">南歌子词二首 / 新添声杨柳枝词</font></b><br>
+    <font size="2">【作者】温庭筠 【朝代】唐</font><br>
+    一尺深红胜曲尘，天生旧物不如新。<br>
+    合欢桃核终堪恨，里许元来别有人。<br>
+    井底点灯深烛伊，共郎长行莫围棋。<br>
+    玲珑骰子安红豆，入骨相思知不知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">鹧鸪天·元夕有所梦</font></b><br>
+    <font size="2">【作者】姜夔 【朝代】宋</font><br>
+       肥水东流无尽期。当初不合种相思。<br>
+    梦中未比丹青见，暗里忽惊山鸟啼。<br>
+    春未绿，鬓先丝。人间别久不成悲。<br>
+    谁教岁岁红莲夜，两处沉吟各自知。<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       十三与君初相识，王侯宅里弄丝竹。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    再见君时妾十五，且为君作霓裳舞。<br>
+    可叹年华如朝露，何时衔泥巢君屋？<br>
+</center>
+
+
+<center>
+    <b><font size="5">古相思曲</font></b><br>
+    <font size="2">乐府</font><br>
+       君似明月我似雾，雾随月隐空留露。<br>
+    君善抚琴我善舞，曲终人离心若堵。<br>
+    只缘感君一回顾，使我思君朝与暮。<br>
+    魂随君去终不悔, 绵绵相思为君苦。<br>
+    相思苦，凭谁诉？遥遥不知君何处。<br>
+    扶门切思君之嘱，登高望断天涯路。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">绸缪</font></b><br>
+    <font size="2">【作者】佚名 【朝代】先秦</font><br>
+       绸缪束薪，三星在天。今夕何夕，见此良人？子兮子兮，如此良人何？<br>
+    绸缪束刍，三星在隅。今夕何夕，见此邂逅？子兮子兮，如此邂逅何？<br>
+    绸缪束楚，三星在户。今夕何夕，见此粲者？子兮子兮，如此粲者何？<br>
+</center>
+
+
+<center>
+    <b><font size="5">我亦好歌亦好酒</font></b><br>
+    <font size="2">【作者】殊同 【朝代】现代</font><br>
+       我亦好歌亦好酒，唱与佳人饮与友。歌宜关西铜绰板，酒当直进十八斗。<br>
+    摇摆长街笑流云，我本长安羁旅人。丛楼参差迷归路，行者匆匆谁与群。<br>
+    幸有作文与谈诗，寥落情怀有君知。负气登楼狂步韵，每被游人笑双痴。<br>
+    幸有浩然共蹴鞠，轻拨慢扣自欢娱。七月流火无眠夜，同向荧屏做唏嘘。<br>
+    幸有彩云喜香山，兰裳桂冠共游仙，说来红尘多趣事，笑声惊动九重天。<br>
+    幸有晓艳能操琴，玉葱手指石榴裙。止如高山流如水，流水溯洄桃花林。<br>
+    红衣佳人白衣友，朝与同歌暮同酒。世人谓我恋长安，其实只恋长安某。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">唐多令·芦叶满汀洲</font></b><br>
+    <font size="2">【作者】刘过 【朝代】宋</font><br>
+       芦叶满汀洲，寒沙带浅流。二十年重过南楼。柳下系船犹未稳，能几日，又中秋。<br>
+    黄鹤断矶头，故人今在否？旧江山浑是新愁。欲买桂花同载酒，终不似，少年游。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春-樱散零乱</font></b><br>
+    <font size="2">【曲】《穿越时空的思念》【词】昭朔琰【原唱】暮落枫</font><br>
+       春又来 人已去 风烟残 夕阳晚 樱花开 顷刻散 零乱。<br>
+    年光逝 韶华落 飞絮转 不堪看 路漫漫 空梦断 零乱<br>
+    渡忘川 彼岸 忘不掉 人长叹 古井下 月光 思念 装满<br>
+    樱花瓣 飞过 风幽怨 水清寒 离伤黯 忧思转 零乱<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">四季乱语之春残-乱紫惜芳</font></b><br>
+    <font size="2">【曲】《乱红》【词】昭朔琰【原唱】柳月庭</font><br>
+       青山峰外 楼千嶂 云随雁去 诉悲凉 长烟落日 羌笛声声吹断肠 残絮翻飞归路茫<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+    疏桐流响 卷轻霜 一树晚紫 飞何方 轻红梦断 琵琶弦弦征人望 飞花空锁恨离伤<br>
+    孤城青山 望归客 闲云散尽 飞鸿过 烟长日落 羌笛年年断肠歌 紫桐花里枕暮色<br>
+    关山画作远山长 乱红千里青草凄凉 望遍烂漫春色 所恨年年赠离伤 月华软幽 人独来往<br>
+    月明倚楼 尽望乡 断桥紫苏 飞落寒江 看尽落花春残 犹道碎紫十里香 容华散尽惜流芳<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+       花非花，雾非雾。<br>
+    夜半来，天明去。<br>
+    来如春梦不多时，去似朝云无觅处。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">花非花 ·花曲</font></b><br>
+    <font size="2"></font><br>
+       花非花，夢非夢。月半彎，琴聲動。悲歌清曲暗凋零，莫問明朝誰與共。<br>
+    霜非花，霧非夢。世事薄，歡情痛。紅塵離散兩匆匆，往事遙遙魂寄送。<br>
+    燭燈花，向風動。錦瑟年，殘宵送。韶光流逝影重疊，慣看霜痕濕舊夢。<br>
+    風中花，夜中夢。瘦盡春，斜陽弄。烽煙殘照酒回腸，半闕清詞愁也縱。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">将进酒</font></b><br>
+    <font size="2">【作者】李白 【朝代】唐</font><br>
+       君不见，黄河之水天上来，奔流到海不复回。<br>
+    君不见，高堂明镜悲白发，朝如青丝暮成雪。<br>
+    人生得意须尽欢，莫使金樽空对月。<br>
+    天生我材必有用，千金散尽还复来。<br>
+    烹羊宰牛且为乐，会须一饮三百杯。<br>
+    岑夫子，丹丘生，将进酒，杯莫停。<br>
+    与君歌一曲，请君为我倾耳听。<br>
+    钟鼓馔玉不足贵，但愿长醉不复醒。<br>
+    古来圣贤皆寂寞，惟有饮者留其名。<br>
+    陈王昔时宴平乐，斗酒十千恣欢谑。<br>
+    主人何为言少钱，径须沽取对君酌。<br>
+    五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">长恨歌</font></b><br>
+    <font size="2">【作者】白居易 【朝代】唐</font><br>
+    汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。<br>
+    天生丽质难自弃，一朝选在君王侧。回眸一笑百媚生，六宫粉黛无颜色。<br>
+    春寒赐浴华清池，温泉水滑洗凝脂。侍儿扶起娇无力，始是新承恩泽时。<br>
+    云鬓花颜金步摇，芙蓉帐暖度春宵。春宵苦短日高起，从此君王不早朝。<br>
+    承欢侍宴无闲暇，春从春游夜专夜。后宫佳丽三千人，三千宠爱在一身。<br>
+    金屋妆成娇侍夜，玉楼宴罢醉和春。姊妹弟兄皆列土，可怜光彩生门户。<br>
+    遂令天下父母心，不重生男重生女。骊宫高处入青云，仙乐风飘处处闻。<br>
+    缓歌慢舞凝丝竹，尽日君王看不足。渔阳鼙鼓动地来，惊破霓裳羽衣曲。<br>
+    九重城阙烟尘生，千乘万骑西南行。翠华摇摇行复止，西出都门百余里。<br>
+    六军不发无奈何，宛转蛾眉马前死。花钿委地无人收，翠翘金雀玉搔头。<br>
+    君王掩面救不得，回看血泪相和流。黄埃散漫风萧索，云栈萦纡登剑阁。<br>
+    峨嵋山下少人行，旌旗无光日色薄。蜀江水碧蜀山青，圣主朝朝暮暮情。<br>
+    行宫见月伤心色，夜雨闻铃肠断声。天旋地转回龙驭，到此踌躇不能去。<br>
+    马嵬坡下泥土中，不见玉颜空死处。君臣相顾尽沾衣，东望都门信马归。<br>
+    归来池苑皆依旧，太液芙蓉未央柳。芙蓉如面柳如眉，对此如何不泪垂。<br>
+    春风桃李花开日，秋雨梧桐叶落时。西宫南内多秋草，落叶满阶红不扫。<br>
+    梨园弟子白发新，椒房阿监青娥老。夕殿萤飞思悄然，孤灯挑尽未成眠。<br>
+    迟迟钟鼓初长夜，耿耿星河欲曙天。鸳鸯瓦冷霜华重，翡翠衾寒谁与共。<br>
+    悠悠生死别经年，魂魄不曾来入梦。临邛道士鸿都客，能以精诚致魂魄。<br>
+    为感君王辗转思，遂教方士殷勤觅。排空驭气奔如电，升天入地求之遍。<br>
+    上穷碧落下黄泉，两处茫茫皆不见。忽闻海上有仙山，山在虚无缥渺间。<br>
+    楼阁玲珑五云起，其中绰约多仙子。中有一人字太真，雪肤花貌参差是。<br>
+    金阙西厢叩玉扃，转教小玉报双成。闻道汉家天子使，九华帐里梦魂惊。<br>
+    揽衣推枕起徘徊，珠箔银屏迤逦开。云鬓半偏新睡觉，花冠不整下堂来。<br>
+    风吹仙袂飘飖举，犹似霓裳羽衣舞。玉容寂寞泪阑干，梨花一枝春带雨。<br>
+    含情凝睇谢君王，一别音容两渺茫。昭阳殿里恩爱绝，蓬莱宫中日月长。<br>
+    回头下望人寰处，不见长安见尘雾。惟将旧物表深情，钿合金钗寄将去。<br>
+    钗留一股合一扇，钗擘黄金合分钿。但教心似金钿坚，天上人间会相见。<br>
+    临别殷勤重寄词，词中有誓两心知。七月七日长生殿，夜半无人私语时。<br>
+    在天愿作比翼鸟，在地愿为连理枝。天长地久有时尽，此恨绵绵无绝期。<br>
+</center>
+
+
+<center>
+    <b><font size="5">贺新郎</font></b><br>
+    <font size="2">【作者】辛弃疾 【朝代】南宋</font><br>
+   <font size="2">【序】邑中园亭，仆皆为赋此词。一日，独坐停云，水声山色，竞来相娱。意溪山欲援例者，遂作数语，庶几仿佛渊明思亲友之意云。</font><br>
+</center>
+​    甚矣吾衰矣。怅平生、交游零落，只今馀几！白发空垂三千丈，一笑人间万事。问何物、能令公喜？我见青山多妩媚，料青山见我应如是。情与貌，略相似。
+​    一尊搔首东窗里。想渊明《停云》诗就，此时风味。江左沉酣求名者，岂识浊醪妙理。回首叫、云飞风起。不恨古人吾不见，恨古人不见吾狂耳。知我者，二三子。
+
+<center>
+    <b><font size="5">宽心谣</font></b><br>
+    <font size="2">【作者】赵朴初</font><br>
+    日出东海落西山，愁也一天，喜也一天。<br>
+    遇事不钻牛角尖，身也舒坦，心也舒坦。<br>
+    每月领取养老钱，多也喜欢，少也喜欢。<br>
+    少荤多素日三餐，粗也香甜，细也香甜。<br>
+    新旧衣服不挑捡，好也御寒，赖也御寒。<br>
+    常与知己聊聊天，古也谈谈，今也谈谈。<br>
+    内孙外孙同样看，儿也心欢，女也心欢。<br>
+    全家老少互慰勉，贫也相安，富也相安。<br>
+    早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>
+    心宽体健养天年，不是神仙，胜似神仙。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">观猎</font></b><br>
+    <font size="2">【作者】王维</font><br>
+    风劲角弓鸣，将军猎渭城。<br>
+    草枯鹰眼疾，雪尽马蹄轻。（字面）<br>
+    忽过新丰市，还归细柳营。<br>
+    回看射雕处，千里暮云平。<br>
+</center>
+
+
+<center>
+    <b><font size="5">国风·秦风·小戎</font></b><br>
+    小戎俴收，五楘梁辀。游环胁驱，阴靷鋈续。文茵畅毂，驾我骐馵。言念君子，温其如玉。在其板屋，乱我心曲。<br>
+    四牡孔阜，六辔在手。骐骝是中，騧骊是骖。龙盾之合，鋈以觼軜。言念君子，温其在邑。方何为期？胡然我念之！<br>
+    俴驷孔群，厹矛鋈錞。蒙伐有苑，虎韔镂膺。交韔二弓，竹闭绲縢。言念君子，载寝载兴。厌厌良人，秩秩德音。<br>
+</center>
+
+
+
+<center>
+    <b><font size="5">菩萨蛮·如今却忆江南乐</font></b><br>
+    <font size="2">【作者】韦庄</font><br>
+    如今却忆江南乐，当时年少春衫薄。骑马倚斜桥，满楼红袖招。<br>
+    翠屏金屈曲，醉入花丛宿。此度见花枝，白头誓不归。<br>
+</center>
+
+<center>
+    <b><font size="5">蝶恋花·庭院深深深几许</font></b><br>
+    <font size="2">【作者】欧阳修</font><br>
+    庭院深深深几许，杨柳堆烟，帘幕无重数。玉勒雕鞍游冶处，楼高不见章台路。<br>
+    雨横风狂三月暮，门掩黄昏，无计留春住。泪眼问花花不语，乱红飞过秋千去。 <br>
+</center>
+
+
+
+<p>满目繁华何所依，<br>绮罗散尽人独立。<br>浪花扫尽千尘雪，<br>桃李无言一队春。<br>花满堵，酒满瓯，<br>世上如侬有几人！<br>一楫春风一叶舟，<br>一纶茧缕一轻钩，<br>一夜春雨一夜愁，<br>一轮明月锁清秋，<br>谁知梦，谁懂风，<br>万顷波中得自由！</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>其他</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>星座学说</title>
     <url>/2018/04/14/personal-2018-04-14-ZodiacStudy/</url>
     <content><![CDATA[<p>泰坦尼克号4月14沉没<br> 2016年4月14日大话西游重映</p>
@@ -19325,25 +17784,6 @@ dispatchMessage-->判断是否是通知消息
 </ul>
 <p>我突然明白为什么石进会写《白羊座的忧伤》和《可惜不是双鱼座》这两首歌了，他一定也和我一样，一直以为自己是双鱼座，直到有一天发现，原来自己一直不是双鱼座……</p>
 <p>白羊男一般都很会玩，而且对自己的朋友都很好，有时候白羊男对自己的异性朋友要比对自己的恋人还要好。<br>白羊男生气时，什么狠的话都说得出，例如滚远点、爱怎么想怎么想，那个时候，即使你是他热恋中的女友，他也不会网开一面，可是一般你要是真的感觉很受伤了，不理他了，他又会觉得后悔，觉得伤你了，可是他一般还是不会主动来道歉，除非你给他台阶他才会让你知道他觉得自己错了。<br>一般若不是原则性的问题，和白羊男分手都会有回旋余地，一开始相恋时，你闹闹情绪、提提分手，一般闹完,他们也会当已经过去，可是要是你搞外遇被他晓得，若他还爱你，或许会给你一次机会，可是若你那次机会还不回头，那么很抱歉，从此他都不会再回头了，而且要是你一直闹脾气，跟他吵架，那么等到有一天他爆发出来的时候，就真的很难有任何回旋余地，除非他还没得到你。<br>白羊男，对女孩子的外貌都有一定要求，白羊男要是对一个女的只是娱乐心态，那么他就要求这个女的很性感，比如气质型、清新范。其实白羊男内心喜欢的是比较可爱、又单纯点的女孩子，傻傻的笨笨的，但不要太白痴型的。<br>白羊男一般都不喜欢女的常常一个电话打很久不挂，因为对于他们来说，根本没那么多话可以说，可是一般作为白羊的女友，每当这时候都会很伤心，要是刚开始他还在对你很有兴趣时，他即使心里不开心也会装作很喜欢跟你聊电话，可是当你跟他吵架几次后，他就会越来越对这点不爽，若你能改，那或许还有救，要是依旧跟他闹，那很抱歉，他也不会迁就你，那关系就会越来越僵。<br>白羊男一般很怕女孩子哭，不管是自己爱的人，还是爱自己的人，女孩子一哭，他们多半都会沉默，唯一不同的是，对着爱自己的女人，他们哄几句后要是没效果，就会选择不理，而对自己爱的女人，要是在他面前哭，他心里也会很难过，眼泪攻势这一招在前期用很有效果，可用多了，也没用，白羊男会觉得你很脆弱，他会有压力，当你连哭都没效果时，可能他已经在思考要离开你了。<br>白羊男一般都给人花心的感觉，其实也不是，他们不会很明显地拒绝，喜欢处于暧昧与明朗的界限，可能他们只是想选择一个真正适合自己的女孩子，要是白羊跟你一起，还是让你没安全感，那么或许他觉得跟你只能娱乐，不会放太多心思在你身上，在喜欢白羊男前期，你可以使用感动他这一招，这招在他对你还有兴趣时用对你们的感情特别有帮助，可是在他不爱你时，你做再多感人的事情也等于零。<br>白羊男心底都会有一段难忘的感情，这段感情往往白羊男都会伤得很重，于是自那段感情之后，他们就觉得很难信任女人的真心，白羊男其实比谁都聪明，让你感觉他很真诚，其实他常常玩弄一个女人也让你要死要活地不知道要放弃还是要继续，而这时候或许他早就已经在物色新的对象了。<br>如果你不是美女，那么请不要觉得自己可以感化白羊男，因为对于白羊来说，多半是一见钟情，外貌过不了关，他更没耐心去看你的性格适合不适合他了，白羊男一般喜欢长头发的女孩子居多，白羊男不喜欢太有心机的女人，要是你被他觉得你出卖了他，不管出于任何理由，他可能连解释的机会都不给你，直接疏远你。<br>白羊男，其实都很讨厌自己的女友跟以前的男友还保持着联系，他们嘴上会说着无所谓，其实心里只是怕要被伤，所以装作很不在乎，白羊男其实内心都有很柔软的地方，要是他为你付出得多了，他会觉得自己会被人看扁，这个时候他可能反而会离自己爱的人远了，因为他把自尊看得很重，所以千万不要太让你心爱的白羊男为你挖心挖肺，这样他们会觉得很受伤也很不爽。<br>白羊男有时候很神经质，前一天还很热情，后一天就很冷淡了，白羊男在遇到不开心的事情时，喜欢安静，不爱说话，要是你足够了解他，请在这时候不要打扰他，要是你打扰他，他搞不好就蹦出几句让你呕到家气到家的话，他不想说的东西，你问再多也没用，他要是想说的，他自然会告诉你。<br>不要觉得白羊男爱你，你就该让他为你改变，他或许会因为觉得自己为你心动而为了不让你伤心稍微作点改变，可是白羊天性喜好我行我素，要是他的改变你依旧不领情，那不好意思，他又会回到一开始的冷漠和让人难以理解，白羊男很受不了自己的付出没有回报，对于他们来说特别讲究公平。.<br>爱白羊男很累，你必须要给他足够的空间，因为他玩起来真的可以昏天暗地，忘了其他一切事情，其实这不代表他不爱你，只能说他在那个瞬间更想玩，有时候正当你觉得被他忽略时，他忽然给你点暗示其实他也有惦记你，有点可爱，让你又好气又好笑。<br>白羊男最讨厌解释，要是他觉得没必要解释的东西，你追问再多次，他或许也只会说没什么，白羊男其实有时候又很喜欢安静，喜欢一个人做一些发泄情绪的事情，这个时候千万不要去打扰他，白羊男的情绪一般都不会持续太久，开心或者伤心都一样。<br>白羊男多数都吃软不吃硬，他要是哄你了，请见好就收，不要因为心里不舒服还要继续跟他闹，他要是爱你，他脾气上来时，他会挂你电话，或者喊你别说了，这个时候，你千万不要觉得他是对你不在乎，他只是不会解释不懂表达，其实他只是怕说出让你伤心的话所以选择先冷静自己的情绪。<br>开始懂事的白羊，一般事业心都很强，为了事业可以暂时放掉一切影响自己情绪的因素，例如一段让他累到无法安心学习或者工作的感情，放掉一些休闲娱乐的机会，这个时候他们思考的是要在事业有成时，找一个女人安定下来，给她一辈子的幸福，白羊男在成家后，一般都是个好丈夫和好爸爸。<br>不要说白羊男分了手就会把前恋人遗忘，其实他们只是把她们的记忆放在心底深处，然后又选择让自己轻松的方式继续生活，继续恋爱，但是要是你给他的印象深刻，你真心爱过他或者让他真心爱过，一年半载之后，他们会回来找你，这个时候不要觉得是和好，可能只是把你当成他关心的朋友，他说话会有些让你想歪，可是其实他们只是真心希望你幸福，他们即使不再爱你了，也会因为你用以前爱他们的热情爱其他的男人心里而有点不爽。<br>对待白羊男，你千万要记住，不要看表面，要用心去体会他们的付出，不要让他们告诉你你应该怎么去做，而是要自己努力去走进他们的心。 </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>其他</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博君一笑图</title>
-    <url>/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/</url>
-    <content><![CDATA[<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/列夫托尔斯泰日记.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/斜着看.jpg" style="zoom:25%;">
-
-<p>神评：防窥膜，看不见</p>
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾1.jpg" style="zoom:25%;">
-
-<img src="/2018/04/14/personal-2018-04-14-%E5%8D%9A%E5%90%9B%E4%B8%80%E7%AC%91%E5%9B%BE/巨人烂尾2.jpg" style="zoom:25%;">
 ]]></content>
       <categories>
         <category>其他</category>
@@ -19632,6 +18072,11 @@ dispatchMessage-->判断是否是通知消息
 <td>“中国科幻文学里程碑“式的作品</td>
 </tr>
 <tr>
+<td>活着</td>
+<td>余华</td>
+<td></td>
+</tr>
+<tr>
 <td>白鹿原</td>
 <td>陈忠实</td>
 <td>渭河平原的雄奇史诗，中国农村的斑斓画卷</td>
@@ -19647,6 +18092,26 @@ dispatchMessage-->判断是否是通知消息
 <td>回忆一家三口快乐而艰难，爱与痛交织的日子</td>
 </tr>
 <tr>
+<td>边城</td>
+<td>沈从文</td>
+<td></td>
+</tr>
+<tr>
+<td>三体</td>
+<td>刘慈欣</td>
+<td></td>
+</tr>
+<tr>
+<td>文化苦旅</td>
+<td>余秋雨</td>
+<td></td>
+</tr>
+<tr>
+<td>南北笔记</td>
+<td>贾平凹</td>
+<td></td>
+</tr>
+<tr>
 <td>呼兰河传</td>
 <td>萧红</td>
 <td>感受萧红笔下爱恨交织的故乡情</td>
@@ -19655,6 +18120,31 @@ dispatchMessage-->判断是否是通知消息
 <td>长恨歌</td>
 <td>王安忆</td>
 <td>一个女人四十年的请与爱，一座城市四十年的常与变</td>
+</tr>
+<tr>
+<td>杀死一只知更鸟</td>
+<td>哈珀·李</td>
+<td></td>
+</tr>
+<tr>
+<td>房思琪的初恋乐园</td>
+<td>林奕含</td>
+<td></td>
+</tr>
+<tr>
+<td>人生海海</td>
+<td>麦家</td>
+<td></td>
+</tr>
+<tr>
+<td>沉默的大多数</td>
+<td>王小波</td>
+<td></td>
+</tr>
+<tr>
+<td>飘</td>
+<td>玛格丽·米切尔</td>
+<td></td>
 </tr>
 <tr>
 <td>解忧杂货铺</td>
@@ -19692,6 +18182,16 @@ dispatchMessage-->判断是否是通知消息
 <td></td>
 </tr>
 <tr>
+<td>面纱</td>
+<td>[英] 毛姆</td>
+<td></td>
+</tr>
+<tr>
+<td>刀锋</td>
+<td>[英] 毛姆</td>
+<td></td>
+</tr>
+<tr>
 <td>追风筝的人</td>
 <td>[美] 卡勒德·胡塞尼</td>
 <td></td>
@@ -19713,7 +18213,7 @@ dispatchMessage-->判断是否是通知消息
 </tr>
 <tr>
 <td>牧羊少年的奇幻之旅</td>
-<td></td>
+<td>[巴西]  保罗·科埃略</td>
 <td></td>
 </tr>
 <tr>
@@ -19763,8 +18263,23 @@ dispatchMessage-->判断是否是通知消息
 </tr>
 <tr>
 <td>这里</td>
-<td>[美]理查德·麦奎尔</td>
+<td>[美] 理查德·麦奎尔</td>
 <td>被称为“带上孤岛的图像小说”</td>
+</tr>
+<tr>
+<td>傲慢与偏见</td>
+<td>[英] 简·奥斯丁</td>
+<td></td>
+</tr>
+<tr>
+<td>人生的智慧</td>
+<td>叔本华</td>
+<td></td>
+</tr>
+<tr>
+<td>卡拉马佐夫兄弟</td>
+<td>[俄] 陀思妥耶夫斯基</td>
+<td></td>
 </tr>
 </tbody></table>
 <h1 id="哲学-amp-历史-amp-人文-amp-科学-amp-神话"><a href="#哲学-amp-历史-amp-人文-amp-科学-amp-神话" class="headerlink" title="哲学&amp;历史&amp;人文&amp;科学&amp;神话"></a>哲学&amp;历史&amp;人文&amp;科学&amp;神话</h1><table>
@@ -19870,6 +18385,11 @@ dispatchMessage-->判断是否是通知消息
 <td>乔治•奥威尔</td>
 <td>反乌托邦三部代表作：英国赫胥黎《美丽新世界》、俄国扎米亚京《我们》</td>
 </tr>
+<tr>
+<td>显微镜下的大明</td>
+<td>马伯庸</td>
+<td></td>
+</tr>
 </tbody></table>
 <h1 id="思想-amp-心理-amp-感悟"><a href="#思想-amp-心理-amp-感悟" class="headerlink" title="思想&amp;心理&amp;感悟"></a>思想&amp;心理&amp;感悟</h1><p>有点内涵、思想的书</p>
 <table>
@@ -19954,6 +18474,36 @@ dispatchMessage-->判断是否是通知消息
 <td>思考，快与慢</td>
 <td>[美]丹尼尔·卡尼曼</td>
 <td>指导我们如何做出更好的选择，以及如何运用不同技巧来避免思维失误</td>
+</tr>
+<tr>
+<td>被讨厌的勇气</td>
+<td>岸见一郎</td>
+<td></td>
+</tr>
+<tr>
+<td>自卑与超越</td>
+<td>[奥地利] 阿尔弗雷德·阿德勒</td>
+<td></td>
+</tr>
+<tr>
+<td>少有人走的路</td>
+<td>[美] 斯科特·派克</td>
+<td></td>
+</tr>
+<tr>
+<td>沟通的艺术</td>
+<td>[美] 罗纳德·B·阿德勒</td>
+<td></td>
+</tr>
+<tr>
+<td>亲密关系</td>
+<td>[美] 罗兰·米勒</td>
+<td></td>
+</tr>
+<tr>
+<td>穷爸爸富爸爸</td>
+<td>[美] 罗伯特</td>
+<td></td>
 </tr>
 </tbody></table>
 <h1 id="程序员必读书单"><a href="#程序员必读书单" class="headerlink" title="程序员必读书单"></a>程序员必读书单</h1><table>
