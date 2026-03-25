@@ -82,10 +82,11 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy: 
-    type: git
-    repo: git@github.com:Afauria/Afauria.github.io.git
-    branch: master
+# Keep this for local/manual deploy (hexo d). CI uses GitHub Actions.
+deploy:
+  type: git
+  repo: git@github.com:Afauria/AfauriaBlogSource.git
+  branch: gh-pages
 
 search:
   path: search.xml
@@ -122,4 +123,3 @@ symbols_count_time:
   awl: 4   # 平均单词长度
   wpm: 275   # 平均每分钟阅读单词数
   suffix: "mins." # 时长单位
-
