@@ -260,23 +260,25 @@ busuanzi_count:
 
 **注：Next新版本不再内置Valine**
 
-使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、Gitalk、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）
+**注：LeanCloud云服务停服，改其他方案**
 
-> 看别人用Gitalk也挺不错的，还可以将评论发到issue，及时收到通知。缺点是需要登录GitHub账号，可能会劝退一拨人
+~~使用Valine（基于LeanCloud云服务）作为评论系统。（也可以用Disqus、Gitalk、[Livere](https://livere.com )、[畅言](http://changyan.kuaizhan.com)等）~~
 
-由于`busuanzi`统计站点访问量会和`Live2d`插件冲突，因此使用Valine visitor进行访问统计。（会和`leancloud_visitors`冲突，打开一个就行）
+> ~~看别人用Gitalk也挺不错的，还可以将评论发到issue，及时收到通知。缺点是需要登录GitHub账号，可能会劝退一拨人~~
 
-步骤如下：
+~~由于`busuanzi`统计站点访问量会和`Live2d`插件冲突，因此使用Valine visitor进行访问统计。（会和`leancloud_visitors`冲突，打开一个就行）~~
 
-1. 注册[LeanCloud](https://www.leancloud.cn/)账号，实名认证
-2. 进入控制台，创建应用
-3. 在【设置-应用凭证】中找到appId和appKey
-4. 【设置-安全中心】可以配置Web安全域名，避免别人拿到appId和appKey之后使用
-5. 在LeanCloud控制台【数据存储-结构化数据】中创建Class，起名为Counter，如下图。（Comment为评论记录，Counter为访问记录）
+~~步骤如下：~~
 
-![](2018-10-20-NextConfig/LeanCloud创建Class.png)
+1. ~~注册[LeanCloud](https://www.leancloud.cn/)账号，实名认证~~
+2. ~~进入控制台，创建应用~~
+3. ~~在【设置-应用凭证】中找到appId和appKey~~
+4. ~~【设置-安全中心】可以配置Web安全域名，避免别人拿到appId和appKey之后使用~~
+5. ~~在LeanCloud控制台【数据存储-结构化数据】中创建Class，起名为Counter，如下图。（Comment为评论记录，Counter为访问记录）~~
 
-7. 修改主题配置文件，如下
+~~![](2018-10-20-NextConfig/LeanCloud创建Class.png)~~
+
+7. ~~修改主题配置文件，如下~~
 
 ```yaml
 valine:
