@@ -3,7 +3,7 @@ name: Deploy Hexo to GitHub Pages (gh-pages)
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 permissions:

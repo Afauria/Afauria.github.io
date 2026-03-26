@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "postToolUse": [
+      {
+        "bash": "git-ai checkpoint github-copilot --hook-input stdin",
+        "cwd": ".",
+        "powershell": "git-ai checkpoint github-copilot --hook-input stdin",
+        "timeoutSec": 30,
+        "type": "command"
+      }
+    ],
+    "preToolUse": [
+      {
+        "bash": "git-ai checkpoint github-copilot --hook-input stdin",
+        "cwd": ".",
+        "powershell": "git-ai checkpoint github-copilot --hook-input stdin",
+        "timeoutSec": 30,
+        "type": "command"
+      }
+    ]
+  },
+  "version": 1
+}
