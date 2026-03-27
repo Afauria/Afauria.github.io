@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.afauria.xyz","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"a11y-light","dark":"a11y-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":"zh-CN false"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="冒险岛私服搭建教程v176">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冒险岛私服搭建v176">
+<meta property="og:url" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="冒险岛私服搭建教程v176">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E5%99%A8.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8D%95%E6%9C%BA%E7%99%BB%E5%BD%95.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%B8%AA%E6%80%A7%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8F%8D%E7%BC%96%E8%AF%91AuthCheckUtil.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8F%8D%E7%BC%96%E8%AF%91checkMapleAuth.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8F%8D%E7%BC%96%E8%AF%91StringUtil.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9main%E6%96%B9%E6%B3%95.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9checkMapleAuth%E8%BF%94%E5%9B%9E%E5%80%BC.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9getProcessorId%E8%BF%94%E5%9B%9E%E5%80%BC.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9decode%E8%BF%94%E5%9B%9E%E5%80%BC.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E8%BF%81%E7%A7%BB%E8%B5%84%E6%BA%90%E5%88%B0Linux.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E6%A8%A1%E6%8B%9Fwmic.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/IP%E5%9C%B0%E5%9D%80%E8%BD%AC%E5%8F%91.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E4%B8%8A%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8D%A1%E4%BD%8F.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%901.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%902.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%903.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%904.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%81%94%E6%9C%BA%E7%99%BB%E5%BD%95%E5%99%A8.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/ServerConstantsType.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/MariaDB%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E9%85%8D%E7%BD%AE.png">
+<meta property="article:published_time" content="2022-09-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-27T08:20:49.337Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="极客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E5%99%A8.png">
+
+
+<link rel="canonical" href="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/","path":"2022/09/08/geek-2022-09-08-冒险岛私服搭建v176/","title":"冒险岛私服搭建v176"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>冒险岛私服搭建v176 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Afauria's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-knowledge"><a href="/LearningBase/" rel="section"><i class="fa fa-graduation-cap fa-fw"></i>知识体系</a></li><li class="menu-item menu-item-collection"><a href="/collection/" rel="section"><i class="fa fa-suitcase fa-fw"></i>收藏</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+    <div class="sidebar-overlay"></div>
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">2.1.</span> <span class="nav-text">启动服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">2.2.</span> <span class="nav-text">启动客户端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">服务端破解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AuthCheckUtil%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">3.1.</span> <span class="nav-text">AuthCheckUtil请求服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%A1%E9%AA%8C%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">3.2.</span> <span class="nav-text">校验返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91%E6%9F%A5%E7%9C%8B%E5%8A%A0%E5%AF%86%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">反编译查看加密方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%BF%94%E5%9B%9E%E7%9A%84%E5%8A%A0%E5%AF%86%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.4.</span> <span class="nav-text">获取服务端返回的加密字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9main%E6%96%B9%E6%B3%95%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-number">3.4.1.</span> <span class="nav-text">修改main方法字节码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%8A%A0%E5%AF%86%E6%96%B9%E6%B3%95"><span class="nav-number">3.4.2.</span> <span class="nav-text">调用加密方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">方式一：修改字节码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9checkMapleAuth%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">4.1.</span> <span class="nav-text">修改checkMapleAuth方法返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9getProcessorId%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">4.2.</span> <span class="nav-text">修改getProcessorId方法返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9decode%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">4.3.</span> <span class="nav-text">修改decode方法返回值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">方式二：拦截请求模拟服务端响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E8%B5%84%E6%BA%90%E5%88%B0Linux%E4%B8%8A"><span class="nav-number">5.1.</span> <span class="nav-text">迁移资源到Linux上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E6%A8%A1%E6%8B%9Fwmic%E7%BB%93%E6%9E%9C"><span class="nav-number">5.2.</span> <span class="nav-text">Linux模拟wmic结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">5.3.</span> <span class="nav-text">IP地址重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8Web%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.4.</span> <span class="nav-text">启动Web服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">5.5.</span> <span class="nav-text">运行服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">5.6.</span> <span class="nav-text">服务端启动卡住问题解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%90%AF%E5%8A%A8"><span class="nav-number">5.7.</span> <span class="nav-text">客户端启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE"><span class="nav-number">5.8.</span> <span class="nav-text">修改数据库配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99"><span class="nav-number">5.9.</span> <span class="nav-text">数据库报错</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9jar%E5%8C%85%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-number">6.1.</span> <span class="nav-text">修改jar包字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91"><span class="nav-number">6.2.</span> <span class="nav-text">Windows请求转发</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://afauria.github.io/LearningBase/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;LearningBase&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="poem-side">
+      <div id="hitokoto">loading...</div>
+      <div id="hitokotofrom"></div>
+      <script defer>
+      fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+                   hitokoto.innerHTML = data.hitokoto
+           if(data.from_who != null) {
+             hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+           } else {
+             hitokotofrom.innerHTML ='——《' + data.from + '》'
+          }
+        })
+        .catch(console.error)
+    </script>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="冒险岛私服搭建v176 | Afauria's Blog">
+      <meta itemprop="description" content="冒险岛私服搭建教程v176">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          冒险岛私服搭建v176
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+  
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-09-08T00:00:00+00:00">2022-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-27 08:20:49" itemprop="dateModified" datetime="2026-03-27T08:20:49+00:00">2026-03-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%81%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">极客</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">冒险岛私服搭建教程v176</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1>前言</h1>
+<p>私服不用玩太多版本，只要一个079的旧版本，一个高版本体验新职业新剧情。</p>
+<p>高版本的端不太好找，都是付费的，还不一定能跑。而且都是打包混淆过的，没有源码，反编译查看也比较吃力。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.fengyewuyu.com/thread-4801-1-1.html">搬运，2021冒险岛176至尊版 </a>：需要淘宝订单号，服务端验证</li>
+<li><a target="_blank" rel="noopener" href="http://www.rexuexia.com/forum.php?mod=viewthread&amp;tid=35265&amp;page=1&amp;authorid=93572">某宝买的冒险岛单机版V175一键端，简单操作 </a>：基于上面的端改的，又加了一层验证码验证</li>
+<li><a target="_blank" rel="noopener" href="http://www.rexuexia.com/forum.php?mod=viewthread&amp;tid=36921&amp;page=3&amp;authorid=107404">冒险岛176第二版来自冒险岛单机交流群 </a>：也是基于上面的端改的，不过跳过了授权校验的步骤，需要付30金币的下载费</li>
+<li><a target="_blank" rel="noopener" href="https://www.iopq.net/thread-17105612-1-1.html">【搬运】冒险岛【元旦大礼】怀旧岛V175至尊版 </a>：没试过，不过人家说了是免费的。上面的资源应该都是从群里搬运的，被无良商家拿来卖钱。</li>
+</ul>
+<h1>教程</h1>
+<h2 id="启动服务端">启动服务端</h2>
+<p>用上面的第三个资源，帮我们绕过了服务端验证，使用比较简单</p>
+<ol>
+<li>使用phpStudy启动数据库，数据库名称默认为bms，用户名和密码为root</li>
+<li>使用一键启动器来启动服务端和客户端</li>
+</ol>
+<p>也可以命令行启动服务端：<code>java -cp ;lib/*;jre8x64/lib/ext/log4j-core-2.14.0.jar;jre8x64/lib/ext/* org.bms.gui.BMS</code></p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E5%99%A8.png" alt></p>
+<h2 id="启动客户端">启动客户端</h2>
+<p>使用一键登录器，点击上图的&quot;游戏启动&quot;，或者直接打开客户端</p>
+<blockquote>
+<p>v94以上版本，需要使用虚拟网卡运行，<strong>IP地址为：221.231.130.70</strong></p>
+</blockquote>
+<p>有一点需要注意，在默认的登录界面输入账号密码会检查盛大账号。有三种方式解决</p>
+<ol>
+<li>使用自己的真正的盛大账号登录</li>
+<li>单机登录方式</li>
+</ol>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8D%95%E6%9C%BA%E7%99%BB%E5%BD%95.png" alt></p>
+<ol start="3">
+<li>BMS个性账号登陆界面，随便输入账号密码，会自动注册</li>
+</ol>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%B8%AA%E6%80%A7%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95.png" alt></p>
+<p>运行成功截图</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE.png" alt></p>
+<h1>服务端破解</h1>
+<p>这里介绍下怎么绕过第一个资源的淘宝订单号验证。主要用于学习，第三个资源已经帮我们跳过了，可以直接使用</p>
+<p>暂时能想到的一些破解思路：</p>
+<ol>
+<li>反编译修改Java源码，重新编译打包</li>
+<li>修改字节码，再打包</li>
+<li>拦截服务端验证请求，模拟返回成功结果</li>
+</ol>
+<p>使用jadx反编译工具查看jar包</p>
+<h2 id="AuthCheckUtil请求服务端">AuthCheckUtil请求服务端</h2>
+<p>首先全局搜索&quot;淘宝订单号&quot;，定位到<code>AuthCheckUtil</code>类，代码逻辑比较简单，拼接淘宝订单号和<code>ProcessorId</code>，请求服务端验证。</p>
+<img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/反编译AuthCheckUtil.png" style="zoom:100%;">
+<p><code>org.bms.server.AuthCheckUtil</code>的main函数中输出了验证端url。因此可以运行AuthCheckUtil：<code>java -cp ;lib/*;jre8x64/lib/ext/log4j-core-2.14.0.jar;jre8x64/lib/ext/* org.bms.server.AuthCheckUtil</code>。</p>
+<p>输出<code>http://47.99.96.61:8008/api/checkMapleAuthEn?ddhmid=</code>，即url地址</p>
+<p><code>getProcessorId</code>方法使用wmic获取PC的<code>ProcessorId</code>，服务端加密之后返回</p>
+<blockquote>
+<p>wmic：Windows Management Instrumentation Command-line，Windows管理工具</p>
+</blockquote>
+<h2 id="校验返回值">校验返回值</h2>
+<p>查询<code>checkMapleAuth</code>使用的地方</p>
+<p>下面的代码拿到服务端返回的加密字符串，调用<code>StringUtil.decode</code>方法进行解密，使用逗号分割。</p>
+<ul>
+<li><code>split[0]</code>就是个常量1，这里做了校验</li>
+<li><code>split[1]</code>没什么意义，就是打印了一下字符串，因此可以随便填</li>
+<li><code>split[2]</code>可以知道是一个Int值，这里我们填10</li>
+<li><code>split[3]</code>是ProcessorId，这里做了校验</li>
+</ul>
+<p>因此解密后的字符串格式如：<code>1,无限制授权,10,ProcessorId</code></p>
+<img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/反编译checkMapleAuth.png" style="zoom:100%;">
+<h2 id="反编译查看加密方法">反编译查看加密方法</h2>
+<p>根据上面反编译的结果，可以知道服务端返回的字符串做了加密，反编译StringUtil查看加密和解密的方法，尝试逆推。</p>
+<p>可以看到<code>JM</code>方法用于加密，decode方法用于解密。</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%8F%8D%E7%BC%96%E8%AF%91StringUtil.png" alt></p>
+<h2 id="获取服务端返回的加密字符串">获取服务端返回的加密字符串</h2>
+<p>被加密的字符串如：<code>1,无限制授权,10,123</code></p>
+<h3 id="修改main方法字节码">修改main方法字节码</h3>
+<p>上面知道<code>AuthCheckUtil</code>的main方法打印了服务端的url，这里简单修改下main方法，改为调用加密方法加密字符串</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9main%E6%96%B9%E6%B3%95.png" alt></p>
+<p>执行结果如下，<code>PcsI/8T435QUTypDM/e4HnXmNd/SYMWzz1IgsASJdWE=</code>即加密过的字符串</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">java -<span class="built_in">cp</span>  ;lib/*;jre8x64/lib/ext/log4j-core-2.14.0.jar;jre8x64/lib/ext/* org.bms.server.AuthCheckUtil</span></span><br><span class="line">PcsI/8T435QUTypDM/e4HnXmNd/SYMWzz1IgsASJdWE=</span><br></pre></td></tr></table></figure>
+<h3 id="调用加密方法">调用加密方法</h3>
+<p>另一种方式，自己编写main文件，调用加密方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		System.out.println(org.bms.server.StringUtil.jM(<span class="string">&quot;1,无限制授权,10,123&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用javac命令编译，由于使用了jar包中的方法，因此需要指定<code>classPath</code>，否则会找不到方法</p>
+<p><code>javac -cp ;bms.server.jar Main.java -encoding utf8</code></p>
+<p>使用java命令运行，由于<code>StringUtil</code>依赖了apache的codec库，因此也要包含到<code>classPath</code>中</p>
+<p><code>java -cp ;bms.server.jar;commons-codec-1.7.jar Main</code></p>
+<p>同样输出<code>PcsI/8T435QUTypDM/e4HnXmNd/SYMWzz1IgsASJdWE=</code></p>
+<h1>方式一：修改字节码</h1>
+<p>根据上面的代码，可以尝试修改字节码，跳过服务端验证。</p>
+<p>使用7-zip打开jar包，将<code>AuthCheckUtil.class</code>、<code>StringUtils.class</code>文件提取出来，使用jbe打开，修改完之后再拖进压缩包中。</p>
+<blockquote>
+<p><strong>找到合适的切入点，尽可能小的改动，防止引起其他异常。</strong></p>
+</blockquote>
+<h2 id="修改checkMapleAuth方法返回值">修改checkMapleAuth方法返回值</h2>
+<p>修改checkMapleAuth返回值为<code>1,无限制授权,10,123</code>，<code>ldc</code>表示加载常量到方法栈中。</p>
+<blockquote>
+<p>这里反编译参考上面的第二和第三个资源，也是修改了checkMapleAuth方法的返回值，返回字符串<code>1,无限制授权,10</code>，并且去掉了解密的过程。</p>
+<p>也可以直接返回加密后的字符串，这样可以跳过第三步decode方法的修改</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9checkMapleAuth%E8%BF%94%E5%9B%9E%E5%80%BC.png" alt="修改checkMapleAuth返回值"></p>
+<h2 id="修改getProcessorId方法返回值">修改getProcessorId方法返回值</h2>
+<p>这里为了不修改校验的逻辑，我们再修改下<code>getProcessorId</code>的返回值为123</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9getProcessorId%E8%BF%94%E5%9B%9E%E5%80%BC.png" alt="修改getProcessorId返回值"></p>
+<h2 id="修改decode方法返回值">修改decode方法返回值</h2>
+<p>修改decode方法的返回值，去掉解密逻辑，<code>aload0</code>表示将传入的参数原封不动的返回。</p>
+<blockquote>
+<p>全局搜了一下这个方法只用到了一次，因此不会影响到其他地方。如果有其他地方使用的话最好换个地方修改，避免影响其他逻辑。</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E4%BF%AE%E6%94%B9decode%E8%BF%94%E5%9B%9E%E5%80%BC.png" alt="修改decode方法返回值"></p>
+<p>修改之后使用<code>java -cp ;lib/*;jre8x64/lib/ext/log4j-core-2.14.0.jar;jre8x64/lib/ext/* org.bms.gui.BMS</code>成功运行。</p>
+<h1>方式二：拦截请求模拟服务端响应</h1>
+<p>由于URL是IP地址，想着有没有类似host配置（将域名映射成IP）一样的东西，将目标IP映射到自己的服务器IP和端口上，然后模拟服务端返回成功的结果。</p>
+<p>这里要拦截的是从自己电脑出口的请求。查了一下可以通过<strong>IP地址重定向</strong>的方式拦截请求</p>
+<p><strong>以Linux为例</strong>，Windows IP重定向较复杂。</p>
+<h2 id="迁移资源到Linux上">迁移资源到Linux上</h2>
+<p>和079一样，将一些关键文件拷贝到Linux上，手动导入SQL文件。</p>
+<blockquote>
+<p>这里因为有一些jar库放到了jre8x64里面，因此需要把这个目录也拷贝进去</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E8%BF%81%E7%A7%BB%E8%B5%84%E6%BA%90%E5%88%B0Linux.png" alt></p>
+<h2 id="Linux模拟wmic结果">Linux模拟wmic结果</h2>
+<p>由于wmic是Windows上的程序，因此<code>getProcessorId</code>方法会出错，这里直接写一个脚本模拟。</p>
+<p>创建一个wmic文件，把他放到<code>/usr/bin</code>目录（默认的环境变量）下即可执行。</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E6%A8%A1%E6%8B%9Fwmic.png" alt></p>
+<h2 id="IP地址重定向">IP地址重定向</h2>
+<p>Linux：使用iptables，可以成功转发出口请求，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45186298/article/details/122910466">iptables</a></p>
+<p>将<code>http://47.99.96.61:8008/api/checkMapleAuthEn?ddhmid=</code>转发到本机的8008端口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看规则</span></span><br><span class="line">sudo iptables  -t nat --list OUTPUT</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-A添加规则</span></span><br><span class="line">sudo iptables -t nat -A OUTPUT -d 47.99.96.61 -p tcp --dport 8008 -j DNAT --to-destination 127.0.0.1:8008</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-D删除规则</span></span><br><span class="line">sudo iptables -t nat -D OUTPUT -d 47.99.96.61 -p tcp --dport 8008 -j DNAT --to-destination 127.0.0.1:8008</span><br></pre></td></tr></table></figure>
+<p>通过curl命令可以成功访问本地的8008端口的结果<code>curl http://47.99.96.61:8008</code></p>
+<h2 id="启动Web服务">启动Web服务</h2>
+<p>将IP转发到自己的机器上后，需要开启Web服务，监听对应端口，模拟返回成功的结果</p>
+<ol>
+<li>使用Apache自带Web服务，监听80端口：将html网页放到这个目录下<code>/var/www/html/</code>，url带路径则新建文件夹</li>
+<li>使用Java简易服务器：代码如下，使用<code>javac -encoding &quot;utf8&quot; MyHttpServer.java</code>编译，再使用java命令运行class文件。（这里监听的是8008端口，因此需要将上一步的IP转发到8008端口）</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.net.httpserver.HttpServer;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyHttpServer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">HttpServer</span> <span class="variable">server</span> <span class="operator">=</span> HttpServer.create(<span class="keyword">new</span> <span class="title class_">InetSocketAddress</span>(<span class="number">8008</span>), <span class="number">0</span>);</span><br><span class="line">            server.createContext(<span class="string">&quot;/api/checkMapleAuthEn&quot;</span>, httpExchange -&gt; &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">response</span> <span class="operator">=</span> <span class="string">&quot;PcsI/8T435QUTypDM/e4HnXmNd/SYMWzz1IgsASJdWE=&quot;</span>;</span><br><span class="line">                httpExchange.sendResponseHeaders(<span class="number">200</span>, response.getBytes().length);</span><br><span class="line">                <span class="keyword">try</span> (<span class="type">OutputStream</span> <span class="variable">os</span> <span class="operator">=</span> httpExchange.getResponseBody()) &#123;</span><br><span class="line">                    os.write(response.getBytes());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            server.setExecutor(Executors.newCachedThreadPool());</span><br><span class="line">            server.start();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行MyHttpServer，再使用curl请求地址，成功拦截了请求。（正常访问由于没有淘宝订单号，请求会超时或者错误）</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/IP%E5%9C%B0%E5%9D%80%E8%BD%AC%E5%8F%91.png" alt></p>
+<h2 id="运行服务端">运行服务端</h2>
+<p>由于是Linux环境，无法运行一键启动器的exe文件，因此使用java命令启动<code>java -cp :lib/*:jre8x64/lib/ext/log4j-core-2.14.0.jar:jre8x64/lib/ext/* org.bms.gui.BMS</code></p>
+<blockquote>
+<p>Linux使用冒号分割ClassPath</p>
+</blockquote>
+<p>可以看到<strong>成功跳过了服务端验证</strong>，不过会卡在加载怪怪卡的地方。</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E4%B8%8A%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8D%A1%E4%BD%8F.png" alt></p>
+<p>这个主要是因为服务端没有针对Linux做过适配，使用开篇提到的第三个资源也有一样的问题。</p>
+<p><s>暂时还未找到原因，后面可以尝试分析下。</s></p>
+<h2 id="服务端启动卡住问题解决">服务端启动卡住问题解决</h2>
+<p><strong>先说结论：将<code>wz/String.wz</code>改为<code>wz/string.wz</code>，小写字母</strong></p>
+<p>分析了一下服务端启动的过程，<strong>主要是对比启动日志</strong>，跟踪到<code>StartServer</code>类。</p>
+<p>这里看到一堆中文乱码对应服务端启动的信息</p>
+<blockquote>
+<p>我们可以将解码方法拷贝出来，例如<code>MapleGuildSkill.ALLATORIxDEMO()</code>，通过main方法运行</p>
+<p>例如<code>MapleGuildSkill.ALLATORIxDEMO(&quot;勚轓拺胓攊捀寶戾T&quot;)</code>打印出来实际上是&quot;加载技能数据完成&quot;</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%901.png" alt></p>
+<p>对比正常的日志，加载完怪怪卡之后就会打印&quot;加载道具&quot;的日志。</p>
+<p>因此怪怪卡已经加载完成了，实际上是卡在加载道具的地方，因此查看<code>ItemInfoCache</code>逻辑。</p>
+<p>这里比较难阅读，大概能够看出是启动了一个子线程去加载道具信息。</p>
+<p>一开始有<code>ser/Item.ser</code>这个文件，运行服务端之后就没了。猜测是存放加载过的道具信息，由于出了问题所以文件自动被删除。</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%902.png" alt></p>
+<p>幸运的是这里刚好有个main方法，可以直接运行&quot;加载道具信息&quot;，针对性的分析，避免每次都跑整个启动流程。</p>
+<p><code>java -cp :lib/*:jre8x64/lib/ext/log4j-core-2.14.0.jar:jre8x64/lib/ext/* org.bms.common.cache.ItemInfoCache</code></p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%903.png" alt></p>
+<p>看到这里答案就出来了，<strong>找不到<code>wz/string.wz</code>文件</strong>，由于是主线程崩溃，所以有日志打印。</p>
+<p>wz目录实际上是有<code>String.wz</code>文件的，可能是大小写没有被正确解析，复制一个<code>string.wz</code>出来，再运行正常。</p>
+<blockquote>
+<p>Windows上可以正常解析，并且其他的wz也没问题，就只有<code>String.wz</code>有问题</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%90%AF%E5%8A%A8%E5%8D%A1%E4%BD%8F%E5%88%86%E6%9E%904.png" alt></p>
+<h2 id="客户端启动">客户端启动</h2>
+<p>由于新版本客户端不支持v79的命令行指定服务器IP地址和端口，因此从网上找了个联机登录器，指定IP地址，运行成功。</p>
+<blockquote>
+<p>用登录器总感觉不太安全，不过暂时没找到高版本的登录方式。</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%81%94%E6%9C%BA%E7%99%BB%E5%BD%95%E5%99%A8.png" alt></p>
+<h2 id="修改数据库配置">修改数据库配置</h2>
+<p>该版本私服的数据库名称默认为bms，数据库用户名和密码默认为root。和服务器上数据库配置不同</p>
+<p>找到<code>配置文件/ServerConfig.ini</code>，发现如下三个字段：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">数据库_库名</span>=<span class="string">bms</span></span><br><span class="line"><span class="attr">SQL_USER</span>=<span class="string">root</span></span><br><span class="line"><span class="attr">SQL_PASSWORD</span>=<span class="string">root</span></span><br></pre></td></tr></table></figure>
+<p>直接修改上述字段运行，发现连不上数据库</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5.png" alt></p>
+<p>反编译分析源码，如下图</p>
+<blockquote>
+<p>吐槽一下一堆中文和乱码</p>
+</blockquote>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/ServerConstantsType.png" alt></p>
+<p>可以看到<code>getProps()</code>方法返回解析的Properties对象，通过枚举的名称查找配置，这里使用的名称和配置文件中定义的不同。</p>
+<p>因此修改配置如下，再次运行正常</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">数据库_库名</span>=<span class="string">maplestory_176</span></span><br><span class="line"><span class="attr">数据库_用户名</span>=<span class="string">root</span></span><br><span class="line"><span class="attr">数据库_密码</span>=<span class="string">afauria</span></span><br></pre></td></tr></table></figure>
+<h2 id="数据库报错">数据库报错</h2>
+<p>如下图，Linux上运行服务端，客户端登录之后会提示表不存在。</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/Linux%E4%B8%8A%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.png" alt></p>
+<p>原因：Linux上MariaDB默认区分大小写，如下图</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/MariaDB%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F.png" alt></p>
+<p>解决：配置数据库大小写不敏感</p>
+<p>修改<code>/etc/mysql/my.cnf</code>文件，添加如下配置。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">[mysqld]</span></span><br><span class="line"><span class="comment"># 0表示区分大小写</span></span><br><span class="line"><span class="comment"># 1表示存储时小写，比较时不区分大小写</span></span><br><span class="line"><span class="comment"># 2表示存储时区分大小写，比较时是小写</span></span><br><span class="line"><span class="comment"># Linux默认为0，Windows默认是1，MacOS默认是2</span></span><br><span class="line"><span class="attr">lower_case_table_name</span>=<span class="string">1</span></span><br></pre></td></tr></table></figure>
+<p>修改之后重启数据库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mariadb </span><br></pre></td></tr></table></figure>
+<p>查看大小写配置如下</p>
+<p><img src="/2022/09/08/geek-2022-09-08-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv176/%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E9%85%8D%E7%BD%AE.png" alt></p>
+<h1>结语</h1>
+<p>至此可以在树莓派上运行冒险岛私服，079、176的教程都有了。</p>
+<blockquote>
+<p>建议使用修改字节码的方式运行服务端。不然每次启动都要配置下iptables、启动8008端口服务。</p>
+</blockquote>
+<p>自己玩的话最简单还是直接在Windows上一键运行服务端和客户端。如果是要部署和别人玩就要用云服务器了，怕麻烦的话也可以买Windows的服务器部署。这里只提供下迁移到Linux运行的一些思路，<strong>坑还很多</strong>。</p>
+<p>老实说对冒险岛私服不太了解，平常也不太喜欢逛社区论坛、QQ群之类的。不过挺佩服那些大佬的。</p>
+<p>这也是自己第一次尝试搭建私服，自己找资源去破解。中间踩了很多坑，没有加过群请教大佬，不然应该能少走很多弯路。</p>
+<ul>
+<li>netsh（Network Shell）是Windows的命令行工具。参考<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-server/networking/technologies/netsh/netsh-interface-portproxy">Windows netsh命令</a></li>
+<li>Linux上常用的防火墙软件，很强大的功能，可以进行入口、出口请求的转发、拦截等。参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45186298/article/details/122910466">iptables</a></li>
+<li>Wireshark：网络抓包工具，使用比较简单，难点在于分析数据包</li>
+<li>反编译工具：jadx、jbe、jd-gui。（有的时候会反编译不出来，可以尝试其他工具，或者阅读字节码）</li>
+</ul>
+<h2 id="修改jar包字节码">修改jar包字节码</h2>
+<p>注意：重编译的jdk版本要和jar的jdk版本一致，否则可能合不回去</p>
+<p>方式一：修改Java源代码</p>
+<ol>
+<li>使用jd-gui或jadx将class反编译成java源代码</li>
+<li>修改源代码</li>
+<li>使用javac编译，由于会依赖到其他的类，因此编译时需要指定classpath依赖库</li>
+<li>将编译出来的class文件拖入jar压缩包中</li>
+</ol>
+<p>缺点：当jar包被混淆时，可能会编译失败，或者jar包出错</p>
+<p>方式二：修改字节码</p>
+<ol>
+<li>拷贝出要修改的class文件</li>
+<li>使用jbe直接修改class字节码</li>
+<li>将修改后的class文件拖入jar压缩保重</li>
+</ol>
+<p>缺点：需要学习理解字节码，也没法做大的改动，否则会导致编译失败，符号没对齐之类的。</p>
+<h2 id="Windows请求转发">Windows请求转发</h2>
+<p>Windows：使用<code>netsh interface portproxy</code>代理IP地址和端口，貌似只能将外部进入本机的请求进行转发，无法对本机出口的请求进行转发（失败）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有监听的端口</span></span><br><span class="line">netsh interface portproxy show all</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加规则</span></span><br><span class="line">netsh interface portproxy add v4tov4 listenaddress=47.99.96.61 listenport=8008 connectaddress=192.168.1.104 connectport=80 protocol=tcp</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除规则</span></span><br><span class="line">netsh interface portproxy delete v4tov4 listenaddress=47.99.96.61 listenport=8008</span><br></pre></td></tr></table></figure>
+<p>另外的思路：使用虚拟网卡+netsh命令，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34083079/article/details/110141360">Windows 下的 IP 重定向，非改 host</a></p>
+<blockquote>
+<p>没有实际尝试过，这种时候还是Linux方便</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="/images/wechat_channel.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag"># 极客</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/02/geek-2022-09-02-%E5%86%92%E9%99%A9%E5%B2%9B%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BAv079/" rel="prev" title="冒险岛私服搭建v079">
+                  <i class="fa fa-angle-left"></i> 冒险岛私服搭建v079
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/19/geek-2022-09-19-RetroPie%E5%A4%8D%E5%8F%A4%E6%B8%B8%E6%88%8F%E6%9C%BA/" rel="next" title="RetroPie复古游戏机">
+                  RetroPie复古游戏机 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Afauria</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">592k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:59</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Afauria" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Afauria","repo":"AfauriaBlogSource","client_id":"Ov23liQsWq6cT1VDVP1I","client_secret":"11e3906565f11540f86711acf880f7c93c308423","admin_user":"Afauria","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"5b4c4995911c5ba5ef5ade96b95f043b"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

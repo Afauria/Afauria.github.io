@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.afauria.xyz","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"a11y-light","dark":"a11y-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":"zh-CN false"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="介绍AOP概念，实现原理，常用工具和技术对比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向切面编程（AOP）">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="介绍AOP概念，实现原理，常用工具和技术对比">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/AOP%E6%A6%82%E5%BF%B5.png">
+<meta property="article:published_time" content="2021-12-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-27T08:20:49.426Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="AOP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/AOP%E6%A6%82%E5%BF%B5.png">
+
+
+<link rel="canonical" href="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/","path":"2021/12/01/tech-2021-12-01-AOP/","title":"面向切面编程（AOP）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>面向切面编程（AOP） | Afauria's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Afauria's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-knowledge"><a href="/LearningBase/" rel="section"><i class="fa fa-graduation-cap fa-fw"></i>知识体系</a></li><li class="menu-item menu-item-collection"><a href="/collection/" rel="section"><i class="fa fa-suitcase fa-fw"></i>收藏</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+    <div class="sidebar-overlay"></div>
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">什么是AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OOP%E5%92%8CAOP"><span class="nav-number">1.1.</span> <span class="nav-text">OOP和AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">相关概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#APT%EF%BC%88Annotation-Processing-Tool%EF%BC%8C%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">APT（Annotation Processing Tool，注解处理器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BC%98%E7%BC%BA%E7%82%B9%E3%80%81%E9%9A%BE%E7%82%B9%E6%AF%94%E5%AF%B9"><span class="nav-number">2.2.</span> <span class="nav-text">方法优缺点、难点比对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AspectJ"><span class="nav-number">2.3.</span> <span class="nav-text">AspectJ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASM"><span class="nav-number">2.4.</span> <span class="nav-text">ASM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASMDex"><span class="nav-number">2.5.</span> <span class="nav-text">ASMDex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DexMaker"><span class="nav-number">2.6.</span> <span class="nav-text">DexMaker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Javassist"><span class="nav-number">2.7.</span> <span class="nav-text">Javassist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cglib%EF%BC%88Code-Generation-Library%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">Cglib（Code Generation Library）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">AOP应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">AOP实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E5%BB%BA%E8%AE%AE"><span class="nav-number">5.1.</span> <span class="nav-text">使用场景建议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://afauria.github.io/LearningBase/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;LearningBase&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="poem-side">
+      <div id="hitokoto">loading...</div>
+      <div id="hitokotofrom"></div>
+      <script defer>
+      fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+                   hitokoto.innerHTML = data.hitokoto
+           if(data.from_who != null) {
+             hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+           } else {
+             hitokotofrom.innerHTML ='——《' + data.from + '》'
+          }
+        })
+        .catch(console.error)
+    </script>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/12/01/tech-2021-12-01-AOP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="面向切面编程（AOP） | Afauria's Blog">
+      <meta itemprop="description" content="介绍AOP概念，实现原理，常用工具和技术对比">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面向切面编程（AOP）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+  
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-01T00:00:00+00:00">2021-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-27 08:20:49" itemprop="dateModified" datetime="2026-03-27T08:20:49+00:00">2026-03-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">介绍AOP概念，实现原理，常用工具和技术对比</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1>什么是AOP</h1>
+<h2 id="OOP和AOP">OOP和AOP</h2>
+<ul>
+<li>OOP（Object Oriented Program，面向对象编程）：侧重对功能进行模块化和封装继承。关注静态的对象层次结构。</li>
+<li>AOP（Aspect Oriented Program，面向切面编程）：侧重对横跨各个模块中的公共功能进行统一处理。关注动态的运行时的业务流程。</li>
+</ul>
+<p>例如使用OOP封装了一个日志框架，包含打印、缓存、上报等功能。看起来很完美，实际上存在以下问题：</p>
+<ol>
+<li>对调用方来说，需要在多处地方添加方法调用，和调用方的主业务耦合，违背单一职责原则。代码分散，需求变动的时候需要改动多处。</li>
+<li>难以对<strong>现有对象</strong>（如三方库中的类）动态添加功能，需要通过继承或组合的方式扩展对象功能。</li>
+<li>编写代码的时候需要考虑不同类之间的共性，再提取方法或者接口。</li>
+</ol>
+<p>如下图</p>
+<pre><code class="mermaid">graph TB
+subgraph 验证用户方法封装
+a[验证用户]
+b[验证用户]
+c[验证用户]
+end
+流程1[开始]-->a-->查询余额
+流程2[开始]-->b-->取款
+流程3[开始]-->c-->转账</code></pre>
+<p>需要在每个流程中加入验证用户的步骤，即使对重复代码进行了封装，但还是免不了要调用方法。</p>
+<p>解决：将验证用户的方法抽离出来（切面），在编译或者运行期间讲代码<strong>织入</strong>到目标位置（连接点）。我们把这种方法叫AOP。</p>
+<p><strong>AOP能够将这些与业务无关，却被业务模块所共同调用的逻辑封装起来（切面）；在不侵入业务代码的情况下，将这些公共的功能插入到主业务流程中（连接点）。减少系统的重复代码，降低模块间的耦合度，提高可维护性。</strong></p>
+<p><strong>AOP的思想可以让我们在写代码的时候只考虑主业务流程，而不用考虑这些不重要的流程。</strong></p>
+<p>AOP和OOP是互补的关系</p>
+<h2 id="相关概念">相关概念</h2>
+<ul>
+<li>
+<p>横切关注点（Cross-cutting concerns）：面向对象模型中大多数类会实现单一特定的功能，但有时候也需要添加一些公共的附属功能。例如日志、埋点等功能会分布在不同对象层次中，与对象自身的功能没有关系。这些散布在各处的无关的代码称为<strong>横切关注点</strong>。</p>
+</li>
+<li>
+<p>连接点（JoinPoint）：程序运行时的一些执行点，可以在这些地方插入代码。如方法调用、方法执行、类初始化、构造、变量get和set等。</p>
+</li>
+<li>
+<p>切点（Pointcut）：用于选择和匹配我们想要插入代码的目标JoinPoint。</p>
+<blockquote>
+<p>关于切点，有两种说法，刚开始看概念很容易混乱，两种理解都可以，只是角度不同。</p>
+<ol>
+<li>切点是指写匹配规则的地方，定义在切面中。关注从哪里切入（切入的点）</li>
+<li>切点是指匹配到的结果（目标JoinPoint），是JoinPoint的子集。关注切到的结果（切到的点）</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>通知（Advice）：Pointcut拦截到JoinPoint之后要做的事情，即要增强的功能（要注入的代码，如log打印，权限检查等）。常见的通知类型如前置通知（在Pointcut之前执行）、后置通知、异常通知、最终通知、环绕通知。</p>
+</li>
+<li>
+<p>切面（Aspect）：切入点+通知=切面</p>
+</li>
+<li>
+<p>织入（Weaving）：注入代码（Advice）到目标位置（JoinPoint）的过程。分为静态织入（编译期或类加载期）和动态织入（运行期）</p>
+</li>
+<li>
+<p>目标对象（Target）：被代理的对象</p>
+</li>
+<li>
+<p>代理（Proxy）：一个类被增强实际上是生成一个代理类，调用的时候实际上是调用代理类的方法。</p>
+</li>
+</ul>
+<p><img src="/2021/12/01/tech-2021-12-01-AOP/AOP%E6%A6%82%E5%BF%B5.png" alt></p>
+<h1>实现原理</h1>
+<ol>
+<li>静态织入：编译期织入代码。又分为不同阶段：java、class、dex代码。如APT、AspectJ、ASM、Javassit、ASMDex、DexMaker、操作AST、手动修改class文件。</li>
+<li>动态织入：运行时织入代码。又分为类加载和运行。如Java动态代理、Cglib、Javassit、XPosed、Dexposed、自定义类加载器。</li>
+</ol>
+<pre><code class="mermaid">graph TB
+subgraph 编译期
+源代码--"APT"-->java文件--"AspectJ"-->class1[class字节码]--"Javassist、ASM、AspectJ"-->dex字节码
+end
+subgraph 运行期
+dex字节码--"Javassist、ASM、ASMDex、DexMaker"-->ClassLoader类加载--"Dexposed、Xposed"-->运行
+end</code></pre>
+<p>Android注解解析主要分为两种：</p>
+<ol>
+<li>运行时反射解析当前类（注解作用域：RUNTIME）：性能较低。</li>
+<li>编译期生成代理类和代理对象（注解作用域：SOURCE、CLASS）：需要生成额外代码</li>
+</ol>
+<h2 id="APT（Annotation-Processing-Tool，注解处理器）">APT（Annotation Processing Tool，注解处理器）</h2>
+<p>见<a href>APT介绍和实践</a></p>
+<table>
+<thead>
+<tr>
+<th>AOP技术</th>
+<th>作用时机</th>
+<th>输入</th>
+<th>输出</th>
+<th>代表框架</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APT</td>
+<td>编译期</td>
+<td>Java文件</td>
+<td>Java文件</td>
+<td>DataBinding、Dagger2、ButterKnife、EventBus3、DBFlow</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="方法优缺点、难点比对">方法优缺点、难点比对</h2>
+<p>//todo</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用时机</th>
+<th>操作对象</th>
+<th>优点</th>
+<th>缺点</th>
+<th>为了上手，我需要掌握什么？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>APT</strong></td>
+<td>编译期：还未编译为 class 时</td>
+<td>.java 文件</td>
+<td>1. 可以织入所有类；2. 编译期代理，减少运行时消耗</td>
+<td>1. 需要使用 apt 编译器编译；2. 需要手动拼接代理的代码（可以使用 Javapoet 弥补）；3. 生成大量代理类</td>
+<td>设计模式和解耦思想的灵活应用</td>
+</tr>
+<tr>
+<td><strong>AspectJ</strong></td>
+<td>编译期、加载时</td>
+<td>.java 文件</td>
+<td>功能强大，除了 hook 之外，还可以为目标类添加变量，接口。也有抽象，继承等各种更高级的玩法。</td>
+<td>1. 不够轻量级；2. 定义的切点依赖编程语言，无法兼容Lambda语法；3. 无法织入第三方库；4. 会有一些兼容性问题，如：D8、Gradle 4.x等</td>
+<td>复杂的语法，但掌握几个简单的，就能实现绝大多数场景</td>
+</tr>
+<tr>
+<td><strong>Javassist</strong></td>
+<td>编译期：class 还未编译为 dex 时或运行时</td>
+<td>class 字节码</td>
+<td>1. 减少了生成子类的开销；2. 直接操作修改编译后的字节码，直接绕过了java编译器，所以可以做很多突破限制的事情，例如，跨 dex 引用，解决热修复中 CLASS_ISPREVERIFIED 问题。</td>
+<td>运行时加入切面逻辑，产生性能开销。</td>
+<td>1. 自定义 Gradle 插件；2. 掌握groovy 语言</td>
+</tr>
+<tr>
+<td><strong>ASM</strong></td>
+<td>编译期或运行期字节码注入</td>
+<td>class 字节码</td>
+<td>小巧轻便、性能好，效率比Javassist高</td>
+<td>学习成本高</td>
+<td>需要熟悉字节码语法，ASM 通过树这种数据结构来表示复杂的字节码结构，并利用 Push 模型来对树进行遍历，在遍历过程中对字节码进行修改。</td>
+</tr>
+<tr>
+<td><strong>ASMDEX</strong></td>
+<td>编译期和加载时：转化为 .dex 后</td>
+<td>Dex 字节码，创建 class 文件</td>
+<td>可以织入所有类</td>
+<td>学习成本高</td>
+<td>需要对 class 文件比较熟悉，编写过程复杂。</td>
+</tr>
+<tr>
+<td><strong>DexMaker</strong></td>
+<td>同ASMDEX</td>
+<td>Dex 字节码，创建 dex 文件</td>
+<td>同ASMDEX</td>
+<td>同ASMDEX</td>
+<td>同ASMDEX</td>
+</tr>
+<tr>
+<td><strong>Cglib</strong></td>
+<td>运行期生成子类拦截方法</td>
+<td>字节码</td>
+<td>没有接口也可以织入</td>
+<td>1. 不能代理被final字段修饰的方法；2. 需要和 dexmaker 结合使用</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>xposed</strong></td>
+<td>运行期hook</td>
+<td>–</td>
+<td>能hook自己应用进程的方法，能hook其他应用的方法，能hook系统的方法</td>
+<td>依赖三方包的支持，兼容性差，手机需要root</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>dexposed</strong></td>
+<td>运行期hook</td>
+<td>–</td>
+<td>只能hook自己应用进程的方法，但无需root</td>
+<td>1. 依赖三方包的支持，兼容性差；2. 只能支持 Dalvik 虚拟机</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>epic</strong></td>
+<td>运行期hook</td>
+<td>–</td>
+<td>支持 Dalvik 和 Art 虚拟机</td>
+<td>只适合在开发调试中使用，碎片化严重有兼容性问题</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<h2 id="AspectJ">AspectJ</h2>
+<p>见<a href="/2021/12/02/tech-2021-12-02-AspectJ%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%A4%BA%E4%BE%8B/">AspectJ介绍和案例</a></p>
+<h2 id="ASM">ASM</h2>
+<p><strong>ASM 插桩工具 :</strong></p>
+<p><strong>操作灵活 :</strong> 可以在字节码任何位置，自定义修改、插入、删除相关逻辑 ;</p>
+<p><strong>上手很难 :</strong> 对 .class 字节码文件有比较深入的了解，编写过程较复杂</p>
+<table>
+<thead>
+<tr>
+<th>AOP技术</th>
+<th>功能</th>
+<th>性能</th>
+<th>面向接口编程</th>
+<th>编程难度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直接改写class文件</td>
+<td>完全控制类</td>
+<td>无明显性能代价</td>
+<td>不要求</td>
+<td>高，要求对class文件结构和Java字节码有深入的了解</td>
+</tr>
+<tr>
+<td>JDK Instrument</td>
+<td>完全控制类</td>
+<td>无论是否改写，每个类装入时都要执行 hook 程序</td>
+<td>不要求</td>
+<td>高，要求对 class 文件结构和 Java 字节码有深刻了解</td>
+</tr>
+<tr>
+<td>JDK Proxy</td>
+<td>只能改写 method</td>
+<td>反射引入性能代价</td>
+<td>要求</td>
+<td>低</td>
+</tr>
+<tr>
+<td>ASM</td>
+<td>几乎能完全控制类</td>
+<td>无明显性能代价</td>
+<td>不要求</td>
+<td>中，能操纵需要改写部分的 Java 字节码</td>
+</tr>
+<tr>
+<td>AspectJ</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>基于ASM的字节码处理工具：<a target="_blank" rel="noopener" href="https://github.com/Leaking/Hunter/blob/master/README_ch.md">Hunter</a>、<a target="_blank" rel="noopener" href="https://github.com/BryanSharp/hibeaver">Hibeaver</a></p>
+<p>基于Javassist的字节码处理工具：DroidAssist</p>
+<p>ASM是一个框架/库，它为您提供了一个API来操作现有的字节码和/或轻松生成新的字节码。</p>
+<p>另一方面，AspectJ是一种基于Java语言的语言扩展，具有自己的语法，专门用于通过面向方面的编程概念扩展Java运行时的功能。它包括一个编译器/编织器，可以在编译时或运行时运行。</p>
+<p>它们的相似之处在于它们都通过现有字节码的字节码操作和/或生成新的字节码来实现其目标。</p>
+<p>ASM更通用，因为它没有关于如何修改现有字节码的意见，它只是为您提供了一个API，您可以随心所欲地使用它。另一方面，AspectJ更具体，范围更窄，它只支持一些预定义的AOP结构，但它为您提供了一个界面（aspectj语言），如果您可以在这些结构中使用它，则更容易使用它为您提供。</p>
+<p>对于我见过的大多数用例，AspectJ绰绰有余，但在极少数情况下，ASM可能是一个不错的选择，但是你需要更多的编程努力取得类似的成果。</p>
+<h2 id="ASMDex">ASMDex</h2>
+<p>类似ASM的字节码操作库，运行在Android平台，操作dex字节码</p>
+<h2 id="DexMaker">DexMaker</h2>
+<p>提供JavaAPI，用于编译期或运行时生成Dex字节码</p>
+<h2 id="Javassist">Javassist</h2>
+<p>原理：使用Gradle Task或Transform，在dex文件生成之前，修改class字节码。不需要生成子类代理</p>
+<p>框架：热修复HotFix</p>
+<p>Javassist &amp; ASM 对比<br>
+Javassist抽象出源代码级的API，比ASM中实际的字节码操作更容易使用<br>
+Javassist使用反射机制，这使得它比运行时使用Classworking技术的ASM慢。<br>
+总的来说ASM比Javassist快得多，并且提供了更好的性能。Javassist使用Java源代码的简化版本，然后将其编译成字节码。这使得Javassist非常容易使用，但是它也将字节码的使用限制在Javassist源代码的限制之内。<br>
+总之，如果有人需要更简单的方法来动态操作或创建Java类，那么应该使用Javassist API 。如果需要注重性能地方，应该使用ASM库。</p>
+<h2 id="Cglib（Code-Generation-Library）">Cglib（Code Generation Library）</h2>
+<p>原理：底层采用ASM字节码框架，运行期间类加载的时候为目标类创建一个字类，代理拦截父类方法调用。解决了JDK动态代理需要定义接口的问题</p>
+<p>缺点：</p>
+<ol>
+<li>无法代理final类和方法：Cglib是通过子类代理实现的</li>
+<li>无法在Android中使用，Android加载的是dex文件，而Cglib生成的是class文件：需要结合Dexmaker生成dex字节码文件。参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangke3016/article/details/71437287">将cglib动态代理思想带入Android开发</a></li>
+</ol>
+<h1>AOP应用场景</h1>
+<ol>
+<li>参数校验和判空</li>
+<li>运行时权限验证或申请</li>
+<li>运行时登录验证</li>
+<li>检查网络连接</li>
+<li>日志管理：输出调试日志。如打印代码行数、入参、出参等</li>
+<li>重要生命周期添加打印</li>
+<li>无侵入埋点</li>
+<li>事件防抖</li>
+<li>异常统一处理</li>
+<li>事务处理</li>
+<li>性能监控，如统计方法耗时</li>
+<li>方法调用线程切换</li>
+<li>对变量和方法返回值进行缓存和注入，内存缓存和持久缓存</li>
+<li>对数据和常量加密</li>
+<li>热修复：新方法替换旧方法</li>
+</ol>
+<p>AOP和字节码插桩的区别和联系</p>
+<blockquote>
+<ul>
+<li>AOP：是一种编程思想，OOP的延续。将系统中非核心的业务提取出来，进行单独处理。AOP中用到了IoC和DI的思想</li>
+<li>字节码插桩：即修改字节码，是实现AOP的一种技术。AOP除了修改字节码之外还可以修改源码、抽象语法树等。</li>
+</ul>
+<p>除了上面的场景之外，字节码插桩和修改还可以应用于：</p>
+<ol>
+<li>三方库Hook，不需要修改三方库源码</li>
+<li>应用破解</li>
+</ol>
+</blockquote>
+<p>AOP与IoC（控制反转）、DI（依赖注入）的区别和联系</p>
+<blockquote>
+<p>区别：AOP强调对代码运行过程进行修改。IoC和DI强调不同对象间的依赖关系，以及如何依赖。</p>
+<p>联系：AOP和IoC用到的技术类似，例如AspectJ、APT、字节码修改等，既可用于AOP，也可以用于IoC</p>
+<p>Tips：IoC和DI是同一个概念的不同描述，也可以说通过依赖注入来实现控制反转。</p>
+</blockquote>
+<h1>AOP实战</h1>
+<p>编写AOP思路：</p>
+<ol>
+<li>考虑注入代码的时机、以及注入是否有限制（如final、private限制），选择合适的AOP工具（使用场景、性能等）
+<ol>
+<li>编译期：生成java、class、dex文件</li>
+<li>运行期：类加载、运行时</li>
+</ol>
+</li>
+<li>考虑要注入代码的地方：如方法调用、执行、类初始化等时机</li>
+<li>考虑怎么找到要注入代码的地方
+<ol>
+<li>匹配类名、方法名</li>
+<li>使用注解标记</li>
+</ol>
+</li>
+<li>考虑怎么处理代码
+<ol>
+<li>在代码前后插入逻辑</li>
+<li>替换目标代码</li>
+</ol>
+</li>
+</ol>
+<h1>框架</h1>
+<ol>
+<li>Lancet轻量级的框架，编译速度快，支持增量编译</li>
+<li>Lancet语法简单，易于上手。AspectJ需要学习的语法比较多。</li>
+<li>Lancet仅支持hook具体的方法，不能像AspectJ一样根据自定义的注解来Hook一个类或者任意的方法。</li>
+</ol>
+<h2 id="使用场景建议">使用场景建议</h2>
+<ol>
+<li>如果只是相对特定的函数，aar中函数、项目中的函数、Android系统源码中的函数进行Hook，可以选择使用Lancet。</li>
+<li>如果需要使用注解对某一类操作进行Hook时，例如，权限检查、性能检测等函数，可以使用AspectJ。</li>
+</ol>
+<h1>结语</h1>
+<p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903728525361165">一文读懂 AOP | 你想要的最全面 AOP 方法探讨</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903741808705544">一文应用 AOP | 最全选型考量 + 边剖析经典开源库边实践，美滋滋</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="/images/wechat_channel.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AOP/" rel="tag"># AOP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/28/network-2021-11-28-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E8%AE%BE%E8%AE%A1/" rel="prev" title="网络基础之自底向上设计（TODO）">
+                  <i class="fa fa-angle-left"></i> 网络基础之自底向上设计（TODO）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/02/tech-2021-12-02-AspectJ%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%A4%BA%E4%BE%8B/" rel="next" title="AspectJ介绍和示例">
+                  AspectJ介绍和示例 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Afauria</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">592k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:59</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Afauria" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Afauria","repo":"AfauriaBlogSource","client_id":"Ov23liQsWq6cT1VDVP1I","client_secret":"11e3906565f11540f86711acf880f7c93c308423","admin_user":"Afauria","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"aa689abfd29b240727f6b9a5a24fe03e"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

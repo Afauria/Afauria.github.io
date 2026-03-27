@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+  <meta name="google-site-verification" content="4Wnft1QE2BfTMnTv4w9h6ObQ3JsndZpCHnOeGa3YUuo">
+  <meta name="baidu-site-verification" content="code-c502xbTetv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.afauria.xyz","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"a11y-light","dark":"a11y-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":"zh-CN false"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Flutter基础介绍，架构说明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter简介">
+<meta property="og:url" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:site_name" content="Afauria&#39;s Blog">
+<meta property="og:description" content="Flutter基础介绍，架构说明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png">
+<meta property="article:published_time" content="2021-12-20T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-27T08:20:49.229Z">
+<meta property="article:author" content="Afauria">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E6%9E%B6%E6%9E%84.png">
+
+
+<link rel="canonical" href="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/","path":"2021/12/20/flutter-2021-12-20-Flutter简介/","title":"Flutter简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Flutter简介 | Afauria's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Afauria's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">丘山月夜的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-knowledge"><a href="/LearningBase/" rel="section"><i class="fa fa-graduation-cap fa-fw"></i>知识体系</a></li><li class="menu-item menu-item-collection"><a href="/collection/" rel="section"><i class="fa fa-suitcase fa-fw"></i>收藏</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+    <div class="sidebar-overlay"></div>
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Flutter简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Flutter架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E5%B5%8C%E5%85%A5%E5%B1%82"><span class="nav-number">2.1.</span> <span class="nav-text">平台嵌入层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E4%B8%8A%E7%9A%84Flutter"><span class="nav-number">2.2.</span> <span class="nav-text">Web上的Flutter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Afauria"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Afauria</p>
+  <div class="site-description" itemprop="description">君は空を見てるか,<br>風の音を聞いてるか</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/wechat_channel.jpg" title="WeChat → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;wechat_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>WeChat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://afauria.github.io/images/qq_channel.jpg" title="QQ → https:&#x2F;&#x2F;afauria.github.io&#x2F;images&#x2F;qq_channel.jpg" rel="noopener me" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:afauria@foxmail.com" title="E-Mail → mailto:afauria@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://afauria.github.io/LearningBase/" title="https:&#x2F;&#x2F;Afauria.github.io&#x2F;LearningBase&#x2F;" rel="noopener" target="_blank">基础知识和知识体系整理</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.nowcoder.net/afauria" title="https:&#x2F;&#x2F;blog.nowcoder.net&#x2F;afauria" rel="noopener" target="_blank">牛客笔记</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/collection/" title="&#x2F;collection&#x2F;">站点和在线工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/software/" title="&#x2F;software&#x2F;">软件和工具收藏</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="/2018/01/01/reader-2018-01-01-%E9%98%85%E8%AF%BB%E6%8E%A8%E8%8D%90/" title="&#x2F;2018&#x2F;01&#x2F;01&#x2F;reader-2018-01-01-阅读推荐&#x2F;">阅读推荐</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="poem-side">
+      <div id="hitokoto">loading...</div>
+      <div id="hitokotofrom"></div>
+      <script defer>
+      fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+                   hitokoto.innerHTML = data.hitokoto
+           if(data.from_who != null) {
+             hitokotofrom.innerHTML ='——' + data.from_who + ' 《' + data.from + '》'
+           } else {
+             hitokotofrom.innerHTML ='——《' + data.from + '》'
+          }
+        })
+        .catch(console.error)
+    </script>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.afauria.xyz/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Afauria">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Afauria's Blog">
+      <meta itemprop="description" content="君は空を見てるか,<br>風の音を聞いてるか">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Flutter简介 | Afauria's Blog">
+      <meta itemprop="description" content="Flutter基础介绍，架构说明">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+  
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-20T00:00:00+00:00">2021-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-27 08:20:49" itemprop="dateModified" datetime="2026-03-27T08:20:49+00:00">2026-03-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">Flutter基础介绍，架构说明</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1>Flutter简介</h1>
+<p>Flutter是一个跨平台的UI框架，设计初衷是在各种操作系统上复用UI代码，提供一致的交互体验，同时让应用程序能过与底层平台服务进行交互。</p>
+<ul>
+<li>支持移动平台（Android、iOS），桌面平台（Windows、Linux、MacOS），Web平台（浏览器），其他嵌入式平台（如车载、IoT设备、树莓派等，需要自行扩展适配）</li>
+<li>支持多屏幕设备、折叠设备等</li>
+</ul>
+<p>Flutter SDK包含框架代码、脚手架、编译工具、调试工具和各种脚本等。</p>
+<p>Flutter只是一个框架，不是一门语言，Flutter使用了Dart语言，Flutter引擎中的嵌入层（UI渲染、输入输出、以及PlatformChannel等）使用了平台原生语言（如C++，Java等）。</p>
+<p>Flutter和Dart类比Android和Java的关系：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Flutter</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编程语言</td>
+<td>Dart</td>
+<td>Java、Kotlin</td>
+</tr>
+<tr>
+<td>编译器</td>
+<td>dart compile</td>
+<td>javac、dx</td>
+</tr>
+<tr>
+<td>应用构建工具</td>
+<td>flutter命令</td>
+<td>gradle命令</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Flutter Framework</td>
+<td>Android Framwork</td>
+</tr>
+<tr>
+<td>开发套件</td>
+<td>Flutter SDK</td>
+<td>Android SDK</td>
+</tr>
+<tr>
+<td>底层源码</td>
+<td>Flutter引擎源码</td>
+<td>AOSP系统源码</td>
+</tr>
+<tr>
+<td>源码管理工具</td>
+<td>gclient</td>
+<td>repo</td>
+</tr>
+<tr>
+<td>源码编译配置</td>
+<td>gn文件</td>
+<td>低版本mk、高版本bp文件</td>
+</tr>
+<tr>
+<td>源码编译工具</td>
+<td>ninja</td>
+<td>低版本make，高版本ninja</td>
+</tr>
+</tbody>
+</table>
+<h1>Flutter架构</h1>
+<p>Flutter源码包含两部分：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/engine">Flutter Engine</a>：负责Flutter渲染和与宿主机的交互。包括图形渲染、网络I/O、插件通道、Dart运行时、平台嵌入层、编译工具链等</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Framework</a>：为开发者提供dart封装的API接口（布局、组件、函数）和开发调试工具。应用开发者只需要下载和使用SDK，一般不需要接触引擎层。</li>
+</ol>
+<blockquote>
+<p>Flutter SDK默认会缓存官方构建好的引擎artifact，打包到应用中</p>
+</blockquote>
+<p>架构如下：</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter架构.png" style="zoom: 33%;">
+<ol>
+<li>
+<p>嵌入层：源码包含在Engine中的<code>shell/platform</code>文件夹下。适配了多个平台，使用当前平台语言编写，提供应用程序入口，程序通过嵌入层与底层操作系统交互，例如访问surface渲染、辅助功能、输入设备、线程管理、窗口管理等。</p>
+</li>
+<li>
+<p>引擎层：提供Flutter核心API实现，包括图形（Skia）和动画，文本布局、文件、网络IO、插件通道、Dart运行环境以及编译环境的工具链。引擎将底层C++代码包装成Dart代码，即<code>dart:ui</code>，供上层使用。</p>
+</li>
+<li>
+<p>框架层：提供Flutter应用开发的框架，包括响应式框架、布局、组件、基础库等</p>
+<ol>
+<li>foundation：提供上层常用的抽象和函数</li>
+<li>基本模块：如 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/animation/animation-library.html">animation</a>、 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/painting/painting-library.html">painting</a> 和 <a target="_blank" rel="noopener" href="https://api.flutter-io.cn/flutter/gestures/gestures-library.html">gestures</a></li>
+<li>渲染层：提供布局操作的抽象，构建可渲染对象的树</li>
+<li>widgets层：和渲染层中的渲染对象对应，并提供响应式编程模型</li>
+<li>Material和Cupertino：封装widgets，实现Material和iOS设计规范</li>
+</ol>
+</li>
+<li>
+<p>软件包：封装开发者常用的功能，分为普通包和插件包</p>
+<ol>
+<li>Packages：与平台无关。如http、路由导航、依赖管理、应用内支付、组件等</li>
+<li>Plugins：封装原生平台调用，如webview、camera等</li>
+</ol>
+</li>
+<li>
+<p>应用层：Flutter应用、模块、插件等</p>
+</li>
+</ol>
+<blockquote>
+<p>Flutter界面构建、布局、合成、绘制都由自身完成，而不是转换为原生控件。Flutter引擎与平台无关，通过嵌入层ABI调用操作系统方法。</p>
+<p>应用启动时，嵌入层初始化Flutter引擎，获取UI和栅格化线程，创建Surface供Flutter写入</p>
+</blockquote>
+<h2 id="平台嵌入层">平台嵌入层</h2>
+<p>嵌入层是Flutter实现跨平台的核心。Flutter官方提供了Android、iOS、Windows、macOS、Linux、Fuchsia等平台嵌入层。</p>
+<p>对于其他嵌入式平台和系统，需要定制嵌入层。后面的文章会介绍。</p>
+<h2 id="Web上的Flutter">Web上的Flutter</h2>
+<p>Flutter引擎中的嵌入层是为了与底层操作系统进行交互，而Web是运行在浏览器上的，因此接入方式和其他平台有所不同。</p>
+<p>将Flutter代码和框架一起编译成JavaScript。架构如下</p>
+<img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/FlutterWeb架构.png" style="zoom: 33%;">
+<h1>使用方式</h1>
+<ul>
+<li>统一管理：将原生工程作为Flutter工程的子工程。</li>
+<li>模块集成：Flutter工程作为原生工程的一个子模块，使用aar或者pod库的方式依赖。</li>
+</ul>
+<h1>结语</h1>
+<p>单纯学会写Flutter应用很简单，事实上我也是这么入门的：2021年5月份用了一周左右看了<a target="_blank" rel="noopener" href="https://book.flutterchina.club/">Flutter实战</a>，并且实战开发了WanAndroid的Demo。后续就直接上手开发项目，架构设计也不难，一套GetX框架用到底，大部分时候是在学GetX框架，然后自定义组件，写页面和业务等。</p>
+<p>学习的过程中也粗略的看了Flutter渲染流程、加载和运行原理、源码架构等文章，感觉一知半解，缺少系统性的学习和总结。刚好有需求做Flutter嵌入式平台的定制开发，涉及到一些进阶的知识，因此做一些整理，虽然对应用开发可能没什么帮助，但是也会有其他的收获和感悟。</p>
+<p>研究过程和思路如下：</p>
+<ol>
+<li>Flutter介绍和跨平台方案对比。</li>
+<li>Dart编译和执行原理，Dart源码编译：编译前端、编译后端。</li>
+<li>Flutter应用构建流程、构建产物分析。</li>
+<li>Flutter引擎源码分析和编译。</li>
+<li>Flutter引擎和应用交叉编译编译环境搭建（使用Docker）。</li>
+<li>Yocto系统编译，嵌入式平台调试。</li>
+<li>Linux图形系统介绍。</li>
+<li>Flutter嵌入层定制和适配。</li>
+<li>Linux窗口管理器、桌面应用开发和运行。</li>
+<li>源代码管理、CI搭建和部署。</li>
+<li>Flutter应用加载流程、渲染原理。</li>
+<li>Flutter应用开发，架构设计、产物裁剪。</li>
+<li>Flutter插件开发，Dart调C接口：跨进程、FFI接口</li>
+</ol>
+<p><img src="/2021/12/20/flutter-2021-12-20-Flutter%E7%AE%80%E4%BB%8B/Flutter%E9%A2%84%E7%A0%94%E8%BF%87%E7%A8%8B.png" alt></p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/">Flutter中文网</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.flutterchina.club/">Flutter实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/resources/architectural-overview">Flutter架构概览</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/desktop">Flutter桌面支持</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="/images/wechat_channel.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/18/flutter-2021-12-18-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" rel="prev" title="跨平台技术选型">
+                  <i class="fa fa-angle-left"></i> 跨平台技术选型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/03/tool-2022-01-03-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" rel="next" title="GNU和编译工具介绍">
+                  GNU和编译工具介绍 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Afauria</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">592k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:59</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Afauria" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Afauria","repo":"AfauriaBlogSource","client_id":"Ov23liQsWq6cT1VDVP1I","client_secret":"11e3906565f11540f86711acf880f7c93c308423","admin_user":"Afauria","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","body":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"7d6f1563858116b6563b30788a6d18f0"}</script>
+<script src="/js/third-party/comments/gitalk.js" defer></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7},"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
